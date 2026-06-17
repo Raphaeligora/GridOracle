@@ -543,6 +543,39 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 .bn-ico{font-size:1.15rem;line-height:1}
 .bn-lbl{font-size:.57rem;letter-spacing:.05em;text-transform:uppercase;font-weight:600;font-family:var(--fb);margin-top:1px}
 
+/* ══ MODALE ÉDITION PROFIL ══ */
+#edit-modal{position:fixed;inset:0;z-index:3500;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:1rem}
+#edit-modal.open{display:flex}
+.em-box{background:#0e0e1c;border:1px solid rgba(255,255,255,.1);border-radius:16px;width:100%;max-width:520px;overflow:hidden;max-height:90vh;overflow-y:auto}
+.em-header{padding:1.2rem 1.4rem;border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;justify-content:space-between}
+.em-title{font-family:var(--fh);font-size:1.15rem;font-weight:700}
+.em-close{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);color:var(--g);border-radius:6px;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.9rem;transition:all .2s}.em-close:hover{background:rgba(255,255,255,.1);color:var(--w)}
+.em-body{padding:1.3rem 1.4rem;display:flex;flex-direction:column;gap:1.1rem}
+.em-section{font-family:var(--fh);font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:.5rem}
+.em-field{margin-bottom:.7rem}
+.em-field label{display:block;font-size:.72rem;color:var(--g);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.38rem}
+.em-field input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:.75rem 1rem;color:#fff;font-size:.9rem;font-family:var(--fb);outline:none;transition:border-color .2s}
+.em-field input:focus{border-color:rgba(232,0,29,.5)}
+.em-field input.ok{border-color:rgba(80,200,80,.4)}
+.em-field input.er{border-color:rgba(232,0,29,.5)}
+.em-hint{font-size:.69rem;color:var(--g);margin-top:.25rem;min-height:.9rem}
+.em-hint.ok{color:#4caf50}.em-hint.er{color:var(--red)}
+.em-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.42rem;max-height:200px;overflow-y:auto;scrollbar-width:thin}
+.em-team{background:var(--c2);border:1.5px solid var(--b);border-radius:9px;padding:.6rem .5rem;cursor:pointer;text-align:center;transition:all .2s}
+.em-team:hover{background:rgba(255,255,255,.05)}.em-team.sel{border-width:2px}
+.em-team-abr{font-family:var(--fh);font-size:.82rem;font-weight:700;margin-bottom:.15rem}
+.em-team-name{font-size:.56rem;color:var(--g);line-height:1.3}
+.em-driver{background:var(--c2);border:1.5px solid var(--b);border-radius:9px;cursor:pointer;overflow:hidden;transition:all .2s}
+.em-driver:hover{background:rgba(255,255,255,.05)}.em-driver.sel{border-width:2px}
+.em-driver-ph{height:55px;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.em-driver-ph img{width:100%;height:100%;object-fit:cover;object-position:top}
+.em-driver-bd{padding:.3rem .25rem .38rem;text-align:center}
+.em-driver-num{font-family:var(--fh);font-size:.82rem;font-weight:700;line-height:1}
+.em-driver-sn{font-size:.56rem;font-weight:600;color:#fff}
+.em-save{width:100%;background:var(--red);color:#fff;border:none;border-radius:9px;padding:.85rem;font-size:.9rem;font-weight:700;cursor:pointer;font-family:var(--fb);transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.em-save:hover{background:var(--rd);transform:translateY(-1px)}
+.em-save:disabled{opacity:.4;cursor:not-allowed;transform:none}
+
 /* ══ RECONNEXION EMAIL ══ */
 #recon-screen{position:fixed;inset:0;z-index:4000;background:var(--bg);display:none;align-items:center;justify-content:center;padding:1.5rem}
 #recon-screen.open{display:flex}
@@ -703,6 +736,17 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
   <div class="su-wrap" id="su-wrap"></div>
 </div>
 
+<!-- ══════════════ MODALE ÉDITION PROFIL ══════════════ -->
+<div id="edit-modal">
+  <div class="em-box">
+    <div class="em-header">
+      <div class="em-title">Modifier mon profil</div>
+      <button class="em-close" onclick="closeEditModal()">✕</button>
+    </div>
+    <div class="em-body" id="em-body"></div>
+  </div>
+</div>
+
 <!-- ══════════════ RECONNEXION EMAIL ══════════════ -->
 <div id="recon-screen">
   <div id="recon-content"></div>
@@ -852,7 +896,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
         <div class="p-slots" id="hslots"></div>
         <div class="prem-lock" id="home-prem-lock"><span class="pl-txt">🔒 Positions 6–10 — Premium</span><button class="pl-btn" onclick="openStripeModal('premium')">Upgrader</button></div>
         <div class="p-foot">
-          <div class="sub-prog"><b id="hcnt">0</b>/5 positions complètes</div>
+          <div class="sub-prog"><b id="hcnt">0</b>/<span id="hmax">5</span> positions complètes</div>
           <button class="bsub" id="hbs" disabled onclick="hSubmit()">🏁 Verrouiller ma prédiction · GP Autriche</button>
           <div class="sub-dl">Clôture le <b>Samedi 27 Juin à 15h00</b></div>
         </div>
@@ -964,7 +1008,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
           <div class="p-slots" id="pslots"></div>
           <div class="prem-lock" id="pred-prem-lock"><span class="pl-txt">🔒 Positions 6–10 — Premium</span><button class="pl-btn" onclick="openStripeModal('premium')">Upgrader</button></div>
           <div class="p-foot">
-            <div class="sub-prog"><b id="pcnt">0</b>/5 positions complètes</div>
+            <div class="sub-prog"><b id="pcnt">0</b>/<span id="pmax">5</span> positions complètes</div>
             <button class="bsub" id="pbs" disabled onclick="pSubmit()">🏁 Verrouiller ma prédiction</button>
             <div class="sub-dl">Clôture le <b>Samedi 27 Juin à 15h00</b></div>
           </div>
@@ -1178,7 +1222,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
           <div class="ps-card"><div class="ps-v red">#4</div><div class="ps-l">Ma ligue</div></div>
           <div class="ps-card"><div class="ps-v">68%</div><div class="ps-l">Précision</div></div>
         </div>
-        <button class="edit-btn" onclick="alert('Modifier le profil — Disponible bientôt')">Modifier mon profil</button>
+        <button class="edit-btn" onclick="openEditModal()">✏️ Modifier mon profil</button>
         <button class="edit-btn" style="margin-top:.5rem;color:rgba(255,255,255,.35);font-size:.72rem" onclick="resetProfile()">↺ Réinitialiser mon profil</button>
         <div style="margin-top:.85rem;display:flex;gap:.6rem;flex-wrap:wrap">
           <button class="btn-r" style="flex:1;min-width:140px;font-size:.78rem" onclick="openStripeModal('premium')">⭐ Passer Premium</button>
@@ -1727,6 +1771,7 @@ const AI_DATA=[
 ];
 
 const AI5=AI_DATA.slice(0,5).map(d=>d.sn);
+const AI10=AI_DATA.map(d=>d.sn);
 
 const LEAGUE_DATA={
   l:[{r:1,h:'gridchampion',pts:521,t:'up'},{r:2,h:'racemaster99',pts:489,t:'eq'},{r:3,h:'f1oracle',pts:461,t:'dn'},{r:4,h:'griduser',pts:412,t:'up',me:true},{r:5,h:'norbertofan',pts:398,t:'eq'}],
@@ -1755,9 +1800,41 @@ let obSel={team:null,driver:null},obCur=0,uidOk=false,USER={fn:'',ln:'',handle:'
 
 /* ── VALIDATION ── */
 const TAKEN=['gridmaster','oracle99','f1pro'];
-function v1(){const fn=document.getElementById('fn').value.trim(),ln=document.getElementById('ln').value.trim(),em=document.getElementById('em').value.trim(),eok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em);document.getElementById('emErr').textContent=em&&!eok?'Email invalide':'';document.getElementById('em').className=em?(eok?'ok':'er'):'';if(fn)document.getElementById('fn').className='ok';if(ln)document.getElementById('ln').className='ok';ck1(fn,ln,eok)}
+let emailCheckTimer=null,emailOk=false;
+function v1(){
+  const fn=document.getElementById('fn').value.trim();
+  const ln=document.getElementById('ln').value.trim();
+  const em=document.getElementById('em').value.trim();
+  const eokFmt=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em);
+  const errEl=document.getElementById('emErr');
+  const emInp=document.getElementById('em');
+  if(fn)document.getElementById('fn').className='ok';
+  if(ln)document.getElementById('ln').className='ok';
+  if(!em){errEl.textContent='';emInp.className='';emailOk=false;ck1(fn,ln,false);return;}
+  if(!eokFmt){errEl.textContent='Email invalide';emInp.className='er';emailOk=false;ck1(fn,ln,false);return;}
+  // Format OK — vérifier que l'email n'est pas déjà utilisé
+  errEl.textContent='Vérification…';emInp.className='';emailOk=false;
+  clearTimeout(emailCheckTimer);
+  emailCheckTimer=setTimeout(async()=>{
+    try{
+      const res=await fetch(`/api/get-profile?email=${encodeURIComponent(em.toLowerCase())}`);
+      const data=await res.json();
+      if(data.found){
+        errEl.textContent='❌ Un compte existe déjà avec cet email — connecte-toi depuis l\'écran d\'accueil';
+        errEl.style.color='var(--red)';emInp.className='er';emailOk=false;
+      } else {
+        errEl.textContent='✓ Email disponible';errEl.style.color='#4caf50';emInp.className='ok';emailOk=true;
+      }
+    }catch(e){
+      // Fallback si API down — on laisse passer
+      errEl.textContent='';emInp.className='ok';emailOk=true;
+    }
+    const fn2=document.getElementById('fn').value.trim(),ln2=document.getElementById('ln').value.trim();
+    ck1(fn2,ln2,emailOk);
+  },600);
+}
 function vUid(){const v=document.getElementById('uid').value.trim(),inp=document.getElementById('uid'),ok=document.getElementById('uidOk');document.getElementById('uidOk').style.display='none';if(!v){document.getElementById('uidErr').textContent='';document.getElementById('uidIco').textContent='';inp.className='';uidOk=false;v1();return}const re=/^[a-zA-Z0-9_-]{4,20}$/.test(v);if(!re){document.getElementById('uidErr').textContent=v.length<4?'Minimum 4 caractères':'Caractères invalides';document.getElementById('uidIco').textContent='✕';inp.className='er';uidOk=false}else if(TAKEN.includes(v.toLowerCase())){document.getElementById('uidErr').textContent='Identifiant déjà pris';document.getElementById('uidIco').textContent='✕';inp.className='er';uidOk=false}else{document.getElementById('uidErr').textContent='';document.getElementById('uidIco').textContent='';ok.style.display='block';ok.textContent=`@${v} est disponible ✓`;inp.className='ok';uidOk=true}const fn=document.getElementById('fn').value.trim(),ln=document.getElementById('ln').value.trim(),em=document.getElementById('em').value.trim();ck1(fn,ln,/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em))}
-function ck1(fn,ln,eok){document.getElementById('b1').disabled=!(fn&&ln&&eok&&uidOk)}
+function ck1(fn,ln,eok){document.getElementById('b1').disabled=!(fn&&ln&&(eok||emailOk)&&uidOk)}
 function setProg(n){document.getElementById('prog').style.display=(n===0||n===4)?'none':'flex';for(let i=0;i<3;i++)document.getElementById('pd'+i).className='pd'+(i<n-1?' done':i===n-1?' cur':'');const l=document.getElementById('plbl');if(l)l.textContent=n+'/3'}
 function go(n){document.getElementById('s'+obCur).classList.remove('on');if(n===4)buildProf();obCur=n;document.getElementById('s'+n).classList.add('on');setProg(n);window.scrollTo(0,0)}
 function buildProf(){const fn=document.getElementById('fn').value.trim(),ln=document.getElementById('ln').value.trim(),em=document.getElementById('em').value.trim(),uid=document.getElementById('uid').value.trim(),init=(fn[0]||'')+(ln[0]||''),tc=obSel.team?.color||'#e8001d',dr=obSel.driver;document.getElementById('pcard').innerHTML=`<div class="prof-bar" style="background:linear-gradient(90deg,${tc},${dr?dr.tc:tc})"></div><div class="prof-bd"><div class="prof-row"><div class="prof-av" style="background:${tc}1a;border-color:${tc};color:${tc}">${init.toUpperCase()}</div>${dr?`<div class="prof-drph" style="border-color:${dr.tc}"><img src="${dr.img}" alt="" onerror="this.parentNode.style='border-color:${dr.tc};background:${dr.tc}18;display:flex;align-items:center;justify-content:center';this.parentNode.innerHTML='<span style=font-family:Rajdhani,sans-serif;font-size:1rem;font-weight:700;color:${dr.tc}>#${dr.n}</span>'"></div>`:''}<div class="prof-info"><div class="prof-name">${fn} ${ln}</div><div class="prof-handle" style="color:${tc}">@${uid}</div><div class="prof-email">${em}</div></div></div><div class="prof-tags"><div class="ptag" style="border-color:${tc}45"><div class="dot" style="background:${tc}"></div><span>${obSel.team?.name||'—'}</span></div>${dr?`<div class="ptag" style="border-color:${dr.tc}45"><span style="font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;color:${dr.tc}">#${dr.n}</span><span>${dr.fn} ${dr.sn}</span>${dr.wdc?' 🏆':''}</div>`:''}</div></div>`}
@@ -1931,7 +2008,7 @@ function buildPremSection(){
 }
 
 /* ── PRED SLOTS ── */
-function mkPred(prefix){return{pred:new Array(5).fill(null),sub:false,opk:-1,prefix}}
+function mkPred(prefix){return{pred:new Array(10).fill(null),sub:false,opk:-1,prefix}}
 let HP=mkPred('h'),PP=mkPred('p');
 function renderPred(inst){
   const {pred,sub,opk,prefix}=inst;
@@ -1956,18 +2033,20 @@ function renderPred(inst){
     c.appendChild(w);
   });
   const n=pred.filter(Boolean).length;
+  const isPaidR=['premium','creator'].includes(localStorage.getItem('go_plan'));
+  const required=isPaidR?10:5;
   const cnt=document.getElementById(prefix+'cnt');if(cnt)cnt.textContent=n;
-  const bs=document.getElementById(prefix+'bs');if(bs)bs.disabled=n<5||sub;
+  const bs=document.getElementById(prefix+'bs');if(bs)bs.disabled=n<required||sub;
 }
 function setPK(inst,i){inst.opk=i;renderPred(inst)}
 function hRender(){renderPred(HP)}
 function pRender(){renderPred(PP)}
 function hClr(i,e){e.stopPropagation();HP.pred[i]=null;HP.opk=-1;hRender()}
 function pClr(i,e){e.stopPropagation();PP.pred[i]=null;PP.opk=-1;pRender()}
-function hCopy(){HP.pred=AI5.slice();HP.opk=-1;hRender()}
-function pCopy(){PP.pred=AI5.slice();PP.opk=-1;pRender()}
-function hReset(){HP.pred=new Array(5).fill(null);HP.opk=-1;hRender()}
-function pReset(){PP.pred=new Array(5).fill(null);PP.opk=-1;pRender()}
+function hCopy(){const isPaid=['premium','creator'].includes(localStorage.getItem('go_plan'));HP.pred=isPaid?AI10.slice():AI5.slice();HP.opk=-1;hRender()}
+function pCopy(){const isPaid=['premium','creator'].includes(localStorage.getItem('go_plan'));PP.pred=isPaid?AI10.slice():AI5.slice();PP.opk=-1;pRender()}
+function hReset(){HP.pred=new Array(10).fill(null);HP.opk=-1;hRender()}
+function pReset(){PP.pred=new Array(10).fill(null);PP.opk=-1;pRender()}
 function doSubmit(inst,badgeId,btnId){
   if(inst.pred.filter(Boolean).length<5)return;inst.sub=true;inst.opk=-1;renderPred(inst);
   const pb=document.getElementById(badgeId);if(pb){pb.className='pred-status st-done';pb.textContent='✓ Soumise'}
@@ -2023,6 +2102,136 @@ function joinLeague(){const code=document.getElementById('join-code').value.trim
 function animBars(){const obs=new IntersectionObserver(e=>{e.forEach(en=>{if(en.isIntersecting){en.target.querySelectorAll('[data-w]').forEach(b=>{b.style.width=b.dataset.w+'%'});obs.unobserve(en.target)}})},{threshold:.15});document.querySelectorAll('.ai-rows,.ai-pred-full').forEach(el=>el&&obs.observe(el))}
 
 /* ── INIT ── */
+/* ── EDIT PROFILE MODAL ── */
+let editSelTeam=null, editSelDriver=null, editHandleOk=false, editHandleTimer=null;
+
+function openEditModal(){
+  // Vérifier que l'app est bien initialisée
+  if(!USER||!USER.fn){showToast('Connecte-toi d\'abord',true);return;}
+  if(typeof TEAMS==='undefined'||!TEAMS.length){showToast('Chargement en cours…',true);return;}
+
+  editSelTeam=USER.team||null;
+  editSelDriver=USER.driver||null;
+  editHandleOk=true; // handle actuel est toujours valide
+
+  const body=document.getElementById('em-body');
+  if(!body){console.error('em-body introuvable');return;}
+
+  body.innerHTML=`
+    <div>
+      <div class="em-section">Nom d'utilisateur</div>
+      <div class="em-field">
+        <label>Identifiant joueur</label>
+        <input type="text" id="em-handle" value="${USER.handle||''}" maxlength="20" autocomplete="off" spellcheck="false" oninput="emCheckHandle()">
+        <div class="em-hint ok" id="em-handle-hint">✓ Ton identifiant actuel</div>
+      </div>
+    </div>
+    <div>
+      <div class="em-section">Écurie favorite</div>
+      <div class="em-grid" id="em-teams"></div>
+    </div>
+    <div>
+      <div class="em-section">Pilote favori</div>
+      <div class="em-grid" id="em-drivers"></div>
+    </div>
+    <button class="em-save" id="em-save-btn" onclick="saveEditProfile()">💾 Enregistrer les modifications</button>`;
+
+  // Render teams
+  const tg=document.getElementById('em-teams');
+  TEAMS.forEach(t=>{
+    const isSel=editSelTeam?.id===t.id;
+    const el=document.createElement('div');
+    el.className='em-team'+(isSel?' sel':'');
+    if(isSel)el.style.borderColor=t.color;
+    el.innerHTML=`<div class="em-team-abr" style="color:${t.color}">${t.abr}</div><div class="em-team-name">${t.name.split(' ')[0]}</div>`;
+    el.onclick=()=>{
+      editSelTeam=t;
+      document.querySelectorAll('.em-team').forEach(x=>{x.classList.remove('sel');x.style.borderColor='';});
+      el.classList.add('sel');el.style.borderColor=t.color;
+    };
+    tg.appendChild(el);
+  });
+
+  // Render drivers
+  const dg=document.getElementById('em-drivers');
+  DRIVERS.forEach(dr=>{
+    const isSel=editSelDriver?.sn===dr.sn;
+    const ini=(dr.fn[0]||'')+(dr.sn[0]||'');
+    const el=document.createElement('div');
+    el.className='em-driver'+(isSel?' sel':'');
+    if(isSel)el.style.borderColor=dr.tc;
+    el.innerHTML=`<div class="em-driver-ph" style="background:${dr.tc}18"><img src="${dr.img}" alt="" onerror="this.parentNode.innerHTML='<span style=color:${dr.tc};font-family:Rajdhani,sans-serif;font-weight:700;font-size:1.1rem>${ini}</span>'"></div><div class="em-driver-bd"><div class="em-driver-num" style="color:${dr.tc}">#${dr.n}</div><div class="em-driver-sn">${dr.sn}</div></div>`;
+    el.onclick=()=>{
+      editSelDriver=dr;
+      document.querySelectorAll('.em-driver').forEach(x=>{x.classList.remove('sel');x.style.borderColor='';});
+      el.classList.add('sel');el.style.borderColor=dr.tc;
+    };
+    dg.appendChild(el);
+  });
+
+  document.getElementById('edit-modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeEditModal(){
+  document.getElementById('edit-modal').classList.remove('open');
+  document.body.style.overflow='';
+}
+
+async function emCheckHandle(){
+  const v=document.getElementById('em-handle').value.trim();
+  const hint=document.getElementById('em-handle-hint');
+  const inp=document.getElementById('em-handle');
+  editHandleOk=false;
+  if(!v){hint.textContent='4–20 caractères requis';hint.className='em-hint er';return;}
+  if(!/^[a-zA-Z0-9_-]{4,20}$/.test(v)){hint.textContent=v.length<4?'Minimum 4 caractères':'Caractères invalides';hint.className='em-hint er';return;}
+  // Même handle qu'avant → pas besoin de vérifier
+  if(v.toLowerCase()===USER.handle?.toLowerCase()){hint.textContent='✓ Ton identifiant actuel';hint.className='em-hint ok';editHandleOk=true;return;}
+  hint.textContent='Vérification…';hint.className='em-hint';
+  clearTimeout(editHandleTimer);
+  editHandleTimer=setTimeout(async()=>{
+    try{
+      const res=await fetch(`/api/check-handle?handle=${encodeURIComponent(v.toLowerCase())}`);
+      const data=await res.json();
+      if(data.taken){hint.textContent='❌ Identifiant déjà pris';hint.className='em-hint er';editHandleOk=false;}
+      else{hint.textContent='✓ Disponible !';hint.className='em-hint ok';editHandleOk=true;}
+    }catch(e){hint.textContent='✓ Disponible (vérif. hors ligne)';hint.className='em-hint ok';editHandleOk=true;}
+  },500);
+}
+
+async function saveEditProfile(){
+  if(!editHandleOk){showToast('Choisis un identifiant valide',true);return;}
+  const newHandle=document.getElementById('em-handle').value.trim();
+  const btn=document.getElementById('em-save-btn');
+  btn.disabled=true;btn.innerHTML='<div class="spinner" style="width:16px;height:16px;border-top-color:#fff;margin-right:.5rem"></div> Enregistrement…';
+  // Mettre à jour USER
+  const oldHandle=USER.handle;
+  USER.handle=newHandle;
+  USER.team=editSelTeam||USER.team;
+  USER.driver=editSelDriver||USER.driver;
+  USER.tc=USER.team?.color||USER.tc;
+  // Sauvegarder localStorage
+  const savedProfile=JSON.parse(localStorage.getItem('go_profile')||'{}');
+  savedProfile.handle=newHandle;
+  savedProfile.teamId=USER.team?.id||savedProfile.teamId;
+  savedProfile.driverSn=USER.driver?.sn||savedProfile.driverSn;
+  savedProfile.tc=USER.tc;
+  localStorage.setItem('go_profile',JSON.stringify(savedProfile));
+  // Sauvegarder cloud
+  try{
+    await fetch('/api/save-profile',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...savedProfile,fn:USER.fn,ln:USER.ln,handle:newHandle,oldHandle})});
+  }catch(e){console.warn('Cloud save failed');}
+  // Mettre à jour l'UI
+  const init=(USER.fn[0]||'')+(USER.ln[0]||'');
+  const av=document.getElementById('hub-av');
+  av.textContent=init.toUpperCase();av.style.background=USER.tc;av.style.borderColor=USER.tc+'88';
+  document.getElementById('hub-name').textContent=`${USER.fn} ${USER.ln}`;
+  document.getElementById('hub-handle').textContent=`@${newHandle}`;
+  updateProfilePage();
+  closeEditModal();
+  showToast('✅ Profil mis à jour !');
+}
+
 /* ── RESET PROFILE (lets user redo onboarding) ── */
 function resetProfile(){
   if(!confirm('Réinitialiser ton profil ? Tu devras resaisir tes informations. Ton abonnement Stripe ne sera pas affecté.')) return;
