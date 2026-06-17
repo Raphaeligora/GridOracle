@@ -810,7 +810,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
           <div class="p-acts"><button class="bcpai" onclick="hCopy()">Copier IA</button><button class="brst" onclick="hReset()">✕</button></div>
         </div>
         <div class="p-slots" id="hslots"></div>
-        <div class="prem-lock"><span class="pl-txt">🔒 Positions 6–10 — Premium</span><button class="pl-btn" onclick="openStripeModal('premium')">Upgrader</button></div>
+        <div class="prem-lock" id="home-prem-lock"><span class="pl-txt">🔒 Positions 6–10 — Premium</span><button class="pl-btn" onclick="openStripeModal('premium')">Upgrader</button></div>
         <div class="p-foot">
           <div class="sub-prog"><b id="hcnt">0</b>/5 positions complètes</div>
           <button class="bsub" id="hbs" disabled onclick="hSubmit()">🏁 Verrouiller ma prédiction · GP Autriche</button>
@@ -922,7 +922,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
             <div class="p-acts"><button class="bcpai" onclick="pCopy()">Copier IA</button><button class="brst" onclick="pReset()">✕</button></div>
           </div>
           <div class="p-slots" id="pslots"></div>
-          <div class="prem-lock"><span class="pl-txt">🔒 Positions 6–10 — Premium</span><button class="pl-btn" onclick="openStripeModal('premium')">Upgrader</button></div>
+          <div class="prem-lock" id="pred-prem-lock"><span class="pl-txt">🔒 Positions 6–10 — Premium</span><button class="pl-btn" onclick="openStripeModal('premium')">Upgrader</button></div>
           <div class="p-foot">
             <div class="sub-prog"><b id="pcnt">0</b>/5 positions complètes</div>
             <button class="bsub" id="pbs" disabled onclick="pSubmit()">🏁 Verrouiller ma prédiction</button>
@@ -1441,13 +1441,9 @@ function activatePlan(plan, billing) {
   USER_PLAN = plan;
   localStorage.setItem('go_plan', plan);
   localStorage.setItem('go_billing', billing || 'monthly');
-  const p = PLAN_DATA[plan];
-  const pill = document.getElementById('nav-plan-pill');
-  if (pill) { pill.textContent = p.navLabel; pill.className = 'ppill ' + p.navPillClass; }
-  document.querySelectorAll('.prem-lock').forEach(el => {
-    el.classList.add('unlocked');
-    el.innerHTML = '<span class="pl-txt">✓ Positions 6–10 débloquées</span>';
-  });
+  // Full unlock — tous les verrous
+  unlockPlan(plan);
+  // Show success page
   showSuccessPage(plan, billing || 'monthly');
 }
 
@@ -1489,11 +1485,84 @@ function applyRestoredPlan() {
   if (!saved || saved === 'free') return;
   const p = PLAN_DATA[saved];
   if (!p) return;
+  unlockPlan(saved);
+}
+
+function unlockPlan(plan) {
+  const p = PLAN_DATA[plan];
+  if (!p) return;
+
+  // 1. NAV — badge plan + masquer bouton "Premium →"
   const pill = document.getElementById('nav-plan-pill');
   if (pill) { pill.textContent = p.navLabel; pill.className = 'ppill ' + p.navPillClass; }
+  const navBtn = document.querySelector('.btn-prem-nav');
+  if (navBtn) navBtn.style.display = 'none';
+
+  // 2. VERROUS PRÉDICTION — "Positions 6–10 Premium"
   document.querySelectorAll('.prem-lock').forEach(el => {
     el.classList.add('unlocked');
-    el.innerHTML = '<span class="pl-txt">✓ Positions 6–10 débloquées</span>';
+    el.innerHTML = '<span class="pl-txt" style="color:#4caf50">✓ Positions 6–10 débloquées</span>';
+  });
+
+  // 3. VERROU IA — dévoiler les positions 6–10 de l'IA
+  document.querySelectorAll('.lks').forEach(el => {
+    const blur = el.querySelector('.lkbl');
+    const overlay = el.querySelector('.lkov');
+    if (blur) { blur.style.filter = 'none'; blur.style.pointerEvents = 'auto'; blur.style.userSelect = 'auto'; }
+    if (overlay) overlay.style.display = 'none';
+  });
+
+  // 4. SLOTS PRÉDICTION — débloquer les 5 slots supplémentaires (P6–P10)
+  // Re-render pred cards with 10 slots instead of 5
+  if (typeof HP !== 'undefined') {
+    if (HP.pred.length < 10) HP.pred = [...HP.pred, ...new Array(10 - HP.pred.length).fill(null)];
+    if (PP.pred.length < 10) PP.pred = [...PP.pred, ...new Array(10 - PP.pred.length).fill(null)];
+    if (typeof hRender === 'function') hRender();
+    if (typeof pRender === 'function') pRender();
+  }
+
+  // 5. PAGE PROFIL — masquer les boutons "Passer Premium" / "Devenir Creator"
+  const profBtns = document.querySelectorAll('#pg-profile .btn-r');
+  profBtns.forEach(btn => {
+    if (btn.textContent.includes('Passer Premium') || btn.textContent.includes('Devenir Creator')) {
+      btn.style.display = 'none';
+    }
+  });
+
+  // 6. SECTION PRICING — marquer plan actif
+  markActivePlan(plan);
+
+  // 7. CREATOR extras — si Creator, débloque tout Premium + affiche accès complet
+  if (plan === 'creator') {
+    // Bouton "Créer +" dans creator page
+    document.querySelectorAll('.cr-lp[style*="opacity:.45"]').forEach(el => {
+      el.style.opacity = '1';
+      el.style.borderStyle = 'solid';
+    });
+  }
+}
+
+function markActivePlan(plan) {
+  // Met à jour la section pricing pour montrer le plan actif
+  const cards = document.querySelectorAll('.pc');
+  cards.forEach(card => {
+    const planLabel = card.querySelector('.pc-plan');
+    if (!planLabel) return;
+    const cardPlan = planLabel.textContent.trim().toLowerCase();
+    const isActive = (plan === 'creator') 
+      ? (cardPlan === 'creator' || cardPlan === 'premium')
+      : (cardPlan === plan);
+    if (isActive) {
+      const btn = card.querySelector('.pc-btn');
+      if (btn) {
+        btn.textContent = '✓ Plan actif';
+        btn.style.background = 'rgba(80,200,80,.12)';
+        btn.style.color = '#4caf50';
+        btn.style.border = '1px solid rgba(80,200,80,.3)';
+        btn.onclick = null;
+        btn.style.cursor = 'default';
+      }
+    }
   });
 }
 
@@ -1699,11 +1768,26 @@ tick();setInterval(tick,1000);
 /* ── BUILD AI PREDICTION ── */
 function aiRow(d,i){const pc=i===0?'g':i===1?'s':i===2?'b':'d';const tn=TEAMS.find(t=>t.id===d.t);return`<div class="air"><div class="ap ${pc}">${i+1}</div><div class="adi"><div class="adn">${d.sn}</div><div class="adt"><span class="atd" style="background:${d.tc}"></span>${tn?.name||''} ${d.note?'· '+d.note:''}</div></div><div class="abars"><div class="abbg"><div class="abf" data-w="${d.pct}"></div></div><div class="apct">${d.pct}%</div></div><div class="apts">${d.pts}</div></div>`}
 function buildAIPred(){
+  const isPaid = ['premium','creator'].includes(localStorage.getItem('go_plan'));
   const h=document.getElementById('ai-home'),fl=document.getElementById('ai-home-lock');
   if(h)h.innerHTML=AI_DATA.slice(0,5).map((d,i)=>aiRow(d,i)).join('');
   if(fl)fl.innerHTML=AI_DATA.slice(5).map((d,i)=>aiRow(d,i+5)).join('');
   const full=document.getElementById('ai-pred-full');
-  if(full){let html=AI_DATA.slice(0,5).map((d,i)=>aiRow(d,i)).join('');html+=`<div class="lks"><div class="lkbl">${AI_DATA.slice(5).map((d,i)=>aiRow(d,i+5)).join('')}</div><div class="lkov"><div class="lkm"><h4>🔒 Positions 6–10 Premium</h4><p>Accède à l'analyse complète de l'IA.</p><button class="btn-r" style="font-size:.76rem;padding:.38rem .9rem" onclick="openStripeModal('premium')">Passer Premium →</button></div></div></div>`;full.innerHTML=html}
+  if(full){
+    if(isPaid){
+      // Plan payant — afficher tout sans verrou
+      full.innerHTML=AI_DATA.map((d,i)=>aiRow(d,i)).join('');
+      // Aussi déverrouiller les lignes 6-10 du home
+      const homeLock=document.getElementById('ai-home-lock');
+      if(homeLock){homeLock.style.filter='none';homeLock.style.pointerEvents='auto';homeLock.style.userSelect='auto';}
+      const homeOverlay=document.querySelector('.lks .lkov');
+      if(homeOverlay)homeOverlay.style.display='none';
+    } else {
+      let html=AI_DATA.slice(0,5).map((d,i)=>aiRow(d,i)).join('');
+      html+=`<div class="lks"><div class="lkbl">${AI_DATA.slice(5).map((d,i)=>aiRow(d,i+5)).join('')}</div><div class="lkov"><div class="lkm"><h4>🔒 Positions 6–10 Premium</h4><p>Accède à l'analyse complète de l'IA.</p><button class="btn-r" style="font-size:.76rem;padding:.38rem .9rem" onclick="openStripeModal('premium')">Passer Premium →</button></div></div></div>`;
+      full.innerHTML=html;
+    }
+  }
   setTimeout(animBars,100);
 }
 
