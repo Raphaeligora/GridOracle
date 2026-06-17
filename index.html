@@ -543,6 +543,41 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 .bn-ico{font-size:1.15rem;line-height:1}
 .bn-lbl{font-size:.57rem;letter-spacing:.05em;text-transform:uppercase;font-weight:600;font-family:var(--fb);margin-top:1px}
 
+/* ══ RECONNEXION EMAIL ══ */
+#recon-screen{position:fixed;inset:0;z-index:4000;background:var(--bg);display:none;align-items:center;justify-content:center;padding:1.5rem}
+#recon-screen.open{display:flex}
+.recon-box{width:100%;max-width:420px;text-align:center}
+.recon-logo{font-family:var(--fh);font-size:1.5rem;font-weight:700;letter-spacing:.15em;margin-bottom:2rem;display:block}
+.recon-logo s{color:var(--red);text-decoration:none}
+.recon-avatar{width:72px;height:72px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:1.6rem;font-weight:700;margin:0 auto 1rem;border:3px solid;animation:popIn .4s ease}
+.recon-name{font-family:var(--fh);font-size:1.5rem;font-weight:700;margin-bottom:.2rem}
+.recon-handle{font-size:.88rem;margin-bottom:.15rem;font-weight:600}
+.recon-email{font-size:.78rem;color:var(--g);margin-bottom:.55rem}
+.recon-plan-badge{display:inline-flex;align-items:center;gap:.4rem;border-radius:100px;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.25rem .75rem;margin-bottom:1.3rem;border:1px solid}
+.recon-plan-badge.premium{background:rgba(232,0,29,.1);border-color:rgba(232,0,29,.3);color:var(--red)}
+.recon-plan-badge.creator{background:rgba(255,200,0,.1);border-color:rgba(255,200,0,.3);color:var(--gold)}
+.recon-plan-badge.free{background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1);color:var(--g)}
+.recon-q{font-size:.9rem;color:var(--g);margin-bottom:1.1rem}
+.recon-btns{display:flex;flex-direction:column;gap:.6rem;margin-bottom:1rem}
+.recon-yes{width:100%;background:var(--red);color:#fff;border:none;border-radius:9px;padding:.85rem;font-size:.9rem;font-weight:700;cursor:pointer;font-family:var(--fb);transition:all .2s}
+.recon-yes:hover{background:var(--rd);transform:translateY(-1px)}
+.recon-no{width:100%;background:rgba(255,255,255,.04);color:var(--g);border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:.75rem;font-size:.82rem;font-weight:500;cursor:pointer;font-family:var(--fb);transition:all .2s}
+.recon-no:hover{color:var(--w);border-color:rgba(255,255,255,.2)}
+/* Écran email lookup */
+.recon-email-form{width:100%;max-width:420px}
+.recon-email-form h2{font-family:var(--fh);font-size:1.6rem;font-weight:700;margin-bottom:.45rem}
+.recon-email-form p{color:var(--g);font-size:.84rem;line-height:1.65;margin-bottom:1.3rem}
+.recon-input{width:100%;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:.85rem 1rem;color:#fff;font-size:.94rem;font-family:var(--fb);outline:none;transition:border-color .2s;margin-bottom:.75rem}
+.recon-input:focus{border-color:rgba(232,0,29,.5)}
+.recon-input::placeholder{color:rgba(255,255,255,.2)}
+.recon-submit{width:100%;background:var(--red);color:#fff;border:none;border-radius:9px;padding:.85rem;font-size:.9rem;font-weight:700;cursor:pointer;font-family:var(--fb);transition:all .2s;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.recon-submit:hover{background:var(--rd);transform:translateY(-1px)}
+.recon-submit:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.recon-skip{background:none;border:none;color:var(--g);font-size:.78rem;cursor:pointer;font-family:var(--fb);margin-top:.65rem;text-decoration:underline;display:block;margin-left:auto;margin-right:auto}
+.recon-skip:hover{color:var(--w)}
+.recon-err{color:var(--red);font-size:.76rem;margin-top:-.3rem;margin-bottom:.6rem;min-height:1rem;text-align:left}
+.recon-loading{display:flex;align-items:center;justify-content:center;gap:.6rem;padding:2rem;color:var(--g);font-size:.84rem}
+
 /* ══ MOBILE ══ */
 @media(max-width:768px){
   .bottom-nav{display:flex}
@@ -666,6 +701,11 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 <div id="success-page">
   <div class="co-bg"></div>
   <div class="su-wrap" id="su-wrap"></div>
+</div>
+
+<!-- ══════════════ RECONNEXION EMAIL ══════════════ -->
+<div id="recon-screen">
+  <div id="recon-content"></div>
 </div>
 
 <!-- ══════════════ ONBOARDING ══════════════ -->
@@ -1441,6 +1481,23 @@ function activatePlan(plan, billing) {
   USER_PLAN = plan;
   localStorage.setItem('go_plan', plan);
   localStorage.setItem('go_billing', billing || 'monthly');
+  // Mettre à jour le profil localStorage
+  const savedProfile = localStorage.getItem('go_profile');
+  if (savedProfile) {
+    try {
+      const p = JSON.parse(savedProfile);
+      p.plan = plan; p.billing = billing || 'monthly';
+      localStorage.setItem('go_profile', JSON.stringify(p));
+      // Sync cloud si email disponible
+      if (p.email) {
+        fetch('/api/update-plan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: p.email, plan, billing: billing || 'monthly' })
+        }).catch(e => console.warn('Cloud plan sync failed:', e));
+      }
+    } catch(e) {}
+  }
   // Full unlock — tous les verrous
   unlockPlan(plan);
   // Show success page
@@ -1710,14 +1767,24 @@ function goApp(){
   const fn=document.getElementById('fn').value.trim(),ln=document.getElementById('ln').value.trim(),uid=document.getElementById('uid').value.trim();
   const tc=obSel.team?.color||'#e8001d',init=(fn[0]||'')+(ln[0]||'');
   USER={fn,ln,handle:uid,tc,team:obSel.team,driver:obSel.driver};
-  // ── SAVE PROFILE TO LOCALSTORAGE ──
+  // ── SAVE PROFILE TO LOCALSTORAGE + CLOUD ──
+  const em = document.getElementById('em').value.trim();
   const profileData = {
+    email: em.toLowerCase(),
     fn, ln, handle: uid, tc,
     teamId: obSel.team?.id || null,
     driverSn: obSel.driver?.sn || null,
+    plan: localStorage.getItem('go_plan') || 'free',
+    billing: localStorage.getItem('go_billing') || 'monthly',
     createdAt: Date.now()
   };
   localStorage.setItem('go_profile', JSON.stringify(profileData));
+  // Sauvegarder dans Upstash (accès multi-appareils)
+  fetch('/api/save-profile', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(profileData)
+  }).catch(e => console.warn('Cloud save failed (non-bloquant):', e));
   // ── UPDATE NAV ──
   const av=document.getElementById('hub-av');av.textContent=init.toUpperCase();av.style.background=tc;av.style.borderColor=tc+'88';
   document.getElementById('hub-name').textContent=`${fn} ${ln}`;
@@ -1963,37 +2030,159 @@ function resetProfile(){
   location.reload();
 }
 
-/* ══ RESTORE PROFILE FROM LOCALSTORAGE (skip onboarding) ══ */
-(()=>{
-  const saved = localStorage.getItem('go_profile');
-  if (!saved) { setProg(0); return; }
-  try {
-    const p = JSON.parse(saved);
-    // Rebuild USER object from saved data
-    const team = TEAMS.find(t => t.id === p.teamId) || null;
-    const driver = DRIVERS.find(d => d.sn === p.driverSn) || null;
-    USER = { fn: p.fn, ln: p.ln, handle: p.handle, tc: p.tc, team, driver };
-    obSel = { team, driver };
-    // Update nav chip
-    const init = (p.fn[0]||'')+(p.ln[0]||'');
-    const av = document.getElementById('hub-av');
-    av.textContent = init.toUpperCase(); av.style.background = p.tc; av.style.borderColor = p.tc+'88';
-    document.getElementById('hub-name').textContent = `${p.fn} ${p.ln}`;
-    document.getElementById('hub-handle').textContent = `@${p.handle}`;
-    // Skip onboarding → go straight to app
-    document.getElementById('ob').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    updateProfilePage();
-    buildAIPred(); buildTeamScroll(); buildDriverScroll(); buildPremSection();
-    buildLeague(); buildStandings(); buildHistory();
-    hRender(); pRender();
-    applyRestoredPlan();
-    setTimeout(animBars, 150);
-  } catch(e) {
-    console.warn('Profile restore failed', e);
-    localStorage.removeItem('go_profile');
-    setProg(0);
+/* ══════════════════════════════════════════════════════
+   SYSTÈME D'AUTHENTIFICATION PAR EMAIL — GRIDORACLE
+   ══════════════════════════════════════════════════════ */
+
+// Lance l'app avec un profil donné (localStorage ou cloud)
+function bootApp(profile) {
+  const team = TEAMS.find(t => t.id === profile.teamId) || null;
+  const driver = DRIVERS.find(d => d.sn === profile.driverSn) || null;
+  USER = { fn: profile.fn, ln: profile.ln, handle: profile.handle, tc: profile.tc || '#e8001d', team, driver };
+  obSel = { team, driver };
+  const init = (profile.fn[0]||'') + (profile.ln[0]||'');
+  const av = document.getElementById('hub-av');
+  av.textContent = init.toUpperCase();
+  av.style.background = profile.tc || '#e8001d';
+  av.style.borderColor = (profile.tc || '#e8001d') + '88';
+  document.getElementById('hub-name').textContent = `${profile.fn} ${profile.ln}`;
+  document.getElementById('hub-handle').textContent = `@${profile.handle}`;
+  // Sauvegarder en localStorage (cache local)
+  localStorage.setItem('go_profile', JSON.stringify(profile));
+  if (profile.plan && profile.plan !== 'free') {
+    localStorage.setItem('go_plan', profile.plan);
+    localStorage.setItem('go_billing', profile.billing || 'monthly');
   }
+  document.getElementById('ob').style.display = 'none';
+  document.getElementById('recon-screen').classList.remove('open');
+  document.getElementById('app').style.display = 'block';
+  updateProfilePage();
+  buildAIPred(); buildTeamScroll(); buildDriverScroll(); buildPremSection();
+  buildLeague(); buildStandings(); buildHistory();
+  hRender(); pRender();
+  applyRestoredPlan();
+  setTimeout(animBars, 150);
+  // Activer plan post-onboarding si paiement fait avant profil
+  const afterPlan = localStorage.getItem('go_after_onboarding_plan');
+  const afterBilling = localStorage.getItem('go_after_onboarding_billing');
+  if (afterPlan) {
+    localStorage.removeItem('go_after_onboarding_plan');
+    localStorage.removeItem('go_after_onboarding_billing');
+    setTimeout(() => activatePlan(afterPlan, afterBilling || 'monthly'), 400);
+  }
+}
+
+// Affiche l'écran de confirmation "C'est bien toi ?"
+function showReconConfirm(profile) {
+  const plan = profile.plan || 'free';
+  const p = PLAN_DATA[plan];
+  const init = (profile.fn[0]||'') + (profile.ln[0]||'');
+  const tc = profile.tc || '#e8001d';
+  const planLabel = plan === 'creator' ? '🎙️ Creator' : plan === 'premium' ? '⭐ Premium' : '⭐ Free';
+  document.getElementById('recon-content').innerHTML = `
+    <div class="recon-box">
+      <span class="recon-logo">GRID<s>ORACLE</s></span>
+      <div class="recon-avatar" style="background:${tc}18;border-color:${tc};color:${tc}">${init.toUpperCase()}</div>
+      <div class="recon-name">${profile.fn} ${profile.ln}</div>
+      <div class="recon-handle" style="color:${tc}">@${profile.handle}</div>
+      <div class="recon-email">${profile.email}</div>
+      <div class="recon-plan-badge ${plan}">
+        ${planLabel}${plan !== 'free' ? ' · Actif' : ''}
+      </div>
+      <div class="recon-q">C'est bien toi ?</div>
+      <div class="recon-btns">
+        <button class="recon-yes" onclick="reconConfirm()">Oui, c'est moi — Accéder à GridOracle 🏁</button>
+        <button class="recon-no" onclick="reconNotMe()">Ce n'est pas moi — Créer un nouveau profil</button>
+      </div>
+    </div>`;
+  document.getElementById('recon-screen').classList.add('open');
+  // Stocker profil en attente
+  window._pendingProfile = profile;
+}
+
+// Affiche le formulaire email (nouvel appareil sans localStorage)
+function showEmailForm(prefill) {
+  document.getElementById('recon-content').innerHTML = `
+    <div class="recon-email-form">
+      <span class="recon-logo" style="text-align:center;display:block">GRID<s style="color:var(--red);text-decoration:none">ORACLE</s></span>
+      <h2>Déjà un compte ?</h2>
+      <p>Entre ton adresse email pour retrouver ton profil sur cet appareil. Ton plan et tes données seront restaurés automatiquement.</p>
+      <input class="recon-input" type="email" id="recon-email-input" placeholder="ton@email.com" value="${prefill||''}" oninput="reconEmailInput()">
+      <div class="recon-err" id="recon-err"></div>
+      <button class="recon-submit" id="recon-submit-btn" onclick="reconLookup()" disabled>
+        <span>Retrouver mon profil →</span>
+      </button>
+      <button class="recon-skip" onclick="reconSkip()">Je suis nouveau — Créer mon profil</button>
+    </div>`;
+  document.getElementById('recon-screen').classList.add('open');
+  if (prefill) { reconEmailInput(); }
+}
+
+function reconEmailInput() {
+  const v = document.getElementById('recon-email-input')?.value.trim();
+  const btn = document.getElementById('recon-submit-btn');
+  if (btn) btn.disabled = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+}
+
+async function reconLookup() {
+  const email = document.getElementById('recon-email-input').value.trim().toLowerCase();
+  const btn = document.getElementById('recon-submit-btn');
+  const err = document.getElementById('recon-err');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner" style="border-top-color:#fff;width:16px;height:16px;margin-right:.5rem"></div> Recherche…';
+  err.textContent = '';
+  try {
+    const res = await fetch(`/api/get-profile?email=${encodeURIComponent(email)}`);
+    const data = await res.json();
+    if (data.found) {
+      showReconConfirm(data.profile);
+    } else {
+      // Email inconnu → lancer l'onboarding avec email pré-rempli
+      document.getElementById('recon-screen').classList.remove('open');
+      document.getElementById('em').value = email;
+      go(1);
+    }
+  } catch(e) {
+    err.textContent = 'Erreur réseau — réessaie';
+    btn.disabled = false;
+    btn.innerHTML = '<span>Retrouver mon profil →</span>';
+  }
+}
+
+function reconConfirm() {
+  if (window._pendingProfile) bootApp(window._pendingProfile);
+}
+
+function reconNotMe() {
+  window._pendingProfile = null;
+  document.getElementById('recon-screen').classList.remove('open');
+  setProg(0);
+}
+
+function reconSkip() {
+  document.getElementById('recon-screen').classList.remove('open');
+  setProg(0);
+}
+
+/* ══ POINT D'ENTRÉE PRINCIPAL ══ */
+(()=>{
+  // 1. Vérifier localStorage d'abord (même appareil, accès instantané)
+  const saved = localStorage.getItem('go_profile');
+  if (saved) {
+    try {
+      const p = JSON.parse(saved);
+      // Re-sync le plan depuis localStorage au cas où
+      const savedPlan = localStorage.getItem('go_plan');
+      if (savedPlan && savedPlan !== 'free') p.plan = savedPlan;
+      bootApp(p);
+      return;
+    } catch(e) {
+      localStorage.removeItem('go_profile');
+    }
+  }
+  // 2. Pas de localStorage → afficher formulaire email
+  // (permet de récupérer son profil sur un nouvel appareil)
+  showEmailForm();
 })();
 
 document.addEventListener('click',e=>{
