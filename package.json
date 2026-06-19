@@ -1,0 +1,12 @@
+{
+  "name": "gridoracle",
+  "version": "1.0.0",
+  "description": "GridOracle - L'IA prédit. Toi tu défies.",
+  "private": true,
+  "scripts": {
+    "build": "echo 'No build required for static site'"
+  },
+  "dependencies": {
+    "@vercel/speed-insights": "^1.0.14"
+  }
+}
