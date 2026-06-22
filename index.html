@@ -527,6 +527,76 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 .adv-banner strong{color:var(--w)}
 .r2-rules{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
 
+/* ══ TRIAL 48H BANNER ══ */
+#trial-banner{
+  position:sticky;top:54px;z-index:150;
+  background:linear-gradient(90deg,#b0001a,#e8001d,#b0001a);
+  background-size:200% 100%;
+  animation:trialShimmer 3s ease infinite;
+  padding:.52rem 1.4rem;
+  display:flex;align-items:center;justify-content:space-between;gap:.8rem;
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+@keyframes trialShimmer{0%{background-position:0%}50%{background-position:100%}100%{background-position:0%}}
+.trial-banner-left{display:flex;align-items:center;gap:.65rem}
+.trial-banner-dot{width:8px;height:8px;border-radius:50%;background:#fff;animation:blink 1.2s infinite;flex-shrink:0}
+.trial-banner-txt{font-size:.78rem;font-weight:600;color:#fff;line-height:1.4}
+.trial-banner-txt span{opacity:.8;font-weight:400}
+.trial-banner-timer{font-family:var(--fh);font-size:.88rem;font-weight:700;color:#fff;background:rgba(0,0,0,.25);padding:.2rem .6rem;border-radius:5px;white-space:nowrap;flex-shrink:0}
+.trial-banner-cta{background:#fff;color:#e8001d;border:none;border-radius:5px;padding:.3rem .85rem;font-size:.74rem;font-weight:700;cursor:pointer;font-family:var(--fb);white-space:nowrap;flex-shrink:0;transition:opacity .2s}
+.trial-banner-cta:hover{opacity:.88}
+.trial-banner-close{background:transparent;border:none;color:rgba(255,255,255,.6);font-size:1rem;cursor:pointer;padding:.1rem .2rem;line-height:1;flex-shrink:0}
+.trial-banner-close:hover{color:#fff}
+#trial-banner.hidden{display:none}
+
+/* ══ TRIAL POPUP ══ */
+#trial-popup{
+  position:fixed;inset:0;z-index:9000;
+  background:rgba(7,7,14,.85);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  padding:1rem;
+  opacity:0;pointer-events:none;transition:opacity .25s;
+}
+#trial-popup.show{opacity:1;pointer-events:all}
+.trial-popup-box{
+  background:var(--card);
+  border:1px solid rgba(232,0,29,.4);
+  border-radius:16px;
+  padding:2rem 1.8rem;
+  max-width:420px;width:100%;
+  text-align:center;
+  box-shadow:0 0 60px rgba(232,0,29,.12);
+  animation:fadeUp .3s ease;
+}
+.trial-popup-kicker{
+  display:inline-flex;align-items:center;gap:.4rem;
+  background:rgba(232,0,29,.1);border:1px solid rgba(232,0,29,.3);
+  color:var(--red);padding:.25rem .75rem;border-radius:100px;
+  font-size:.68rem;letter-spacing:.15em;text-transform:uppercase;font-weight:600;
+  margin-bottom:.9rem;
+}
+.trial-popup-kicker::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--red);animation:blink 1.2s infinite}
+.trial-popup-t{font-family:var(--fh);font-size:1.75rem;font-weight:700;line-height:1.1;margin-bottom:.55rem}
+.trial-popup-s{color:var(--g);font-size:.84rem;line-height:1.7;margin-bottom:1.2rem}
+.trial-popup-perks{display:flex;flex-direction:column;gap:.42rem;margin-bottom:1.4rem;text-align:left}
+.trial-perk{display:flex;align-items:center;gap:.55rem;font-size:.83rem}
+.trial-perk-ico{color:var(--red);font-size:.7rem;flex-shrink:0}
+.trial-popup-cta{width:100%;background:var(--red);color:#fff;border:none;border-radius:8px;padding:.85rem;font-size:.93rem;font-weight:600;cursor:pointer;font-family:var(--fb);transition:all .2s;margin-bottom:.55rem}
+.trial-popup-cta:hover{background:var(--rd);transform:translateY(-1px)}
+.trial-popup-skip{font-size:.74rem;color:var(--g);cursor:pointer;text-decoration:underline;display:block}
+.trial-popup-skip:hover{color:var(--w)}
+.trial-popup-note{font-size:.7rem;color:rgba(255,255,255,.25);margin-top:.7rem}
+
+/* ══ TRIAL EXPIRE POPUP ══ */
+#trial-expire-popup{
+  position:fixed;inset:0;z-index:9001;
+  background:rgba(7,7,14,.9);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  padding:1rem;
+  opacity:0;pointer-events:none;transition:opacity .25s;
+}
+#trial-expire-popup.show{opacity:1;pointer-events:all}
+
 /* PRED PAGE */
 .pred-page-wrap{max-width:900px;margin:0 auto;padding:1.2rem 1.4rem 2rem}
 .pred-page-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
@@ -694,6 +764,44 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 <body>
 <div class="bg-grid"></div><div class="bg-glow"></div><div id="slines"></div>
 
+<!-- ══ TRIAL 48H POPUP ══ -->
+<div id="trial-popup">
+  <div class="trial-popup-box">
+    <div class="trial-popup-kicker">⚡ Offre de lancement</div>
+    <div class="trial-popup-t">Top 10 IA gratuit<br><span style="color:var(--red)">pendant 48h</span></div>
+    <p class="trial-popup-s">Avant le GP d'Autriche, découvre les prédictions complètes de l'IA — Top 10 avec les % de confiance. Sans carte bancaire.</p>
+    <div class="trial-popup-perks">
+      <div class="trial-perk"><span class="trial-perk-ico">●</span>Accès complet au Top 10 de l'IA</div>
+      <div class="trial-perk"><span class="trial-perk-ico">●</span>Prédiction P6 à P10 débloquée</div>
+      <div class="trial-perk"><span class="trial-perk-ico">●</span>Expire avant les qualifs — expire dans <span id="trial-popup-timer" style="color:var(--red);font-weight:600">48:00:00</span></div>
+      <div class="trial-perk"><span class="trial-perk-ico">●</span>Sans carte bancaire, sans engagement</div>
+    </div>
+    <button class="trial-popup-cta" onclick="startTrial()">🏎️ Activer mon accès gratuit 48h</button>
+    <span class="trial-popup-skip" onclick="closeTrialPopup()">Non merci, je reste sur le Top 5</span>
+    <div class="trial-popup-note">Offre valable une seule fois par compte · GP Autriche 2026</div>
+  </div>
+</div>
+
+<!-- ══ TRIAL EXPIRE POPUP ══ -->
+<div id="trial-expire-popup">
+  <div class="trial-popup-box">
+    <div style="font-size:2.2rem;margin-bottom:.6rem">⏰</div>
+    <div class="trial-popup-t">Ton accès Premium<br>a expiré</div>
+    <p class="trial-popup-s">Ton essai gratuit de 48h est terminé. Pour continuer à voir le Top 10 de l'IA et marquer des points sur les positions 6–10, passe en Premium.</p>
+    <div class="trial-popup-perks" style="margin-bottom:1.2rem">
+      <div class="trial-perk"><span class="trial-perk-ico">●</span>Top 10 IA pour chaque GP</div>
+      <div class="trial-perk"><span class="trial-perk-ico">●</span>+25 pts de bonus saisonnier</div>
+      <div class="trial-perk"><span class="trial-perk-ico">●</span>Accès à tous les GP 2026</div>
+    </div>
+    <div style="text-align:center;margin-bottom:1rem">
+      <div style="font-family:var(--fh);font-size:2.2rem;font-weight:700">6.99<span style="font-size:1rem;color:var(--g)">€/mois</span></div>
+      <div style="font-size:.72rem;color:var(--g)">Résiliation en 1 clic · 14j satisfait ou remboursé</div>
+    </div>
+    <button class="trial-popup-cta" onclick="openStripeModal('premium');closeTrialExpirePopup()">🔒 Passer Premium — 6.99€/mois</button>
+    <span class="trial-popup-skip" onclick="closeTrialExpirePopup()">Continuer avec le Top 5 gratuit</span>
+  </div>
+</div>
+
 <!-- ══════════════ CHECKOUT PAGE (BRANDED) ══════════════ -->
 <div id="checkout-page">
   <div class="co-bg"></div>
@@ -838,6 +946,17 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
     </div>
   </div>
 </nav>
+
+<!-- TRIAL 48H BANNER -->
+<div id="trial-banner" class="hidden">
+  <div class="trial-banner-left">
+    <div class="trial-banner-dot"></div>
+    <div class="trial-banner-txt">🎁 Accès Premium gratuit 48h activé <span>· Top 10 IA débloqué avant le GP d'Autriche</span></div>
+  </div>
+  <div class="trial-banner-timer" id="trial-banner-timer">47:59:59</div>
+  <button class="trial-banner-cta" onclick="openStripeModal('premium')">Conserver Premium →</button>
+  <button class="trial-banner-close" onclick="document.getElementById('trial-banner').classList.add('hidden')" title="Fermer">✕</button>
+</div>
 
 <!-- COUNTDOWN RIBBON -->
 <div class="ribbon">
@@ -1863,6 +1982,20 @@ function goApp(){
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(profileData)
   }).catch(e => console.warn('Cloud save failed (non-bloquant):', e));
+
+  // ── SYNC EMAIL VERS BREVO ──
+  fetch('/api/subscribe-email', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: profileData.email,
+      firstName: fn,
+      lastName: ln,
+      handle: uid,
+      plan: profileData.plan,
+      createdAt: profileData.createdAt
+    })
+  }).catch(e => console.warn('Brevo sync failed (non-bloquant):', e));
   // ── UPDATE NAV ──
   const av=document.getElementById('hub-av');av.textContent=init.toUpperCase();av.style.background=tc;av.style.borderColor=tc+'88';
   document.getElementById('hub-name').textContent=`${fn} ${ln}`;
@@ -2402,6 +2535,156 @@ document.addEventListener('click',e=>{
   }
 });
 window.va = window.va || function(){(window.vaq = window.vaq || []).push(arguments)};
+
+/* ══════════════════════════════════════════
+   TRIAL 48H — GridOracle Offre de lancement
+   ══════════════════════════════════════════ */
+
+const TRIAL_KEY     = 'go_trial_start';
+const TRIAL_SHOWN   = 'go_trial_shown';
+const TRIAL_ACTIVE  = 'go_trial_active';
+const TRIAL_HOURS   = 48;
+
+function getTrialMs()  { return TRIAL_HOURS * 60 * 60 * 1000; }
+function getTrialStart(){ return parseInt(localStorage.getItem(TRIAL_KEY) || '0'); }
+function isTrialActive(){
+  const start = getTrialStart();
+  if (!start) return false;
+  return (Date.now() - start) < getTrialMs();
+}
+function isTrialExpired(){
+  const start = getTrialStart();
+  if (!start) return false;
+  return (Date.now() - start) >= getTrialMs();
+}
+function isTrialUsed(){ return !!localStorage.getItem(TRIAL_KEY); }
+
+function formatTrialTimer(ms){
+  if (ms <= 0) return '00:00:00';
+  const h = Math.floor(ms / 3600000);
+  const m = Math.floor((ms % 3600000) / 60000);
+  const s = Math.floor((ms % 60000) / 1000);
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function startTrial(){
+  // Enregistre le début du trial
+  localStorage.setItem(TRIAL_KEY, Date.now().toString());
+  localStorage.setItem(TRIAL_ACTIVE, '1');
+  localStorage.setItem(TRIAL_SHOWN, '1');
+  // Ferme la popup
+  closeTrialPopup();
+  // Active les features Premium visuellement
+  applyPlanFeatures('premium');
+  // Affiche le bandeau
+  showTrialBanner();
+  // Lance le timer
+  runTrialTimer();
+}
+
+function closeTrialPopup(){
+  localStorage.setItem(TRIAL_SHOWN, '1');
+  const p = document.getElementById('trial-popup');
+  if (p) { p.classList.remove('show'); }
+}
+
+function closeTrialExpirePopup(){
+  const p = document.getElementById('trial-expire-popup');
+  if (p) { p.classList.remove('show'); }
+}
+
+function showTrialBanner(){
+  const banner = document.getElementById('trial-banner');
+  if (banner) banner.classList.remove('hidden');
+}
+
+function runTrialTimer(){
+  const start = getTrialStart();
+  if (!start) return;
+
+  const tick = () => {
+    const elapsed  = Date.now() - start;
+    const remaining = getTrialMs() - elapsed;
+
+    // Met à jour le timer dans le bandeau
+    const bannerTimer = document.getElementById('trial-banner-timer');
+    if (bannerTimer) bannerTimer.textContent = formatTrialTimer(remaining);
+
+    // Met à jour le timer dans la popup d'activation
+    const popupTimer = document.getElementById('trial-popup-timer');
+    if (popupTimer) popupTimer.textContent = formatTrialTimer(remaining);
+
+    if (remaining <= 0) {
+      // Trial expiré → retire accès Premium, montre popup d'expiration
+      clearInterval(timerInterval);
+      localStorage.removeItem(TRIAL_ACTIVE);
+      // Cache le bandeau
+      const banner = document.getElementById('trial-banner');
+      if (banner) banner.classList.add('hidden');
+      // Réinitialise visuellement les features Premium
+      const profile = JSON.parse(localStorage.getItem('go_profile') || '{}');
+      const realPlan = profile.plan || 'free';
+      if (realPlan === 'free') {
+        applyPlanFeatures('free');
+        // Affiche popup d'expiration
+        const exp = document.getElementById('trial-expire-popup');
+        if (exp) exp.classList.add('show');
+      }
+    }
+  };
+
+  tick();
+  const timerInterval = setInterval(tick, 1000);
+  window._trialTimerInterval = timerInterval;
+}
+
+function initTrial(){
+  // Ne pas proposer le trial si l'utilisateur est déjà Premium/Creator
+  const profile = JSON.parse(localStorage.getItem('go_profile') || '{}');
+  const plan = profile.plan || localStorage.getItem('go_plan') || 'free';
+  if (plan !== 'free') return;
+
+  // Si trial déjà actif → reprendre
+  if (isTrialActive()){
+    applyPlanFeatures('premium');
+    showTrialBanner();
+    runTrialTimer();
+    return;
+  }
+
+  // Si trial expiré → afficher popup d'expiration
+  if (isTrialExpired()){
+    setTimeout(()=>{
+      const exp = document.getElementById('trial-expire-popup');
+      if (exp) exp.classList.add('show');
+    }, 1500);
+    return;
+  }
+
+  // Trial jamais montré → afficher la popup d'activation après 4 secondes
+  if (!localStorage.getItem(TRIAL_SHOWN)){
+    setTimeout(()=>{
+      const p = document.getElementById('trial-popup');
+      if (p) p.classList.add('show');
+    }, 4000);
+  }
+}
+
+// Lancer le trial system une fois l'app montée
+const _origBootApp = typeof bootApp === 'function' ? bootApp : null;
+if (_origBootApp) {
+  // Hook post-boot
+  const _trialObserver = new MutationObserver(()=>{
+    const app = document.getElementById('app');
+    if (app && app.style.display !== 'none'){
+      _trialObserver.disconnect();
+      setTimeout(initTrial, 800);
+    }
+  });
+  _trialObserver.observe(document.getElementById('app') || document.body, {
+    attributes: true, attributeFilter: ['style']
+  });
+}
 </script>
 </body>
 </html>
