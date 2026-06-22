@@ -2045,8 +2045,19 @@ tick();setInterval(tick,1000);
 
 /* ── BUILD AI PREDICTION ── */
 function aiRow(d,i){const pc=i===0?'g':i===1?'s':i===2?'b':'d';const tn=TEAMS.find(t=>t.id===d.t);return`<div class="air"><div class="ap ${pc}">${i+1}</div><div class="adi"><div class="adn">${d.sn}</div><div class="adt"><span class="atd" style="background:${d.tc}"></span>${tn?.name||''} ${d.note?'· '+d.note:''}</div></div><div class="abars"><div class="abbg"><div class="abf" data-w="${d.pct}"></div></div><div class="apct">${d.pct}%</div></div><div class="apts">${d.pts}</div></div>`}
+
+// Retourne true si l'utilisateur a accès au Top 10 (plan payant OU trial actif)
+function hasFullAccess(){
+  const plan = localStorage.getItem('go_plan') || 'free';
+  if (['premium','creator'].includes(plan)) return true;
+  const trialStart = parseInt(localStorage.getItem('go_trial_start') || '0');
+  if (!trialStart) return false;
+  const TRIAL_DEADLINE = new Date('2026-06-27T14:00:00Z').getTime(); // Samedi 27 juin 16h00 Paris
+  return Date.now() < TRIAL_DEADLINE && Date.now() >= trialStart;
+}
+
 function buildAIPred(){
-  const isPaid = ['premium','creator'].includes(localStorage.getItem('go_plan'));
+  const isPaid = hasFullAccess();
   const h=document.getElementById('ai-home'),fl=document.getElementById('ai-home-lock');
   if(h)h.innerHTML=AI_DATA.slice(0,5).map((d,i)=>aiRow(d,i)).join('');
   if(fl)fl.innerHTML=AI_DATA.slice(5).map((d,i)=>aiRow(d,i+5)).join('');
@@ -2167,7 +2178,7 @@ function renderPred(inst){
     c.appendChild(w);
   });
   const n=pred.filter(Boolean).length;
-  const isPaidR=['premium','creator'].includes(localStorage.getItem('go_plan'));
+  const isPaidR=hasFullAccess();
   const required=isPaidR?10:5;
   const cnt=document.getElementById(prefix+'cnt');if(cnt)cnt.textContent=n;
   const bs=document.getElementById(prefix+'bs');if(bs)bs.disabled=n<required||sub;
@@ -2177,8 +2188,8 @@ function hRender(){renderPred(HP)}
 function pRender(){renderPred(PP)}
 function hClr(i,e){e.stopPropagation();HP.pred[i]=null;HP.opk=-1;hRender()}
 function pClr(i,e){e.stopPropagation();PP.pred[i]=null;PP.opk=-1;pRender()}
-function hCopy(){const isPaid=['premium','creator'].includes(localStorage.getItem('go_plan'));HP.pred=isPaid?AI10.slice():AI5.slice();HP.opk=-1;hRender()}
-function pCopy(){const isPaid=['premium','creator'].includes(localStorage.getItem('go_plan'));PP.pred=isPaid?AI10.slice():AI5.slice();PP.opk=-1;pRender()}
+function hCopy(){HP.pred=hasFullAccess()?AI10.slice():AI5.slice();HP.opk=-1;hRender()}
+function pCopy(){PP.pred=hasFullAccess()?AI10.slice():AI5.slice();PP.opk=-1;pRender()}
 function hReset(){HP.pred=new Array(10).fill(null);HP.opk=-1;hRender()}
 function pReset(){PP.pred=new Array(10).fill(null);PP.opk=-1;pRender()}
 function doSubmit(inst,badgeId,btnId){
@@ -2540,57 +2551,56 @@ window.va = window.va || function(){(window.vaq = window.vaq || []).push(argumen
    TRIAL 48H — GridOracle Offre de lancement
    ══════════════════════════════════════════ */
 
-const TRIAL_KEY     = 'go_trial_start';
-const TRIAL_SHOWN   = 'go_trial_shown';
-const TRIAL_ACTIVE  = 'go_trial_active';
-const TRIAL_HOURS   = 48;
+/* ══════════════════════════════════════════
+   TRIAL 48H — GridOracle Offre de lancement
+   Deadline fixe : Samedi 27 juin 2026 à 16h00 Paris
+   ══════════════════════════════════════════ */
 
-function getTrialMs()  { return TRIAL_HOURS * 60 * 60 * 1000; }
-function getTrialStart(){ return parseInt(localStorage.getItem(TRIAL_KEY) || '0'); }
+const TRIAL_KEY      = 'go_trial_start';
+const TRIAL_SHOWN    = 'go_trial_shown';
+const TRIAL_ACTIVE   = 'go_trial_active';
+const TRIAL_DEADLINE = new Date('2026-06-27T14:00:00Z').getTime(); // 16h Paris = 14h UTC
+
 function isTrialActive(){
-  const start = getTrialStart();
+  const start = parseInt(localStorage.getItem(TRIAL_KEY) || '0');
   if (!start) return false;
-  return (Date.now() - start) < getTrialMs();
+  return Date.now() < TRIAL_DEADLINE;
 }
 function isTrialExpired(){
-  const start = getTrialStart();
+  const start = parseInt(localStorage.getItem(TRIAL_KEY) || '0');
   if (!start) return false;
-  return (Date.now() - start) >= getTrialMs();
+  return Date.now() >= TRIAL_DEADLINE;
 }
-function isTrialUsed(){ return !!localStorage.getItem(TRIAL_KEY); }
 
 function formatTrialTimer(ms){
   if (ms <= 0) return '00:00:00';
   const h = Math.floor(ms / 3600000);
   const m = Math.floor((ms % 3600000) / 60000);
   const s = Math.floor((ms % 60000) / 1000);
-  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  return `${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
 }
 
 function startTrial(){
-  // Enregistre le début du trial
   localStorage.setItem(TRIAL_KEY, Date.now().toString());
   localStorage.setItem(TRIAL_ACTIVE, '1');
   localStorage.setItem(TRIAL_SHOWN, '1');
-  // Ferme la popup
   closeTrialPopup();
-  // Active les features Premium visuellement
-  applyPlanFeatures('premium');
-  // Affiche le bandeau
+  // Débloquer visuellement tout le Top 10
+  unlockPlan('premium');
+  buildAIPred();
   showTrialBanner();
-  // Lance le timer
   runTrialTimer();
 }
 
 function closeTrialPopup(){
   localStorage.setItem(TRIAL_SHOWN, '1');
   const p = document.getElementById('trial-popup');
-  if (p) { p.classList.remove('show'); }
+  if (p) p.classList.remove('show');
 }
 
 function closeTrialExpirePopup(){
   const p = document.getElementById('trial-expire-popup');
-  if (p) { p.classList.remove('show'); }
+  if (p) p.classList.remove('show');
 }
 
 function showTrialBanner(){
@@ -2599,34 +2609,34 @@ function showTrialBanner(){
 }
 
 function runTrialTimer(){
-  const start = getTrialStart();
-  if (!start) return;
+  if (!localStorage.getItem(TRIAL_KEY)) return;
 
   const tick = () => {
-    const elapsed  = Date.now() - start;
-    const remaining = getTrialMs() - elapsed;
+    const remaining = TRIAL_DEADLINE - Date.now();
 
-    // Met à jour le timer dans le bandeau
+    // Bandeau principal
     const bannerTimer = document.getElementById('trial-banner-timer');
     if (bannerTimer) bannerTimer.textContent = formatTrialTimer(remaining);
 
-    // Met à jour le timer dans la popup d'activation
+    // Timer dans popup activation
     const popupTimer = document.getElementById('trial-popup-timer');
     if (popupTimer) popupTimer.textContent = formatTrialTimer(remaining);
 
     if (remaining <= 0) {
-      // Trial expiré → retire accès Premium, montre popup d'expiration
-      clearInterval(timerInterval);
+      clearInterval(window._trialTimerInterval);
       localStorage.removeItem(TRIAL_ACTIVE);
-      // Cache le bandeau
       const banner = document.getElementById('trial-banner');
       if (banner) banner.classList.add('hidden');
-      // Réinitialise visuellement les features Premium
+      // Remettre en Free si pas abonné
       const profile = JSON.parse(localStorage.getItem('go_profile') || '{}');
-      const realPlan = profile.plan || 'free';
+      const realPlan = profile.plan || localStorage.getItem('go_plan') || 'free';
       if (realPlan === 'free') {
-        applyPlanFeatures('free');
-        // Affiche popup d'expiration
+        // Verrouiller de nouveau le Top 10
+        buildAIPred();
+        document.querySelectorAll('.prem-lock').forEach(el => {
+          el.classList.remove('unlocked');
+          el.innerHTML = '<span class="pl-txt">🔒 Positions 6–10 — Premium</span>';
+        });
         const exp = document.getElementById('trial-expire-popup');
         if (exp) exp.classList.add('show');
       }
@@ -2634,25 +2644,24 @@ function runTrialTimer(){
   };
 
   tick();
-  const timerInterval = setInterval(tick, 1000);
-  window._trialTimerInterval = timerInterval;
+  window._trialTimerInterval = setInterval(tick, 1000);
 }
 
 function initTrial(){
-  // Ne pas proposer le trial si l'utilisateur est déjà Premium/Creator
   const profile = JSON.parse(localStorage.getItem('go_profile') || '{}');
   const plan = profile.plan || localStorage.getItem('go_plan') || 'free';
-  if (plan !== 'free') return;
+  if (plan !== 'free') return; // Déjà abonné — rien à faire
 
-  // Si trial déjà actif → reprendre
+  // Trial actif → restaurer accès et reprendre timer
   if (isTrialActive()){
-    applyPlanFeatures('premium');
+    unlockPlan('premium');
+    buildAIPred();
     showTrialBanner();
     runTrialTimer();
     return;
   }
 
-  // Si trial expiré → afficher popup d'expiration
+  // Trial expiré → popup d'expiration
   if (isTrialExpired()){
     setTimeout(()=>{
       const exp = document.getElementById('trial-expire-popup');
@@ -2661,7 +2670,7 @@ function initTrial(){
     return;
   }
 
-  // Trial jamais montré → afficher la popup d'activation après 4 secondes
+  // Jamais montré → popup d'activation après 4s
   if (!localStorage.getItem(TRIAL_SHOWN)){
     setTimeout(()=>{
       const p = document.getElementById('trial-popup');
@@ -2670,21 +2679,18 @@ function initTrial(){
   }
 }
 
-// Lancer le trial system une fois l'app montée
-const _origBootApp = typeof bootApp === 'function' ? bootApp : null;
-if (_origBootApp) {
-  // Hook post-boot
-  const _trialObserver = new MutationObserver(()=>{
-    const app = document.getElementById('app');
-    if (app && app.style.display !== 'none'){
-      _trialObserver.disconnect();
+// Observer le montage de l'app pour lancer le trial system
+(function(){
+  const app = document.getElementById('app');
+  if (!app) return;
+  const obs = new MutationObserver(()=>{
+    if (app.style.display !== 'none'){
+      obs.disconnect();
       setTimeout(initTrial, 800);
     }
   });
-  _trialObserver.observe(document.getElementById('app') || document.body, {
-    attributes: true, attributeFilter: ['style']
-  });
-}
+  obs.observe(app, { attributes: true, attributeFilter: ['style'] });
+})();
 </script>
 </body>
 </html>
