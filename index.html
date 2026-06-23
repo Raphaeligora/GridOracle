@@ -3190,8 +3190,8 @@ function openShareModal(predArray){
     + '<div style="display:flex;flex-direction:column;gap:.5rem">'
       + nativeBtn
       + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">'
-        + '<button id="sm-tiktok" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:.7rem;font-size:.82rem;color:#fff;cursor:pointer">🎵 TikTok</button>'
-        + '<button id="sm-insta" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:.7rem;font-size:.82rem;color:#fff;cursor:pointer">📸 Instagram</button>'
+        + '<button id="sm-tiktok" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:.7rem;font-size:.82rem;color:#fff;cursor:pointer">🎵 Ouvrir TikTok</button>'
+        + '<button id="sm-insta" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:.7rem;font-size:.82rem;color:#fff;cursor:pointer">📸 Ouvrir Instagram</button>'
       + '</div>'
       + '<button id="sm-copy" style="background:rgba(232,0,29,.07);border:1px solid rgba(232,0,29,.2);border-radius:10px;padding:.7rem;font-size:.82rem;color:#e8001d;cursor:pointer;width:100%">📋 Copier le texte</button>'
       + '<div id="sm-copied" style="text-align:center;font-size:.72rem;color:#4caf50;display:none;padding:.3rem">✓ Texte copié — colle-le dans ton appli !</div>'
@@ -3217,22 +3217,40 @@ function openShareModal(predArray){
     };
   }
 
-  // TikTok — copie + deep link
+  // TikTok
   document.getElementById('sm-tiktok').onclick = () => {
     copyShareText(shareText, 'sm-copied');
-    showToast('📋 Texte copié ! Ouvre TikTok et colle-le dans ta vidéo 🎵');
+    // Essayer d'ouvrir TikTok via deep link, fallback sur l'app store
+    const tiktokUrl = 'snssdk1233://'; // deep link TikTok iOS/Android
+    const fallbackUrl = 'https://www.tiktok.com';
+    const start = Date.now();
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = tiktokUrl;
+    document.body.appendChild(iframe);
     setTimeout(() => {
-      try { window.location.href = 'tiktok://'; } catch(e) {}
-    }, 400);
+      document.body.removeChild(iframe);
+      if(Date.now() - start < 1500) window.open(fallbackUrl, '_blank');
+    }, 1200);
+    showToast('📋 Texte copié ! TikTok s\'ouvre... colle dans ta vidéo 🎵');
   };
 
-  // Instagram — copie + deep link
+  // Instagram
   document.getElementById('sm-insta').onclick = () => {
     copyShareText(shareText, 'sm-copied');
-    showToast('📋 Texte copié ! Ouvre Instagram et colle-le dans ta story 📸');
+    // Deep link Instagram Story camera
+    const instaUrl = 'instagram://story-camera';
+    const fallbackUrl = 'https://www.instagram.com';
+    const start = Date.now();
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = instaUrl;
+    document.body.appendChild(iframe);
     setTimeout(() => {
-      try { window.location.href = 'instagram://'; } catch(e) {}
-    }, 400);
+      document.body.removeChild(iframe);
+      if(Date.now() - start < 1500) window.open(fallbackUrl, '_blank');
+    }, 1200);
+    showToast('📋 Texte copié ! Instagram s\'ouvre... colle dans ta story 📸');
   };
 
   // Copier seulement
