@@ -3165,50 +3165,46 @@ function openShareModal(predArray){
   modal.id = 'share-modal';
   modal.style.cssText = 'position:fixed;inset:0;z-index:9500;background:rgba(7,7,14,.92);backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center;padding:0';
 
-  modal.innerHTML = `
-    <div style="background:#0e0e1c;border:1px solid rgba(232,0,29,.22);border-radius:16px 16px 0 0;padding:1.4rem 1.3rem 2rem;max-width:480px;width:100%;position:relative;animation:slideUp .25s ease">
-      <div style="width:36px;height:4px;background:rgba(255,255,255,.15);border-radius:2px;margin:0 auto 1.1rem"></div>
-      <button id="sm-close" style="position:absolute;top:1rem;right:1rem;background:transparent;border:none;color:rgba(255,255,255,.35);font-size:1.2rem;cursor:pointer;line-height:1">✕</button>
+  // Construire le HTML sans template literals imbriqués
+  const nativeBtn = hasNativeShare
+    ? '<button id="sm-native" style="background:#e8001d;color:#fff;border:none;border-radius:10px;padding:.8rem;font-size:.88rem;font-weight:600;cursor:pointer;width:100%">📤 Partager sur mes réseaux</button>'
+    : '';
+  const upgradeBar = !isPaid
+    ? '<div style="background:rgba(232,0,29,.05);border:1px solid rgba(232,0,29,.15);border-radius:8px;padding:.55rem .75rem;margin-bottom:.85rem;font-size:.72rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:.5rem">🔒 <span>Premium = partage ton <strong style="color:#fff">Top 10</strong></span><button id="sm-upgrade" style="margin-left:auto;background:#e8001d;border:none;color:#fff;border-radius:5px;padding:.2rem .6rem;font-size:.65rem;font-weight:600;cursor:pointer">Upgrade →</button></div>'
+    : '';
 
-      <div style="font-family:'Rajdhani',sans-serif;font-size:.88rem;font-weight:700;letter-spacing:.12em;color:#e8001d;margin-bottom:.9rem">
-        📤 PARTAGER MA PRÉDICTION${isPaid?' · Top 10':' · Top 5'}
-      </div>
-
-      <div style="background:linear-gradient(135deg,#07070e,#111128);border:1px solid rgba(232,0,29,.18);border-radius:10px;padding:.9rem;margin-bottom:1rem">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
-          <div style="font-family:'Rajdhani',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.12em">GRID<span style="color:#e8001d">ORACLE</span></div>
-          <div style="font-size:.58rem;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase">${GP_CURRENT.flag} ${GP_CURRENT.name}</div>
-        </div>
-        <div style="font-size:.6rem;color:rgba(255,255,255,.3);margin-bottom:.45rem;letter-spacing:.07em;text-transform:uppercase">@${myHandle} · Ma prédiction</div>
-        ${predRows}
-        <div style="margin-top:.5rem;font-size:.52rem;color:rgba(255,255,255,.18);text-align:center;letter-spacing:.06em">L'IA PRÉDIT. TOI TU DÉFIES. · gridoracle.vercel.app</div>
-      </div>
-
-      ${!isPaid ? `<div style="background:rgba(232,0,29,.05);border:1px solid rgba(232,0,29,.15);border-radius:8px;padding:.55rem .75rem;margin-bottom:.85rem;font-size:.72rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:.5rem">
-        🔒 <span>Premium = partage ton <strong style="color:#fff">Top 10</strong> complet</span>
-        <button onclick="document.getElementById('share-modal').remove();openStripeModal('premium')" style="margin-left:auto;background:#e8001d;border:none;color:#fff;border-radius:5px;padding:.2rem .6rem;font-size:.65rem;font-weight:600;cursor:pointer;white-space:nowrap">Upgrade →</button>
-      </div>` : ''}
-
-      <div style="display:flex;flex-direction:column;gap:.5rem">
-        ${hasNativeShare ? `<button id="sm-native" style="background:#e8001d;color:#fff;border:none;border-radius:10px;padding:.8rem;font-size:.88rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;width:100%;display:flex;align-items:center;justify-content:center;gap:.4rem">
-          📤 Partager sur mes réseaux
-        </button>` : ''}
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
-          <button id="sm-tiktok" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:.7rem;font-size:.82rem;color:#fff;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:.35rem">🎵 TikTok</button>
-          <button id="sm-insta" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:.7rem;font-size:.82rem;color:#fff;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:.35rem">📸 Instagram</button>
-        </div>
-        <button id="sm-copy" style="background:rgba(232,0,29,.07);border:1px solid rgba(232,0,29,.2);border-radius:10px;padding:.7rem;font-size:.82rem;color:#e8001d;cursor:pointer;font-family:'Inter',sans-serif;width:100%;display:flex;align-items:center;justify-content:center;gap:.4rem">
-          📋 Copier le texte
-        </button>
-        <div id="sm-copied" style="text-align:center;font-size:.72rem;color:#4caf50;display:none;padding:.3rem">✓ Texte copié — colle-le dans ton appli !</div>
-      </div>
-    </div>`;
+  modal.innerHTML = '<div style="background:#0e0e1c;border:1px solid rgba(232,0,29,.22);border-radius:16px 16px 0 0;padding:1.4rem 1.3rem 2rem;max-width:480px;width:100%;position:relative;animation:slideUp .25s ease">'
+    + '<div style="width:36px;height:4px;background:rgba(255,255,255,.15);border-radius:2px;margin:0 auto 1.1rem"></div>'
+    + '<button id="sm-close" style="position:absolute;top:1rem;right:1rem;background:transparent;border:none;color:rgba(255,255,255,.35);font-size:1.2rem;cursor:pointer;line-height:1">✕</button>'
+    + '<div style="font-family:Rajdhani,sans-serif;font-size:.88rem;font-weight:700;letter-spacing:.12em;color:#e8001d;margin-bottom:.9rem">📤 PARTAGER MA PRÉDICTION · '+(isPaid?'Top 10':'Top 5')+'</div>'
+    + '<div style="background:linear-gradient(135deg,#07070e,#111128);border:1px solid rgba(232,0,29,.18);border-radius:10px;padding:.9rem;margin-bottom:1rem">'
+      + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">'
+        + '<div style="font-family:Rajdhani,sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.12em">GRID<span style="color:#e8001d">ORACLE</span></div>'
+        + '<div style="font-size:.58rem;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase">'+GP_CURRENT.flag+' '+GP_CURRENT.name+'</div>'
+      + '</div>'
+      + '<div style="font-size:.6rem;color:rgba(255,255,255,.3);margin-bottom:.45rem;letter-spacing:.07em;text-transform:uppercase">@'+myHandle+' · Ma prédiction</div>'
+      + predRows
+      + '<div style="margin-top:.5rem;font-size:.52rem;color:rgba(255,255,255,.18);text-align:center">L&#39;IA PR&Eacute;DIT. TOI TU D&Eacute;FIES. &middot; gridoracle.vercel.app</div>'
+    + '</div>'
+    + upgradeBar
+    + '<div style="display:flex;flex-direction:column;gap:.5rem">'
+      + nativeBtn
+      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">'
+        + '<button id="sm-tiktok" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:.7rem;font-size:.82rem;color:#fff;cursor:pointer">🎵 TikTok</button>'
+        + '<button id="sm-insta" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:.7rem;font-size:.82rem;color:#fff;cursor:pointer">📸 Instagram</button>'
+      + '</div>'
+      + '<button id="sm-copy" style="background:rgba(232,0,29,.07);border:1px solid rgba(232,0,29,.2);border-radius:10px;padding:.7rem;font-size:.82rem;color:#e8001d;cursor:pointer;width:100%">📋 Copier le texte</button>'
+      + '<div id="sm-copied" style="text-align:center;font-size:.72rem;color:#4caf50;display:none;padding:.3rem">✓ Texte copié — colle-le dans ton appli !</div>'
+    + '</div>'
+  + '</div>';
 
   document.body.appendChild(modal);
 
   // Fermeture
   document.getElementById('sm-close').onclick = () => modal.remove();
   modal.addEventListener('click', e => { if(e.target === modal) modal.remove(); });
+  const upBtn = document.getElementById('sm-upgrade');
+  if(upBtn) upBtn.onclick = () => { modal.remove(); openStripeModal('premium'); };
 
   // Partage natif iOS/Android
   if(hasNativeShare){
@@ -3268,93 +3264,6 @@ function copyShareText(text, feedbackId){
 }
 
 function shareTo(){ openShareModal(HP.pred.filter(Boolean)); }
-
-  const pred = (predArray||HP.pred).filter(Boolean).slice(0,5);
-  const myHandle = USER.handle || 'moi';
-
-  // Texte de partage propre
-  const shareText = `${GP_CURRENT.flag} Ma prédiction ${GP_CURRENT.name} sur GridOracle 🤖\n\n${pred.map((d,i)=>`P${i+1} ${d.sn||'—'}`).join('\n')}\n\nTu fais mieux que l'IA ? gridoracle.vercel.app`;
-
-  const modal = document.createElement('div');
-  modal.id = 'share-modal';
-  modal.style.cssText = 'position:fixed;inset:0;z-index:9500;background:rgba(7,7,14,.92);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:1rem;overflow-y:auto';
-
-  const colors = ['#FFD700','#C0C0C0','#CD7F32','rgba(255,255,255,.5)','rgba(255,255,255,.4)'];
-  const predRows = pred.map((d,i)=>`
-    <div style="display:flex;align-items:center;gap:.55rem;padding:.3rem 0;border-bottom:1px solid rgba(255,255,255,.06)">
-      <div style="font-family:'Rajdhani',sans-serif;font-size:.95rem;font-weight:700;color:${colors[i]};min-width:24px">P${i+1}</div>
-      <div style="font-size:.85rem;font-weight:600;color:#fff;flex:1">${d.sn||'—'}</div>
-      <div style="width:8px;height:8px;border-radius:50%;background:${d.tc||'#e8001d'};flex-shrink:0"></div>
-    </div>`).join('');
-
-  modal.innerHTML = `
-    <div style="background:#0e0e1c;border:1px solid rgba(232,0,29,.25);border-radius:16px;padding:1.4rem;max-width:400px;width:100%;position:relative">
-      <button id="sm-close" style="position:absolute;top:.85rem;right:1rem;background:transparent;border:none;color:rgba(255,255,255,.4);font-size:1.3rem;cursor:pointer;line-height:1;padding:.2rem">✕</button>
-      <div style="font-family:'Rajdhani',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.12em;color:#e8001d;margin-bottom:1rem">📤 PARTAGER MA PRÉDICTION</div>
-
-      <!-- Carte visuelle -->
-      <div style="background:linear-gradient(135deg,#07070e,#111128);border:1px solid rgba(232,0,29,.2);border-radius:10px;padding:1rem;margin-bottom:1rem">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem">
-          <div style="font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;letter-spacing:.12em;color:#fff">GRID<span style="color:#e8001d">ORACLE</span></div>
-          <div style="font-size:.6rem;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase">${GP_CURRENT.flag} ${GP_CURRENT.name}</div>
-        </div>
-        <div style="font-size:.62rem;color:rgba(255,255,255,.35);margin-bottom:.5rem;letter-spacing:.08em;text-transform:uppercase">Ma prédiction · @${myHandle}</div>
-        ${predRows}
-        <div style="margin-top:.55rem;font-size:.55rem;color:rgba(255,255,255,.2);text-align:center;letter-spacing:.06em">L'IA PRÉDIT. TOI TU DÉFIES. · gridoracle.vercel.app</div>
-      </div>
-
-      <!-- Boutons partage -->
-      <div style="display:flex;flex-direction:column;gap:.5rem">
-        ${navigator.share ? `<button id="sm-native" style="background:#e8001d;color:#fff;border:none;border-radius:9px;padding:.75rem;font-size:.85rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;width:100%">📤 Partager via mon téléphone</button>` : ''}
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
-          <button id="sm-tiktok" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:.65rem;font-size:.8rem;color:#fff;cursor:pointer;font-family:'Inter',sans-serif">🎵 TikTok</button>
-          <button id="sm-insta" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:.65rem;font-size:.8rem;color:#fff;cursor:pointer;font-family:'Inter',sans-serif">📸 Instagram</button>
-        </div>
-        <button id="sm-copy" style="background:rgba(232,0,29,.08);border:1px solid rgba(232,0,29,.25);border-radius:9px;padding:.65rem;font-size:.8rem;color:#e8001d;cursor:pointer;font-family:'Inter',sans-serif;width:100%">📋 Copier le texte</button>
-        <div id="sm-copied" style="text-align:center;font-size:.72rem;color:#4caf50;display:none">✓ Texte copié — colle-le dans ton appli préférée !</div>
-      </div>
-    </div>`;
-
-  document.body.appendChild(modal);
-
-  // Fermeture
-  document.getElementById('sm-close').onclick = () => modal.remove();
-  modal.addEventListener('click', e => { if(e.target === modal) modal.remove(); });
-
-  // Partage natif (iOS/Android) — API Web Share
-  const nativeBtn = document.getElementById('sm-native');
-  if(nativeBtn){
-    nativeBtn.onclick = async () => {
-      try {
-        await navigator.share({ title: 'Ma prédiction GridOracle', text: shareText, url: 'https://gridoracle.vercel.app' });
-      } catch(e) {
-        // Annulé par l'utilisateur ou non supporté
-        if(e.name !== 'AbortError') copyShareText(shareText);
-      }
-    };
-  }
-
-  // TikTok
-  document.getElementById('sm-tiktok').onclick = () => {
-    copyShareText(shareText);
-    setTimeout(()=> { try{ window.location.href='tiktok://'; }catch(e){} }, 300);
-    showToast('📋 Texte copié — ouvre TikTok et colle-le !');
-  };
-
-  // Instagram
-  document.getElementById('sm-insta').onclick = () => {
-    copyShareText(shareText);
-    setTimeout(()=>{ try{ window.location.href='instagram://'; }catch(e){} }, 300);
-    showToast('📋 Texte copié — ouvre Instagram et colle-le !');
-  };
-
-  // Copier
-  document.getElementById('sm-copy').onclick = () => {
-    copyShareText(shareText);
-    const copied = document.getElementById('sm-copied');
-    if(copied){ copied.style.display='block'; setTimeout(()=> copied.style.display='none', 3000); }
-  };
-}
 
 /* ══ END PRÉDICTION SAUVEGARDE ══ */
 
