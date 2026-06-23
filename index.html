@@ -2920,38 +2920,77 @@ async function savePredToCloud(predArray){
 async function loadSavedPrediction(){
   const profile = JSON.parse(localStorage.getItem('go_profile') || '{}');
   const email   = profile.email || '';
-  if (!email) return;
 
-  // D'abord restaurer depuis localStorage (instantané)
-  const local = localStorage.getItem(`go_pred_${GP_CURRENT.id}`);
-  if (local) {
-    try {
-      const saved = JSON.parse(local);
-      if (saved && saved.length) {
-        HP.pred = [...saved, ...new Array(Math.max(0, 10-saved.length)).fill(null)];
-        PP.pred = [...HP.pred];
+  // ── Étape 1 : restauration INSTANTANÉE depuis localStorage
+  const localKey = `go_pred_${GP_CURRENT.id}`;
+  const localRaw = localStorage.getItem(localKey);
+  if(localRaw){
+    try{
+      const saved = JSON.parse(localRaw);
+      if(Array.isArray(saved) && saved.length){
+        // Reconstruire les objets pilotes complets
+        const full = saved.map(p => (p && p.sn) ? (DRIVERS.find(d=>d.sn===p.sn)||p) : p);
+        const padded = [...full, ...new Array(Math.max(0,10-full.length)).fill(null)];
+        HP.pred = padded; PP.pred = [...padded];
         hRender(); pRender();
+        // Afficher le bouton partage si prédiction complète
+        const filled = full.filter(Boolean);
+        if(filled.length >= 5) showShareButton(filled);
       }
-    } catch(e) {}
+    }catch(e){}
   }
 
-  // Puis vérifier si une version plus récente existe dans Redis
-  try {
+  // ── Étape 2 : sync depuis Redis (si email connu)
+  if(!email) return;
+
+  try{
     const res = await fetch(`/api/save-prediction?email=${encodeURIComponent(email)}&gp=${GP_CURRENT.id}`);
+    if(!res.ok) return;
     const data = await res.json();
-    if (data.found && data.prediction && data.prediction.prediction) {
+
+    if(data.found && data.prediction && Array.isArray(data.prediction.prediction)){
       const cloudPred = data.prediction.prediction;
-      // Reconstruire les objets pilotes complets depuis les handles
-      const fullPred = cloudPred.map(p => DRIVERS.find(d => d.sn === p.sn) || p);
-      HP.pred = [...fullPred, ...new Array(Math.max(0, 10-fullPred.length)).fill(null)];
-      PP.pred = [...HP.pred];
+      // Reconstruire les pilotes complets depuis driverSn
+      const full = cloudPred.map(p => (p && p.sn) ? (DRIVERS.find(d=>d.sn===p.sn)||p) : p);
+      const padded = [...full, ...new Array(Math.max(0,10-full.length)).fill(null)];
+
+      // Mettre à jour localStorage avec la version cloud (plus fraîche)
+      localStorage.setItem(localKey, JSON.stringify(full));
+
+      HP.pred = padded; PP.pred = [...padded];
       hRender(); pRender();
-      // Mettre à jour le localStorage
-      localStorage.setItem(`go_pred_${GP_CURRENT.id}`, JSON.stringify(fullPred));
-      // Si les qualifs ont commencé → verrouiller l'UI
-      if (data.locked) lockPredUI();
+
+      // Restaurer l'état "soumise" si la prédiction existe en cloud
+      const filled = full.filter(Boolean);
+      if(filled.length >= 5){
+        HP.sub = true; PP.sub = true;
+        renderPred(HP); renderPred(PP);
+        // Mettre à jour les boutons
+        ['hpb','ppb'].forEach(id=>{
+          const pb=document.getElementById(id);
+          if(pb){pb.className='pred-status st-done';pb.textContent='✓ Sauvegardée';}
+        });
+        ['hbs','pbs'].forEach(id=>{
+          const bs=document.getElementById(id);
+          if(bs && !isPredLocked()){
+            bs.disabled=false;
+            bs.className='bsub done';
+            bs.innerHTML='✓ Prédiction sauvegardée · <span style="opacity:.7;font-size:.8em">Modifier jusqu\'aux qualifs</span>';
+            const inst = id==='hbs'?HP:PP;
+            const badgeId = id==='hbs'?'hpb':'ppb';
+            bs.onclick = ()=>unlockPredEdit(inst,badgeId,id);
+          }
+        });
+        showShareButton(filled);
+      }
+
+      // Verrouiller si qualifs commencées
+      if(data.locked || isPredLocked()) lockPredUI();
     }
-  } catch(e) {}
+  }catch(e){
+    // Silencieux — la version locale est déjà affichée
+    console.warn('loadSavedPrediction cloud sync failed:', e.message);
+  }
 }
 
 function lockPredUI(){
@@ -3062,84 +3101,118 @@ function showShareButton(predArray){
 }
 
 function openShareModal(predArray){
-  // Générer la carte de partage
-  const pred = predArray.filter(Boolean).slice(0,5);
+  // Fermer si déjà ouvert
+  const existing = document.getElementById('share-modal');
+  if(existing) existing.remove();
+
+  const pred = (predArray||HP.pred).filter(Boolean).slice(0,5);
   const myHandle = USER.handle || 'moi';
-  const canvas = document.getElementById('share-canvas');
 
-  if(!canvas){
-    // Créer le modal de partage
-    const modal = document.createElement('div');
-    modal.id = 'share-modal';
-    modal.style.cssText='position:fixed;inset:0;z-index:9500;background:rgba(7,7,14,.92);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:1rem';
-    modal.innerHTML = `
-      <div style="background:var(--card);border:1px solid rgba(232,0,29,.2);border-radius:16px;padding:1.5rem;max-width:420px;width:100%;position:relative">
-        <button onclick="document.getElementById('share-modal').remove()" style="position:absolute;top:.9rem;right:1rem;background:transparent;border:none;color:rgba(255,255,255,.4);font-size:1.2rem;cursor:pointer">✕</button>
-        <div style="font-family:var(--fh);font-size:1rem;font-weight:700;letter-spacing:.1em;color:var(--red);margin-bottom:1rem">📤 PARTAGER MA PRÉDICTION</div>
+  // Texte de partage propre
+  const shareText = `${GP_CURRENT.flag} Ma prédiction ${GP_CURRENT.name} sur GridOracle 🤖\n\n${pred.map((d,i)=>`P${i+1} ${d.sn||'—'}`).join('\n')}\n\nTu fais mieux que l'IA ? gridoracle.vercel.app`;
 
-        <!-- Carte de partage -->
-        <div id="share-card" style="background:linear-gradient(135deg,#07070e,#0e0e1c);border:1px solid rgba(232,0,29,.25);border-radius:12px;padding:1.1rem;margin-bottom:1rem;position:relative;overflow:hidden">
-          <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(232,0,29,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(232,0,29,.02) 1px,transparent 1px);background-size:20px 20px"></div>
-          <div style="position:relative;z-index:1">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem">
-              <div style="font-family:var(--fh);font-size:1.1rem;font-weight:700;letter-spacing:.12em">GRID<span style="color:var(--red)">ORACLE</span></div>
-              <div style="font-size:.65rem;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase">${GP_CURRENT.flag} ${GP_CURRENT.name}</div>
-            </div>
-            <div style="font-size:.68rem;color:rgba(255,255,255,.4);margin-bottom:.55rem;letter-spacing:.08em">MA PRÉDICTION · @${myHandle}</div>
-            ${pred.map((d,i)=>{
-              const colors=['#FFD700','#C0C0C0','#CD7F32','rgba(255,255,255,.5)','rgba(255,255,255,.4)'];
-              return `<div style="display:flex;align-items:center;gap:.55rem;padding:.28rem 0;border-bottom:1px solid rgba(255,255,255,.04)">
-                <div style="font-family:'Rajdhani',sans-serif;font-size:.9rem;font-weight:700;color:${colors[i]};min-width:20px">P${i+1}</div>
-                <div style="font-size:.82rem;font-weight:600;color:#fff;flex:1">${d.sn||d.h||'—'}</div>
-                <div style="width:8px;height:8px;border-radius:50%;background:${d.tc||'#e8001d'};flex-shrink:0"></div>
-              </div>`;
-            }).join('')}
-            <div style="margin-top:.65rem;font-size:.58rem;color:rgba(255,255,255,.25);text-align:center;letter-spacing:.08em">L\'IA PRÉDIT. TOI TU DÉFIES. · gridoracle.vercel.app</div>
-          </div>
+  const modal = document.createElement('div');
+  modal.id = 'share-modal';
+  modal.style.cssText = 'position:fixed;inset:0;z-index:9500;background:rgba(7,7,14,.92);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:1rem;overflow-y:auto';
+
+  const colors = ['#FFD700','#C0C0C0','#CD7F32','rgba(255,255,255,.5)','rgba(255,255,255,.4)'];
+  const predRows = pred.map((d,i)=>`
+    <div style="display:flex;align-items:center;gap:.55rem;padding:.3rem 0;border-bottom:1px solid rgba(255,255,255,.06)">
+      <div style="font-family:'Rajdhani',sans-serif;font-size:.95rem;font-weight:700;color:${colors[i]};min-width:24px">P${i+1}</div>
+      <div style="font-size:.85rem;font-weight:600;color:#fff;flex:1">${d.sn||'—'}</div>
+      <div style="width:8px;height:8px;border-radius:50%;background:${d.tc||'#e8001d'};flex-shrink:0"></div>
+    </div>`).join('');
+
+  modal.innerHTML = `
+    <div style="background:#0e0e1c;border:1px solid rgba(232,0,29,.25);border-radius:16px;padding:1.4rem;max-width:400px;width:100%;position:relative">
+      <button id="sm-close" style="position:absolute;top:.85rem;right:1rem;background:transparent;border:none;color:rgba(255,255,255,.4);font-size:1.3rem;cursor:pointer;line-height:1;padding:.2rem">✕</button>
+      <div style="font-family:'Rajdhani',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.12em;color:#e8001d;margin-bottom:1rem">📤 PARTAGER MA PRÉDICTION</div>
+
+      <!-- Carte visuelle -->
+      <div style="background:linear-gradient(135deg,#07070e,#111128);border:1px solid rgba(232,0,29,.2);border-radius:10px;padding:1rem;margin-bottom:1rem">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem">
+          <div style="font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;letter-spacing:.12em;color:#fff">GRID<span style="color:#e8001d">ORACLE</span></div>
+          <div style="font-size:.6rem;color:rgba(255,255,255,.35);letter-spacing:.1em;text-transform:uppercase">${GP_CURRENT.flag} ${GP_CURRENT.name}</div>
         </div>
+        <div style="font-size:.62rem;color:rgba(255,255,255,.35);margin-bottom:.5rem;letter-spacing:.08em;text-transform:uppercase">Ma prédiction · @${myHandle}</div>
+        ${predRows}
+        <div style="margin-top:.55rem;font-size:.55rem;color:rgba(255,255,255,.2);text-align:center;letter-spacing:.06em">L'IA PRÉDIT. TOI TU DÉFIES. · gridoracle.vercel.app</div>
+      </div>
 
-        <!-- Texte à copier -->
-        <div style="background:rgba(255,255,255,.03);border:1px solid var(--b);border-radius:8px;padding:.75rem;margin-bottom:.9rem;font-size:.75rem;color:rgba(255,255,255,.6);line-height:1.6" id="share-text">
-          ${GP_CURRENT.flag} Ma prédiction pour le ${GP_CURRENT.name} sur GridOracle 🤖%0A%0A${pred.map((d,i)=>`P${i+1} ${d.sn||'—'}`).join('%0A')}%0A%0ATu fais mieux que l'IA ? gridoracle.vercel.app
+      <!-- Boutons partage -->
+      <div style="display:flex;flex-direction:column;gap:.5rem">
+        ${navigator.share ? `<button id="sm-native" style="background:#e8001d;color:#fff;border:none;border-radius:9px;padding:.75rem;font-size:.85rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;width:100%">📤 Partager via mon téléphone</button>` : ''}
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
+          <button id="sm-tiktok" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:.65rem;font-size:.8rem;color:#fff;cursor:pointer;font-family:'Inter',sans-serif">🎵 TikTok</button>
+          <button id="sm-insta" style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:9px;padding:.65rem;font-size:.8rem;color:#fff;cursor:pointer;font-family:'Inter',sans-serif">📸 Instagram</button>
         </div>
+        <button id="sm-copy" style="background:rgba(232,0,29,.08);border:1px solid rgba(232,0,29,.25);border-radius:9px;padding:.65rem;font-size:.8rem;color:#e8001d;cursor:pointer;font-family:'Inter',sans-serif;width:100%">📋 Copier le texte</button>
+        <div id="sm-copied" style="text-align:center;font-size:.72rem;color:#4caf50;display:none">✓ Texte copié — colle-le dans ton appli préférée !</div>
+      </div>
+    </div>`;
 
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem">
-          <button onclick="shareTo('tiktok')" style="background:rgba(255,255,255,.05);border:1px solid var(--b);border-radius:8px;padding:.6rem;font-size:.75rem;color:#fff;cursor:pointer;font-family:var(--fb)">🎵 TikTok</button>
-          <button onclick="shareTo('instagram')" style="background:rgba(255,255,255,.05);border:1px solid var(--b);border-radius:8px;padding:.6rem;font-size:.75rem;color:#fff;cursor:pointer;font-family:var(--fb)">📸 Instagram</button>
-          <button onclick="shareTo('copy')" style="background:rgba(232,0,29,.1);border:1px solid rgba(232,0,29,.3);border-radius:8px;padding:.6rem;font-size:.75rem;color:var(--red);cursor:pointer;font-family:var(--fb)" id="copy-btn">📋 Copier</button>
-        </div>
-      </div>`;
-    document.body.appendChild(modal);
-    modal.addEventListener('click', e=>{ if(e.target===modal) modal.remove(); });
+  document.body.appendChild(modal);
+
+  // Fermeture
+  document.getElementById('sm-close').onclick = () => modal.remove();
+  modal.addEventListener('click', e => { if(e.target === modal) modal.remove(); });
+
+  // Partage natif (iOS/Android) — API Web Share
+  const nativeBtn = document.getElementById('sm-native');
+  if(nativeBtn){
+    nativeBtn.onclick = async () => {
+      try {
+        await navigator.share({ title: 'Ma prédiction GridOracle', text: shareText, url: 'https://gridoracle.vercel.app' });
+      } catch(e) {
+        // Annulé par l'utilisateur ou non supporté
+        if(e.name !== 'AbortError') copyShareText(shareText);
+      }
+    };
   }
 
-  document.getElementById('share-modal')?.remove();
-  setTimeout(()=> openShareModal(predArray), 10);
+  // TikTok
+  document.getElementById('sm-tiktok').onclick = () => {
+    copyShareText(shareText);
+    setTimeout(()=> { try{ window.location.href='tiktok://'; }catch(e){} }, 300);
+    showToast('📋 Texte copié — ouvre TikTok et colle-le !');
+  };
+
+  // Instagram
+  document.getElementById('sm-insta').onclick = () => {
+    copyShareText(shareText);
+    setTimeout(()=>{ try{ window.location.href='instagram://'; }catch(e){} }, 300);
+    showToast('📋 Texte copié — ouvre Instagram et colle-le !');
+  };
+
+  // Copier
+  document.getElementById('sm-copy').onclick = () => {
+    copyShareText(shareText);
+    const copied = document.getElementById('sm-copied');
+    if(copied){ copied.style.display='block'; setTimeout(()=> copied.style.display='none', 3000); }
+  };
+}
+
+function copyShareText(text){
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).catch(()=> fallbackCopy(text));
+  } else {
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text){
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;top:-999px;left:-999px;opacity:0';
+  document.body.appendChild(ta);
+  ta.focus(); ta.select();
+  try { document.execCommand('copy'); } catch(e) {}
+  document.body.removeChild(ta);
 }
 
 function shareTo(platform){
-  const myHandle = USER.handle || 'moi';
-  const pred = HP.pred.filter(Boolean).slice(0,5);
-  const text = `${GP_CURRENT.flag} Ma prédiction pour le ${GP_CURRENT.name} sur GridOracle 🤖\n\n${pred.map((d,i)=>`P${i+1} ${d.sn||'—'}`).join('\n')}\n\nTu fais mieux que l'IA ? gridoracle.vercel.app`;
-
-  if(platform==='copy'){
-    navigator.clipboard.writeText(text).then(()=>{
-      const btn = document.getElementById('copy-btn');
-      if(btn){ btn.textContent='✓ Copié !'; btn.style.color='#4caf50'; setTimeout(()=>{ btn.textContent='📋 Copier'; btn.style.color='var(--red)'; },2000); }
-    }).catch(()=>{ showToast('Copie manuelle : '+text); });
-    return;
-  }
-
-  const encoded = encodeURIComponent(text);
-  const url = platform==='tiktok'
-    ? `https://www.tiktok.com/upload?text=${encoded}`
-    : `https://www.instagram.com/`;
-  window.open(url, '_blank');
-  // Copier le texte aussi pour faciliter le collage dans Instagram
-  if(platform==='instagram'){
-    navigator.clipboard.writeText(text).catch(()=>{});
-    showToast('📋 Texte copié — colle-le dans Instagram !');
-  }
+  // Fallback legacy — redirige vers openShareModal
+  openShareModal(HP.pred.filter(Boolean));
 }
 /* ══ END PRÉDICTION SAUVEGARDE ══ */
 
@@ -3517,6 +3590,9 @@ function bootApp(profile) {
   applyRestoredPlan();
   setTimeout(animBars, 150);
   initHubDashboard();
+  // Charger prédiction sauvegardée depuis Redis
+  loadSavedPrediction();
+  if(isPredLocked()) setTimeout(lockPredUI, 500);
   // Activer plan post-onboarding si paiement fait avant profil
   const afterPlan = localStorage.getItem('go_after_onboarding_plan');
   const afterBilling = localStorage.getItem('go_after_onboarding_billing');
