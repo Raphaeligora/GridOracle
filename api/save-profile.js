@@ -37,8 +37,7 @@ export default async function handler(req) {
       createdAt: existingData?.createdAt || Date.now(),
       updatedAt: Date.now(),
     };
-
-    // Stocker proprement — valeur directe sans double sérialisation
+  // Stocker proprement — valeur directe sans double sérialisation
     await kvSet(profileKey, JSON.stringify(profile));
     await kvSet(`handle:${handle.toLowerCase()}`, emailKey);
     if (!existingData) {
