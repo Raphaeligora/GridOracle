@@ -165,6 +165,45 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 .hw-ccsv{font-family:var(--fh);font-size:.82rem;font-weight:700;color:var(--red);line-height:1}
 .hw-ccsl{font-size:.5rem;color:var(--g);text-transform:uppercase;letter-spacing:.06em;margin-top:1px}
 
+/* ══ CLASSEMENT JOUEURS ══ */
+.player-row{display:flex;align-items:center;gap:.7rem;padding:.55rem .6rem;border-radius:7px;border-bottom:1px solid rgba(255,255,255,.04);transition:background .2s;cursor:pointer}
+.player-row:hover{background:rgba(255,255,255,.04)}
+.player-row:last-child{border-bottom:none}
+.pl-rank{font-family:var(--fh);font-size:1rem;font-weight:700;min-width:28px;text-align:center}
+.pl-rank.r1{color:#FFD700}.pl-rank.r2{color:#C0C0C0}.pl-rank.r3{color:#CD7F32}.pl-rank.rx{color:rgba(255,255,255,.3)}
+.pl-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:.85rem;font-weight:700;flex-shrink:0;border:2px solid}
+.pl-info{flex:1;min-width:0}
+.pl-handle{font-size:.82rem;font-weight:600;color:#fff}
+.pl-meta{font-size:.65rem;color:var(--g);margin-top:.1rem}
+.pl-plan{font-size:.6rem;font-weight:700;padding:.1rem .45rem;border-radius:100px;margin-left:.35rem}
+.pl-plan-free{background:rgba(255,255,255,.06);color:rgba(255,255,255,.4)}
+.pl-plan-premium{background:rgba(232,0,29,.1);border:1px solid rgba(232,0,29,.25);color:var(--red)}
+.pl-plan-creator{background:rgba(255,200,0,.1);border:1px solid rgba(255,200,0,.25);color:var(--gold)}
+.pl-pts{font-family:var(--fh);font-size:1.1rem;font-weight:700;color:var(--red);min-width:52px;text-align:right}
+.pl-pts-lbl{font-size:.58rem;color:var(--g);text-align:right}
+.pl-arrow{font-size:.75rem;color:rgba(255,255,255,.2)}
+.pl-loading{display:flex;align-items:center;justify-content:center;gap:.6rem;padding:2rem;color:var(--g);font-size:.82rem}
+.pl-empty{text-align:center;padding:2rem;color:var(--g);font-size:.82rem}
+#player-modal{position:fixed;inset:0;z-index:9000;background:rgba(7,7,14,.88);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .25s}
+#player-modal.show{opacity:1;pointer-events:all}
+.pm-box{background:var(--card);border:1px solid rgba(255,255,255,.09);border-radius:16px;padding:1.6rem 1.5rem;max-width:380px;width:100%;animation:fadeUp .25s ease;position:relative}
+.pm-close{position:absolute;top:.9rem;right:1rem;background:transparent;border:none;color:rgba(255,255,255,.4);font-size:1.2rem;cursor:pointer;line-height:1}
+.pm-close:hover{color:#fff}
+.pm-top{display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem;padding-bottom:1rem;border-bottom:1px solid var(--b)}
+.pm-av{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:1.3rem;font-weight:700;flex-shrink:0;border:2px solid}
+.pm-name{font-family:var(--fh);font-size:1.15rem;font-weight:700}
+.pm-handle{font-size:.72rem;color:var(--g);margin-top:.15rem}
+.pm-plan-badge{display:inline-block;font-size:.62rem;font-weight:700;padding:.18rem .55rem;border-radius:100px;margin-top:.25rem}
+.pm-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin-bottom:1rem}
+.pm-stat{background:rgba(255,255,255,.025);border:1px solid var(--b);border-radius:7px;padding:.5rem .4rem;text-align:center}
+.pm-stat-v{font-family:var(--fh);font-size:1.2rem;font-weight:700;color:var(--red);line-height:1}
+.pm-stat-l{font-size:.55rem;color:var(--g);text-transform:uppercase;letter-spacing:.07em;margin-top:2px}
+.pm-team-driver{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.pm-td{background:rgba(255,255,255,.02);border:1px solid var(--b);border-radius:7px;padding:.5rem .6rem}
+.pm-td-lbl{font-size:.58rem;color:var(--g);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.25rem}
+.pm-td-val{font-size:.8rem;font-weight:600}
+.pm-joined{font-size:.65rem;color:rgba(255,255,255,.25);text-align:center;margin-top:.75rem}
+
 /* ══ PAGE PROCHAIN GP ══ */
 #pg-nextgp{background:var(--bg)}
 .ngp-wrap{max-width:1200px;margin:0 auto;padding:.9rem 1.2rem 3rem}
@@ -1544,10 +1583,11 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 <!-- ── PAGE: STANDINGS ── -->
 <div id="pg-standings" class="pg">
   <div class="stand-wrap">
-    <div style="margin-bottom:1.2rem"><span class="sec-lbl">Championnat 2026 · 7 GP joués</span><div class="sec-t">Classements officiels</div></div>
+    <div style="margin-bottom:1.2rem"><span class="sec-lbl">Championnat 2026 · 9 GP joués</span><div class="sec-t">Classements officiels</div></div>
     <div class="tabs" style="background:var(--card);border:1px solid var(--b);border-radius:12px 12px 0 0;overflow:hidden;margin-bottom:0">
       <div class="tab on" onclick="standTab('wdc',this)">🏎️ Pilotes (WDC)</div>
       <div class="tab" onclick="standTab('wcc',this)">🏭 Constructeurs (WCC)</div>
+      <div class="tab" onclick="standTab('players',this)">👥 Joueurs GridOracle</div>
     </div>
     <div class="card" style="border-radius:0 0 12px 12px;border-top:none">
       <div style="padding:.5rem" id="stand-body"></div>
@@ -1848,6 +1888,31 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
   <div class="bn-tab" data-page="creator" onclick="navTo('creator')"><div class="bn-ico">🎙️</div><div class="bn-lbl">Creator</div></div>
   <div class="bn-tab" data-page="nextgp" onclick="navTo('nextgp')"><div class="bn-ico">🗓️</div><div class="bn-lbl">Prochain GP</div></div>
 </nav>
+
+<!-- ── MODALE PROFIL JOUEUR ── -->
+<div id="player-modal">
+  <div class="pm-box">
+    <button class="pm-close" onclick="closePlayerModal()">✕</button>
+    <div class="pm-top">
+      <div class="pm-av" id="pm-av"></div>
+      <div>
+        <div class="pm-name" id="pm-name"></div>
+        <div class="pm-handle" id="pm-handle"></div>
+        <div class="pm-plan-badge" id="pm-plan-badge"></div>
+      </div>
+    </div>
+    <div class="pm-stats">
+      <div class="pm-stat"><div class="pm-stat-v" id="pm-pts">0</div><div class="pm-stat-l">Points</div></div>
+      <div class="pm-stat"><div class="pm-stat-v" id="pm-rank">#—</div><div class="pm-stat-l">Rang</div></div>
+      <div class="pm-stat"><div class="pm-stat-v" id="pm-gps">0</div><div class="pm-stat-l">GPs joués</div></div>
+    </div>
+    <div class="pm-team-driver">
+      <div class="pm-td"><div class="pm-td-lbl">Équipe favorite</div><div class="pm-td-val" id="pm-team">—</div></div>
+      <div class="pm-td"><div class="pm-td-lbl">Pilote favori</div><div class="pm-td-val" id="pm-driver">—</div></div>
+    </div>
+    <div class="pm-joined" id="pm-joined"></div>
+  </div>
+</div>
 
 <!-- ── PAGE: PROCHAIN GP ── -->
 <div id="pg-nextgp" class="pg">
@@ -2400,10 +2465,9 @@ const AI_DATA=[
 const AI5=AI_DATA.slice(0,5).map(d=>d.sn);
 const AI10=AI_DATA.map(d=>d.sn);
 
-const LEAGUE_DATA={
-  l:[{r:1,h:'gridchampion',pts:521,t:'up'},{r:2,h:'racemaster99',pts:489,t:'eq'},{r:3,h:'f1oracle',pts:461,t:'dn'},{r:4,h:'griduser',pts:412,t:'up',me:true},{r:5,h:'norbertofan',pts:398,t:'eq'}],
-  m:[{r:1,h:'grandprixking',pts:689,t:'up'},{r:2,h:'f1master2026',pts:654,t:'eq'},{r:3,h:'speedster99',pts:631,t:'dn'},{r:2847,h:'griduser',pts:412,t:'up',me:true}]
-};
+// LEAGUE_DATA chargé dynamiquement depuis Redis — voir buildLeague()
+let LEAGUE_DATA = { l: [], m: [] };
+let _leagueLoaded = false;
 
 const PRED_HISTORY=[
   {gp:'Barcelone',flag:'🇪🇸',pts:71,acc:'82%',myP1:'Hamilton',real:'Hamilton ✅'},
@@ -2822,20 +2886,85 @@ function hSubmit(){doSubmit(HP,'hpb','hbs')}
 function pSubmit(){doSubmit(PP,'ppb','pbs')}
 
 /* ── LEAGUE TABLE ── */
-function buildLeague(){renderLeagueIn('hlc','l');renderLeagueIn('llc','l')}
+async function buildLeague(){
+  // Afficher un état de chargement
+  ['hlc','llc'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.innerHTML='<div style="padding:.8rem;text-align:center;color:var(--g);font-size:.78rem"><div class="spinner" style="width:14px;height:14px;margin:0 auto .4rem"></div>Chargement…</div>';
+  });
+
+  if(_leagueLoaded){ renderLeagueIn('hlc','l'); renderLeagueIn('llc','l'); return; }
+
+  try {
+    const res = await fetch('/api/list-users');
+    if(!res.ok) throw new Error('API '+res.status);
+    const data = await res.json();
+    const users = data.users || [];
+    const myHandle = (USER && USER.handle) ? USER.handle.toLowerCase() : '';
+
+    // Construire LEAGUE_DATA depuis les vrais utilisateurs
+    // Trier par points décroissants, assigner rangs
+    const sorted = [...users].sort((a,b)=>(b.points||0)-(a.points||0));
+    LEAGUE_DATA.l = sorted.map((u,i)=>({
+      r: i+1,
+      h: u.handle,
+      pts: u.points||0,
+      t: 'eq', // pas de tendance pour l'instant
+      me: u.handle.toLowerCase()===myHandle,
+      tc: u.tc||'#e8001d',
+      plan: u.plan||'free'
+    }));
+    LEAGUE_DATA.m = LEAGUE_DATA.l; // même liste pour mondial pour l'instant
+
+    _leagueLoaded = true;
+    renderLeagueIn('hlc','l');
+    renderLeagueIn('llc','l');
+  } catch(e) {
+    ['hlc','llc'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el) el.innerHTML='<div style="padding:.8rem;text-align:center;color:var(--g);font-size:.78rem">Impossible de charger le classement.</div>';
+    });
+  }
+}
 function renderLeagueIn(cid,type){
   const c=document.getElementById(cid);if(!c)return;
+  const data=LEAGUE_DATA[type];
+  if(!data||data.length===0){
+    c.innerHTML='<div style="padding:.9rem;text-align:center;color:var(--g);font-size:.78rem">Aucun joueur inscrit pour l\'instant.</div>';
+    return;
+  }
   const rc=r=>r.r===1?'r1':r.r===2?'r2':r.r===3?'r3':r.me?'rm':'rx';
-  c.innerHTML=LEAGUE_DATA[type].map(r=>`<div class="lcr ${r.me?'me':''}"><div class="lrank ${rc(r)}">${r.r}</div><div class="lhdl">${r.me?`<span style="color:var(--red)">@</span>`:'@'}${r.h}</div><div class="lpts">${r.pts}</div><div class="ltrd ${r.t==='up'?'tu':r.t==='dn'?'tdn':'teq'}">${r.t==='up'?'↑':r.t==='dn'?'↓':'—'}</div></div>`).join('');
+  const planBadge=r=>{
+    if(r.plan==='creator') return `<span style="font-size:.55rem;font-weight:700;background:rgba(255,200,0,.1);border:1px solid rgba(255,200,0,.25);color:var(--gold);border-radius:100px;padding:1px 5px;margin-left:.3rem">Creator</span>`;
+    if(r.plan==='premium') return `<span style="font-size:.55rem;font-weight:700;background:rgba(232,0,29,.1);border:1px solid rgba(232,0,29,.25);color:var(--red);border-radius:100px;padding:1px 5px;margin-left:.3rem">Premium</span>`;
+    return '';
+  };
+  c.innerHTML=data.map(r=>`<div class="lcr ${r.me?'me':''}">
+    <div class="lrank ${rc(r)}">${r.r===1?'🥇':r.r===2?'🥈':r.r===3?'🥉':r.r}</div>
+    <div class="lhdl" style="display:flex;align-items:center;gap:.2rem;flex-wrap:wrap">
+      ${r.me?`<span style="color:var(--red)">@</span>`:'@'}${r.h}${planBadge(r)}
+    </div>
+    <div class="lpts">${r.pts}</div>
+    <div class="ltrd ${r.t==='up'?'tu':r.t==='dn'?'tdn':'teq'}">${r.t==='up'?'↑':r.t==='dn'?'↓':'—'}</div>
+  </div>`).join('');
 }
 function hTab(type,el){document.querySelectorAll('.tabs .tab').forEach(t=>t.classList.remove('on'));el.classList.add('on');renderLeagueIn('hlc',type);renderLeagueIn('llc',type)}
 
 /* ── STANDINGS ── */
 function buildStandings(){standTab('wdc',document.querySelector('#pg-standings .tab.on'))}
-function standTab(type,el){
+
+let _playersCache = null;
+let _playersLoading = false;
+
+function standTab(tab, el){
   if(el){document.querySelectorAll('#pg-standings .tab').forEach(t=>t.classList.remove('on'));el.classList.add('on')}
-  const c=document.getElementById('stand-body');if(!c)return;
-  if(type==='wdc'){
+  const c = document.getElementById('stand-body');
+  if(!c) return;
+  if(tab === 'players'){
+    buildPlayersTab(c);
+    return;
+  }
+  if(tab==='wdc'){
     const sorted=[...DRIVERS].sort((a,b)=>a.wdcPos-b.wdcPos);const leader=sorted[0]?.wdcPts||0;
     c.innerHTML=sorted.map(dr=>{const pc=dr.wdcPos===1?'r1':dr.wdcPos===2?'r2':dr.wdcPos===3?'r3':'rx';const init=(dr.fn[0]||'')+(dr.sn[0]||'');const tn=TEAMS.find(t=>t.id===dr.t);return`<div class="stand-row"><div class="st-pos ${pc}">${dr.wdcPos}</div><div class="st-photo" style="border-color:${dr.tc};background:${dr.tc}18"><img src="${dr.img}" alt="${dr.sn}" onerror="this.parentNode.innerHTML='<span style=color:${dr.tc}>${init}</span>'"></div><div class="st-info"><div class="st-name">${dr.fn} ${dr.sn}</div><div class="st-team"><span class="atd" style="background:${dr.tc}"></span>${tn?.name||''}</div></div><div class="st-pts">${dr.wdcPts}</div><div class="st-gap">${dr.wdcPos===1?'LEADER':'-'+(leader-dr.wdcPts)+' pts'}</div></div>`}).join('');
   }else{
@@ -2843,6 +2972,99 @@ function standTab(type,el){
     c.innerHTML=sorted.map(t=>{const pc=t.wccPos===1?'r1':t.wccPos===2?'r2':t.wccPos===3?'r3':'rx';return`<div class="stand-row"><div class="st-pos ${pc}">${t.wccPos}</div><div class="st-photo" style="border-color:${t.color}40;background:${t.color}18;font-family:'Rajdhani',sans-serif;font-size:.75rem;font-weight:700;color:${t.color}">${t.abr}</div><div class="st-info"><div class="st-name">${t.name}</div><div class="st-team">${t.eng} Engine · ${t.d.join(' / ')}</div></div><div class="st-pts">${t.wccPts}</div><div class="st-gap">${t.wccPos===1?'LEADER':'-'+(leader-t.wccPts)+' pts'}</div></div>`}).join('');
   }
 }
+
+async function buildPlayersTab(container){
+  // Afficher loading
+  container.innerHTML = '<div class="pl-loading"><div class="spinner"></div> Chargement des joueurs…</div>';
+
+  // Utiliser le cache si dispo
+  if(_playersCache){
+    renderPlayersTab(container, _playersCache);
+    return;
+  }
+  if(_playersLoading) return;
+  _playersLoading = true;
+
+  try {
+    const res = await fetch('/api/list-users');
+    if(!res.ok) throw new Error('API error '+res.status);
+    const data = await res.json();
+    _playersCache = data.users || [];
+    _playersLoading = false;
+    renderPlayersTab(container, _playersCache);
+  } catch(e) {
+    _playersLoading = false;
+    container.innerHTML = '<div class="pl-empty">Impossible de charger les joueurs.<br><small>Vérifie ta connexion et réessaie.</small></div>';
+  }
+}
+
+function renderPlayersTab(container, users){
+  if(!users || users.length === 0){
+    container.innerHTML = '<div class="pl-empty">Aucun joueur inscrit pour l\'instant.<br>Sois le premier à rejoindre GridOracle !</div>';
+    return;
+  }
+  const myHandle = (USER && USER.handle) ? USER.handle.toLowerCase() : '';
+  container.innerHTML = users.map((u, i) => {
+    const rank = i + 1;
+    const rankClass = rank===1?'r1':rank===2?'r2':rank===3?'r3':'rx';
+    const initials = ((u.fn||'')[0]||(u.handle||'')[0]||'?').toUpperCase();
+    const tc = u.tc || '#e8001d';
+    const planLabel = u.plan==='creator'?'Creator':u.plan==='premium'?'Premium':'Free';
+    const planClass = 'pl-plan pl-plan-'+u.plan;
+    const team = (typeof TEAMS !== 'undefined') ? TEAMS.find(t=>t.id===u.teamId) : null;
+    const isMe = u.handle.toLowerCase() === myHandle;
+    return `<div class="player-row${isMe?' player-row-me':''}" onclick="openPlayerModal(${JSON.stringify(u).replace(/"/g,'&quot;')},${rank})">
+      <div class="pl-rank ${rankClass}">${rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':rank}</div>
+      <div class="pl-avatar" style="border-color:${tc};color:${tc};background:${tc}18">${initials}</div>
+      <div class="pl-info">
+        <div class="pl-handle">@${u.handle}${isMe?' <span style="font-size:.6rem;color:var(--g)">(moi)</span>':''}<span class="${planClass}">${planLabel}</span></div>
+        <div class="pl-meta">${team?team.name:'Aucune équipe'} · ${u.gpsPlayed||0} GP joué${(u.gpsPlayed||0)>1?'s':''}</div>
+      </div>
+      <div>
+        <div class="pl-pts">${u.points||0}</div>
+        <div class="pl-pts-lbl">pts</div>
+      </div>
+      <div class="pl-arrow">›</div>
+    </div>`;
+  }).join('');
+}
+
+function openPlayerModal(u, rank){
+  const tc = u.tc || '#e8001d';
+  const initials = ((u.fn||'')[0]||(u.handle||'')[0]||'?').toUpperCase() + ((u.ln||'')[0]||'').toUpperCase();
+  const team   = (typeof TEAMS   !== 'undefined') ? TEAMS.find(t=>t.id===u.teamId)    : null;
+  const driver = (typeof DRIVERS !== 'undefined') ? DRIVERS.find(d=>d.sn===u.driverSn) : null;
+  const planLabel = u.plan==='creator'?'Creator':u.plan==='premium'?'Premium':'Free';
+  const planColor = u.plan==='creator'?'var(--gold)':u.plan==='premium'?'var(--red)':'rgba(255,255,255,.4)';
+  const planBg    = u.plan==='creator'?'rgba(255,200,0,.1)':u.plan==='premium'?'rgba(232,0,29,.1)':'rgba(255,255,255,.06)';
+
+  document.getElementById('pm-av').textContent = initials;
+  document.getElementById('pm-av').style.cssText = `border-color:${tc};color:${tc};background:${tc}18;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:1.3rem;font-weight:700;flex-shrink:0;border:2px solid`;
+  document.getElementById('pm-name').textContent = u.fn ? `${u.fn} ${u.ln}`.trim() : u.handle;
+  document.getElementById('pm-handle').textContent = '@'+u.handle;
+  document.getElementById('pm-plan-badge').textContent = planLabel;
+  document.getElementById('pm-plan-badge').style.cssText = `background:${planBg};color:${planColor};display:inline-block;font-size:.62rem;font-weight:700;padding:.18rem .55rem;border-radius:100px;margin-top:.25rem`;
+  document.getElementById('pm-pts').textContent = u.points||0;
+  document.getElementById('pm-rank').textContent = '#'+rank;
+  document.getElementById('pm-gps').textContent = u.gpsPlayed||0;
+  document.getElementById('pm-team').textContent = team ? team.name : '—';
+  document.getElementById('pm-team').style.color = team ? team.color : 'rgba(255,255,255,.4)';
+  document.getElementById('pm-driver').textContent = driver ? '#'+driver.n+' '+driver.sn : '—';
+  document.getElementById('pm-driver').style.color = driver ? driver.tc : 'rgba(255,255,255,.4)';
+  const joined = u.createdAt ? new Date(u.createdAt).toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'}) : '—';
+  document.getElementById('pm-joined').textContent = 'Inscrit le '+joined;
+
+  document.getElementById('player-modal').classList.add('show');
+}
+
+function closePlayerModal(){
+  document.getElementById('player-modal').classList.remove('show');
+}
+
+// Fermer la modale en cliquant sur le fond
+document.getElementById('player-modal')?.addEventListener('click', function(e){
+  if(e.target === this) closePlayerModal();
+});
 
 /* ── HISTORY ── */
 function buildHistory(){
