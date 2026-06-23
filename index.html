@@ -2580,6 +2580,9 @@ function goApp(){
   applyRestoredPlan();
   setTimeout(animBars,150);
   initHubDashboard();
+  // Charger prédiction sauvegardée + vérifier deadline qualifs
+  loadSavedPrediction();
+  if(isPredLocked()) setTimeout(lockPredUI, 500);
   // ── ACTIVATE PLAN IF USER PAID BEFORE COMPLETING ONBOARDING ──
   const afterPlan = localStorage.getItem('go_after_onboarding_plan');
   const afterBilling = localStorage.getItem('go_after_onboarding_billing');
@@ -2876,14 +2879,269 @@ function hCopy(){HP.pred=hasFullAccess()?AI10.slice():AI5.slice();HP.opk=-1;hRen
 function pCopy(){PP.pred=hasFullAccess()?AI10.slice():AI5.slice();PP.opk=-1;pRender()}
 function hReset(){HP.pred=new Array(10).fill(null);HP.opk=-1;hRender()}
 function pReset(){PP.pred=new Array(10).fill(null);PP.opk=-1;pRender()}
-function doSubmit(inst,badgeId,btnId){
-  if(inst.pred.filter(Boolean).length<5)return;inst.sub=true;inst.opk=-1;renderPred(inst);
-  const pb=document.getElementById(badgeId);if(pb){pb.className='pred-status st-done';pb.textContent='✓ Soumise'}
-  const bs=document.getElementById(btnId);if(bs){bs.disabled=false;bs.className='bsub done';bs.textContent='✓ Prédiction verrouillée · GP Autriche'}
-  showToast('🏁 Prédiction GP Autriche verrouillée !');
+/* ══ PRÉDICTION — SAUVEGARDE REDIS + PARTAGE ══ */
+
+const GP_CURRENT = { id: 'austria-2026', name: 'GP Autriche 2026', flag: '🇦🇹' };
+// Deadline qualifs : samedi 27 juin 2026 à 15h45 Paris
+const QUALI_DEADLINE_TS = new Date('2026-06-27T13:45:00Z').getTime();
+
+function isPredLocked(){ return Date.now() >= QUALI_DEADLINE_TS; }
+
+// Sauvegarde dans Redis via l'API
+async function savePredToCloud(predArray){
+  const profile = JSON.parse(localStorage.getItem('go_profile') || '{}');
+  const email   = profile.email || localStorage.getItem('go_email') || '';
+  const handle  = profile.handle || USER.handle || '';
+  if (!email) return { success: false, reason: 'no_email' };
+
+  try {
+    const res = await fetch('/api/save-prediction', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email,
+        handle,
+        gpId:       GP_CURRENT.id,
+        gpName:     GP_CURRENT.name,
+        prediction: predArray.filter(Boolean).map(d => ({
+          sn: d.sn, n: d.n, tc: d.tc, t: d.t, pct: d.pct
+        }))
+      })
+    });
+    const data = await res.json();
+    if (data.locked) return { success: false, reason: 'locked' };
+    return { success: data.success || false };
+  } catch(e) {
+    return { success: false, reason: 'network' };
+  }
 }
-function hSubmit(){doSubmit(HP,'hpb','hbs')}
-function pSubmit(){doSubmit(PP,'ppb','pbs')}
+
+// Charger la prédiction sauvegardée depuis Redis au démarrage
+async function loadSavedPrediction(){
+  const profile = JSON.parse(localStorage.getItem('go_profile') || '{}');
+  const email   = profile.email || '';
+  if (!email) return;
+
+  // D'abord restaurer depuis localStorage (instantané)
+  const local = localStorage.getItem(`go_pred_${GP_CURRENT.id}`);
+  if (local) {
+    try {
+      const saved = JSON.parse(local);
+      if (saved && saved.length) {
+        HP.pred = [...saved, ...new Array(Math.max(0, 10-saved.length)).fill(null)];
+        PP.pred = [...HP.pred];
+        hRender(); pRender();
+      }
+    } catch(e) {}
+  }
+
+  // Puis vérifier si une version plus récente existe dans Redis
+  try {
+    const res = await fetch(`/api/save-prediction?email=${encodeURIComponent(email)}&gp=${GP_CURRENT.id}`);
+    const data = await res.json();
+    if (data.found && data.prediction && data.prediction.prediction) {
+      const cloudPred = data.prediction.prediction;
+      // Reconstruire les objets pilotes complets depuis les handles
+      const fullPred = cloudPred.map(p => DRIVERS.find(d => d.sn === p.sn) || p);
+      HP.pred = [...fullPred, ...new Array(Math.max(0, 10-fullPred.length)).fill(null)];
+      PP.pred = [...HP.pred];
+      hRender(); pRender();
+      // Mettre à jour le localStorage
+      localStorage.setItem(`go_pred_${GP_CURRENT.id}`, JSON.stringify(fullPred));
+      // Si les qualifs ont commencé → verrouiller l'UI
+      if (data.locked) lockPredUI();
+    }
+  } catch(e) {}
+}
+
+function lockPredUI(){
+  ['hbs','pbs'].forEach(id=>{
+    const btn = document.getElementById(id);
+    if(btn){ btn.disabled=true; btn.className='bsub done'; btn.textContent='🔒 Prédiction verrouillée — Qualifs en cours'; }
+  });
+  ['hpb','ppb'].forEach(id=>{
+    const pb = document.getElementById(id);
+    if(pb){ pb.className='pred-status st-done'; pb.textContent='🔒 Verrouillée'; }
+  });
+}
+
+async function doSubmit(inst, badgeId, btnId){
+  const filled = inst.pred.filter(Boolean);
+  if(filled.length < 5) return;
+
+  // Vérifier deadline
+  if(isPredLocked()){
+    showToast('🔒 Les prédictions sont fermées — qualifs commencées');
+    lockPredUI();
+    return;
+  }
+
+  inst.sub  = true;
+  inst.opk  = -1;
+  renderPred(inst);
+
+  // Sauvegarder en localStorage immédiatement
+  localStorage.setItem(`go_pred_${GP_CURRENT.id}`, JSON.stringify(filled));
+
+  // UI feedback immédiat
+  const pb = document.getElementById(badgeId);
+  if(pb){ pb.className='pred-status st-open'; pb.textContent='💾 Sauvegarde…'; }
+  const bs = document.getElementById(btnId);
+  if(bs){ bs.disabled=true; bs.textContent='💾 Sauvegarde en cours…'; }
+
+  // Sauvegarder dans Redis
+  const result = await savePredToCloud(inst.pred);
+
+  if(result.success){
+    if(pb){ pb.className='pred-status st-done'; pb.textContent='✓ Sauvegardée'; }
+    if(bs){
+      bs.disabled=false;
+      bs.className='bsub done';
+      bs.innerHTML='✓ Prédiction sauvegardée · <span style="opacity:.7;font-size:.8em">Modifier jusqu\'aux qualifs</span>';
+      bs.onclick = () => unlockPredEdit(inst, badgeId, btnId);
+    }
+    showToast('🏁 Prédiction sauvegardée dans GridOracle !');
+    // Afficher le bouton de partage
+    showShareButton(inst.pred.filter(Boolean));
+  } else if(result.reason === 'locked'){
+    showToast('🔒 Prédictions fermées — qualifs commencées');
+    lockPredUI();
+  } else {
+    // Erreur réseau — garder en localStorage
+    if(pb){ pb.className='pred-status st-done'; pb.textContent='✓ Locale'; }
+    if(bs){ bs.disabled=false; bs.className='bsub done'; bs.textContent='✓ Sauvegardée localement'; }
+    showToast('⚠️ Sauvegardée localement — sera synchronisée à la reconnexion');
+  }
+}
+
+// Permettre modification après soumission
+function unlockPredEdit(inst, badgeId, btnId){
+  if(isPredLocked()){ showToast('🔒 Les qualifications ont commencé — prédiction verrouillée définitivement'); return; }
+  inst.sub = false;
+  renderPred(inst);
+  const pb = document.getElementById(badgeId);
+  if(pb){ pb.className='pred-status st-open'; pb.textContent='En cours de modification'; }
+  const bs = document.getElementById(btnId);
+  if(bs){
+    bs.disabled=false;
+    bs.className='bsub';
+    bs.textContent='🏁 Sauvegarder ma prédiction';
+    bs.onclick = () => (btnId==='hbs' ? hSubmit() : pSubmit());
+  }
+  // Cacher le bouton partage pendant la modification
+  ['pred-share-btn-h','pred-share-btn-p'].forEach(id=>{
+    const el = document.getElementById(id);
+    if(el) el.style.display='none';
+  });
+  showToast('✏️ Tu peux modifier ta prédiction jusqu\'aux qualifs');
+}
+
+function hSubmit(){ doSubmit(HP,'hpb','hbs') }
+function pSubmit(){ doSubmit(PP,'ppb','pbs') }
+
+/* ── CARTE DE PARTAGE ── */
+function showShareButton(predArray){
+  ['pred-share-btn-h','pred-share-btn-p'].forEach(id=>{
+    let btn = document.getElementById(id);
+    if(!btn){
+      // Créer le bouton si absent
+      const container = id.includes('-h')
+        ? document.querySelector('#pg-home .p-foot')
+        : document.querySelector('#pg-prediction .p-foot');
+      if(!container) return;
+      btn = document.createElement('button');
+      btn.id = id;
+      btn.className = 'btn-o';
+      btn.style.cssText='width:100%;margin-top:.5rem;display:flex;align-items:center;justify-content:center;gap:.4rem';
+      container.appendChild(btn);
+    }
+    btn.innerHTML='📤 Partager ma prédiction';
+    btn.style.display='flex';
+    btn.onclick = () => openShareModal(predArray);
+  });
+}
+
+function openShareModal(predArray){
+  // Générer la carte de partage
+  const pred = predArray.filter(Boolean).slice(0,5);
+  const myHandle = USER.handle || 'moi';
+  const canvas = document.getElementById('share-canvas');
+
+  if(!canvas){
+    // Créer le modal de partage
+    const modal = document.createElement('div');
+    modal.id = 'share-modal';
+    modal.style.cssText='position:fixed;inset:0;z-index:9500;background:rgba(7,7,14,.92);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:1rem';
+    modal.innerHTML = `
+      <div style="background:var(--card);border:1px solid rgba(232,0,29,.2);border-radius:16px;padding:1.5rem;max-width:420px;width:100%;position:relative">
+        <button onclick="document.getElementById('share-modal').remove()" style="position:absolute;top:.9rem;right:1rem;background:transparent;border:none;color:rgba(255,255,255,.4);font-size:1.2rem;cursor:pointer">✕</button>
+        <div style="font-family:var(--fh);font-size:1rem;font-weight:700;letter-spacing:.1em;color:var(--red);margin-bottom:1rem">📤 PARTAGER MA PRÉDICTION</div>
+
+        <!-- Carte de partage -->
+        <div id="share-card" style="background:linear-gradient(135deg,#07070e,#0e0e1c);border:1px solid rgba(232,0,29,.25);border-radius:12px;padding:1.1rem;margin-bottom:1rem;position:relative;overflow:hidden">
+          <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(232,0,29,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(232,0,29,.02) 1px,transparent 1px);background-size:20px 20px"></div>
+          <div style="position:relative;z-index:1">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem">
+              <div style="font-family:var(--fh);font-size:1.1rem;font-weight:700;letter-spacing:.12em">GRID<span style="color:var(--red)">ORACLE</span></div>
+              <div style="font-size:.65rem;color:rgba(255,255,255,.4);letter-spacing:.1em;text-transform:uppercase">${GP_CURRENT.flag} ${GP_CURRENT.name}</div>
+            </div>
+            <div style="font-size:.68rem;color:rgba(255,255,255,.4);margin-bottom:.55rem;letter-spacing:.08em">MA PRÉDICTION · @${myHandle}</div>
+            ${pred.map((d,i)=>{
+              const colors=['#FFD700','#C0C0C0','#CD7F32','rgba(255,255,255,.5)','rgba(255,255,255,.4)'];
+              return `<div style="display:flex;align-items:center;gap:.55rem;padding:.28rem 0;border-bottom:1px solid rgba(255,255,255,.04)">
+                <div style="font-family:'Rajdhani',sans-serif;font-size:.9rem;font-weight:700;color:${colors[i]};min-width:20px">P${i+1}</div>
+                <div style="font-size:.82rem;font-weight:600;color:#fff;flex:1">${d.sn||d.h||'—'}</div>
+                <div style="width:8px;height:8px;border-radius:50%;background:${d.tc||'#e8001d'};flex-shrink:0"></div>
+              </div>`;
+            }).join('')}
+            <div style="margin-top:.65rem;font-size:.58rem;color:rgba(255,255,255,.25);text-align:center;letter-spacing:.08em">L\'IA PRÉDIT. TOI TU DÉFIES. · gridoracle.vercel.app</div>
+          </div>
+        </div>
+
+        <!-- Texte à copier -->
+        <div style="background:rgba(255,255,255,.03);border:1px solid var(--b);border-radius:8px;padding:.75rem;margin-bottom:.9rem;font-size:.75rem;color:rgba(255,255,255,.6);line-height:1.6" id="share-text">
+          ${GP_CURRENT.flag} Ma prédiction pour le ${GP_CURRENT.name} sur GridOracle 🤖%0A%0A${pred.map((d,i)=>`P${i+1} ${d.sn||'—'}`).join('%0A')}%0A%0ATu fais mieux que l'IA ? gridoracle.vercel.app
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.5rem">
+          <button onclick="shareTo('tiktok')" style="background:rgba(255,255,255,.05);border:1px solid var(--b);border-radius:8px;padding:.6rem;font-size:.75rem;color:#fff;cursor:pointer;font-family:var(--fb)">🎵 TikTok</button>
+          <button onclick="shareTo('instagram')" style="background:rgba(255,255,255,.05);border:1px solid var(--b);border-radius:8px;padding:.6rem;font-size:.75rem;color:#fff;cursor:pointer;font-family:var(--fb)">📸 Instagram</button>
+          <button onclick="shareTo('copy')" style="background:rgba(232,0,29,.1);border:1px solid rgba(232,0,29,.3);border-radius:8px;padding:.6rem;font-size:.75rem;color:var(--red);cursor:pointer;font-family:var(--fb)" id="copy-btn">📋 Copier</button>
+        </div>
+      </div>`;
+    document.body.appendChild(modal);
+    modal.addEventListener('click', e=>{ if(e.target===modal) modal.remove(); });
+  }
+
+  document.getElementById('share-modal')?.remove();
+  setTimeout(()=> openShareModal(predArray), 10);
+}
+
+function shareTo(platform){
+  const myHandle = USER.handle || 'moi';
+  const pred = HP.pred.filter(Boolean).slice(0,5);
+  const text = `${GP_CURRENT.flag} Ma prédiction pour le ${GP_CURRENT.name} sur GridOracle 🤖\n\n${pred.map((d,i)=>`P${i+1} ${d.sn||'—'}`).join('\n')}\n\nTu fais mieux que l'IA ? gridoracle.vercel.app`;
+
+  if(platform==='copy'){
+    navigator.clipboard.writeText(text).then(()=>{
+      const btn = document.getElementById('copy-btn');
+      if(btn){ btn.textContent='✓ Copié !'; btn.style.color='#4caf50'; setTimeout(()=>{ btn.textContent='📋 Copier'; btn.style.color='var(--red)'; },2000); }
+    }).catch(()=>{ showToast('Copie manuelle : '+text); });
+    return;
+  }
+
+  const encoded = encodeURIComponent(text);
+  const url = platform==='tiktok'
+    ? `https://www.tiktok.com/upload?text=${encoded}`
+    : `https://www.instagram.com/`;
+  window.open(url, '_blank');
+  // Copier le texte aussi pour faciliter le collage dans Instagram
+  if(platform==='instagram'){
+    navigator.clipboard.writeText(text).catch(()=>{});
+    showToast('📋 Texte copié — colle-le dans Instagram !');
+  }
+}
+/* ══ END PRÉDICTION SAUVEGARDE ══ */
 
 /* ── LEAGUE TABLE ── */
 async function buildLeague(){
