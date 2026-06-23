@@ -6,7 +6,7 @@ export default async function handler(req) {
 
   // Sécurité — appelle avec ?secret=TON_MOT_DE_PASSE
   const { searchParams } = new URL(req.url);
-  if (searchParams.get('secret') !== process.env.SYNC_SECRET) {
+  if (searchParams.get('secret') !== 'Gridoracle2026igr') {
     return new Response(JSON.stringify({ error: 'Non autorisé' }), { status: 401, headers });
   }
 
