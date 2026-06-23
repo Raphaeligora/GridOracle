@@ -134,6 +134,228 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 .home-left{display:flex;flex-direction:column;gap:.85rem}
 .home-right{display:flex;flex-direction:column;gap:.85rem}
 
+
+/* ══ DASHBOARD COCKPIT HOME ══ */
+.hw-dash{display:grid;grid-template-columns:130px 1fr;align-items:start}
+.hw-sidebar{background:rgba(9,9,18,.98);border-right:1px solid var(--b);padding:.85rem .75rem;display:flex;flex-direction:column;gap:.5rem;position:sticky;top:108px;max-height:calc(100vh - 110px);overflow-y:auto}
+.hws-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,rgba(232,0,29,.18),rgba(7,7,14,0));border:2px solid rgba(232,0,29,.42);display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--red);margin:0 auto .2rem}
+.hws-name{font-family:var(--fh);font-size:.75rem;font-weight:700;text-align:center}
+.hws-handle{font-size:.58rem;color:var(--g);text-align:center;margin-bottom:.25rem}
+.hws-badge{border-radius:5px;padding:.3rem .45rem;text-align:center;margin-bottom:.1rem}
+.hws-badge-blue{background:rgba(30,58,138,.1);border:1px solid rgba(30,58,138,.22)}
+.hws-badge-dark{background:rgba(255,255,255,.025);border:1px solid var(--b)}
+.hws-bl{font-size:.52rem;color:var(--g);margin-bottom:.1rem;text-transform:uppercase;letter-spacing:.06em}
+.hws-bv{font-size:.72rem;font-weight:700}
+.hws-stats{display:grid;grid-template-columns:1fr 1fr;gap:2px;margin:.15rem 0}
+.hws-sc{background:rgba(255,255,255,.025);border:1px solid var(--b);border-radius:4px;padding:.32rem .38rem;text-align:center}
+.hws-sv{font-family:var(--fh);font-size:1rem;font-weight:700;color:var(--red);line-height:1}
+.hws-sl{font-size:.52rem;color:var(--g);text-transform:uppercase;letter-spacing:.06em;margin-top:1px}
+.hws-plan{margin-top:auto;background:rgba(232,0,29,.05);border:1px solid rgba(232,0,29,.15);border-radius:5px;padding:.45rem .5rem;text-align:center}
+.hws-pv{font-size:.78rem;font-weight:700;color:var(--red);margin:.15rem 0 .3rem}
+.hws-up{width:100%;background:var(--red);color:#fff;border:none;border-radius:3px;padding:.28rem;font-size:.62rem;font-weight:600;cursor:pointer;font-family:var(--fb)}
+.hws-up:hover{background:var(--rd)}
+.hw-main{padding:.85rem .9rem;display:flex;flex-direction:column;gap:.65rem;min-width:0}
+.hw-chips-row{display:grid;grid-template-columns:repeat(4,1fr);gap:.48rem;margin-bottom:.0rem}
+.hw-chip{border-radius:7px;padding:.5rem .55rem}
+.hw-middle{display:grid;grid-template-columns:1fr 1.05fr;gap:.6rem;align-items:stretch}
+.hw-circuit-card{background:var(--card);border:1px solid rgba(232,0,29,.13);border-radius:8px;padding:.55rem .7rem;display:flex;flex-direction:column;justify-content:space-between}
+.hw-cc-title{font-size:.52rem;color:var(--g);letter-spacing:.12em;text-transform:uppercase;text-align:center;margin-bottom:.35rem}
+.hw-cc-stats{display:flex;justify-content:space-around;margin-top:.35rem;padding-top:.3rem;border-top:1px solid var(--b)}
+.hw-ccs{text-align:center}
+.hw-ccsv{font-family:var(--fh);font-size:.82rem;font-weight:700;color:var(--red);line-height:1}
+.hw-ccsl{font-size:.5rem;color:var(--g);text-transform:uppercase;letter-spacing:.06em;margin-top:1px}
+
+/* ══ PAGE PROCHAIN GP ══ */
+#pg-nextgp{background:var(--bg)}
+.ngp-wrap{max-width:1200px;margin:0 auto;padding:.9rem 1.2rem 3rem}
+
+/* Hero */
+.ngp-hero{background:linear-gradient(135deg,rgba(18,5,5,.98) 0%,rgba(8,8,18,.98) 100%);border:1px solid rgba(232,0,29,.18);border-radius:14px;overflow:hidden;position:relative;margin-bottom:1rem}
+.ngp-hero-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(232,0,29,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(232,0,29,.02) 1px,transparent 1px);background-size:30px 30px;pointer-events:none}
+.ngp-hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;padding:1.5rem 1.8rem;align-items:center}
+.ngp-kicker{font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--red);margin-bottom:.5rem}
+.ngp-title{font-family:var(--fh);font-size:2.6rem;font-weight:700;line-height:1.05;color:#fff;margin-bottom:.6rem}
+.ngp-title-red{color:var(--red)}
+.ngp-meta{display:flex;align-items:center;gap:.5rem;font-size:.8rem;color:rgba(255,255,255,.5);margin-bottom:.9rem}
+.ngp-flag{font-size:1.2rem}
+.ngp-chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem}
+.ngp-chip{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:.2rem .65rem;font-size:.68rem;color:rgba(255,255,255,.6);font-weight:500}
+.ngp-chip-red{background:rgba(232,0,29,.1);border-color:rgba(232,0,29,.3);color:var(--red)}
+.ngp-pred-btn{background:var(--red);color:#fff;border:none;border-radius:8px;padding:.6rem 1.2rem;font-size:.82rem;font-weight:600;cursor:pointer;font-family:var(--fb);transition:all .2s}
+.ngp-pred-btn:hover{background:var(--rd);transform:translateY(-1px)}
+.ngp-circuit-box{background:rgba(255,255,255,.03);border:1px solid rgba(232,0,29,.12);border-radius:10px;padding:.8rem}
+.ngp-circuit-lbl{font-size:.56rem;color:var(--g);letter-spacing:.14em;text-transform:uppercase;text-align:center;margin-bottom:.5rem}
+
+/* Grid infos */
+.ngp-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:.8rem;margin-bottom:1rem}
+.ngp-card{background:var(--card);border:1px solid var(--b);border-radius:10px;overflow:hidden}
+.ngp-card-ai{border-color:rgba(232,0,29,.18);background:rgba(10,10,20,.95)}
+.ngp-card-h{padding:.7rem .9rem;border-bottom:1px solid var(--b);display:flex;align-items:center;gap:.45rem}
+.ngp-card-ico{font-size:1rem}
+.ngp-card-t{font-family:var(--fh);font-size:.78rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--red);flex:1}
+.ngp-live-dot{width:7px;height:7px;border-radius:50%;background:#4caf50;box-shadow:0 0 5px rgba(76,175,80,.8);animation:blink 2s infinite;flex-shrink:0}
+.ngp-card-b{padding:.75rem .9rem}
+
+/* Sched */
+.ngp-sched{display:flex;flex-direction:column;gap:.6rem}
+.ngp-sday-lbl{font-size:.62rem;font-weight:600;color:var(--g);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.3rem;padding-bottom:.25rem;border-bottom:1px solid var(--b)}
+.ngp-session{display:flex;justify-content:space-between;align-items:center;padding:.22rem 0;border-bottom:1px solid rgba(255,255,255,.03)}
+.ngp-session:last-child{border:none}
+.ngp-sl{font-size:.72rem;color:rgba(255,255,255,.6)}
+.ngp-sv{font-size:.75rem;font-weight:600}
+.ngp-session-red .ngp-sl{color:#fff;font-weight:600}
+.ngp-sv-red{color:var(--red)}
+.ngp-session-gold .ngp-sl{color:#fff;font-weight:700}
+.ngp-sv-gold{color:var(--gold)}
+
+/* Stats */
+.ngp-stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin-bottom:.6rem}
+.ngp-stat{background:rgba(255,255,255,.025);border:1px solid var(--b);border-radius:5px;padding:.38rem .45rem}
+.ngp-stat-v{font-family:var(--fh);font-size:.88rem;font-weight:700;color:var(--red);line-height:1}
+.ngp-stat-l{font-size:.56rem;color:var(--g);text-transform:uppercase;letter-spacing:.06em;margin-top:1px}
+.ngp-sector-row{display:flex;gap:.35rem}
+.ngp-sector{flex:1;border-radius:5px;padding:.3rem .4rem;font-size:.62rem;font-weight:500;text-align:center}
+.ngp-sector span{display:block;font-family:var(--fh);font-size:.8rem;font-weight:700;margin-bottom:1px}
+.ngp-s1{background:rgba(232,0,29,.08);border:1px solid rgba(232,0,29,.2);color:rgba(255,255,255,.6)}
+.ngp-s1 span{color:var(--red)}
+.ngp-s2{background:rgba(255,200,0,.06);border:1px solid rgba(255,200,0,.18);color:rgba(255,255,255,.6)}
+.ngp-s2 span{color:var(--gold)}
+.ngp-s3{background:rgba(77,184,255,.06);border:1px solid rgba(77,184,255,.18);color:rgba(255,255,255,.6)}
+.ngp-s3 span{color:#4db8ff}
+
+/* AI rows in NGP */
+.ngp-ai-rows .air{padding:.28rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.ngp-ai-rows .air:last-child{border:none}
+
+/* Analyse */
+.ngp-analysis{display:flex;flex-direction:column;gap:.32rem}
+.ngp-ana-row{display:flex;align-items:center;gap:.5rem;padding:.25rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.ngp-ana-row:last-child{border:none}
+.ngp-ana-ico{font-size:.85rem;flex-shrink:0;width:18px}
+.ngp-ana-lbl{font-size:.68rem;color:var(--g);flex:1}
+.ngp-ana-val{font-size:.7rem;font-weight:500;color:#fff;text-align:right}
+
+/* Calendrier */
+.ngp-cal-section{background:var(--card);border:1px solid var(--b);border-radius:10px;overflow:hidden}
+.ngp-cal-header{padding:.85rem 1rem;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;transition:background .2s}
+.ngp-cal-header:hover{background:rgba(255,255,255,.03)}
+.ngp-cal-title{display:flex;align-items:center;gap:.5rem;font-family:var(--fh);font-size:.9rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--red)}
+.ngp-cal-toggle{font-size:.8rem;color:var(--g);transition:transform .3s}
+.ngp-cal-toggle.open{transform:rotate(180deg)}
+.ngp-cal-body{display:none;border-top:1px solid var(--b)}
+.ngp-cal-body.open{display:block}
+.ngp-cal-grid{display:flex;flex-direction:column}
+
+/* GP items dans le calendrier */
+.ngp-gp-item{border-bottom:1px solid var(--b)}
+.ngp-gp-item:last-child{border:none}
+.ngp-gp-row{display:flex;align-items:center;gap:.8rem;padding:.7rem 1rem;cursor:pointer;transition:background .15s;user-select:none}
+.ngp-gp-row:hover{background:rgba(255,255,255,.03)}
+.ngp-gp-round{font-family:var(--fh);font-size:.7rem;font-weight:700;color:var(--g);min-width:52px;letter-spacing:.06em}
+.ngp-gp-flag{font-size:1.1rem;flex-shrink:0}
+.ngp-gp-name{flex:1}
+.ngp-gp-n{font-size:.8rem;font-weight:600;color:#fff}
+.ngp-gp-loc{font-size:.65rem;color:var(--g)}
+.ngp-gp-dates{font-size:.68rem;color:var(--g);min-width:90px;text-align:right}
+.ngp-gp-status{font-size:.62rem;font-weight:600;padding:.15rem .5rem;border-radius:100px;flex-shrink:0;min-width:64px;text-align:center}
+.ngp-gp-status.done{background:rgba(76,175,80,.1);border:1px solid rgba(76,175,80,.2);color:#4caf50}
+.ngp-gp-status.next{background:rgba(232,0,29,.12);border:1px solid rgba(232,0,29,.3);color:var(--red);animation:blink 2s infinite}
+.ngp-gp-status.upcoming{background:rgba(255,255,255,.04);border:1px solid var(--b);color:var(--g)}
+.ngp-gp-arrow{font-size:.7rem;color:var(--g);transition:transform .25s}
+.ngp-gp-arrow.open{transform:rotate(90deg)}
+.ngp-gp-detail{display:none;padding:.65rem 1rem .75rem 3.5rem;background:rgba(255,255,255,.018);border-top:1px solid var(--b)}
+.ngp-gp-detail.open{display:block}
+.ngp-gp-detail-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem .8rem}
+.ngp-gp-ds{display:flex;flex-direction:column;gap:.18rem}
+.ngp-gp-ds-lbl{font-size:.58rem;color:var(--g);text-transform:uppercase;letter-spacing:.08em}
+.ngp-gp-ds-val{font-size:.75rem;font-weight:600;color:#fff}
+.ngp-gp-result{margin-top:.5rem;padding-top:.5rem;border-top:1px solid var(--b)}
+.ngp-gp-res-lbl{font-size:.58rem;color:var(--g);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem}
+.ngp-gp-podium{display:flex;gap:.5rem}
+.ngp-gp-pos{display:flex;align-items:center;gap:.3rem;font-size:.72rem}
+.ngp-gp-pos-n{font-family:var(--fh);font-size:.85rem;font-weight:700}
+.ngp-gp-pos-n.p1{color:#FFD700}.ngp-gp-pos-n.p2{color:#C0C0C0}.ngp-gp-pos-n.p3{color:#CD7F32}
+
+/* Sprint badge */
+.sprint-badge{font-size:.58rem;font-weight:700;background:rgba(255,200,0,.1);border:1px solid rgba(255,200,0,.25);color:var(--gold);border-radius:3px;padding:1px 5px;margin-left:.35rem}
+
+/* Responsive */
+@media(max-width:900px){
+  .ngp-hero-inner{grid-template-columns:1fr}
+  .ngp-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:600px){
+  .ngp-title{font-size:1.8rem}
+  .ngp-grid{grid-template-columns:1fr}
+  .ngp-gp-detail-grid{grid-template-columns:1fr 1fr}
+}
+
+/* ══ END PROCHAIN GP ══ */
+.hw-ai-core{position:relative;background:rgba(9,9,19,.97);border:1px solid rgba(232,0,29,.2);border-radius:10px;overflow:hidden;box-shadow:0 0 24px rgba(232,0,29,.05)}
+.aic-grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(232,0,29,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(232,0,29,.022) 1px,transparent 1px);background-size:20px 20px;pointer-events:none;z-index:0}
+.aic-glow{position:absolute;top:-20px;left:50%;transform:translateX(-50%);width:60%;height:60px;background:radial-gradient(ellipse,rgba(232,0,29,.1),transparent 70%);pointer-events:none;z-index:0}
+.aic-inner{position:relative;z-index:1;padding:.65rem .8rem;display:flex;flex-direction:column;gap:.45rem}
+.aic-header{display:flex;align-items:center;justify-content:space-between;padding-bottom:.4rem;border-bottom:1px solid rgba(232,0,29,.12)}
+.aic-logo{font-family:var(--fh);font-size:.75rem;font-weight:700;letter-spacing:.13em;color:rgba(255,255,255,.65);display:flex;align-items:center;gap:.38rem}
+.aic-red{color:var(--red)}
+.aic-pulse{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 7px rgba(232,0,29,.9);animation:blink 2s ease-in-out infinite;flex-shrink:0}
+.aic-status{display:flex;align-items:center;gap:.28rem}
+.aic-status-dot{width:5px;height:5px;border-radius:50%;background:#4caf50;box-shadow:0 0 5px rgba(76,175,80,.8);flex-shrink:0}
+.aic-status-txt{font-size:.56rem;color:#4caf50;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+/* Confidence */
+.aic-confidence{display:flex;align-items:center;gap:.7rem}
+.aic-ring-wrap{position:relative;flex-shrink:0}
+.aic-ring-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--fh);font-size:1.15rem;font-weight:700;color:#fff;filter:drop-shadow(0 0 4px rgba(232,0,29,.5))}
+.aic-ring-pct{font-size:.58rem;color:var(--red);vertical-align:super}
+.aic-conf-text{display:flex;flex-direction:column;gap:.1rem}
+.aic-conf-lbl{font-size:.56rem;color:var(--g);text-transform:uppercase;letter-spacing:.1em}
+.aic-conf-sims{font-family:var(--fh);font-size:.8rem;font-weight:700;color:#fff}
+.aic-conf-sims #aic-sim{color:var(--red)}
+.aic-conf-sub{font-size:.56rem;color:var(--g)}
+/* Séparateur */
+.aic-sep{height:1px;background:linear-gradient(90deg,transparent,rgba(232,0,29,.18),transparent)}
+/* Section label */
+.aic-slbl{font-size:.52rem;color:rgba(255,255,255,.28);letter-spacing:.2em;text-transform:uppercase;font-weight:600}
+/* Barres */
+.aic-bars{display:flex;flex-direction:column;gap:.28rem}
+.aic-brow{display:grid;grid-template-columns:1fr auto;gap:.3rem .5rem;align-items:center}
+.aic-blbl{font-size:.62rem;color:rgba(255,255,255,.6);grid-row:1;grid-column:1}
+.aic-bval{font-family:var(--fh);font-size:.68rem;font-weight:700;color:var(--red);grid-row:1;grid-column:2;text-align:right}
+.aic-mid{color:#ffc800}.aic-low{color:#ffc800}
+.aic-btrack{height:3px;background:rgba(255,255,255,.07);border-radius:2px;overflow:hidden;grid-row:2;grid-column:1/-1}
+.aic-bfill{height:100%;width:0;border-radius:2px;background:linear-gradient(90deg,#b0001a,#e8001d);box-shadow:0 0 4px rgba(232,0,29,.35);transition:width 1.6s cubic-bezier(.4,0,.2,1)}
+.aic-bmid{background:linear-gradient(90deg,#996200,#ffc800);box-shadow:0 0 4px rgba(255,200,0,.25)}
+.aic-blow{background:linear-gradient(90deg,#886000,#ffc800);box-shadow:0 0 4px rgba(255,200,0,.2)}
+/* Indicateurs */
+.aic-inds{display:grid;grid-template-columns:repeat(3,1fr);gap:.3rem}
+.aic-ind{border-radius:5px;padding:.3rem .4rem;text-align:center;border:1px solid rgba(255,255,255,.06)}
+.aic-ind.pos{background:rgba(76,175,80,.05);border-color:rgba(76,175,80,.18)}
+.aic-ind.neg{background:rgba(232,0,29,.04);border-color:rgba(232,0,29,.18)}
+.aic-indv{font-family:var(--fh);font-size:.8rem;font-weight:700;line-height:1.2}
+.aic-ind.pos .aic-indv{color:#4caf50}
+.aic-ind.neg .aic-indv{color:var(--red)}
+.aic-indl{font-size:.52rem;color:var(--g);margin-top:.1rem;line-height:1.3}
+/* Footer */
+.aic-foot{font-size:.56rem;color:var(--g);display:flex;align-items:center;gap:.32rem;justify-content:center}
+.aic-foot-dot{width:5px;height:5px;border-radius:50%;background:#4caf50;flex-shrink:0}
+
+@keyframes aicBarIn{from{width:0}to{width:var(--tw)}}
+.aic-bfill.animated{width:var(--tw)}
+
+/* Responsive */
+@media(max-width:960px){.hw-chips-row{grid-template-columns:1fr 1fr}.hw-middle{grid-template-columns:1fr}}
+@media(max-width:600px){.hw-chips-row{grid-template-columns:1fr 1fr}}
+.hw-cc-title{font-size:.52rem;color:var(--g);letter-spacing:.12em;text-transform:uppercase;text-align:center;margin-bottom:.35rem}
+.hw-cc-stats{display:flex;justify-content:space-around;margin-top:.35rem;padding-top:.3rem;border-top:1px solid var(--b)}
+.hw-ccs{text-align:center}
+.hw-ccsv{font-family:var(--fh);font-size:.82rem;font-weight:700;color:var(--red);line-height:1}
+.hw-ccsl{font-size:.5rem;color:var(--g);text-transform:uppercase;letter-spacing:.06em;margin-top:1px}
+.hw-bot{display:grid;grid-template-columns:1.5fr 1fr .78fr;gap:.5rem;align-items:start}
+.hw-sr{display:flex;justify-content:space-between;align-items:center;padding:.22rem 0;border-bottom:1px solid var(--b)}
+.hw-sl{font-size:.66rem;color:var(--g)}.hw-sv{font-size:.7rem;font-weight:600}
+.hw-red{color:var(--red)}.hw-gold{color:var(--gold)}
+.hw-timer{display:flex;gap:.2rem;align-items:center;justify-content:center;margin-top:.55rem}
+@media(max-width:900px){.hw-dash{grid-template-columns:1fr}.hw-sidebar{position:static;flex-direction:row;flex-wrap:wrap;border-right:none;border-bottom:1px solid var(--b);max-height:none;gap:.4rem;padding:.65rem .85rem}.hws-stats{grid-template-columns:repeat(4,1fr)}.hws-plan{margin-top:0;width:100%}.hw-top{grid-template-columns:1fr 1fr}.hw-bot{grid-template-columns:1fr}.hw-circuit-card{grid-column:span 2}}
 /* AI PREDICTION CARD */
 .card-h{padding:.82rem 1rem;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.4rem}
 .card-ht{font-family:var(--fh);font-size:.88rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--red)}
@@ -773,7 +995,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
     <div class="trial-popup-perks">
       <div class="trial-perk"><span class="trial-perk-ico">●</span>Accès complet au Top 10 de l'IA</div>
       <div class="trial-perk"><span class="trial-perk-ico">●</span>Prédiction P6 à P10 débloquée</div>
-      <div class="trial-perk"><span class="trial-perk-ico">●</span>Expire avant les qualifs — expire dans <span id="trial-popup-timer" style="color:var(--red);font-weight:600">48:00:00</span></div>
+      <div class="trial-perk"><span class="trial-perk-ico">●</span>Expire sam. 27 juin à 16h00 — expire dans <span id="trial-popup-timer" style="color:var(--red);font-weight:600">03j 21h 29m</span></div>
       <div class="trial-perk"><span class="trial-perk-ico">●</span>Sans carte bancaire, sans engagement</div>
     </div>
     <button class="trial-popup-cta" onclick="startTrial()">🏎️ Activer mon accès gratuit 48h</button>
@@ -932,8 +1154,8 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
     <li><a data-page="prediction" onclick="navTo('prediction')">Prédiction</a></li>
     <li><a data-page="leagues" onclick="navTo('leagues')">Ligues</a></li>
     <li><a data-page="standings" onclick="navTo('standings')">Classement</a></li>
+    <li><a data-page="nextgp" onclick="navTo('nextgp')">Prochain GP 🇦🇹</a></li>
     <li><a data-page="creator" onclick="navTo('creator')">Creator</a></li>
-    <li><a data-page="profile" onclick="navTo('profile')">Profil</a></li>
     <li><a data-page="rules" onclick="navTo('rules')">Règlement</a></li>
   </ul>
   <div class="nav-r">
@@ -951,9 +1173,9 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 <div id="trial-banner" class="hidden">
   <div class="trial-banner-left">
     <div class="trial-banner-dot"></div>
-    <div class="trial-banner-txt">🎁 Accès Premium gratuit 48h activé <span>· Top 10 IA débloqué avant le GP d'Autriche</span></div>
+    <div class="trial-banner-txt">🎁 Accès Premium gratuit activé <span>· Top 10 IA débloqué · Expire sam. 27 juin 16h00</span></div>
   </div>
-  <div class="trial-banner-timer" id="trial-banner-timer">47:59:59</div>
+  <div class="trial-banner-timer" id="trial-banner-timer">03j 21h 29m</div>
   <button class="trial-banner-cta" onclick="openStripeModal('premium')">Conserver Premium →</button>
   <button class="trial-banner-close" onclick="document.getElementById('trial-banner').classList.add('hidden')" title="Fermer">✕</button>
 </div>
@@ -983,88 +1205,222 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 
 <!-- ── PAGE: HOME ── -->
 <div id="pg-home" class="pg active">
-  <div class="home-wrap">
-    <!-- LEFT -->
-    <div class="home-left">
-      <!-- AI PREDICTION -->
-      <div class="card">
-        <div class="card-h">
-          <div class="card-ht">Prédiction IA — GP Autriche</div>
-          <div class="ai-tag">Verstappen fav. 87%</div>
+  <!-- ══ DASHBOARD COCKPIT HOME ══ -->
+  <div class="hw-dash">
+
+    <!-- SIDEBAR PROFIL -->
+    <div class="hw-sidebar">
+      <div class="hws-av" id="hw-av">GO</div>
+      <div class="hws-name" id="hw-name">GridOracle</div>
+      <div class="hws-handle" id="hw-handle">@griduser</div>
+      <div class="hws-badge hws-badge-blue" id="hw-team-badge">
+        <div class="hws-bl">Mon écurie</div>
+        <div class="hws-bv" id="hw-team">—</div>
+      </div>
+      <div class="hws-badge hws-badge-dark" id="hw-driver-badge">
+        <div class="hws-bl">Mon pilote</div>
+        <div class="hws-bv" id="hw-driver">—</div>
+      </div>
+      <div class="hws-stats">
+        <div class="hws-sc"><div class="hws-sv" id="hw-pts">0</div><div class="hws-sl">pts</div></div>
+        <div class="hws-sc"><div class="hws-sv" id="hw-rank">#—</div><div class="hws-sl">rang</div></div>
+        <div class="hws-sc"><div class="hws-sv" id="hw-pred-count">0/5</div><div class="hws-sl">prédit</div></div>
+        <div class="hws-sc"><div class="hws-sv" id="hw-acc">—%</div><div class="hws-sl">précision</div></div>
+      </div>
+      <div class="hws-plan">
+        <div class="hws-bl">Plan actuel</div>
+        <div class="hws-pv" id="hw-plan-lbl">Free</div>
+        <button class="hws-up" onclick="openStripeModal('premium')">Upgrade Premium →</button>
+      </div>
+    </div>
+
+    <!-- MAIN ZONE -->
+    <div class="hw-main">
+
+      <!-- TOP : chips + circuit + AI Core -->
+      <div class="hw-chips-row">
+        <div class="hws-sc hw-chip"><div class="hws-sv" style="font-size:1.25rem">87%</div><div class="hws-sl">Verstappen fav.</div></div>
+        <div class="hws-sc hw-chip"><div class="hws-sv" style="font-size:1.25rem">J-4</div><div class="hws-sl">avant la course</div></div>
+        <div class="hws-sc hw-chip"><div class="hws-sv" style="font-size:1.25rem">71</div><div class="hws-sl">tours · 306 km</div></div>
+        <div class="hws-sc hw-chip"><div class="hws-sv" style="font-size:1.25rem">4.318</div><div class="hws-sl">km · circuit</div></div>
+      </div>
+
+      <!-- Circuit + AI Core -->
+      <div class="hw-middle">
+
+        <!-- CIRCUIT -->
+        <div class="hw-circuit-card">
+          <div class="hw-cc-title">Red Bull Ring · Spielberg 2026 · 10 virages</div>
+          <div style="display:flex;align-items:center;justify-content:center;padding:.3rem 0">
+            <img
+              src="https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Austria_Circuit.png.transform/7col/image.png"
+              alt="Red Bull Ring 2026"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='block'"
+              style="width:100%;max-width:290px;height:auto;display:block;margin:0 auto;opacity:.88;filter:brightness(.9) saturate(1.1)"
+            />
+            <svg viewBox="0 0 240 170" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:290px;height:auto;display:none;margin:0 auto">
+              <path d="M 155,148 L 80,148 L 52,132 L 38,106 L 34,76 L 38,52" stroke="#e8001d" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M 38,52 C 32,38 34,24 46,18 C 58,12 76,14 88,20 L 110,28" stroke="#ffc800" stroke-width="4.5" stroke-linecap="round"/>
+              <path d="M 110,28 C 128,24 150,22 164,28 C 178,34 182,46 174,56 C 166,64 150,66 134,66 L 118,66" stroke="#ffc800" stroke-width="4.5" stroke-linecap="round"/>
+              <path d="M 118,66 C 104,66 94,70 88,80 C 82,88 84,98 90,104 C 96,110 104,112 114,110 C 124,108 132,102 136,94 C 140,86 138,78 134,72" stroke="#ffc800" stroke-width="4.5" stroke-linecap="round"/>
+              <path d="M 134,72 C 142,66 152,62 164,62 L 194,62" stroke="#4db8ff" stroke-width="4.5" stroke-linecap="round"/>
+              <path d="M 194,62 C 210,62 220,70 220,82 C 220,92 212,100 200,104 L 188,108" stroke="#4db8ff" stroke-width="4.5" stroke-linecap="round"/>
+              <path d="M 188,108 C 178,116 170,128 168,140 L 166,148 L 155,148" stroke="#4db8ff" stroke-width="4.5" stroke-linecap="round"/>
+              <circle cx="166" cy="146" r="6" fill="rgba(232,0,29,.18)" stroke="#e8001d" stroke-width="1.3"/><text x="166" y="150" fill="#e8001d" font-size="5" text-anchor="middle" font-family="Rajdhani" font-weight="700">T1</text>
+              <circle cx="42" cy="34" r="6.5" fill="rgba(255,200,0,.16)" stroke="#ffc800" stroke-width="1.3"/><text x="42" y="38" fill="#ffc800" font-size="5" text-anchor="middle" font-family="Rajdhani" font-weight="700">T3</text>
+              <circle cx="148" cy="24" r="6.5" fill="rgba(255,200,0,.14)" stroke="#ffc800" stroke-width="1.3"/><text x="148" y="28" fill="#ffc800" font-size="5" text-anchor="middle" font-family="Rajdhani" font-weight="700">T4</text>
+              <circle cx="208" cy="84" r="6.5" fill="rgba(77,184,255,.14)" stroke="#4db8ff" stroke-width="1.3"/><text x="208" y="88" fill="#4db8ff" font-size="5" text-anchor="middle" font-family="Rajdhani" font-weight="700">T9</text>
+              <rect x="154" y="140" width="3" height="12" fill="white" rx="1" opacity=".7"/>
+              <text x="148" y="160" fill="rgba(255,255,255,.3)" font-size="5" text-anchor="middle" font-family="Rajdhani">S/F</text>
+            </svg>
+          </div>
+          <div class="hw-cc-stats">
+            <div class="hw-ccs"><div class="hw-ccsv">4.318</div><div class="hw-ccsl">km</div></div>
+            <div class="hw-ccs"><div class="hw-ccsv">71</div><div class="hw-ccsl">tours</div></div>
+            <div class="hw-ccs"><div class="hw-ccsv">10</div><div class="hw-ccsl">virages</div></div>
+            <div class="hw-ccs"><div class="hw-ccsv">337</div><div class="hw-ccsl">km/h</div></div>
+          </div>
         </div>
-        <div class="ai-rows" id="ai-home"></div>
-        <div class="lks">
-          <div class="lkbl ai-rows" id="ai-home-lock"></div>
-          <div class="lkov">
-            <div class="lkm">
-              <h4>🔒 Positions 6–10 Premium</h4>
-              <p>Accède à l'analyse complète de l'IA.</p>
-              <button class="btn-r" style="font-size:.76rem;padding:.38rem .9rem" onclick="openStripeModal('premium')">Passer Premium →</button>
+
+        <!-- AI CORE -->
+        <div class="hw-ai-core" id="hw-ai-core">
+          <div class="aic-grid-bg"></div>
+          <div class="aic-glow"></div>
+          <div class="aic-inner">
+
+            <div class="aic-header">
+              <div class="aic-logo">
+                <span class="aic-pulse"></span>
+                GRIDORACLE <span class="aic-red">AI CORE</span>
+              </div>
+              <div class="aic-status">
+                <span class="aic-status-dot"></span>
+                <span class="aic-status-txt">Analyse terminée</span>
+              </div>
+            </div>
+
+            <div class="aic-confidence">
+              <div class="aic-ring-wrap">
+                <svg viewBox="0 0 72 72" style="width:72px;height:72px">
+                  <circle cx="36" cy="36" r="30" stroke="rgba(232,0,29,.1)" stroke-width="5" fill="none"/>
+                  <circle cx="36" cy="36" r="30" stroke="url(#rg)" stroke-width="5" fill="none"
+                    stroke-dasharray="169" stroke-dashoffset="22"
+                    stroke-linecap="round" transform="rotate(-90 36 36)"/>
+                  <defs>
+                    <linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stop-color="#b0001a"/>
+                      <stop offset="100%" stop-color="#ff3333"/>
+                    </linearGradient>
+                  </defs>
+                </svg>
+                <div class="aic-ring-inner">87<span class="aic-ring-pct">%</span></div>
+              </div>
+              <div class="aic-conf-text">
+                <div class="aic-conf-lbl">Confiance IA</div>
+                <div class="aic-conf-sims"><span id="aic-sim">124 381</span> simulations</div>
+                <div class="aic-conf-sub">18 variables · GP Autriche 2026</div>
+              </div>
+            </div>
+
+            <div class="aic-sep"></div>
+
+            <div class="aic-slbl">FACTEURS D'ANALYSE</div>
+            <div class="aic-bars">
+              <div class="aic-brow"><div class="aic-blbl">Performance voiture</div><div class="aic-bval">95%</div><div class="aic-btrack"><div class="aic-bfill" style="--tw:95%"></div></div></div>
+              <div class="aic-brow"><div class="aic-blbl">Forme pilote</div><div class="aic-bval">88%</div><div class="aic-btrack"><div class="aic-bfill" style="--tw:88%"></div></div></div>
+              <div class="aic-brow"><div class="aic-blbl">Historique circuit</div><div class="aic-bval aic-mid">76%</div><div class="aic-btrack"><div class="aic-bfill aic-bmid" style="--tw:76%"></div></div></div>
+              <div class="aic-brow"><div class="aic-blbl">Conditions météo</div><div class="aic-bval aic-low">63%</div><div class="aic-btrack"><div class="aic-bfill aic-blow" style="--tw:63%"></div></div></div>
+              <div class="aic-brow"><div class="aic-blbl">Fiabilité moteur</div><div class="aic-bval">84%</div><div class="aic-btrack"><div class="aic-bfill" style="--tw:84%"></div></div></div>
+            </div>
+
+            <div class="aic-sep"></div>
+
+            <div class="aic-slbl">INDICATEURS</div>
+            <div class="aic-inds">
+              <div class="aic-ind pos"><div class="aic-indv">+3.2%</div><div class="aic-indl">Avantage Verstappen</div></div>
+              <div class="aic-ind neg"><div class="aic-indv">−1.1%</div><div class="aic-indl">Risque Safety Car</div></div>
+              <div class="aic-ind pos"><div class="aic-indv">+5.4%</div><div class="aic-indl">Perf. Red Bull</div></div>
+            </div>
+
+            <div class="aic-sep"></div>
+
+            <div class="aic-foot">
+              <span class="aic-foot-dot"></span>
+              Dernière mise à jour · <span id="aic-upd">Il y a 2 minutes</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <!-- BOTTOM : IA + Ma pred + programme -->
+      <div class="hw-bot">
+
+        <!-- PRÉDICTION IA -->
+        <div class="card hw-ia-card">
+          <div class="card-h">
+            <div class="card-ht">Prédiction IA — GP Autriche</div>
+            <div class="ai-tag">Verstappen fav. 87%</div>
+          </div>
+          <div class="ai-rows" id="ai-home"></div>
+          <div class="lks">
+            <div class="lkbl ai-rows" id="ai-home-lock"></div>
+            <div class="lkov">
+              <div class="lkm">
+                <h4>🔒 Positions 6–10 Premium</h4>
+                <p>Accède à l'analyse complète de l'IA.</p>
+                <button class="btn-r" style="font-size:.76rem;padding:.38rem .9rem" onclick="openStripeModal('premium')">Passer Premium →</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <!-- MY PREDICTION -->
-      <div class="card">
-        <div class="card-h">
-          <div style="display:flex;align-items:center;gap:.45rem">
-            <div class="card-ht" style="color:var(--w)">Ma Prédiction</div>
-            <div class="pred-status st-open" id="hpb">En cours</div>
+
+        <!-- MA PRÉDICTION -->
+        <div class="card hw-pred-card">
+          <div class="card-h">
+            <div style="display:flex;align-items:center;gap:.45rem">
+              <div class="card-ht" style="color:var(--w)">Ma Prédiction</div>
+              <div class="pred-status st-open" id="hpb">En cours</div>
+            </div>
+            <div class="p-acts"><button class="bcpai" onclick="hCopy()">Copier IA</button><button class="brst" onclick="hReset()">✕</button></div>
           </div>
-          <div class="p-acts"><button class="bcpai" onclick="hCopy()">Copier IA</button><button class="brst" onclick="hReset()">✕</button></div>
-        </div>
-        <div class="p-slots" id="hslots"></div>
-        <div class="prem-lock" id="home-prem-lock"><span class="pl-txt">🔒 Positions 6–10 — Premium</span><button class="pl-btn" onclick="openStripeModal('premium')">Upgrader</button></div>
-        <div class="p-foot">
-          <div class="sub-prog"><b id="hcnt">0</b>/<span id="hmax">5</span> positions complètes</div>
-          <button class="bsub" id="hbs" disabled onclick="hSubmit()">🏁 Verrouiller ma prédiction · GP Autriche</button>
-          <div class="sub-dl">Clôture le <b>Samedi 27 Juin à 15h00</b></div>
-        </div>
-      </div>
-    </div>
-    <!-- RIGHT -->
-    <div class="home-right">
-      <div class="card">
-        <div class="gp-head">
-          <div class="gp-flag">🇦🇹</div>
-          <div>
-            <div class="gp-title">Grand Prix d'Autriche 2026</div>
-            <div class="gp-sub">Red Bull Ring · Spielberg · 28 Juin 2026</div>
+          <div class="p-slots" id="hslots"></div>
+          <div class="prem-lock" id="home-prem-lock"><span class="pl-txt">🔒 Positions 6–10 — Premium</span><button class="pl-btn" onclick="openStripeModal('premium')">Upgrader</button></div>
+          <div class="p-foot">
+            <div class="sub-prog"><b id="hcnt">0</b>/<span id="hmax">5</span> positions complètes</div>
+            <button class="bsub" id="hbs" disabled onclick="hSubmit()">🏁 Verrouiller ma prédiction · GP Autriche</button>
+            <div class="sub-dl">Clôture le <b>Samedi 27 Juin à 15h00</b></div>
           </div>
         </div>
-        <div class="gp-svg">
-          <svg viewBox="0 0 260 175" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:220px;height:auto">
-            <path d="M 28,148 L 175,148" stroke="rgba(255,255,255,.45)" stroke-width="5.5" stroke-linecap="round"/>
-            <path d="M 28,148 L 148,148" stroke="#00d085" stroke-width="3"/>
-            <path d="M 175,148 C 200,148 218,135 222,118 C 226,102 220,88 208,78 L 192,68" stroke="rgba(255,255,255,.45)" stroke-width="5.5" stroke-linecap="round"/>
-            <path d="M 192,68 C 175,56 155,46 132,40 L 105,36" stroke="rgba(255,255,255,.45)" stroke-width="5.5" stroke-linecap="round"/>
-            <path d="M 105,36 C 88,34 76,42 72,55 L 70,72" stroke="rgba(255,255,255,.45)" stroke-width="5.5" stroke-linecap="round"/>
-            <path d="M 70,72 C 66,92 54,118 44,138 L 38,148 L 28,148" stroke="rgba(255,255,255,.45)" stroke-width="5.5" stroke-linecap="round"/>
-            <text x="85" y="141" fill="#00d085" font-size="8" font-family="Rajdhani" opacity=".9" font-weight="600">DRS</text>
-            <rect x="98" y="141" width="4" height="14" fill="white" rx="1"/>
-            <text x="100" y="163" fill="rgba(255,255,255,.3)" font-size="7" text-anchor="middle" font-family="Rajdhani">S/F</text>
-            <circle cx="210" cy="110" r="10" fill="rgba(232,0,29,.25)" stroke="#e8001d" stroke-width="1.5"/>
-            <text x="210" y="114" fill="#e8001d" font-size="8" text-anchor="middle" font-family="Rajdhani" font-weight="700">T1</text>
-            <circle cx="90" cy="37" r="10" fill="rgba(232,0,29,.25)" stroke="#e8001d" stroke-width="1.5"/>
-            <text x="90" y="41" fill="#e8001d" font-size="8" text-anchor="middle" font-family="Rajdhani" font-weight="700">T4</text>
-          </svg>
+
+        <!-- PROGRAMME GP -->
+        <div class="card hw-sched-card">
+          <div class="card-h"><div class="card-ht">Programme GP</div></div>
+          <div style="padding:.5rem .8rem">
+            <div class="hw-sr"><span class="hw-sl">Ven · EL1</span><span class="hw-sv">13h30</span></div>
+            <div class="hw-sr"><span class="hw-sl">Ven · EL2</span><span class="hw-sv">17h00</span></div>
+            <div class="hw-sr"><span class="hw-sl">Sam · EL3</span><span class="hw-sv">12h30</span></div>
+            <div class="hw-sr"><span class="hw-sl">Sam · Qualifs</span><span class="hw-sv hw-red">16h00</span></div>
+            <div class="hw-sr" style="border:none"><span class="hw-sl">Dim · Course</span><span class="hw-sv hw-gold">15h00</span></div>
+            <div class="hw-timer">
+              <div class="rbu"><div class="rbv" id="rd2">00</div><div class="rbs">J</div></div>
+              <div class="rbc">:</div>
+              <div class="rbu"><div class="rbv" id="rh2">00</div><div class="rbs">H</div></div>
+              <div class="rbc">:</div>
+              <div class="rbu"><div class="rbv" id="rm2">00</div><div class="rbs">M</div></div>
+              <div class="rbc">:</div>
+              <div class="rbu"><div class="rbv" id="rs2">00</div><div class="rbs">S</div></div>
+            </div>
+            <!-- Analyse GP -->
+            <div style="margin-top:.6rem;padding-top:.55rem;border-top:1px solid var(--b)">
+              <div class="ga-row"><div class="ga-ico">🌤️</div><div class="ga-lbl">Météo</div><div class="ga-val">Ensoleillé · 24°C</div></div>
+              <div class="ga-row"><div class="ga-ico">🏆</div><div class="ga-lbl">Vainqueur 2024</div><div class="ga-val red">G. Russell</div></div>
+              <div class="ga-row"><div class="ga-ico">🏎️</div><div class="ga-lbl">Stratégie</div><div class="ga-val">Medium → Hard</div></div>
+            </div>
+          </div>
         </div>
-        <div class="gp-stats">
-          <div class="gs"><div class="gsv">71</div><div class="gsl">Tours</div></div>
-          <div class="gs"><div class="gsv">3</div><div class="gsl">DRS</div></div>
-          <div class="gs"><div class="gsv">320</div><div class="gsl">km/h max</div></div>
-          <div class="gs"><div class="gsv">1:05.6</div><div class="gsl">Record</div></div>
-        </div>
-        <div class="gp-analysis">
-          <div class="ga-row"><div class="ga-ico">🌤️</div><div class="ga-lbl">Météo course</div><div class="ga-val">Ensoleillé · 24°C</div></div>
-          <div class="ga-row"><div class="ga-ico">🏎️</div><div class="ga-lbl">Stratégie</div><div class="ga-val">Medium → Hard</div></div>
-          <div class="ga-row"><div class="ga-ico">⚡</div><div class="ga-lbl">Moteur</div><div class="ga-val"><span class="stars">★★★★</span><span style="color:rgba(255,255,255,.18)">★</span></div></div>
-          <div class="ga-row"><div class="ga-ico">🏆</div><div class="ga-lbl">Vainqueur 2024</div><div class="ga-val red">G. Russell · Mercedes</div></div>
-          <span class="form-title">Forme récente — 3 derniers GP</span>
-          <div class="fi"><div class="fi-pos r1">1</div><div class="fi-n">Hamilton</div><div class="fi-r win">P1 Barcelone 🏆</div></div>
-          <div class="fi"><div class="fi-pos r2">2</div><div class="fi-n">Antonelli</div><div class="fi-r dnf">DNF Barcelone</div></div>
-          <div class="fi"><div class="fi-pos r3">3</div><div class="fi-n">Verstappen</div><div class="fi-r p3c">P3 Canada</div></div>
-        </div>
+
       </div>
     </div>
   </div>
@@ -1490,8 +1846,159 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
   <div class="bn-tab" data-page="prediction" onclick="navTo('prediction')"><div class="bn-ico">🏁</div><div class="bn-lbl">Prédiction</div></div>
   <div class="bn-tab" data-page="leagues" onclick="navTo('leagues')"><div class="bn-ico">🏆</div><div class="bn-lbl">Ligues</div></div>
   <div class="bn-tab" data-page="creator" onclick="navTo('creator')"><div class="bn-ico">🎙️</div><div class="bn-lbl">Creator</div></div>
-  <div class="bn-tab" data-page="profile" onclick="navTo('profile')"><div class="bn-ico">👤</div><div class="bn-lbl">Profil</div></div>
+  <div class="bn-tab" data-page="nextgp" onclick="navTo('nextgp')"><div class="bn-ico">🗓️</div><div class="bn-lbl">Prochain GP</div></div>
 </nav>
+
+<!-- ── PAGE: PROCHAIN GP ── -->
+<div id="pg-nextgp" class="pg">
+  <div class="ngp-wrap">
+
+    <!-- HERO GP -->
+    <div class="ngp-hero">
+      <div class="ngp-hero-bg"></div>
+      <div class="ngp-hero-inner">
+        <div class="ngp-hero-left">
+          <div class="ngp-kicker">Round 8 · 2026</div>
+          <div class="ngp-title">Grand Prix<br><span class="ngp-title-red">d'Autriche</span></div>
+          <div class="ngp-meta">
+            <span class="ngp-flag">🇦🇹</span>
+            <span>Red Bull Ring · Spielberg · 26–28 Juin 2026</span>
+          </div>
+          <div class="ngp-chips">
+            <div class="ngp-chip">4.318 km</div>
+            <div class="ngp-chip">71 tours</div>
+            <div class="ngp-chip">10 virages</div>
+            <div class="ngp-chip">337 km/h max</div>
+            <div class="ngp-chip ngp-chip-red">1:05.619 record</div>
+          </div>
+          <button class="ngp-pred-btn" onclick="navTo('prediction')">🏁 Faire ma prédiction →</button>
+        </div>
+        <div class="ngp-hero-right">
+          <!-- Circuit image -->
+          <div class="ngp-circuit-box">
+            <div class="ngp-circuit-lbl">Red Bull Ring 2026 · 3 secteurs</div>
+            <img src="https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Austria_Circuit.png.transform/7col/image.png"
+                 alt="Red Bull Ring 2026"
+                 onerror="this.style.display='none';this.nextElementSibling.style.display='block'"
+                 style="width:100%;max-width:400px;height:auto;display:block;margin:0 auto;opacity:.9"/>
+            <svg style="display:none;width:100%;max-width:400px;height:auto;margin:0 auto" viewBox="0 0 240 170" fill="none">
+              <path d="M 155,148 L 80,148 L 52,132 L 38,106 L 34,76 L 38,52" stroke="#e8001d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M 38,52 C 32,38 34,24 46,18 C 58,12 76,14 88,20 L 110,28 C 128,24 150,22 164,28 C 178,34 182,46 174,56 C 166,64 150,66 134,66 L 118,66 C 104,66 94,70 88,80 C 82,88 84,98 90,104 C 96,110 104,112 114,110 C 124,108 132,102 136,94 C 140,86 138,78 134,72" stroke="#ffc800" stroke-width="4" stroke-linecap="round"/>
+              <path d="M 134,72 C 142,66 152,62 164,62 L 194,62 C 210,62 220,70 220,82 C 220,92 212,100 200,104 L 188,108 C 178,116 170,128 168,140 L 166,148 L 155,148" stroke="#4db8ff" stroke-width="4" stroke-linecap="round"/>
+              <circle cx="166" cy="146" r="7" fill="rgba(232,0,29,.2)" stroke="#e8001d" stroke-width="1.5"/><text x="166" y="150" fill="#e8001d" font-size="6" text-anchor="middle" font-family="Rajdhani" font-weight="700">T1</text>
+              <circle cx="42" cy="34" r="7" fill="rgba(255,200,0,.15)" stroke="#ffc800" stroke-width="1.5"/><text x="42" y="38" fill="#ffc800" font-size="6" text-anchor="middle" font-family="Rajdhani" font-weight="700">T3</text>
+              <circle cx="148" cy="24" r="7" fill="rgba(255,200,0,.15)" stroke="#ffc800" stroke-width="1.5"/><text x="148" y="28" fill="#ffc800" font-size="6" text-anchor="middle" font-family="Rajdhani" font-weight="700">T4</text>
+              <circle cx="208" cy="84" r="7" fill="rgba(77,184,255,.15)" stroke="#4db8ff" stroke-width="1.5"/><text x="208" y="88" fill="#4db8ff" font-size="6" text-anchor="middle" font-family="Rajdhani" font-weight="700">T9</text>
+              <rect x="154" y="140" width="3" height="12" fill="white" rx="1" opacity=".7"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GRID INFOS -->
+    <div class="ngp-grid">
+
+      <!-- Programme week-end -->
+      <div class="ngp-card">
+        <div class="ngp-card-h">
+          <span class="ngp-card-ico">📅</span>
+          <span class="ngp-card-t">Programme du week-end</span>
+        </div>
+        <div class="ngp-card-b">
+          <div class="ngp-sched">
+            <div class="ngp-sday">
+              <div class="ngp-sday-lbl">Vendredi 26 Juin</div>
+              <div class="ngp-session"><span class="ngp-sl">Essais Libres 1</span><span class="ngp-sv">13h30</span></div>
+              <div class="ngp-session"><span class="ngp-sl">Essais Libres 2</span><span class="ngp-sv">17h00</span></div>
+            </div>
+            <div class="ngp-sday">
+              <div class="ngp-sday-lbl">Samedi 27 Juin</div>
+              <div class="ngp-session"><span class="ngp-sl">Essais Libres 3</span><span class="ngp-sv">12h30</span></div>
+              <div class="ngp-session ngp-session-red"><span class="ngp-sl">🔴 Qualifications</span><span class="ngp-sv ngp-sv-red">16h00</span></div>
+            </div>
+            <div class="ngp-sday">
+              <div class="ngp-sday-lbl">Dimanche 28 Juin</div>
+              <div class="ngp-session ngp-session-gold"><span class="ngp-sl">🏁 Course</span><span class="ngp-sv ngp-sv-gold">15h00</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats circuit -->
+      <div class="ngp-card">
+        <div class="ngp-card-h">
+          <span class="ngp-card-ico">🏎️</span>
+          <span class="ngp-card-t">Données du circuit</span>
+        </div>
+        <div class="ngp-card-b">
+          <div class="ngp-stats-grid">
+            <div class="ngp-stat"><div class="ngp-stat-v">4.318 km</div><div class="ngp-stat-l">Longueur</div></div>
+            <div class="ngp-stat"><div class="ngp-stat-v">71</div><div class="ngp-stat-l">Tours</div></div>
+            <div class="ngp-stat"><div class="ngp-stat-v">306.4 km</div><div class="ngp-stat-l">Distance course</div></div>
+            <div class="ngp-stat"><div class="ngp-stat-v">337 km/h</div><div class="ngp-stat-l">Vitesse max</div></div>
+            <div class="ngp-stat"><div class="ngp-stat-v">1:05.619</div><div class="ngp-stat-l">Record du tour</div></div>
+            <div class="ngp-stat"><div class="ngp-stat-v">10</div><div class="ngp-stat-l">Virages</div></div>
+            <div class="ngp-stat"><div class="ngp-stat-v">+65 m</div><div class="ngp-stat-l">Dénivelé</div></div>
+            <div class="ngp-stat"><div class="ngp-stat-v">3</div><div class="ngp-stat-l">Zones DRS</div></div>
+          </div>
+          <div class="ngp-sector-row">
+            <div class="ngp-sector ngp-s1"><span>S1</span> Montée vers T3</div>
+            <div class="ngp-sector ngp-s2"><span>S2</span> Boucle haute</div>
+            <div class="ngp-sector ngp-s3"><span>S3</span> Descente rapide</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Prédiction IA -->
+      <div class="ngp-card ngp-card-ai">
+        <div class="ngp-card-h">
+          <span class="ngp-card-ico">🤖</span>
+          <span class="ngp-card-t">Prédiction IA GridOracle</span>
+          <span class="ngp-live-dot"></span>
+        </div>
+        <div class="ngp-card-b">
+          <div class="ngp-ai-rows" id="ngp-ai-rows"></div>
+          <button class="ngp-pred-btn" style="margin-top:.6rem;width:100%" onclick="navTo('prediction')">Défier l'IA →</button>
+        </div>
+      </div>
+
+      <!-- Analyse & météo -->
+      <div class="ngp-card">
+        <div class="ngp-card-h">
+          <span class="ngp-card-ico">🌤️</span>
+          <span class="ngp-card-t">Analyse & conditions</span>
+        </div>
+        <div class="ngp-card-b">
+          <div class="ngp-analysis">
+            <div class="ngp-ana-row"><div class="ngp-ana-ico">🌡️</div><div class="ngp-ana-lbl">Météo prévue</div><div class="ngp-ana-val">Ensoleillé · 24°C</div></div>
+            <div class="ngp-ana-row"><div class="ngp-ana-ico">🏆</div><div class="ngp-ana-lbl">Vainqueur 2024</div><div class="ngp-ana-val" style="color:#e8001d">G. Russell · Mercedes</div></div>
+            <div class="ngp-ana-row"><div class="ngp-ana-ico">🔁</div><div class="ngp-ana-lbl">Stratégie dominante</div><div class="ngp-ana-val">1 arrêt · Medium → Hard</div></div>
+            <div class="ngp-ana-row"><div class="ngp-ana-ico">⚡</div><div class="ngp-ana-lbl">Type de circuit</div><div class="ngp-ana-val">Power · Faible appui</div></div>
+            <div class="ngp-ana-row"><div class="ngp-ana-ico">🔴</div><div class="ngp-ana-lbl">Red Bull Racing</div><div class="ngp-ana-val">Circuit à domicile 🏠</div></div>
+            <div class="ngp-ana-row"><div class="ngp-ana-ico">📊</div><div class="ngp-ana-lbl">Safety Car prob.</div><div class="ngp-ana-val">~22%</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CALENDRIER 2026 DÉROULANT -->
+    <div class="ngp-cal-section">
+      <div class="ngp-cal-header" onclick="toggleCalendar()">
+        <div class="ngp-cal-title">
+          <span class="ngp-card-ico">🗓️</span>
+          Calendrier F1 2026 — 22 Grands Prix
+        </div>
+        <div class="ngp-cal-toggle" id="ngp-cal-arrow">▼</div>
+      </div>
+      <div class="ngp-cal-body" id="ngp-cal-body">
+        <div class="ngp-cal-grid" id="ngp-cal-grid"></div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /pg-nextgp -->
 
 </div><!-- /app -->
 <div class="toast" id="toast">🏁 Prédiction GP Autriche verrouillée !</div>
@@ -2008,6 +2515,7 @@ function goApp(){
   hRender();pRender();
   applyRestoredPlan();
   setTimeout(animBars,150);
+  initHubDashboard();
   // ── ACTIVATE PLAN IF USER PAID BEFORE COMPLETING ONBOARDING ──
   const afterPlan = localStorage.getItem('go_after_onboarding_plan');
   const afterBilling = localStorage.getItem('go_after_onboarding_billing');
@@ -2028,6 +2536,7 @@ function navTo(page){
   const bt=document.querySelector(`.bn-tab[data-page="${page}"]`);if(bt)bt.classList.add('on');
   window.scrollTo(0,0);
   if(page==='standings')buildStandings();
+  if(page==='nextgp')initNextGP();
 }
 
 /* ── TOAST ── */
@@ -2056,6 +2565,117 @@ function hasFullAccess(){
   return Date.now() < TRIAL_DEADLINE && Date.now() >= trialStart;
 }
 
+// ── INIT HUB DASHBOARD SIDEBAR ──
+function initHubDashboard(){
+  const raw = localStorage.getItem('go_profile');
+  const p = raw ? JSON.parse(raw) : {};
+  const fn = p.fn || p.firstName || '';
+  const ln = p.ln || p.lastName || '';
+  const initials = ((fn[0]||'')+(ln[0]||'')).toUpperCase() || 'GO';
+  const plan = localStorage.getItem('go_plan') || p.plan || 'free';
+  const handle = p.handle || p.uid || 'griduser';
+
+  // Résoudre équipe et pilote depuis teamId / driverSn (vraies clés du profil)
+  const team   = (typeof TEAMS   !== 'undefined') ? (TEAMS.find(t => t.id === p.teamId)    || null) : null;
+  const driver = (typeof DRIVERS !== 'undefined') ? (DRIVERS.find(d => d.sn === p.driverSn) || null) : null;
+
+  // ── Avatar
+  const av = document.getElementById('hw-av');
+  if(av){
+    av.textContent = initials;
+    const tc = team ? team.color : (p.tc || '#e8001d');
+    av.style.borderColor = tc;
+    av.style.color = tc;
+    av.style.background = tc + '18';
+  }
+
+  // ── Nom & handle
+  const nm = document.getElementById('hw-name');
+  if(nm) nm.textContent = fn ? (fn+' '+ln).trim() : 'GridOracle';
+  const hd = document.getElementById('hw-handle');
+  if(hd) hd.textContent = '@'+handle;
+
+  // ── Équipe
+  const tmEl = document.getElementById('hw-team');
+  const tbEl = document.getElementById('hw-team-badge');
+  if(team){
+    if(tmEl){ tmEl.textContent = team.name; tmEl.style.color = team.color; }
+    if(tbEl){ tbEl.style.borderColor = team.color+'55'; }
+  } else if(tmEl){ tmEl.textContent = 'Non définie'; }
+
+  // ── Pilote
+  const dvEl = document.getElementById('hw-driver');
+  if(driver){
+    if(dvEl){ dvEl.textContent = '#'+driver.n+' '+driver.sn; dvEl.style.color = driver.tc; }
+  } else if(dvEl){ dvEl.textContent = 'Non défini'; }
+
+  // ── Plan badge
+  const pl = document.getElementById('hw-plan-lbl');
+  if(pl){
+    pl.textContent = plan === 'premium' ? 'Premium' : plan === 'creator' ? 'Creator' : 'Free';
+    pl.style.color = plan === 'creator' ? 'var(--gold)' : 'var(--red)';
+    if(plan !== 'free'){
+      const up = document.querySelector('.hws-up');
+      if(up) up.style.display = 'none';
+    }
+  }
+
+  // ── Stats
+  const pts = p.points || p.pts || 0;
+  const rank = p.rank || '—';
+  const elPts  = document.getElementById('hw-pts');
+  const elRank = document.getElementById('hw-rank');
+  if(elPts)  elPts.textContent  = pts > 0 ? pts : '0';
+  if(elRank) elRank.textContent = rank !== '—' ? '#'+rank : '#—';
+
+  const isPaid = hasFullAccess();
+  const maxSlots = isPaid ? 10 : 5;
+  const filled = (typeof HP !== 'undefined' && HP.pred) ? HP.pred.filter(Boolean).length : 0;
+  const elCount = document.getElementById('hw-pred-count');
+  if(elCount) elCount.textContent = filled+'/'+maxSlots;
+
+  // ── Clic sidebar → page profil
+  const sidebar = document.querySelector('.hw-sidebar');
+  if(sidebar && !sidebar._profileBound){
+    sidebar._profileBound = true;
+    sidebar.style.cursor = 'pointer';
+    sidebar.addEventListener('click', function(e){
+      if(e.target.closest('.hws-up')) return;
+      if(typeof navTo === 'function') navTo('profile');
+    });
+  }
+
+  // ── Timer sync
+  function syncTimer(){
+    ['d','h','m','s'].forEach(function(u){
+      const src = document.getElementById('r'+u);
+      const dst = document.getElementById('r'+u+'2');
+      if(src && dst) dst.textContent = src.textContent;
+    });
+  }
+  syncTimer();
+  setInterval(syncTimer, 1000);
+
+  // ── AI CORE animations
+  setTimeout(function(){
+    document.querySelectorAll('.aic-bfill').forEach(function(el){ el.classList.add('animated'); });
+    const simEl = document.getElementById('aic-sim');
+    if(simEl){
+      let count = 0, target = 124381, step = Math.ceil(target/60);
+      const iv = setInterval(function(){
+        count = Math.min(count+step, target);
+        simEl.textContent = count.toLocaleString('fr-FR');
+        if(count >= target) clearInterval(iv);
+      }, 18);
+    }
+    let mins = 2;
+    setInterval(function(){
+      mins++;
+      const el = document.getElementById('aic-upd');
+      if(el) el.textContent = 'Il y a '+mins+' minute'+(mins>1?'s':'');
+    }, 60000);
+  }, 400);
+}
 function buildAIPred(){
   const isPaid = hasFullAccess();
   const h=document.getElementById('ai-home'),fl=document.getElementById('ai-home-lock');
@@ -2416,6 +3036,7 @@ function bootApp(profile) {
   hRender(); pRender();
   applyRestoredPlan();
   setTimeout(animBars, 150);
+  initHubDashboard();
   // Activer plan post-onboarding si paiement fait avant profil
   const afterPlan = localStorage.getItem('go_after_onboarding_plan');
   const afterBilling = localStorage.getItem('go_after_onboarding_billing');
@@ -2483,21 +3104,26 @@ async function reconLookup() {
   const btn = document.getElementById('recon-submit-btn');
   const err = document.getElementById('recon-err');
   btn.disabled = true;
-  btn.innerHTML = '<div class="spinner" style="border-top-color:#fff;width:16px;height:16px;margin-right:.5rem"></div> Recherche…';
+  btn.innerHTML = '<div class="spinner" style="border-top-color:#fff;width:16px;height:16px;margin-right:.5rem;display:inline-block"></div> Recherche…';
   err.textContent = '';
   try {
     const res = await fetch(`/api/get-profile?email=${encodeURIComponent(email)}`);
+    if (!res.ok) throw new Error('API error '+res.status);
     const data = await res.json();
-    if (data.found) {
+    if (data.found && data.profile) {
       showReconConfirm(data.profile);
     } else {
-      // Email inconnu → lancer l'onboarding avec email pré-rempli
+      // Email inconnu → proposer de créer un compte avec cet email pré-rempli
+      err.textContent = '';
       document.getElementById('recon-screen').classList.remove('open');
-      document.getElementById('em').value = email;
+      const emInput = document.getElementById('em');
+      if (emInput) emInput.value = email;
       go(1);
     }
   } catch(e) {
-    err.textContent = 'Erreur réseau — réessaie';
+    // Erreur réseau — permettre de réessayer
+    err.textContent = 'Connexion impossible — vérifie ta connexion et réessaie';
+    err.style.color = 'var(--red)';
     btn.disabled = false;
     btn.innerHTML = '<span>Retrouver mon profil →</span>';
   }
@@ -2545,7 +3171,79 @@ document.addEventListener('click',e=>{
     if(PP.opk!==-1){PP.opk=-1;pRender()}
   }
 });
-window.va = window.va || function(){(window.vaq = window.vaq || []).push(arguments)};
+/* ══ PAGE PROCHAIN GP ══ */
+const F1_CALENDAR_2026 = [
+  {r:1,  flag:'🇦🇺', name:'Grand Prix d\'Australie',    loc:'Albert Park · Melbourne',       dates:'6–8 Mars',      el:'13h', q:'14h', race:'15h', circuit:'4.309 km · 58 tours', status:'done', p1:'Russell',p2:'Antonelli',p3:'Leclerc'},
+  {r:2,  flag:'🇨🇳', name:'Grand Prix de Chine',        loc:'Shanghai Circuit',               dates:'13–15 Mars',    el:'13h', q:'14h', race:'15h', circuit:'5.451 km · 56 tours', status:'done', sprint:true, p1:'Antonelli',p2:'Russell',p3:'Hamilton'},
+  {r:3,  flag:'🇯🇵', name:'Grand Prix du Japon',        loc:'Suzuka Circuit',                 dates:'27–29 Mars',    el:'13h', q:'14h', race:'15h', circuit:'5.807 km · 53 tours', status:'done', p1:'Antonelli',p2:'Piastri',p3:'Leclerc'},
+  {r:4,  flag:'🇧🇭', name:'Grand Prix de Bahreïn',      loc:'Bahrain International Circuit',  dates:'10–12 Avr.',    el:'13h', q:'14h', race:'18h', circuit:'5.412 km · 57 tours', status:'done', p1:'Norris',p2:'Hamilton',p3:'Verstappen'},
+  {r:5,  flag:'🇸🇦', name:'Grand Prix d\'Arabie Saoudite', loc:'Jeddah Corniche Circuit',    dates:'17–19 Avr.',    el:'13h', q:'17h', race:'18h', circuit:'6.174 km · 50 tours', status:'done', p1:'Leclerc',p2:'Norris',p3:'Piastri'},
+  {r:6,  flag:'🇺🇸', name:'Grand Prix de Miami',        loc:'Miami International Autodrome', dates:'1–3 Mai',       el:'13h', q:'14h', race:'15h', circuit:'5.412 km · 57 tours', status:'done', sprint:true, p1:'Verstappen',p2:'Norris',p3:'Antonelli'},
+  {r:7,  flag:'🇨🇦', name:'Grand Prix du Canada',       loc:'Circuit Gilles-Villeneuve',     dates:'22–24 Mai',     el:'13h', q:'14h', race:'14h', circuit:'4.361 km · 70 tours', status:'done', sprint:true, p1:'Hamilton',p2:'Antonelli',p3:'Russell'},
+  {r:8,  flag:'🇲🇨', name:'Grand Prix de Monaco',       loc:'Circuit de Monaco',             dates:'5–7 Juin',      el:'13h', q:'15h', race:'15h', circuit:'3.337 km · 78 tours', status:'done', p1:'Leclerc',p2:'Norris',p3:'Piastri'},
+  {r:9,  flag:'🇪🇸', name:'Grand Prix d\'Espagne',      loc:'Circuit de Barcelona-Catalunya', dates:'12–14 Juin',   el:'13h', q:'15h', race:'15h', circuit:'4.655 km · 66 tours', status:'done', p1:'Hamilton',p2:'Verstappen',p3:'Antonelli'},
+  {r:10, flag:'🇦🇹', name:'Grand Prix d\'Autriche',     loc:'Red Bull Ring · Spielberg',     dates:'26–28 Juin',    el:'13h30', q:'16h00', race:'15h00', circuit:'4.318 km · 71 tours', status:'next'},
+  {r:11, flag:'🇬🇧', name:'Grand Prix de Grande-Bretagne', loc:'Silverstone Circuit',        dates:'3–5 Juil.',     el:'13h', q:'15h', race:'15h', circuit:'5.891 km · 52 tours', status:'upcoming', sprint:true},
+  {r:12, flag:'🇧🇪', name:'Grand Prix de Belgique',     loc:'Circuit de Spa-Francorchamps', dates:'17–19 Juil.',   el:'13h', q:'15h', race:'15h', circuit:'7.004 km · 44 tours', status:'upcoming'},
+  {r:13, flag:'🇭🇺', name:'Grand Prix de Hongrie',      loc:'Hungaroring · Budapest',        dates:'24–26 Juil.',   el:'13h', q:'15h', race:'15h', circuit:'4.381 km · 70 tours', status:'upcoming'},
+  {r:14, flag:'🇳🇱', name:'Grand Prix des Pays-Bas',    loc:'Circuit Zandvoort',             dates:'21–23 Août',    el:'13h', q:'15h', race:'15h', circuit:'4.259 km · 72 tours', status:'upcoming', sprint:true},
+  {r:15, flag:'🇮🇹', name:'Grand Prix d\'Italie',       loc:'Autodromo Nazionale Monza',     dates:'4–6 Sep.',      el:'13h', q:'15h', race:'15h', circuit:'5.793 km · 53 tours', status:'upcoming'},
+  {r:16, flag:'🇪🇸', name:'Grand Prix d\'Espagne (Madrid)', loc:'Circuito Madrid Motoring',  dates:'11–13 Sep.',    el:'13h', q:'15h', race:'15h', circuit:'5.474 km · 55 tours', status:'upcoming'},
+  {r:17, flag:'🇦🇿', name:'Grand Prix d\'Azerbaïdjan',  loc:'Baku City Circuit',             dates:'25–27 Sep.',    el:'13h', q:'15h', race:'13h', circuit:'6.003 km · 51 tours', status:'upcoming'},
+  {r:18, flag:'🇸🇬', name:'Grand Prix de Singapour',    loc:'Marina Bay Street Circuit',     dates:'9–11 Oct.',     el:'13h', q:'15h', race:'20h', circuit:'4.940 km · 62 tours', status:'upcoming', sprint:true},
+  {r:19, flag:'🇺🇸', name:'Grand Prix des États-Unis',  loc:'Circuit of the Americas · Austin', dates:'23–25 Oct.', el:'13h', q:'15h', race:'20h', circuit:'5.513 km · 56 tours', status:'upcoming'},
+  {r:20, flag:'🇲🇽', name:'Grand Prix du Mexique',      loc:'Autodromo Hermanos Rodriguez',  dates:'30 Oct.–1 Nov.',el:'13h', q:'15h', race:'20h', circuit:'4.304 km · 71 tours', status:'upcoming'},
+  {r:21, flag:'🇧🇷', name:'Grand Prix du Brésil',       loc:'Autodromo Jose Carlos Pace',    dates:'6–8 Nov.',      el:'13h', q:'15h', race:'18h', circuit:'4.309 km · 71 tours', status:'upcoming'},
+  {r:22, flag:'🇦🇪', name:'Grand Prix d\'Abu Dhabi',    loc:'Yas Marina Circuit',            dates:'4–6 Déc.',      el:'13h', q:'15h', race:'17h', circuit:'5.281 km · 58 tours', status:'upcoming'},
+];
+
+let calendarOpen = false;
+
+function toggleCalendar(){
+  calendarOpen = !calendarOpen;
+  const body = document.getElementById('ngp-cal-body');
+  const arrow = document.getElementById('ngp-cal-arrow');
+  if(body) body.classList.toggle('open', calendarOpen);
+  if(arrow) arrow.classList.toggle('open', calendarOpen);
+  if(calendarOpen && document.getElementById('ngp-cal-grid') && !document.getElementById('ngp-cal-grid').children.length){
+    buildCalendarGrid();
+  }
+}
+
+function buildCalendarGrid(){
+  const grid = document.getElementById('ngp-cal-grid');
+  if(!grid) return;
+  grid.innerHTML = '';
+  F1_CALENDAR_2026.forEach(gp => {
+    const item = document.createElement('div');
+    item.className = 'ngp-gp-item';
+    const statusLabel = gp.status==='done'?'Terminé':gp.status==='next'?'▶ En cours':'À venir';
+    const resultHTML = gp.p1 ? `<div class="ngp-gp-result"><div class="ngp-gp-res-lbl">Résultats</div><div class="ngp-gp-podium"><div class="ngp-gp-pos"><span class="ngp-gp-pos-n p1">🥇</span> ${gp.p1}</div><div class="ngp-gp-pos"><span class="ngp-gp-pos-n p2">🥈</span> ${gp.p2}</div><div class="ngp-gp-pos"><span class="ngp-gp-pos-n p3">🥉</span> ${gp.p3}</div></div></div>` : '';
+    item.innerHTML = `<div class="ngp-gp-row" onclick="toggleGP(this)"><div class="ngp-gp-round">R${String(gp.r).padStart(2,'0')}</div><div class="ngp-gp-flag">${gp.flag}</div><div class="ngp-gp-name"><div class="ngp-gp-n">${gp.name}${gp.sprint?'<span class="sprint-badge">SPRINT</span>':''}</div><div class="ngp-gp-loc">${gp.loc}</div></div><div class="ngp-gp-dates">${gp.dates}</div><div class="ngp-gp-status ${gp.status}">${statusLabel}</div><div class="ngp-gp-arrow">›</div></div><div class="ngp-gp-detail"><div class="ngp-gp-detail-grid"><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">Circuit</div><div class="ngp-gp-ds-val">${gp.circuit}</div></div><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">Essais Libres</div><div class="ngp-gp-ds-val">${gp.el}</div></div><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">Qualifications</div><div class="ngp-gp-ds-val" style="color:var(--red)">${gp.q}</div></div><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">Course</div><div class="ngp-gp-ds-val" style="color:var(--gold)">${gp.race}</div></div><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">Dates</div><div class="ngp-gp-ds-val">${gp.dates} 2026</div></div>${gp.sprint?'<div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">Format</div><div class="ngp-gp-ds-val" style="color:var(--gold)">Sprint Weekend</div></div>':''}</div>${resultHTML}</div>`;
+    grid.appendChild(item);
+  });
+}
+
+function toggleGP(row){
+  const detail = row.nextElementSibling;
+  const arrow = row.querySelector('.ngp-gp-arrow');
+  const isOpen = detail.classList.contains('open');
+  document.querySelectorAll('.ngp-gp-detail.open').forEach(d=>{
+    d.classList.remove('open');
+    const a=d.previousElementSibling.querySelector('.ngp-gp-arrow');
+    if(a) a.classList.remove('open');
+  });
+  if(!isOpen){ detail.classList.add('open'); if(arrow) arrow.classList.add('open'); }
+}
+
+function initNextGP(){
+  const rows = document.getElementById('ngp-ai-rows');
+  if(rows && typeof AI_DATA !== 'undefined' && !rows.children.length){
+    rows.innerHTML = AI_DATA.slice(0,5).map((d,i)=>aiRow(d,i)).join('');
+    setTimeout(()=>{ rows.querySelectorAll('[data-w]').forEach(b=>b.style.width=b.dataset.w+'%'); },100);
+  }
+}
+/* ══ END PROCHAIN GP ══ */
 
 /* ══════════════════════════════════════════
    TRIAL 48H — GridOracle Offre de lancement
@@ -2573,11 +3271,15 @@ function isTrialExpired(){
 }
 
 function formatTrialTimer(ms){
-  if (ms <= 0) return '00:00:00';
-  const h = Math.floor(ms / 3600000);
-  const m = Math.floor((ms % 3600000) / 60000);
-  const s = Math.floor((ms % 60000) / 1000);
-  return `${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
+  if (ms <= 0) return 'Expiré';
+  const totalSec = Math.floor(ms / 1000);
+  const d = Math.floor(totalSec / 86400);
+  const h = Math.floor((totalSec % 86400) / 3600);
+  const m = Math.floor((totalSec % 3600) / 60);
+  const s = totalSec % 60;
+  if (d > 0) return `${String(d).padStart(2,'0')}j ${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m`;
+  if (h > 0) return `${String(h).padStart(2,'0')}h ${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
+  return `${String(m).padStart(2,'0')}m ${String(s).padStart(2,'0')}s`;
 }
 
 function startTrial(){
