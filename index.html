@@ -33,6 +33,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 .sl{position:fixed;height:1px;background:linear-gradient(90deg,transparent,rgba(232,0,29,.4),transparent);opacity:0;animation:sl linear infinite;pointer-events:none;z-index:0}
 @keyframes sl{0%{transform:translateX(-200px);opacity:0}8%{opacity:1}88%{opacity:1}100%{transform:translateX(110vw);opacity:0}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
 @keyframes popIn{from{transform:scale(0);opacity:0}60%{transform:scale(1.1)}to{transform:scale(1);opacity:1}}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -2894,19 +2895,21 @@ async function savePredToCloud(predArray){
   const handle  = profile.handle || USER.handle || '';
   if (!email) return { success: false, reason: 'no_email' };
 
+  // Normaliser en objets simples {sn, n, tc} — jamais d'objets DRIVER complets
+  const prediction = predArray.filter(Boolean).map(d => ({
+    sn:  typeof d === 'string' ? d : (d.sn || ''),
+    n:   typeof d === 'string' ? (DRIVERS.find(x=>x.sn===d)?.n||'') : (d.n||''),
+    tc:  typeof d === 'string' ? (DRIVERS.find(x=>x.sn===d)?.tc||'#e8001d') : (d.tc||'#e8001d'),
+  })).filter(d => d.sn);
+
+  // Aussi sauvegarder les sn en localStorage
+  localStorage.setItem(`go_pred_${GP_CURRENT.id}`, JSON.stringify(prediction.map(d=>d.sn)));
+
   try {
     const res = await fetch('/api/save-prediction', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email,
-        handle,
-        gpId:       GP_CURRENT.id,
-        gpName:     GP_CURRENT.name,
-        prediction: predArray.filter(Boolean).map(d => ({
-          sn: d.sn, n: d.n, tc: d.tc, t: d.t, pct: d.pct
-        }))
-      })
+      body: JSON.stringify({ email, handle, gpId: GP_CURRENT.id, gpName: GP_CURRENT.name, prediction })
     });
     const data = await res.json();
     if (data.locked) return { success: false, reason: 'locked' };
@@ -2921,74 +2924,93 @@ async function loadSavedPrediction(){
   const profile = JSON.parse(localStorage.getItem('go_profile') || '{}');
   const email   = profile.email || '';
 
-  // ── Étape 1 : restauration INSTANTANÉE depuis localStorage
+  // ── Normalise un item de prédiction en sn string
+  function normSn(p){
+    if(!p) return null;
+    if(typeof p === 'string') return p;
+    if(p.sn) return p.sn;
+    return null;
+  }
+
+  // ── Applique une prédiction (array de sn strings) aux slots
+  function applyPred(snArray){
+    const isPaid = hasFullAccess();
+    const maxSlots = isPaid ? 10 : 5;
+    // Garder seulement les positions autorisées
+    const limited = snArray.slice(0, maxSlots);
+    const padded  = [...limited, ...new Array(Math.max(0, 10-limited.length)).fill(null)];
+    HP.pred = padded;
+    PP.pred = [...padded];
+    hRender();
+    pRender();
+  }
+
+  // ── Restaure les boutons "soumise + modifiable"
+  function restoreSubmittedUI(){
+    if(isPredLocked()){ lockPredUI(); return; }
+    HP.sub = true; PP.sub = true;
+    renderPred(HP); renderPred(PP);
+    ['hpb','ppb'].forEach(id=>{
+      const pb=document.getElementById(id);
+      if(pb){pb.className='pred-status st-done';pb.textContent='✓ Sauvegardée';}
+    });
+    ['hbs','pbs'].forEach(id=>{
+      const bs=document.getElementById(id);
+      if(!bs) return;
+      bs.disabled=false;
+      bs.className='bsub done';
+      bs.innerHTML='✓ Prédiction sauvegardée · <span style="opacity:.7;font-size:.8em">Modifier →</span>';
+      const inst    = id==='hbs' ? HP : PP;
+      const badgeId = id==='hbs' ? 'hpb' : 'ppb';
+      bs.onclick = () => unlockPredEdit(inst, badgeId, id);
+    });
+  }
+
+  // ── Étape 1 : localStorage instantané
   const localKey = `go_pred_${GP_CURRENT.id}`;
   const localRaw = localStorage.getItem(localKey);
   if(localRaw){
     try{
       const saved = JSON.parse(localRaw);
       if(Array.isArray(saved) && saved.length){
-        // Reconstruire les objets pilotes complets
-        const full = saved.map(p => (p && p.sn) ? (DRIVERS.find(d=>d.sn===p.sn)||p) : p);
-        const padded = [...full, ...new Array(Math.max(0,10-full.length)).fill(null)];
-        HP.pred = padded; PP.pred = [...padded];
-        hRender(); pRender();
-        // Afficher le bouton partage si prédiction complète
-        const filled = full.filter(Boolean);
-        if(filled.length >= 5) showShareButton(filled);
+        const snList = saved.map(normSn).filter(Boolean);
+        if(snList.length >= 1){
+          applyPred(snList);
+          if(snList.length >= 5){
+            restoreSubmittedUI();
+            showShareButton(snList.map(sn=>DRIVERS.find(d=>d.sn===sn)).filter(Boolean));
+          }
+        }
       }
     }catch(e){}
   }
 
-  // ── Étape 2 : sync depuis Redis (si email connu)
+  // ── Étape 2 : sync Redis
   if(!email) return;
-
   try{
     const res = await fetch(`/api/save-prediction?email=${encodeURIComponent(email)}&gp=${GP_CURRENT.id}`);
     if(!res.ok) return;
     const data = await res.json();
+    if(!data.found || !data.prediction) return;
 
-    if(data.found && data.prediction && Array.isArray(data.prediction.prediction)){
-      const cloudPred = data.prediction.prediction;
-      // Reconstruire les pilotes complets depuis driverSn
-      const full = cloudPred.map(p => (p && p.sn) ? (DRIVERS.find(d=>d.sn===p.sn)||p) : p);
-      const padded = [...full, ...new Array(Math.max(0,10-full.length)).fill(null)];
+    const raw = data.prediction.prediction || data.prediction;
+    if(!Array.isArray(raw) || !raw.length) return;
 
-      // Mettre à jour localStorage avec la version cloud (plus fraîche)
-      localStorage.setItem(localKey, JSON.stringify(full));
+    const snList = raw.map(normSn).filter(Boolean);
+    if(!snList.length) return;
 
-      HP.pred = padded; PP.pred = [...padded];
-      hRender(); pRender();
+    // Mettre à jour localStorage
+    localStorage.setItem(localKey, JSON.stringify(snList));
 
-      // Restaurer l'état "soumise" si la prédiction existe en cloud
-      const filled = full.filter(Boolean);
-      if(filled.length >= 5){
-        HP.sub = true; PP.sub = true;
-        renderPred(HP); renderPred(PP);
-        // Mettre à jour les boutons
-        ['hpb','ppb'].forEach(id=>{
-          const pb=document.getElementById(id);
-          if(pb){pb.className='pred-status st-done';pb.textContent='✓ Sauvegardée';}
-        });
-        ['hbs','pbs'].forEach(id=>{
-          const bs=document.getElementById(id);
-          if(bs && !isPredLocked()){
-            bs.disabled=false;
-            bs.className='bsub done';
-            bs.innerHTML='✓ Prédiction sauvegardée · <span style="opacity:.7;font-size:.8em">Modifier jusqu\'aux qualifs</span>';
-            const inst = id==='hbs'?HP:PP;
-            const badgeId = id==='hbs'?'hpb':'ppb';
-            bs.onclick = ()=>unlockPredEdit(inst,badgeId,id);
-          }
-        });
-        showShareButton(filled);
-      }
-
-      // Verrouiller si qualifs commencées
-      if(data.locked || isPredLocked()) lockPredUI();
+    applyPred(snList);
+    if(snList.length >= 5){
+      restoreSubmittedUI();
+      showShareButton(snList.map(sn=>DRIVERS.find(d=>d.sn===sn)).filter(Boolean));
     }
+
+    if(data.locked || isPredLocked()) lockPredUI();
+
   }catch(e){
-    // Silencieux — la version locale est déjà affichée
     console.warn('loadSavedPrediction cloud sync failed:', e.message);
   }
 }
@@ -3101,9 +3123,151 @@ function showShareButton(predArray){
 }
 
 function openShareModal(predArray){
-  // Fermer si déjà ouvert
   const existing = document.getElementById('share-modal');
   if(existing) existing.remove();
+
+  const isPaid   = hasFullAccess();
+  const maxShare = isPaid ? 10 : 5;
+  const myHandle = USER.handle || 'moi';
+
+  // Résoudre les pilotes depuis sn strings ou objets
+  const pred = (predArray || HP.pred)
+    .filter(Boolean)
+    .slice(0, maxShare)
+    .map(p => {
+      if(typeof p === 'string') return DRIVERS.find(d=>d.sn===p) || { sn:p, n:'?', tc:'#e8001d' };
+      if(p && p.sn) return DRIVERS.find(d=>d.sn===p.sn) || p;
+      return null;
+    }).filter(Boolean);
+
+  if(!pred.length){ showToast('Ajoute des pilotes à ta prédiction d\'abord'); return; }
+
+  const shareText = [
+    `${GP_CURRENT.flag} Ma prédiction ${GP_CURRENT.name} sur GridOracle 🤖`,
+    '',
+    ...pred.map((d,i)=>`P${i+1} ${d.sn||'—'}`),
+    '',
+    `Tu fais mieux que l'IA ? gridoracle.vercel.app`
+  ].join('\n');
+
+  const colors = ['#FFD700','#C0C0C0','#CD7F32','rgba(255,255,255,.5)','rgba(255,255,255,.4)','rgba(255,255,255,.35)','rgba(255,255,255,.3)','rgba(255,255,255,.28)','rgba(255,255,255,.25)','rgba(255,255,255,.22)'];
+
+  const predRows = pred.map((d,i)=>`
+    <div style="display:flex;align-items:center;gap:.5rem;padding:.28rem 0;border-bottom:1px solid rgba(255,255,255,.05)">
+      <div style="font-family:'Rajdhani',sans-serif;font-size:.88rem;font-weight:700;color:${colors[i]};min-width:24px">P${i+1}</div>
+      <div style="font-size:.82rem;font-weight:600;color:#fff;flex:1">${d.sn||'—'}</div>
+      <div style="width:7px;height:7px;border-radius:50%;background:${d.tc||'#e8001d'};flex-shrink:0"></div>
+    </div>`).join('');
+
+  const hasNativeShare = !!navigator.share;
+
+  const modal = document.createElement('div');
+  modal.id = 'share-modal';
+  modal.style.cssText = 'position:fixed;inset:0;z-index:9500;background:rgba(7,7,14,.92);backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center;padding:0';
+
+  modal.innerHTML = `
+    <div style="background:#0e0e1c;border:1px solid rgba(232,0,29,.22);border-radius:16px 16px 0 0;padding:1.4rem 1.3rem 2rem;max-width:480px;width:100%;position:relative;animation:slideUp .25s ease">
+      <div style="width:36px;height:4px;background:rgba(255,255,255,.15);border-radius:2px;margin:0 auto 1.1rem"></div>
+      <button id="sm-close" style="position:absolute;top:1rem;right:1rem;background:transparent;border:none;color:rgba(255,255,255,.35);font-size:1.2rem;cursor:pointer;line-height:1">✕</button>
+
+      <div style="font-family:'Rajdhani',sans-serif;font-size:.88rem;font-weight:700;letter-spacing:.12em;color:#e8001d;margin-bottom:.9rem">
+        📤 PARTAGER MA PRÉDICTION${isPaid?' · Top 10':' · Top 5'}
+      </div>
+
+      <div style="background:linear-gradient(135deg,#07070e,#111128);border:1px solid rgba(232,0,29,.18);border-radius:10px;padding:.9rem;margin-bottom:1rem">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">
+          <div style="font-family:'Rajdhani',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.12em">GRID<span style="color:#e8001d">ORACLE</span></div>
+          <div style="font-size:.58rem;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase">${GP_CURRENT.flag} ${GP_CURRENT.name}</div>
+        </div>
+        <div style="font-size:.6rem;color:rgba(255,255,255,.3);margin-bottom:.45rem;letter-spacing:.07em;text-transform:uppercase">@${myHandle} · Ma prédiction</div>
+        ${predRows}
+        <div style="margin-top:.5rem;font-size:.52rem;color:rgba(255,255,255,.18);text-align:center;letter-spacing:.06em">L'IA PRÉDIT. TOI TU DÉFIES. · gridoracle.vercel.app</div>
+      </div>
+
+      ${!isPaid ? `<div style="background:rgba(232,0,29,.05);border:1px solid rgba(232,0,29,.15);border-radius:8px;padding:.55rem .75rem;margin-bottom:.85rem;font-size:.72rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:.5rem">
+        🔒 <span>Premium = partage ton <strong style="color:#fff">Top 10</strong> complet</span>
+        <button onclick="document.getElementById('share-modal').remove();openStripeModal('premium')" style="margin-left:auto;background:#e8001d;border:none;color:#fff;border-radius:5px;padding:.2rem .6rem;font-size:.65rem;font-weight:600;cursor:pointer;white-space:nowrap">Upgrade →</button>
+      </div>` : ''}
+
+      <div style="display:flex;flex-direction:column;gap:.5rem">
+        ${hasNativeShare ? `<button id="sm-native" style="background:#e8001d;color:#fff;border:none;border-radius:10px;padding:.8rem;font-size:.88rem;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;width:100%;display:flex;align-items:center;justify-content:center;gap:.4rem">
+          📤 Partager sur mes réseaux
+        </button>` : ''}
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">
+          <button id="sm-tiktok" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:.7rem;font-size:.82rem;color:#fff;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:.35rem">🎵 TikTok</button>
+          <button id="sm-insta" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:.7rem;font-size:.82rem;color:#fff;cursor:pointer;font-family:'Inter',sans-serif;display:flex;align-items:center;justify-content:center;gap:.35rem">📸 Instagram</button>
+        </div>
+        <button id="sm-copy" style="background:rgba(232,0,29,.07);border:1px solid rgba(232,0,29,.2);border-radius:10px;padding:.7rem;font-size:.82rem;color:#e8001d;cursor:pointer;font-family:'Inter',sans-serif;width:100%;display:flex;align-items:center;justify-content:center;gap:.4rem">
+          📋 Copier le texte
+        </button>
+        <div id="sm-copied" style="text-align:center;font-size:.72rem;color:#4caf50;display:none;padding:.3rem">✓ Texte copié — colle-le dans ton appli !</div>
+      </div>
+    </div>`;
+
+  document.body.appendChild(modal);
+
+  // Fermeture
+  document.getElementById('sm-close').onclick = () => modal.remove();
+  modal.addEventListener('click', e => { if(e.target === modal) modal.remove(); });
+
+  // Partage natif iOS/Android
+  if(hasNativeShare){
+    document.getElementById('sm-native').onclick = async () => {
+      try {
+        await navigator.share({ title: `Ma prédiction ${GP_CURRENT.name}`, text: shareText });
+      } catch(e) {
+        if(e.name !== 'AbortError') copyShareText(shareText, 'sm-copied');
+      }
+    };
+  }
+
+  // TikTok — copie + deep link
+  document.getElementById('sm-tiktok').onclick = () => {
+    copyShareText(shareText, 'sm-copied');
+    showToast('📋 Texte copié ! Ouvre TikTok et colle-le dans ta vidéo 🎵');
+    setTimeout(() => {
+      try { window.location.href = 'tiktok://'; } catch(e) {}
+    }, 400);
+  };
+
+  // Instagram — copie + deep link
+  document.getElementById('sm-insta').onclick = () => {
+    copyShareText(shareText, 'sm-copied');
+    showToast('📋 Texte copié ! Ouvre Instagram et colle-le dans ta story 📸');
+    setTimeout(() => {
+      try { window.location.href = 'instagram://'; } catch(e) {}
+    }, 400);
+  };
+
+  // Copier seulement
+  document.getElementById('sm-copy').onclick = () => {
+    copyShareText(shareText, 'sm-copied');
+    const el = document.getElementById('sm-copied');
+    if(el){ el.style.display='block'; setTimeout(()=>el.style.display='none', 3000); }
+  };
+}
+
+function copyShareText(text, feedbackId){
+  const doFallback = () => {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.cssText = 'position:fixed;top:-999px;opacity:0;font-size:16px';
+    document.body.appendChild(ta);
+    ta.focus(); ta.select();
+    try { document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(ta);
+  };
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(text).then(()=>{
+      if(feedbackId){ const el=document.getElementById(feedbackId); if(el){el.style.display='block';setTimeout(()=>el.style.display='none',3000);} }
+    }).catch(doFallback);
+  } else {
+    doFallback();
+    if(feedbackId){ const el=document.getElementById(feedbackId); if(el){el.style.display='block';setTimeout(()=>el.style.display='none',3000);} }
+  }
+}
+
+function shareTo(){ openShareModal(HP.pred.filter(Boolean)); }
 
   const pred = (predArray||HP.pred).filter(Boolean).slice(0,5);
   const myHandle = USER.handle || 'moi';
@@ -3192,28 +3356,6 @@ function openShareModal(predArray){
   };
 }
 
-function copyShareText(text){
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).catch(()=> fallbackCopy(text));
-  } else {
-    fallbackCopy(text);
-  }
-}
-
-function fallbackCopy(text){
-  const ta = document.createElement('textarea');
-  ta.value = text;
-  ta.style.cssText = 'position:fixed;top:-999px;left:-999px;opacity:0';
-  document.body.appendChild(ta);
-  ta.focus(); ta.select();
-  try { document.execCommand('copy'); } catch(e) {}
-  document.body.removeChild(ta);
-}
-
-function shareTo(platform){
-  // Fallback legacy — redirige vers openShareModal
-  openShareModal(HP.pred.filter(Boolean));
-}
 /* ══ END PRÉDICTION SAUVEGARDE ══ */
 
 /* ── LEAGUE TABLE ── */
