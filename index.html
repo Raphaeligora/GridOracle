@@ -3255,145 +3255,239 @@ function openShareModal(predArray){
   };
 }
 
-// ── GÉNÉRATION IMAGE CANVAS 9:16 ──
-// Polyfill roundRect for older browsers
+// ── GÉNÉRATION IMAGE CANVAS 9:16 ── DESIGN: APEX
+// Polyfill roundRect
 if(!CanvasRenderingContext2D.prototype.roundRect){
-  CanvasRenderingContext2D.prototype.roundRect = function(x,y,w,h,r){
+  CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){
+    if(typeof r==='number') r=[r,r,r,r];
+    const[tl,tr,br,bl]=Array.isArray(r)?[...r,...r].slice(0,4):[r,r,r,r];
     this.beginPath();
-    this.moveTo(x+r,y);
-    this.lineTo(x+w-r,y);
-    this.quadraticCurveTo(x+w,y,x+w,y+r);
-    this.lineTo(x+w,y+h-r);
-    this.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
-    this.lineTo(x+r,y+h);
-    this.quadraticCurveTo(x,y+h,x,y+h-r);
-    this.lineTo(x,y+r);
-    this.quadraticCurveTo(x,y,x+r,y);
+    this.moveTo(x+tl,y);this.lineTo(x+w-tr,y);
+    this.quadraticCurveTo(x+w,y,x+w,y+tr);
+    this.lineTo(x+w,y+h-br);this.quadraticCurveTo(x+w,y+h,x+w-br,y+h);
+    this.lineTo(x+bl,y+h);this.quadraticCurveTo(x,y+h,x,y+h-bl);
+    this.lineTo(x,y+tl);this.quadraticCurveTo(x,y,x+tl,y);
     this.closePath();
   };
 }
+
 function buildPredCanvas(pred, handle){
   return new Promise((resolve, reject) => {
     try {
-      const W=1080, H=1920;
-      const canvas = document.createElement('canvas');
+      const W=1080, H=1920, PX=72, CW=1080-72*2;
+      const canvas=document.createElement('canvas');
       canvas.width=W; canvas.height=H;
-      const ctx = canvas.getContext('2d');
+      const ctx=canvas.getContext('2d');
 
-      // Fond dégradé
-      const bg = ctx.createLinearGradient(0, 0, W, H);
-      bg.addColorStop(0, '#0d0d1e');
-      bg.addColorStop(0.5, '#0a0a16');
-      bg.addColorStop(1, '#07070e');
-      ctx.fillStyle = bg;
-      ctx.fillRect(0, 0, W, H);
+      // ── 1. FOND ──
+      ctx.fillStyle='#05050e';
+      ctx.fillRect(0,0,W,H);
 
-      // Barre rouge top
-      ctx.fillStyle = '#e8001d';
-      ctx.fillRect(0, 0, W, 14);
+      // Texture diagonale vitesse
+      ctx.save();
+      ctx.strokeStyle='rgba(255,255,255,0.013)';
+      ctx.lineWidth=1;
+      const lAng=55*Math.PI/180, lDx=H*Math.sin(lAng);
+      for(let i=-(lDx+100);i<W+100;i+=26){
+        ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i+lDx,H); ctx.stroke();
+      }
+      ctx.restore();
 
-      // Lueur rouge subtile top-left
-      const glow = ctx.createRadialGradient(200, 300, 0, 200, 300, 600);
-      glow.addColorStop(0, 'rgba(232,0,29,0.08)');
-      glow.addColorStop(1, 'transparent');
-      ctx.fillStyle = glow;
-      ctx.fillRect(0, 0, W, H);
+      // Lueur rouge top-left
+      const gl=ctx.createRadialGradient(80,180,0,80,180,560);
+      gl.addColorStop(0,'rgba(232,0,29,0.17)'); gl.addColorStop(1,'transparent');
+      ctx.fillStyle=gl; ctx.fillRect(0,0,W,H);
 
-      // ── Logo GridOracle ──
-      ctx.textAlign = 'left';
-      ctx.font = 'bold 110px Impact, Arial Black, sans-serif';
-      ctx.fillStyle = '#ffffff';
-      const gx = 90;
-      ctx.fillText('GRID', gx, 220);
-      const gw = ctx.measureText('GRID').width;
-      ctx.fillStyle = '#e8001d';
-      ctx.fillText('ORACLE', gx + gw + 10, 220);
+      // Second glow bas-droite subtil
+      const gl2=ctx.createRadialGradient(W,H,0,W,H,700);
+      gl2.addColorStop(0,'rgba(100,0,200,0.05)'); gl2.addColorStop(1,'transparent');
+      ctx.fillStyle=gl2; ctx.fillRect(0,0,W,H);
 
-      // ── GP name ──
-      ctx.font = '500 52px Arial, sans-serif';
-      ctx.fillStyle = 'rgba(255,255,255,0.45)';
-      ctx.fillText((GP_CURRENT.flag||'🏁') + '  ' + (GP_CURRENT.name||'Grand Prix').toUpperCase(), gx, 310);
+      // Gros P1 fantôme derrière (décalé à droite)
+      ctx.save();
+      ctx.font='bold 560px Arial Black,Impact,sans-serif';
+      ctx.fillStyle='rgba(232,0,29,0.055)';
+      ctx.textAlign='right'; ctx.textBaseline='alphabetic';
+      ctx.fillText('P1',W+80,820);
+      ctx.restore();
 
-      // ── Handle ──
-      ctx.font = 'bold 56px Arial, sans-serif';
-      ctx.fillStyle = '#e8001d';
-      ctx.fillText('@' + handle, gx, 400);
+      // ── 2. BARRE ROUGE TOP ──
+      const barG=ctx.createLinearGradient(0,0,W,0);
+      barG.addColorStop(0,'#e8001d'); barG.addColorStop(1,'#ff3d3d');
+      ctx.fillStyle=barG; ctx.fillRect(0,0,W,14);
 
-      // Ligne séparatrice
-      ctx.strokeStyle = 'rgba(232,0,29,0.25)';
-      ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.moveTo(gx, 440); ctx.lineTo(W-gx, 440); ctx.stroke();
+      // ── 3. HEADER ──
+      ctx.textAlign='left'; ctx.textBaseline='alphabetic';
 
-      // ── Titre section ──
-      ctx.font = 'bold 46px Arial, sans-serif';
-      ctx.fillStyle = 'rgba(255,255,255,0.3)';
-      ctx.fillText('MA PRÉDICTION', gx, 510);
+      // Logo GRIDORACLE
+      ctx.font='bold 64px Arial,sans-serif';
+      ctx.fillStyle='#ffffff';
+      ctx.fillText('GRID',PX,112);
+      const gW=ctx.measureText('GRID').width;
+      ctx.fillStyle='#e8001d';
+      ctx.fillText('ORACLE',PX+gW+5,112);
 
-      // ── Lignes pilotes ──
-      const rankColors = ['#FFD700','#C0C0C0','#CD7F32','rgba(255,255,255,.82)','rgba(255,255,255,.72)','rgba(255,255,255,.62)','rgba(255,255,255,.55)','rgba(255,255,255,.5)','rgba(255,255,255,.45)','rgba(255,255,255,.4)'];
-      const rowH = (H - 690 - 180) / Math.min(pred.length, 10);
+      // Badge rond R + numéro
+      const doneCnt=(typeof F1_CALENDAR_2026!=='undefined')?
+        F1_CALENDAR_2026.filter(g=>g.status==='done').length:7;
+      const gpFlag=(typeof GP_CURRENT!=='undefined'&&GP_CURRENT.flag)||'';
+      const roundBadge=gpFlag+' R'+(doneCnt+1);
+      ctx.font='bold 26px Arial,sans-serif';
+      const rbW=ctx.measureText(roundBadge).width+40;
+      const rbX=W-PX-rbW, rbY=70, rbH=48;
+      ctx.save();
+      ctx.fillStyle='rgba(232,0,29,0.1)';
+      ctx.beginPath(); ctx.roundRect(rbX,rbY,rbW,rbH,24); ctx.fill();
+      ctx.strokeStyle='rgba(232,0,29,0.4)'; ctx.lineWidth=1.5;
+      ctx.beginPath(); ctx.roundRect(rbX,rbY,rbW,rbH,24); ctx.stroke();
+      ctx.fillStyle='#e8001d'; ctx.textAlign='center';
+      ctx.fillText(roundBadge,rbX+rbW/2,rbY+30);
+      ctx.restore();
 
-      pred.slice(0, 10).forEach((d, i) => {
-        const y = 560 + i * rowH;
+      // GP name
+      const gpName=(typeof GP_CURRENT!=='undefined'&&GP_CURRENT.name)?
+        GP_CURRENT.name.toUpperCase():'GRAND PRIX';
+      ctx.font='28px Arial,sans-serif';
+      ctx.fillStyle='rgba(255,255,255,0.35)';
+      ctx.textAlign='left';
+      ctx.fillText(gpName,PX,158);
 
-        // Fond de ligne avec couleur équipe
-        const teamColor = d.tc || '#e8001d';
-        const rowBg = ctx.createLinearGradient(gx, y, W-gx, y);
-        rowBg.addColorStop(0, teamColor + '22');
-        rowBg.addColorStop(0.6, teamColor + '08');
-        rowBg.addColorStop(1, 'transparent');
-        ctx.fillStyle = rowBg;
-        const rh = rowH - 8;
-        ctx.beginPath();
-        ctx.roundRect(gx, y - 4, W - gx*2, rh, 14);
+      // Séparateur dégradé rouge
+      const dv=ctx.createLinearGradient(PX,0,W-PX,0);
+      dv.addColorStop(0,'rgba(232,0,29,0.75)');
+      dv.addColorStop(0.5,'rgba(232,0,29,0.18)');
+      dv.addColorStop(1,'transparent');
+      ctx.fillStyle=dv; ctx.fillRect(PX,192,CW,2);
+
+      // Chip handle + "PRÉDICTION OFFICIELLE"
+      const disp='@'+(handle||'gridoraclef1')+'   ·   PRÉDICTION OFFICIELLE';
+      ctx.font='600 24px Arial,sans-serif';
+      const chipW=ctx.measureText(disp).width+52, chipH=44;
+      ctx.fillStyle='rgba(255,255,255,0.03)';
+      ctx.save();
+      ctx.beginPath(); ctx.roundRect(PX,216,chipW,chipH,7); ctx.fill();
+      ctx.strokeStyle='rgba(255,255,255,0.08)'; ctx.lineWidth=1;
+      ctx.beginPath(); ctx.roundRect(PX,216,chipW,chipH,7); ctx.stroke();
+      ctx.restore();
+      ctx.fillStyle='#e8001d';
+      ctx.beginPath(); ctx.arc(PX+20,238,7,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='rgba(255,255,255,0.38)';
+      ctx.textAlign='left'; ctx.textBaseline='middle';
+      ctx.fillText(disp,PX+36,238);
+      ctx.textBaseline='alphabetic';
+
+      // ── 4. DRIVERS ──
+      const dCnt=Math.min(pred.length,10);
+      const listTop=296, listBottom=1700;
+      const rowH=Math.floor((listBottom-listTop)/dCnt);
+      const rColors=['#FFD700','#C0C0C0','#CD7F32',
+        'rgba(255,255,255,0.82)','rgba(255,255,255,0.72)',
+        'rgba(255,255,255,0.62)','rgba(255,255,255,0.55)',
+        'rgba(255,255,255,0.48)','rgba(255,255,255,0.42)','rgba(255,255,255,0.36)'];
+
+      pred.slice(0,dCnt).forEach((d,i)=>{
+        const rY=listTop+i*rowH;
+        const tc=d.tc||'#e8001d';
+        const rc=rColors[i];
+        const isHex=rc.startsWith('#');
+        const isTop3=i<3;
+
+        // BG row gradient équipe
+        const rbg=ctx.createLinearGradient(PX,rY,PX+CW,rY);
+        rbg.addColorStop(0,tc+(i===0?'2a':i<3?'1c':'0c'));
+        rbg.addColorStop(0.5,tc+'07');
+        rbg.addColorStop(1,'transparent');
+        ctx.fillStyle=rbg;
+        ctx.save(); ctx.beginPath();
+        ctx.roundRect(PX,rY+10,CW,rowH-16,18);
+        ctx.fill(); ctx.restore();
+
+        // Cercle badge position
+        const bR=Math.min(isTop3?(i===0?50:42):33,rowH*0.28);
+        const bCX=PX+bR+16, bCY=rY+rowH/2;
+        ctx.save(); ctx.beginPath(); ctx.arc(bCX,bCY,bR,0,Math.PI*2);
+        ctx.fillStyle=i===0?'rgba(255,215,0,0.11)':
+          i===1?'rgba(192,192,192,0.08)':
+          i===2?'rgba(205,127,50,0.08)':'rgba(255,255,255,0.04)';
         ctx.fill();
+        ctx.strokeStyle=isHex?rc:'rgba(255,255,255,0.36)';
+        ctx.lineWidth=isTop3?2.5:1.5; ctx.stroke(); ctx.restore();
 
-        // Point couleur équipe
-        ctx.fillStyle = teamColor;
-        ctx.beginPath(); ctx.arc(gx + 22, y + rh/2 - 4, 14, 0, Math.PI*2); ctx.fill();
-
-        // Position
-        const posStr = 'P' + (i+1);
-        ctx.font = 'bold ' + Math.round(rowH * 0.55) + 'px Impact, Arial Black, sans-serif';
-        ctx.fillStyle = rankColors[i];
-        ctx.fillText(posStr, gx + 50, y + rh*0.68);
-        const posW = ctx.measureText(posStr).width;
+        // Texte position dans badge
+        const bFs=Math.round(bR*0.52);
+        ctx.font='bold '+bFs+'px Arial,sans-serif';
+        ctx.fillStyle=isHex?rc:'rgba(255,255,255,0.7)';
+        ctx.textAlign='center'; ctx.textBaseline='middle';
+        ctx.fillText('P'+(i+1),bCX,bCY);
+        ctx.textBaseline='alphabetic';
 
         // Nom pilote
-        ctx.font = 'bold ' + Math.round(rowH * 0.5) + 'px Arial, sans-serif';
-        ctx.fillStyle = '#ffffff';
-        ctx.fillText(d.sn || '—', gx + 50 + posW + 18, y + rh*0.68);
+        const nmX=PX+bR*2+42;
+        const maxNW=CW-bR*2-60;
+        const nmStr=(d.sn||'—').toUpperCase();
+        let nFs=Math.min(i===0?96:i===1?76:i===2?64:52,Math.floor(rowH*0.52));
+        ctx.font='bold '+nFs+'px Arial,sans-serif';
+        while(ctx.measureText(nmStr).width>maxNW&&nFs>28){nFs-=3;ctx.font='bold '+nFs+'px Arial,sans-serif';}
+        const nmY=rY+rowH*(isTop3?0.55:0.62);
+        const alpha=1-i*0.08;
+        ctx.fillStyle=i===0?'#ffffff':'rgba(255,255,255,'+alpha+')';
+        ctx.textAlign='left';
+        ctx.fillText(nmStr,nmX,nmY);
+        const nmW=ctx.measureText(nmStr).width;
 
-        // Séparateur bas
-        if(i < pred.length - 1){
-          ctx.strokeStyle = 'rgba(255,255,255,0.05)';
-          ctx.lineWidth = 1;
-          ctx.beginPath(); ctx.moveTo(gx+50, y+rh+2); ctx.lineTo(W-gx, y+rh+2); ctx.stroke();
+        // Barre équipe + nom (top3)
+        if(isTop3){
+          ctx.fillStyle=tc;
+          ctx.fillRect(nmX,nmY+10,44,5);
+          const tnm=(typeof TEAMS!=='undefined')?(TEAMS.find(t=>t.id===d.t)?.name||''):'';
+          ctx.font=Math.round(nFs*0.32)+'px Arial,sans-serif';
+          ctx.fillStyle='rgba(255,255,255,0.26)';
+          ctx.fillText(tnm.toUpperCase(),nmX+56,nmY+14);
+        } else {
+          // Petit dot couleur équipe
+          ctx.fillStyle=tc;
+          ctx.beginPath();
+          ctx.arc(nmX+nmW+20,nmY-Math.round(nFs*0.36),9,0,Math.PI*2);
+          ctx.fill();
+        }
+
+        // Ligne séparatrice légère
+        if(i<dCnt-1){
+          ctx.fillStyle='rgba(255,255,255,0.04)';
+          ctx.fillRect(nmX,rY+rowH-3,CW-nmX+PX,1);
         }
       });
 
-      // ── CTA bas ──
-      const ctaY = H - 140;
-      ctx.fillStyle = 'rgba(232,0,29,0.12)';
-      ctx.beginPath(); ctx.roundRect(gx, ctaY - 50, W - gx*2, 130, 16); ctx.fill();
-      ctx.strokeStyle = 'rgba(232,0,29,0.3)';
-      ctx.lineWidth = 1.5;
-      ctx.beginPath(); ctx.roundRect(gx, ctaY - 50, W - gx*2, 130, 16); ctx.stroke();
+      // ── 5. CTA ──
+      const ctaX=PX, ctaY=1718, ctaW=CW, ctaH=148, ctaR=24;
+      // Fond rouge
+      ctx.fillStyle='#e8001d';
+      ctx.save(); ctx.beginPath(); ctx.roundRect(ctaX,ctaY,ctaW,ctaH,ctaR); ctx.fill();
+      // Effet shine diagonal
+      ctx.beginPath(); ctx.roundRect(ctaX,ctaY,ctaW,ctaH,ctaR); ctx.clip();
+      const sh=ctx.createLinearGradient(ctaX,ctaY,ctaX+ctaW*0.5,ctaY+ctaH);
+      sh.addColorStop(0,'rgba(255,255,255,0.13)');
+      sh.addColorStop(0.45,'rgba(255,255,255,0.04)');
+      sh.addColorStop(1,'transparent');
+      ctx.fillStyle=sh; ctx.fillRect(ctaX,ctaY,ctaW,ctaH);
+      ctx.restore();
 
-      ctx.textAlign = 'center';
-      ctx.font = 'bold 52px Arial, sans-serif';
-      ctx.fillStyle = '#e8001d';
-      ctx.fillText('gridoracle.vercel.app', W/2, ctaY + 10);
-      ctx.font = '38px Arial, sans-serif';
-      ctx.fillStyle = 'rgba(255,255,255,0.35)';
-      ctx.fillText('TU FAIS MIEUX QUE L\'IA ?', W/2, ctaY + 62);
+      // Texte CTA principal
+      ctx.font='bold 50px Arial,sans-serif';
+      ctx.fillStyle='#ffffff'; ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText('TU FAIS MIEUX QUE CETTE IA\u00a0?',W/2,ctaY+ctaH/2-14);
+
+      // URL
+      ctx.font='30px Arial,sans-serif';
+      ctx.fillStyle='rgba(255,255,255,0.62)';
+      ctx.fillText('gridoracle.vercel.app',W/2,ctaY+ctaH/2+34);
+      ctx.textBaseline='alphabetic';
 
       // Barre rouge bas
-      ctx.fillStyle = '#e8001d';
-      ctx.fillRect(0, H-8, W, 8);
+      ctx.fillStyle=barG; ctx.fillRect(0,H-14,W,14);
 
       resolve(canvas);
-    } catch(e) { reject(e); }
+    } catch(e){ reject(e); }
   });
 }
 
