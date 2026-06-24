@@ -44,7 +44,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 .ob-logo-w{text-align:center;margin-bottom:1.6rem;display:block}
 .prog{display:flex;align-items:center;gap:.42rem;justify-content:center;margin-bottom:2rem}
 .pd{height:4px;border-radius:2px;background:rgba(255,255,255,.1);transition:all .35s;flex:1;max-width:56px}
-.pd.cur{background:var(--red);max-width:80px}.pd.done{background:rgba(232,0,29,.38)}.ngp-gp-status.cancelled{color:#888;background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1)}
+.pd.cur{background:var(--red);max-width:80px}.pd.done{background:rgba(232,0,29,.38)}
 .plbl{font-size:.7rem;color:var(--g);letter-spacing:.1em;text-transform:uppercase;margin-left:.4rem}
 .step{display:none;animation:fadeUp .32s ease both}.step.on{display:block}
 .ob-lbl{color:var(--red);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;font-weight:600;margin-bottom:.5rem}
@@ -1038,7 +1038,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
     <p class="trial-popup-s">Avant le GP d'Autriche, découvre les prédictions complètes de l'IA — Top 10 avec les % de confiance. Sans carte bancaire.</p>
     <div class="trial-popup-perks">
       <div class="trial-perk"><span class="trial-perk-ico">●</span>Accès complet au Top 10 de l'IA</div>
-      <div class="trial-perk"><span class="trial-perk-ico">●</span><span data-i18n="trial.p6p10">Prédiction P6 à P10 débloquée</span></div>
+      <div class="trial-perk"><span class="trial-perk-ico">●</span>Prédiction P6 à P10 débloquée</div>
       <div class="trial-perk"><span class="trial-perk-ico">●</span>Expire sam. 27 juin à 16h00 — expire dans <span id="trial-popup-timer" style="color:var(--red);font-weight:600">03j 21h 29m</span></div>
       <div class="trial-perk"><span class="trial-perk-ico">●</span>Sans carte bancaire, sans engagement</div>
     </div>
@@ -1052,8 +1052,8 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 <div id="trial-expire-popup">
   <div class="trial-popup-box">
     <div style="font-size:2.2rem;margin-bottom:.6rem">⏰</div>
-    <div class="trial-popup-t" data-i18n="trial.expired">Ton accès Premium<br>a expiré</div>
-    <p class="trial-popup-s" data-i18n="trial.expired.s">Ton essai gratuit de 48h est terminé. Pour continuer à voir le Top 10 de l'IA et marquer des points sur les positions 6–10, passe en Premium.</p>
+    <div class="trial-popup-t">Ton accès Premium<br>a expiré</div>
+    <p class="trial-popup-s">Ton essai gratuit de 48h est terminé. Pour continuer à voir le Top 10 de l'IA et marquer des points sur les positions 6–10, passe en Premium.</p>
     <div class="trial-popup-perks" style="margin-bottom:1.2rem">
       <div class="trial-perk"><span class="trial-perk-ico">●</span>Top 10 IA pour chaque GP</div>
       <div class="trial-perk"><span class="trial-perk-ico">●</span>+25 pts de bonus saisonnier</div>
@@ -1075,7 +1075,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
   <div class="co-wrap">
     <div class="co-nav">
       <a class="logo">GRID<s>ORACLE</s></a>
-      <button class="co-back" onclick="closeCheckout()"data-i18n="ui.back">← Retour</button>
+      <button class="co-back" onclick="closeCheckout()">← Retour</button>
       <div class="co-trust">🔒 Paiement sécurisé Stripe</div>
     </div>
     <div class="co-grid">
@@ -1115,7 +1115,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 <div id="edit-modal">
   <div class="em-box">
     <div class="em-header">
-      <div class="em-title" data-i18n="edit.title">Modifier mon profil</div>
+      <div class="em-title">Modifier mon profil</div>
       <button class="em-close" onclick="closeEditModal()">✕</button>
     </div>
     <div class="em-body" id="em-body"></div>
@@ -1137,16 +1137,16 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
   </div>
   <div class="step on" id="s0">
     <div style="text-align:center">
-      <div class="wtag" data-i18n="ob.wtag">⚡ Saison 2026 · 11 équipes · 22 pilotes</div>
+      <div class="wtag">⚡ Saison 2026 · 11 équipes · 22 pilotes</div>
       <h1 class="ob-t" style="font-size:clamp(2rem,6vw,2.9rem);text-align:center">Bienvenue sur<br><span style="color:var(--red)">GridOracle</span></h1>
       <p class="ob-s" style="text-align:center;max-width:420px;margin:0 auto 1.5rem">Crée ton profil de pronosticeur en 60 secondes et rejoins la compétition dès le Grand Prix d'Autriche.</p>
       <ul class="cli" style="margin-bottom:1.8rem">
-        <li><div class="cli-i">✓</div><span data-i18n="ob.li1">Tes infos & ton identifiant joueur</span></li>
-        <li><div class="cli-i">✓</div><span data-i18n="ob.li2">Ton écurie favorite — 11 teams 2026</span></li>
-        <li><div class="cli-i">✓</div><span data-i18n="ob.li3">Ton pilote préféré — grille complète</span></li>
+        <li><div class="cli-i">✓</div>Tes infos & ton identifiant joueur</li>
+        <li><div class="cli-i">✓</div>Ton écurie favorite — 11 teams 2026</li>
+        <li><div class="cli-i">✓</div>Ton pilote préféré — grille complète</li>
       </ul>
-      <button class="ob-btn" style="max-width:300px;margin:0 auto" onclick="go(1)" data-i18n="ob.start">Créer mon profil →</button>
-      <p style="color:var(--g);font-size:.72rem;margin-top:.85rem" data-i18n="ob.free">Gratuit · Sans carte bancaire</p>
+      <button class="ob-btn" style="max-width:300px;margin:0 auto" onclick="go(1)">Créer mon profil →</button>
+      <p style="color:var(--g);font-size:.72rem;margin-top:.85rem">Gratuit · Sans carte bancaire</p>
     </div>
   </div>
   <div class="step" id="s1">
@@ -1178,8 +1178,8 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
   <div class="step" id="s4">
     <div class="conf">🏁</div>
     <div style="text-align:center;margin-bottom:1.3rem">
-      <div class="ob-lbl" style="text-align:center" data-i18n="ob.success">Profil créé avec succès !</div>
-      <h2 class="ob-t" style="text-align:center;font-size:1.85rem" data-i18n="ob.profile.t">Ton profil GridOracle</h2>
+      <div class="ob-lbl" style="text-align:center">Profil créé avec succès !</div>
+      <h2 class="ob-t" style="text-align:center;font-size:1.85rem">Ton profil GridOracle</h2>
     </div>
     <div class="prof-c" id="pcard"></div>
     <button class="ob-btn" onclick="goApp()" data-i18n="ob.enter">Accéder à GridOracle → 🏎️</button>
@@ -1413,9 +1413,9 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
             <div class="lkbl ai-rows" id="ai-home-lock"></div>
             <div class="lkov">
               <div class="lkm">
-                <h4 data-i18n="hub.lock.t">🔒 Positions 6–10 Premium</h4>
-                <p data-i18n="hub.lock.s">Accède à l'analyse complète de l'IA.</p>
-                <button class="btn-r" style="font-size:.76rem;padding:.38rem .9rem" onclick="openStripeModal('premium')"data-i18n="hub.goprem">Passer Premium →</button>
+                <h4>🔒 Positions 6–10 Premium</h4>
+                <p>Accède à l'analyse complète de l'IA.</p>
+                <button class="btn-r" style="font-size:.76rem;padding:.38rem .9rem" onclick="openStripeModal('premium')">Passer Premium →</button>
               </div>
             </div>
           </div>
@@ -1426,16 +1426,16 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
           <div class="card-h">
             <div style="display:flex;align-items:center;gap:.45rem">
               <div class="card-ht" style="color:var(--w)" data-i18n="pred.mine">Ma Prédiction</div>
-              <div class="pred-status st-open" id="hpb" data-i18n="pred.open">En cours</div>
+              <div class="pred-status st-open" id="hpb">En cours</div>
             </div>
             <div class="p-acts"><button class="bcpai" onclick="hCopy()" data-i18n="pred.copyai">Copier IA</button><button class="brst" onclick="hReset()">✕</button></div>
           </div>
           <div class="p-slots" id="hslots"></div>
-          <div class="prem-lock" id="home-prem-lock"><span class="pl-txt"><span class="pl-txt" data-i18n="pred.lock.t">🔒 Positions 6–10 — Premium</span><button class="pl-btn" onclick="openStripeModal('premium')" data-i18n="pred.lock.btn">Upgrader</button></div>
+          <div class="prem-lock" id="home-prem-lock"><span class="pl-txt">🔒 Positions 6–10 — Premium</span><button class="pl-btn" onclick="openStripeModal('premium')">Upgrader</button></div>
           <div class="p-foot">
-            <div class="sub-prog"><b id="hcnt">0</b>/<span id="hmax">5</span> <span data-i18n="pred.complete">positions complètes</span></div>
-            <button class="bsub" id="hbs" disabled onclick="hSubmit()"data-i18n="pred.lock.hub">🏁 Verrouiller ma prédiction · GP Autriche</button>
-            <div class="sub-dl"data-i18n-html="pred.deadline">Clôture le <b>Samedi 27 Juin à 15h00</b></div>
+            <div class="sub-prog"><b id="hcnt">0</b>/<span id="hmax">5</span> positions complètes</div>
+            <button class="bsub" id="hbs" disabled onclick="hSubmit()">🏁 Verrouiller ma prédiction · GP Autriche</button>
+            <div class="sub-dl">Clôture le <b>Samedi 27 Juin à 15h00</b></div>
           </div>
         </div>
 
@@ -1485,13 +1485,13 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
       <div class="league-card">
         <div class="lc-hd"><div class="lc-nm">🏆 F1 Fanatics 2026</div><div class="lc-ct">127 joueurs</div></div>
         <div class="lc-metrics">
-          <div class="lcm"><div class="lcmv red">#4</div><div class="lcml" data-i18n="hub.myleague">Ma ligue</div></div>
-          <div class="lcm"><div class="lcmv">412</div><div class="lcml" data-i18n="hub.mypts">Mes pts</div></div>
+          <div class="lcm"><div class="lcmv red">#4</div><div class="lcml">Ma ligue</div></div>
+          <div class="lcm"><div class="lcmv">412</div><div class="lcml">Mes pts</div></div>
           <div class="lcm"><div class="lcmv">#2847</div><div class="lcml">Mondial</div></div>
         </div>
         <div class="tabs"><div class="tab on" onclick="hTab('l',this)" data-i18n="tab.league">Ma Ligue</div><div class="tab" onclick="hTab('m',this)" data-i18n="tab.global">Mondial</div></div>
         <div class="lcbd" id="hlc"></div>
-        <div class="lc-ft"><a onclick="navTo('leagues')" data-i18n="hub.viewall">Voir tout le classement →</a></div>
+        <div class="lc-ft"><a onclick="navTo('leagues')">Voir tout le classement →</a></div>
       </div>
     </div>
     <div class="hs">
@@ -1527,11 +1527,11 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
             <div class="p-acts"><button class="bcpai" onclick="pCopy()" data-i18n="pred.copyai">Copier IA</button><button class="brst" onclick="pReset()">✕</button></div>
           </div>
           <div class="p-slots" id="pslots"></div>
-          <div class="prem-lock" id="pred-prem-lock"><span class="pl-txt"><span class="pl-txt" data-i18n="pred.lock.t">🔒 Positions 6–10 — Premium</span><button class="pl-btn" onclick="openStripeModal('premium')" data-i18n="pred.lock.btn">Upgrader</button></div>
+          <div class="prem-lock" id="pred-prem-lock"><span class="pl-txt">🔒 Positions 6–10 — Premium</span><button class="pl-btn" onclick="openStripeModal('premium')">Upgrader</button></div>
           <div class="p-foot">
             <div class="sub-prog"><b id="pcnt">0</b>/<span id="pmax">5</span> positions complètes</div>
             <button class="bsub" id="pbs" disabled onclick="pSubmit()">🏁 Verrouiller ma prédiction</button>
-            <div class="sub-dl"data-i18n-html="pred.deadline">Clôture le <b>Samedi 27 Juin à 15h00</b></div>
+            <div class="sub-dl">Clôture le <b>Samedi 27 Juin à 15h00</b></div>
           </div>
         </div>
       </div>
@@ -1544,7 +1544,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
             <th style="text-align:left;padding:.6rem .9rem;color:var(--g);font-weight:500;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase">Grand Prix</th>
             <th style="text-align:center;padding:.6rem .5rem;color:var(--g);font-weight:500;font-size:.7rem;text-transform:uppercase">Points</th>
             <th style="text-align:center;padding:.6rem .5rem;color:var(--g);font-weight:500;font-size:.7rem;text-transform:uppercase">Précision</th>
-            <th style="text-align:center;padding:.6rem .5rem;color:var(--g);font-weight:500;font-size:.7rem;text-transform:uppercase"data-i18n="pred.hist.p1">Mon P1</th>
+            <th style="text-align:center;padding:.6rem .5rem;color:var(--g);font-weight:500;font-size:.7rem;text-transform:uppercase">Mon P1</th>
             <th style="text-align:center;padding:.6rem .5rem;color:var(--g);font-weight:500;font-size:.7rem;text-transform:uppercase">Résultat P1</th>
           </tr></thead>
           <tbody id="pred-history"></tbody>
@@ -1566,21 +1566,21 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
           <button class="btn-r" style="width:100%" onclick="joinLeague()"data-i18n="leagues.join.btn">Rejoindre →</button>
         </div>
         <div class="create-league">
-          <div class="cl-t" data-i18n="leagues.create.t">🔒 Créer ma propre ligue</div>
-          <div class="cl-s" data-i18n="leagues.create.s">Invite ta communauté, définis tes récompenses et gère ton classement. Disponible avec Premium & Creator.</div>
-          <button class="btn-r" onclick="openStripeModal('premium')"data-i18n="hub.goprem">Passer Premium →</button>
+          <div class="cl-t">🔒 Créer ma propre ligue</div>
+          <div class="cl-s">Invite ta communauté, définis tes récompenses et gère ton classement. Disponible avec Premium & Creator.</div>
+          <button class="btn-r" onclick="openStripeModal('premium')">Passer Premium →</button>
         </div>
       </div>
       <div class="league-card">
-        <div class="lc-hd"><div class="lc-nm">🏆 F1 Fanatics 2026</div><div class="lc-ct" data-i18n="leagues.members">127 joueurs · Saison 2026</div></div>
+        <div class="lc-hd"><div class="lc-nm">🏆 F1 Fanatics 2026</div><div class="lc-ct">127 joueurs · Saison 2026</div></div>
         <div class="lc-metrics">
           <div class="lcm"><div class="lcmv red">#4</div><div class="lcml" data-i18n="leagues.myrank">Ma position</div></div>
           <div class="lcm"><div class="lcmv">412</div><div class="lcml" data-i18n="leagues.mypts">Mes points</div></div>
-          <div class="lcm"><div class="lcmv">87%</div><div class="lcml" data-i18n="leagues.aiacc">Précision IA</div></div>
+          <div class="lcm"><div class="lcmv">87%</div><div class="lcml">Précision IA</div></div>
         </div>
         <div class="tabs"><div class="tab on" onclick="hTab('l',this)" data-i18n="tab.standings">Classement</div><div class="tab" onclick="hTab('m',this)" data-i18n="tab.global">Mondial</div></div>
         <div class="lcbd" id="llc"></div>
-        <div class="lc-ft"><adata-i18n="hub.viewall">Voir tout le classement →</a></div>
+        <div class="lc-ft"><a>Voir tout le classement →</a></div>
       </div>
     </div>
   </div>
@@ -1616,23 +1616,23 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
     </div>
     <!-- STATS -->
     <div class="cr-stats-row">
-      <div class="cr-stat"><div class="cr-stat-v">∞</div><div class="cr-stat-l" data-i18n="cr.stat.leagues">Ligues créées</div></div>
-      <div class="cr-stat"><div class="cr-stat-v">100%</div><div class="cr-stat-l" data-i18n="cr.stat.custom">Personnalisation</div></div>
-      <div class="cr-stat"><div class="cr-stat-v">24/7</div><div class="cr-stat-l" data-i18n="cr.stat.analytics">Analytics live</div></div>
-      <div class="cr-stat"><div class="cr-stat-v">⭐</div><div class="cr-stat-l" data-i18n="cr.stat.support">Support prioritaire</div></div>
+      <div class="cr-stat"><div class="cr-stat-v">∞</div><div class="cr-stat-l">Ligues créées</div></div>
+      <div class="cr-stat"><div class="cr-stat-v">100%</div><div class="cr-stat-l">Personnalisation</div></div>
+      <div class="cr-stat"><div class="cr-stat-v">24/7</div><div class="cr-stat-l">Analytics live</div></div>
+      <div class="cr-stat"><div class="cr-stat-v">⭐</div><div class="cr-stat-l">Support prioritaire</div></div>
     </div>
     <!-- FEATURES + PREVIEW -->
     <div class="cr-grid">
       <!-- FEATURES -->
       <div class="cr-card">
         <div class="cr-card-hd">
-          <div class="cr-card-t" data-i18n="cr.features.t">🏆 Fonctionnalités Creator</div>
+          <div class="cr-card-t">🏆 Fonctionnalités Creator</div>
         </div>
         <div class="cr-card-body">
           <ul class="cr-feature-list">
             <li>
               <div class="cr-feat-icon">🔒</div>
-              <div class="cr-feat-text"><strong data-i18n="cr.feat1.t">Ligues privées illimitées</strong><span data-i18n="cr.feat1.s">Crée autant de ligues que tu veux, avec des codes d'invitation personnalisés pour chaque communauté.</span></div>
+              <div class="cr-feat-text"><strong>Ligues privées illimitées</strong>Crée autant de ligues que tu veux, avec des codes d'invitation personnalisés pour chaque communauté.</div>
             </li>
             <li>
               <div class="cr-feat-icon">🎨</div>
@@ -1660,30 +1660,30 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
       <!-- LEAGUE PREVIEW -->
       <div style="display:flex;flex-direction:column;gap:.9rem">
         <div class="cr-card">
-          <div class="cr-card-hd"><div class="cr-card-t" data-i18n="cr.myligues.t">📋 Mes Ligues Creator</div><button class="btn-r" style="font-size:.7rem;padding:.3rem .7rem" onclick="openStripeModal('creator')"data-i18n="cr.create">Créer +</button></div>
+          <div class="cr-card-hd"><div class="cr-card-t">📋 Mes Ligues Creator</div><button class="btn-r" style="font-size:.7rem;padding:.3rem .7rem" onclick="openStripeModal('creator')">Créer +</button></div>
           <div class="cr-card-body">
             <div class="cr-league-preview">
               <div class="cr-lp">
                 <div class="cr-lp-icon" style="background:rgba(232,0,29,.1)">🏎️</div>
                 <div class="cr-lp-info">
                   <div class="cr-lp-name">F1 Fanatics Elite</div>
-                  <div class="cr-lp-meta"><span data-i18n="cr.gp.open">🔴 GP Autriche ouvert</span><span>·</span><span>Saison 2026</span></div>
+                  <div class="cr-lp-meta"><span>🔴 GP Autriche ouvert</span><span>·</span><span>Saison 2026</span></div>
                 </div>
-                <div class="cr-lp-members">127<br><span style="font-size:.6rem;color:var(--g)"data-i18n="cr.members">membres</span></div>
+                <div class="cr-lp-members">127<br><span style="font-size:.6rem;color:var(--g)">membres</span></div>
               </div>
               <div class="cr-lp">
                 <div class="cr-lp-icon" style="background:rgba(255,200,0,.1)">⚡</div>
                 <div class="cr-lp-info">
                   <div class="cr-lp-name">GridOracle VIP</div>
-                  <div class="cr-lp-meta"><span data-i18n="cr.pred.open">🟡 Prédictions ouvertes</span><span>·</span><span>Saison 2026</span></div>
+                  <div class="cr-lp-meta"><span>🟡 Prédictions ouvertes</span><span>·</span><span>Saison 2026</span></div>
                 </div>
-                <div class="cr-lp-members">84<br><span style="font-size:.6rem;color:var(--g)"data-i18n="cr.members">membres</span></div>
+                <div class="cr-lp-members">84<br><span style="font-size:.6rem;color:var(--g)">membres</span></div>
               </div>
               <div class="cr-lp" style="opacity:.45;border-style:dashed;cursor:pointer" onclick="openStripeModal('creator')">
                 <div class="cr-lp-icon" style="background:rgba(255,255,255,.04)">＋</div>
                 <div class="cr-lp-info">
-                  <div class="cr-lp-name" style="color:var(--g)"><span data-i18n="cr.newleague">Nouvelle ligue…</span></div>
-                  <div class="cr-lp-meta"><span data-i18n="cr.unlimited">Ligues illimitées avec Creator</span></div>
+                  <div class="cr-lp-name" style="color:var(--g)">Nouvelle ligue…</div>
+                  <div class="cr-lp-meta"><span>Ligues illimitées avec Creator</span></div>
                 </div>
               </div>
             </div>
@@ -1691,25 +1691,25 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
         </div>
         <!-- ANALYTICS -->
         <div class="cr-card">
-          <div class="cr-card-hd"><div class="cr-card-t" data-i18n="cr.analytics.t">📈 Analytics Communauté</div><span style="font-size:.66rem;color:var(--g)">Live · GP Autriche</span></div>
+          <div class="cr-card-hd"><div class="cr-card-t">📈 Analytics Communauté</div><span style="font-size:.66rem;color:var(--g)">Live · GP Autriche</span></div>
           <div class="cr-card-body">
             <div class="cr-analytics">
-              <div class="cr-an"><div class="cr-an-v" style="color:var(--gold)">211</div><div class="cr-an-l" data-i18n="cr.active">Membres actifs</div></div>
-              <div class="cr-an"><div class="cr-an-v" style="color:#4caf50">78%</div><div class="cr-an-l" data-i18n="cr.partrate">Taux participation</div></div>
-              <div class="cr-an"><div class="cr-an-v">68%</div><div class="cr-an-l" data-i18n="cr.avgacc">Précision moy.</div></div>
-              <div class="cr-an"><div class="cr-an-v" style="color:var(--red)">+12</div><div class="cr-an-l" data-i18n="cr.newgp">Nouveaux ce GP</div></div>
+              <div class="cr-an"><div class="cr-an-v" style="color:var(--gold)">211</div><div class="cr-an-l">Membres actifs</div></div>
+              <div class="cr-an"><div class="cr-an-v" style="color:#4caf50">78%</div><div class="cr-an-l">Taux participation</div></div>
+              <div class="cr-an"><div class="cr-an-v">68%</div><div class="cr-an-l">Précision moy.</div></div>
+              <div class="cr-an"><div class="cr-an-v" style="color:var(--red)">+12</div><div class="cr-an-l">Nouveaux ce GP</div></div>
             </div>
             <div style="margin-top:.85rem">
               <div class="cr-bar-row">
-                <div class="cr-bar-lbl"><span data-i18n="cr.predsub">Prédictions soumises</span><span>165/211</span></div>
+                <div class="cr-bar-lbl"><span>Prédictions soumises</span><span>165/211</span></div>
                 <div class="cr-bar-track"><div class="cr-bar-fill" style="width:78%"></div></div>
               </div>
               <div class="cr-bar-row">
-                <div class="cr-bar-lbl"><span data-i18n="cr.p1acc">Précision P1</span><span>42%</span></div>
+                <div class="cr-bar-lbl"><span>Précision P1</span><span>42%</span></div>
                 <div class="cr-bar-track"><div class="cr-bar-fill" style="width:42%"></div></div>
               </div>
               <div class="cr-bar-row">
-                <div class="cr-bar-lbl"><span data-i18n="cr.top3">Top 3 correct</span><span>61%</span></div>
+                <div class="cr-bar-lbl"><span>Top 3 correct</span><span>61%</span></div>
                 <div class="cr-bar-track"><div class="cr-bar-fill" style="width:61%"></div></div>
               </div>
             </div>
@@ -1719,10 +1719,10 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
     </div>
     <!-- CTA BOTTOM -->
     <div class="cr-cta">
-      <div class="cr-cta-t" data-i18n="cr.cta.t">Prêt à lancer ta ligue Creator ?</div>
-      <div class="cr-cta-s" data-i18n="cr.cta.s">Rejoins les créateurs qui transforment leur passion F1 en expérience communautaire unique. Annule à tout moment, sans engagement.</div>
+      <div class="cr-cta-t">Prêt à lancer ta ligue Creator ?</div>
+      <div class="cr-cta-s">Rejoins les créateurs qui transforment leur passion F1 en expérience communautaire unique. Annule à tout moment, sans engagement.</div>
       <button class="btn-r" style="background:linear-gradient(135deg,#b8860b,var(--gold));color:#000;font-weight:700;padding:.85rem 2rem;font-size:.92rem" onclick="openStripeModal('creator')">Devenir Creator — 19.99€/mois →</button>
-      <div style="margin-top:.75rem;font-size:.7rem;color:var(--g)" data-i18n="cr.stripe">🔒 Paiement sécurisé Stripe · 14 jours satisfait ou remboursé</div>
+      <div style="margin-top:.75rem;font-size:.7rem;color:var(--g)">🔒 Paiement sécurisé Stripe · 14 jours satisfait ou remboursé</div>
     </div>
   </div>
 </div>
@@ -1741,14 +1741,14 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
         <div class="pcb-tags" id="pcb-tags"></div>
         <div class="profile-stats">
           <div class="ps-card"><div class="ps-v">412</div><div class="ps-l" data-i18n="profile.pts">Points saison</div></div>
-          <div class="ps-card"><div class="ps-v red">#4</div><div class="ps-l" data-i18n="profile.league">Ma ligue</div></div>
-          <div class="ps-card"><div class="ps-v">68%</div><div class="ps-l" data-i18n="profile.acc">Précision</div></div>
+          <div class="ps-card"><div class="ps-v red">#4</div><div class="ps-l">Ma ligue</div></div>
+          <div class="ps-card"><div class="ps-v">68%</div><div class="ps-l">Précision</div></div>
         </div>
         <button class="edit-btn" onclick="openEditModal()"data-i18n="profile.edit">✏️ Modifier mon profil</button>
         <button class="edit-btn" style="margin-top:.5rem;color:rgba(255,255,255,.35);font-size:.72rem" onclick="resetProfile()"data-i18n="profile.reset">↺ Réinitialiser mon profil</button>
         <div style="margin-top:.85rem;display:flex;gap:.6rem;flex-wrap:wrap">
-          <button class="btn-r" style="flex:1;min-width:140px;font-size:.78rem" onclick="openStripeModal('premium')"data-i18n="profile.goprem">⭐ Passer Premium</button>
-          <button class="btn-r" style="flex:1;min-width:140px;font-size:.78rem;background:linear-gradient(135deg,#b8860b,var(--gold));color:#000" onclick="openStripeModal('creator')"data-i18n="profile.gocreator">🎙️ Devenir Creator</button>
+          <button class="btn-r" style="flex:1;min-width:140px;font-size:.78rem" onclick="openStripeModal('premium')">⭐ Passer Premium</button>
+          <button class="btn-r" style="flex:1;min-width:140px;font-size:.78rem;background:linear-gradient(135deg,#b8860b,var(--gold));color:#000" onclick="openStripeModal('creator')">🎙️ Devenir Creator</button>
         </div>
       </div>
     </div>
@@ -1772,7 +1772,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
   <div class="rules-wrap">
     <div style="margin-bottom:1.8rem">
       <span class="sec-lbl" data-i18n="rules.lbl">Règles officielles · Saison 2026</span>
-      <h1 style="font-family:var(--fh);font-size:clamp(1.7rem,4vw,2.6rem);font-weight:700;margin-bottom:.6rem;line-height:1.08" data-i18n="rules.title">Règlement GridOracle 2026</h1><p id="rules-en-notice" style="display:none;background:rgba(232,0,29,.08);border:1px solid rgba(232,0,29,.2);border-radius:8px;padding:.65rem .9rem;font-size:.8rem;color:rgba(255,255,255,.6);margin-bottom:1rem">🇬🇧 Full English rules coming soon — key points available below.</p>
+      <h1 style="font-family:var(--fh);font-size:clamp(1.7rem,4vw,2.6rem);font-weight:700;margin-bottom:.6rem;line-height:1.08">Règlement GridOracle 2026</h1>
       <p style="color:var(--g);font-size:.9rem;line-height:1.75;max-width:580px">Tout ce qu'il faut savoir pour scorer des points et dominer ta ligue. Lis ce règlement avant de soumettre ta première prédiction.</p>
     </div>
     <!-- BARÈME -->
@@ -1799,12 +1799,12 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
         <div class="plan-cmp">
           <div class="plan-box" style="background:rgba(255,255,255,.03);border-color:var(--b)">
             <div class="plan-name">Free</div>
-            <div class="plan-desc" data-i18n="rules.free">Prédictions P1 à P5</div>
+            <div class="plan-desc">Prédictions P1 à P5</div>
             <div class="plan-max" style="color:var(--g)">63 pts max/GP</div>
           </div>
           <div class="plan-box" style="background:rgba(232,0,29,.05);border-color:rgba(232,0,29,.22)">
             <div class="plan-name" style="color:var(--red)">Premium</div>
-            <div class="plan-desc" data-i18n="rules.prem">Prédictions P1 à P10</div>
+            <div class="plan-desc">Prédictions P1 à P10</div>
             <div class="plan-max" style="color:var(--red)">87 pts max/GP</div>
           </div>
         </div>
@@ -1817,12 +1817,12 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
         <div class="rule-card-hd"><div class="rule-card-ico">⏰</div><div><div class="rule-card-ht">Règles des prédictions</div></div></div>
         <div class="rule-card-body">
           <ul class="rule-list">
-            <li><span class="rule-dot">●</span><spandata-i18n-html="rules.timing"><span>Prédictions ouvertes <strong>48h avant les qualifications</strong></span></li>
+            <li><span class="rule-dot">●</span><span>Prédictions ouvertes <strong>48h avant les qualifications</strong></span></li>
             <li><span class="rule-dot">●</span><span>Verrouillage automatique au <strong>début des qualifications (samedi)</strong></span></li>
             <li><span class="rule-dot">●</span><span>Tu peux modifier ta prédiction autant de fois que tu le souhaites avant verrouillage</span></li>
             <li><span class="rule-dot">●</span><span>Non-soumission = <strong>0 point</strong> pour ce Grand Prix</span></li>
             <li><span class="rule-dot">●</span><span>Points attribués <strong>dans l'heure suivant</strong> le drapeau à damier</span></li>
-            <li><span class="rule-dot">●</span><spandata-i18n="rules.cancelled">Course annulée : GP neutralisé, non comptabilisé</span></li>
+            <li><span class="rule-dot">●</span><span>Course annulée : GP neutralisé, non comptabilisé</span></li>
           </ul>
         </div>
       </div>
@@ -1832,9 +1832,9 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
           <div class="league-box" style="background:rgba(255,255,255,.03);border-color:var(--b)">
             <div class="lb-name">🌍 Ligue Publique — Free</div>
             <div class="lb-items">
-              <div class="lb-item"data-i18n="rules.open">· Ouverte à tous les joueurs</div>
-              <div class="lb-item"data-i18n="rules.global">· Classement mondial permanent</div>
-              <div class="lb-item"data-i18n="rules.pts24">· Points cumulés sur 24 GP</div>
+              <div class="lb-item">· Ouverte à tous les joueurs</div>
+              <div class="lb-item">· Classement mondial permanent</div>
+              <div class="lb-item">· Points cumulés sur 24 GP</div>
             </div>
           </div>
           <div class="league-box" style="background:rgba(232,0,29,.05);border-color:rgba(232,0,29,.22)">
@@ -1850,7 +1850,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
             <div class="lb-items">
               <div class="lb-item">· Tout de la Ligue Privée +</div>
               <div class="lb-item">· Logo et couleurs personnalisées</div>
-              <div class="lb-item" data-i18n="rules.prem.feat">· Analytics détaillés, ligues illimitées</div>
+              <div class="lb-item">· Analytics détaillés, ligues illimitées</div>
             </div>
           </div>
         </div>
@@ -1861,9 +1861,9 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
       <div class="rule-card-hd"><div class="rule-card-ico">⚖️</div><div><div class="rule-card-ht">Règles de départage</div><div class="rule-card-hs">En cas d'égalité parfaite de points</div></div></div>
       <div class="rule-card-body">
         <div class="tb-grid">
-          <div class="tb-card"><div class="tb-num">1</div><div class="tb-t" data-i18n="rules.tb1">Prédictions P1 correctes</div><div class="tb-s">Nombre de vainqueurs corrects depuis le début de la saison</div></div>
+          <div class="tb-card"><div class="tb-num">1</div><div class="tb-t">Prédictions P1 correctes</div><div class="tb-s">Nombre de vainqueurs corrects depuis le début de la saison</div></div>
           <div class="tb-card"><div class="tb-num">2</div><div class="tb-t">Total prédictions correctes</div><div class="tb-s">Toutes positions confondues, sur toute la saison</div></div>
-          <div class="tb-card"><div class="tb-num">3</div><div class="tb-t" data-i18n="rules.tb2">Score dernier GP</div><div class="tb-s">Qui a le mieux performé lors du GP le plus récent</div></div>
+          <div class="tb-card"><div class="tb-num">3</div><div class="tb-t">Score dernier GP</div><div class="tb-s">Qui a le mieux performé lors du GP le plus récent</div></div>
           <div class="tb-card"><div class="tb-num">4</div><div class="tb-t">Date d'inscription</div><div class="tb-s">Le membre GridOracle le plus ancien l'emporte</div></div>
         </div>
       </div>
@@ -1873,10 +1873,10 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
       <div class="rule-card-hd"><div class="rule-card-ico">📅</div><div><div class="rule-card-ht">Calendrier type d'un Grand Prix</div></div></div>
       <div class="rule-card-body">
         <div class="cal-grid">
-          <div class="cal-item"><div class="cal-ico">🔓</div><div><div class="cal-t"data-i18n="rules.thu">Jeudi — Ouverture</div><div class="cal-s">Les prédictions ouvrent 48h avant les qualifications. La prédiction IA GridOracle est publiée.</div></div></div>
-          <div class="cal-item"><div class="cal-ico">🏎️</div><div><div class="cal-t"data-i18n="rules.fri">Vendredi — Essais Libres</div><div class="cal-s">Tu peux analyser les performances et modifier ta prédiction librement selon les EL1 et EL2.</div></div></div>
-          <div class="cal-item" style="border:1px solid rgba(232,0,29,.2);border-radius:7px;background:rgba(232,0,29,.04)"><div class="cal-ico">🔒</div><div><div class="cal-t" style="color:var(--red)"data-i18n="rules.sat">Samedi — Verrouillage</div><div class="cal-s">Dès le premier tour des qualifications, toutes les prédictions sont <strong style="color:var(--w)">définitivement verrouillées</strong>.</div></div></div>
-          <div class="cal-item"><div class="cal-ico">🏁</div><div><div class="cal-t"data-i18n="rules.sun"data-i18n="rules.sun">Dimanche — Course & Points</div><div class="cal-s"data-i18n="rules.pts.desc">Points attribués dans l'heure suivant le drapeau à damier. Classements mis à jour en temps réel.</div></div></div>
+          <div class="cal-item"><div class="cal-ico">🔓</div><div><div class="cal-t">Jeudi — Ouverture</div><div class="cal-s">Les prédictions ouvrent 48h avant les qualifications. La prédiction IA GridOracle est publiée.</div></div></div>
+          <div class="cal-item"><div class="cal-ico">🏎️</div><div><div class="cal-t">Vendredi — Essais Libres</div><div class="cal-s">Tu peux analyser les performances et modifier ta prédiction librement selon les EL1 et EL2.</div></div></div>
+          <div class="cal-item" style="border:1px solid rgba(232,0,29,.2);border-radius:7px;background:rgba(232,0,29,.04)"><div class="cal-ico">🔒</div><div><div class="cal-t" style="color:var(--red)">Samedi — Verrouillage</div><div class="cal-s">Dès le premier tour des qualifications, toutes les prédictions sont <strong style="color:var(--w)">définitivement verrouillées</strong>.</div></div></div>
+          <div class="cal-item"><div class="cal-ico">🏁</div><div><div class="cal-t">Dimanche — Course & Points</div><div class="cal-s">Points attribués dans l'heure suivant le drapeau à damier. Classements mis à jour en temps réel.</div></div></div>
         </div>
       </div>
     </div>
@@ -1913,8 +1913,8 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
       <div class="pm-stat"><div class="pm-stat-v" id="pm-gps">0</div><div class="pm-stat-l">GPs joués</div></div>
     </div>
     <div class="pm-team-driver">
-      <div class="pm-td"><div class="pm-td-lbl" data-i18n="ngp.team">Équipe favorite</div><div class="pm-td-val" id="pm-team">—</div></div>
-      <div class="pm-td"><div class="pm-td-lbl" data-i18n="ngp.driver">Pilote favori</div><div class="pm-td-val" id="pm-driver">—</div></div>
+      <div class="pm-td"><div class="pm-td-lbl">Équipe favorite</div><div class="pm-td-val" id="pm-team">—</div></div>
+      <div class="pm-td"><div class="pm-td-lbl">Pilote favori</div><div class="pm-td-val" id="pm-driver">—</div></div>
     </div>
     <div class="pm-joined" id="pm-joined"></div>
   </div>
@@ -1974,23 +1974,23 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
       <div class="ngp-card">
         <div class="ngp-card-h">
           <span class="ngp-card-ico">📅</span>
-          <span class="ngp-card-t" data-i18n="ngp.schedule">Programme du week-end</span>
+          <span class="ngp-card-t">Programme du week-end</span>
         </div>
         <div class="ngp-card-b">
           <div class="ngp-sched">
             <div class="ngp-sday">
-              <div class="ngp-sday-lbl" data-i18n="ngp.fri">Vendredi 26 Juin</div>
-              <div class="ngp-session"><span class="ngp-sl" data-i18n="ngp.fp1">Essais Libres 1</span><span class="ngp-sv">13h30</span></div>
-              <div class="ngp-session"><span class="ngp-sl" data-i18n="ngp.fp2">Essais Libres 2</span><span class="ngp-sv">17h00</span></div>
+              <div class="ngp-sday-lbl">Vendredi 26 Juin</div>
+              <div class="ngp-session"><span class="ngp-sl">Essais Libres 1</span><span class="ngp-sv">13h30</span></div>
+              <div class="ngp-session"><span class="ngp-sl">Essais Libres 2</span><span class="ngp-sv">17h00</span></div>
             </div>
             <div class="ngp-sday">
-              <div class="ngp-sday-lbl" data-i18n="ngp.sat">Samedi 27 Juin</div>
-              <div class="ngp-session"><span class="ngp-sl" data-i18n="ngp.fp3">Essais Libres 3</span><span class="ngp-sv">12h30</span></div>
-              <div class="ngp-session ngp-session-red"><span class="ngp-sl" data-i18n="ngp.quali">🔴 Qualifications</span><span class="ngp-sv ngp-sv-red">16h00</span></div>
+              <div class="ngp-sday-lbl">Samedi 27 Juin</div>
+              <div class="ngp-session"><span class="ngp-sl">Essais Libres 3</span><span class="ngp-sv">12h30</span></div>
+              <div class="ngp-session ngp-session-red"><span class="ngp-sl">🔴 Qualifications</span><span class="ngp-sv ngp-sv-red">16h00</span></div>
             </div>
             <div class="ngp-sday">
-              <div class="ngp-sday-lbl" data-i18n="ngp.sun">Dimanche 28 Juin</div>
-              <div class="ngp-session ngp-session-gold"><span class="ngp-sl" data-i18n="ngp.race">🏁 Course</span><span class="ngp-sv ngp-sv-gold">15h00</span></div>
+              <div class="ngp-sday-lbl">Dimanche 28 Juin</div>
+              <div class="ngp-session ngp-session-gold"><span class="ngp-sl">🏁 Course</span><span class="ngp-sv ngp-sv-gold">15h00</span></div>
             </div>
           </div>
         </div>
@@ -2072,7 +2072,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 </div><!-- /pg-nextgp -->
 
 </div><!-- /app -->
-<div class="toast" id="toast"data-i18n="toast.locked">🏁 Prédiction GP Autriche verrouillée !</div>
+<div class="toast" id="toast">🏁 Prédiction GP Autriche verrouillée !</div>
 
 <script>
 /* ═══════════════════════════════════════════════
@@ -2420,37 +2420,37 @@ const TEAMS=[
   {id:'mclaren',name:'McLaren',abr:'MCL',color:'#FF8000',eng:'Mercedes',isNew:false,wccPos:3,wccPts:141,d:['Norris','Piastri']},
   {id:'ferrari',name:'Scuderia Ferrari',abr:'SF',color:'#E8001D',eng:'Ferrari',isNew:false,wccPos:2,wccPts:190,d:['Leclerc','Hamilton']},
   {id:'redbull',name:'Red Bull Racing',abr:'RBR',color:'#3671C6',eng:'Red Bull Ford',isNew:false,wccPos:4,wccPts:89,d:['Verstappen','Hadjar']},
-  {id:'mercedes',name:'Mercedes-AMG',abr:'AMG',color:'#00D2BE',eng:'Mercedes',isNew:false,wccPos:1,wccPts:262,d:['Russell','Antonelli']},
-  {id:'aston',name:'Aston Martin',abr:'AMF',color:'#358C75',eng:'Honda',isNew:false,wccPos:10,wccPts:1,d:['Alonso','Stroll']},
-  {id:'alpine',name:'Alpine F1',abr:'ALP',color:'#FF0060',eng:'Mercedes',isNew:false,wccPos:5,wccPts:57,d:['Gasly','Colapinto']},
-  {id:'williams',name:'Williams Racing',abr:'WIL',color:'#00A0DD',eng:'Mercedes',isNew:false,wccPos:8,wccPts:11,d:['Albon','Sainz']},
-  {id:'haas',name:'TGR Haas F1',abr:'HAA',color:'#CC1800',eng:'Toyota',isNew:false,wccPos:7,wccPts:21,d:['Bearman','Ocon']},
-  {id:'rb',name:'Racing Bulls',abr:'RB',color:'#4E7CB2',eng:'Red Bull Ford',isNew:false,wccPos:6,wccPts:41,d:['Lawson','Lindblad']},
-  {id:'audi',name:'Audi F1',abr:'AUD',color:'#BB0A1E',eng:'Audi',isNew:true,wccPos:9,wccPts:2,d:['Hülkenberg','Bortoleto']},
+  {id:'mercedes',name:'Mercedes-AMG',abr:'AMG',color:'#00D2BE',eng:'Mercedes',isNew:false,wccPos:1,wccPts:272,d:['Russell','Antonelli']},
+  {id:'aston',name:'Aston Martin',abr:'AMF',color:'#358C75',eng:'Honda',isNew:false,wccPos:10,wccPts:5,d:['Alonso','Stroll']},
+  {id:'alpine',name:'Alpine F1',abr:'ALP',color:'#FF0060',eng:'Mercedes',isNew:false,wccPos:5,wccPts:60,d:['Gasly','Colapinto']},
+  {id:'williams',name:'Williams Racing',abr:'WIL',color:'#00A0DD',eng:'Mercedes',isNew:false,wccPos:8,wccPts:18,d:['Albon','Sainz']},
+  {id:'haas',name:'TGR Haas F1',abr:'HAA',color:'#CC1800',eng:'Toyota',isNew:false,wccPos:7,wccPts:22,d:['Bearman','Ocon']},
+  {id:'rb',name:'Racing Bulls',abr:'RB',color:'#4E7CB2',eng:'Red Bull Ford',isNew:false,wccPos:6,wccPts:38,d:['Lawson','Lindblad']},
+  {id:'audi',name:'Audi F1',abr:'AUD',color:'#BB0A1E',eng:'Audi',isNew:true,wccPos:9,wccPts:8,d:['Hülkenberg','Bortoleto']},
   {id:'cadillac',name:'Cadillac F1',abr:'CAD',color:'#1C3F94',eng:'Ferrari',isNew:true,wccPos:11,wccPts:0,d:['Bottas','Pérez']},
 ];
 
 const DRIVERS=[
   {n:'3',sn:'Verstappen',fn:'Max',t:'redbull',tc:'#3671C6',img:CDN+'M/MAXVER01_Max_Verstappen/maxver01.png.transform/1col/image.png',wdcPos:7,wdcPts:55},
-  {n:'6',sn:'Hadjar',fn:'Isack',t:'redbull',tc:'#3671C6',img:CDN+'I/ISAHAD01_Isack_Hadjar/isahad01.png.transform/1col/image.png',wdcPos:9,wdcPts:34},
-  {n:'4',sn:'Norris',fn:'Lando',t:'mclaren',tc:'#FF8000',img:CDN+'L/LANNOR01_Lando_Norris/lannor01.png.transform/1col/image.png',wdc:true,wdcPos:5,wdcPts:73},
-  {n:'81',sn:'Piastri',fn:'Oscar',t:'mclaren',tc:'#FF8000',img:CDN+'O/OSCPIA01_Oscar_Piastri/oscpia01.png.transform/1col/image.png',wdcPos:6,wdcPts:68},
-  {n:'16',sn:'Leclerc',fn:'Charles',t:'ferrari',tc:'#E8001D',img:CDN+'C/CHALEC01_Charles_Leclerc/chalec01.png.transform/1col/image.png',wdcPos:4,wdcPts:75},
-  {n:'44',sn:'Hamilton',fn:'Lewis',t:'ferrari',tc:'#E8001D',img:CDN+'L/LEWHAM01_Lewis_Hamilton/lewham01.png.transform/1col/image.png',wdcPos:2,wdcPts:115},
-  {n:'63',sn:'Russell',fn:'George',t:'mercedes',tc:'#00D2BE',img:CDN+'G/GEORUS01_George_Russell/georus01.png.transform/1col/image.png',wdcPos:3,wdcPts:106},
-  {n:'12',sn:'Antonelli',fn:'Kimi',t:'mercedes',tc:'#00D2BE',img:CDN+'K/KIMANT01_Kimi_Antonelli/kimant01.png.transform/1col/image.png',wdcPos:1,wdcPts:156},
-  {n:'14',sn:'Alonso',fn:'Fernando',t:'aston',tc:'#358C75',img:CDN+'F/FERALO01_Fernando_Alonso/feralo01.png.transform/1col/image.png',wdcPos:18,wdcPts:1},
-  {n:'18',sn:'Stroll',fn:'Lance',t:'aston',tc:'#358C75',img:CDN+'L/LANSTR01_Lance_Stroll/lanstr01.png.transform/1col/image.png',wdcPos:17,wdcPts:2},
-  {n:'10',sn:'Gasly',fn:'Pierre',t:'alpine',tc:'#FF0060',img:CDN+'P/PIEGAS01_Pierre_Gasly/piegas01.png.transform/1col/image.png',wdcPos:8,wdcPts:41},
-  {n:'43',sn:'Colapinto',fn:'Franco',t:'alpine',tc:'#FF0060',img:CDN+'F/FRACOL01_Franco_Colapinto/fracol01.png.transform/1col/image.png',wdcPos:12,wdcPts:16},
-  {n:'23',sn:'Albon',fn:'Alex',t:'williams',tc:'#00A0DD',img:CDN+'A/ALEALB01_Alex_Albon/alealb01.png.transform/1col/image.png',wdcPos:15,wdcPts:5},
-  {n:'55',sn:'Sainz',fn:'Carlos',t:'williams',tc:'#00A0DD',img:CDN+'C/CARSAI01_Carlos_Sainz/carsai01.png.transform/1col/image.png',wdcPos:14,wdcPts:6},
-  {n:'87',sn:'Bearman',fn:'Oliver',t:'haas',tc:'#CC1800',img:CDN+'O/OLIBEA01_Oliver_Bearman/olibea01.png.transform/1col/image.png',wdcPos:11,wdcPts:18},
-  {n:'31',sn:'Ocon',fn:'Esteban',t:'haas',tc:'#CC1800',img:CDN+'E/ESTOCO01_Esteban_Ocon/estoco01.png.transform/1col/image.png',wdcPos:16,wdcPts:3},
-  {n:'30',sn:'Lawson',fn:'Liam',t:'rb',tc:'#4E7CB2',img:CDN+'L/LIALAW01_Liam_Lawson/lialaw01.png.transform/1col/image.png',wdcPos:10,wdcPts:28},
-  {n:'41',sn:'Lindblad',fn:'Arvid',t:'rb',tc:'#4E7CB2',img:CDN+'A/ARVLIN01_Arvid_Lindblad/arvlin01.png.transform/1col/image.png',rookie:true,wdcPos:13,wdcPts:13},
+  {n:'6',sn:'Hadjar',fn:'Isack',t:'redbull',tc:'#3671C6',img:CDN+'I/ISAHAD01_Isack_Hadjar/isahad01.png.transform/1col/image.png',wdcPos:8,wdcPts:38},
+  {n:'4',sn:'Norris',fn:'Lando',t:'mclaren',tc:'#FF8000',img:CDN+'L/LANNOR01_Lando_Norris/lannor01.png.transform/1col/image.png',wdc:true,wdcPos:6,wdcPts:76},
+  {n:'81',sn:'Piastri',fn:'Oscar',t:'mclaren',tc:'#FF8000',img:CDN+'O/OSCPIA01_Oscar_Piastri/oscpia01.png.transform/1col/image.png',wdcPos:5,wdcPts:78},
+  {n:'16',sn:'Leclerc',fn:'Charles',t:'ferrari',tc:'#E8001D',img:CDN+'C/CHALEC01_Charles_Leclerc/chalec01.png.transform/1col/image.png',wdcPos:4,wdcPts:84},
+  {n:'44',sn:'Hamilton',fn:'Lewis',t:'ferrari',tc:'#E8001D',img:CDN+'L/LEWHAM01_Lewis_Hamilton/lewham01.png.transform/1col/image.png',wdcPos:2,wdcPts:124},
+  {n:'63',sn:'Russell',fn:'George',t:'mercedes',tc:'#00D2BE',img:CDN+'G/GEORUS01_George_Russell/georus01.png.transform/1col/image.png',wdcPos:3,wdcPts:107},
+  {n:'12',sn:'Antonelli',fn:'Kimi',t:'mercedes',tc:'#00D2BE',img:CDN+'K/KIMANT01_Kimi_Antonelli/kimant01.png.transform/1col/image.png',wdcPos:1,wdcPts:165},
+  {n:'14',sn:'Alonso',fn:'Fernando',t:'aston',tc:'#358C75',img:CDN+'F/FERALO01_Fernando_Alonso/feralo01.png.transform/1col/image.png',wdcPos:12,wdcPts:5},
+  {n:'18',sn:'Stroll',fn:'Lance',t:'aston',tc:'#358C75',img:CDN+'L/LANSTR01_Lance_Stroll/lanstr01.png.transform/1col/image.png',wdcPos:14,wdcPts:0},
+  {n:'10',sn:'Gasly',fn:'Pierre',t:'alpine',tc:'#FF0060',img:CDN+'P/PIEGAS01_Pierre_Gasly/piegas01.png.transform/1col/image.png',wdcPos:9,wdcPts:28},
+  {n:'43',sn:'Colapinto',fn:'Franco',t:'alpine',tc:'#FF0060',img:CDN+'F/FRACOL01_Franco_Colapinto/fracol01.png.transform/1col/image.png',wdcPos:10,wdcPts:22},
+  {n:'23',sn:'Albon',fn:'Alex',t:'williams',tc:'#00A0DD',img:CDN+'A/ALEALB01_Alex_Albon/alealb01.png.transform/1col/image.png',wdcPos:15,wdcPts:8},
+  {n:'55',sn:'Sainz',fn:'Carlos',t:'williams',tc:'#00A0DD',img:CDN+'C/CARSAI01_Carlos_Sainz/carsai01.png.transform/1col/image.png',wdcPos:16,wdcPts:6},
+  {n:'87',sn:'Bearman',fn:'Oliver',t:'haas',tc:'#CC1800',img:CDN+'O/OLIBEA01_Oliver_Bearman/olibea01.png.transform/1col/image.png',wdcPos:13,wdcPts:4},
+  {n:'31',sn:'Ocon',fn:'Esteban',t:'haas',tc:'#CC1800',img:CDN+'E/ESTOCO01_Esteban_Ocon/estoco01.png.transform/1col/image.png',wdcPos:18,wdcPts:0},
+  {n:'30',sn:'Lawson',fn:'Liam',t:'rb',tc:'#4E7CB2',img:CDN+'L/LIALAW01_Liam_Lawson/lialaw01.png.transform/1col/image.png',wdcPos:11,wdcPts:10},
+  {n:'41',sn:'Lindblad',fn:'Arvid',t:'rb',tc:'#4E7CB2',img:CDN+'A/ARVLIN01_Arvid_Lindblad/arvlin01.png.transform/1col/image.png',rookie:true,wdcPos:17,wdcPts:2},
   {n:'27',sn:'Hülkenberg',fn:'Nico',t:'audi',tc:'#BB0A1E',img:CDN+'N/NICHUL01_Nico_Hulkenberg/nichul01.png.transform/1col/image.png',wdcPos:19,wdcPts:0},
-  {n:'5',sn:'Bortoleto',fn:'Gabriel',t:'audi',tc:'#BB0A1E',img:CDN+'G/GABBOR01_Gabriel_Bortoleto/gabbor01.png.transform/1col/image.png',wdcPos:17,wdcPts:2},
+  {n:'5',sn:'Bortoleto',fn:'Gabriel',t:'audi',tc:'#BB0A1E',img:CDN+'G/GABBOR01_Gabriel_Bortoleto/gabbor01.png.transform/1col/image.png',wdcPos:20,wdcPts:0},
   {n:'77',sn:'Bottas',fn:'Valtteri',t:'cadillac',tc:'#1C3F94',img:CDN+'V/VALBOT01_Valtteri_Bottas/valbot01.png.transform/1col/image.png',wdcPos:21,wdcPts:0},
   {n:'11',sn:'Pérez',fn:'Sergio',t:'cadillac',tc:'#1C3F94',img:CDN+'S/SERPER01_Sergio_Perez/serper01.png.transform/1col/image.png',wdcPos:22,wdcPts:0},
 ];
@@ -2613,6 +2613,7 @@ function navTo(page){
 }
 
 /* ── TOAST ── */
+
 // ═══════════════════════════════════════════════════
 // 🌐 SYSTÈME DE TRADUCTION FR / EN — GridOracle
 // ═══════════════════════════════════════════════════
@@ -2647,76 +2648,6 @@ const _T = {
     'ob.step1.lbl':'Étape 1 / 3','ob.step1.t':'Tes informations','ob.step1.s':'Ces informations créent ton profil public GridOracle.',
     'ob.step2.lbl':'Étape 2 / 3','ob.step2.t':'Ton écurie','ob.step2.s':'11 constructeurs en 2026. Quelle livrée portes-tu ?',
     'ob.step3.lbl':'Étape 3 / 3','ob.step3.t':'Ton pilote','ob.step3.s':'22 pilotes en 2026. Qui défends-tu race après race ?',
-    // Hub sidebar
-    'hub.myteam':'Mon écurie','hub.mydriver':'Mon pilote','hub.pts':'pts','hub.rank':'rang','hub.pred':'prédit','hub.acc':'précision',
-    'hub.plan':'Plan actuel','hub.upgrade':'Upgrade Premium →','hub.qualsin':'Qualifs dans','hub.predict':'Prédire →',
-    'hub.lock.t':'🔒 Positions 6–10 Premium','hub.lock.s':"Accède à l'analyse complète de l'IA.",'hub.goprem':'Passer Premium →',
-    'hub.factors':"FACTEURS D'ANALYSE",'hub.f.car':'Performance voiture','hub.f.driver':'Forme pilote',
-    'hub.f.circuit':'Historique circuit','hub.f.weather':'Conditions météo','hub.f.engine':'Fiabilité moteur',
-    'hub.indicators':'INDICATEURS','hub.schedule':'Programme GP','hub.viewall':'Voir tout le classement →',
-    // Pred
-    'pred.open':'En cours','pred.lock.t':'🔒 Positions 6–10 — Premium','pred.lock.btn':'Upgrader',
-    'pred.complete':'positions complètes','pred.lock.hub':'🏁 Verrouiller ma prédiction · GP Autriche',
-    'pred.deadline':'Clôture le <b>Samedi 27 Juin à 15h00</b>',
-    // Schedule
-    'sched.fp1':'Ven · EL1','sched.fp2':'Ven · EL2','sched.fp3':'Sam · EL3','sched.q':'Sam · Qualifs','sched.r':'Dim · Course',
-    // Leagues
-    'leagues.join.t':'Rejoindre une ligue','leagues.join.btn':'Rejoindre →',
-    'leagues.create.t':'🔒 Créer ma propre ligue','leagues.create.s':'Invite ta communauté, définis tes récompenses et gère ton classement. Disponible avec Premium & Creator.',
-    'leagues.myrank':'Ma position','leagues.mypts':'Mes points','leagues.aiacc':'Précision IA',
-    'leagues.members':'127 joueurs · Saison 2026','leagues.viewall':'Voir tout le classement →',
-    // Standings
-    'stand.players':'👥 Joueurs GridOracle',
-    // Creator
-    'cr.stat.leagues':'Ligues créées','cr.stat.custom':'Personnalisation','cr.stat.analytics':'Analytics live','cr.stat.support':'Support prioritaire',
-    'cr.features.t':'🏆 Fonctionnalités Creator','cr.myligues.t':'📋 Mes Ligues Creator','cr.create':'Créer +',
-    'cr.gp.open':'🔴 GP Autriche ouvert','cr.pred.open':'🟡 Prédictions ouvertes','cr.unlimited':'Ligues illimitées avec Creator',
-    'cr.analytics.t':'📈 Analytics Communauté','cr.active':'Membres actifs','cr.partrate':'Taux participation',
-    'cr.avgacc':'Précision moy.','cr.newgp':'Nouveaux ce GP','cr.predsub':'Prédictions soumises','cr.p1acc':'Précision P1',
-    'cr.top3':'Top 3 correct','cr.cta.t':'Prêt à lancer ta ligue Creator ?',
-    'cr.cta.s':'Rejoins les créateurs qui transforment leur passion F1 en expérience communautaire unique. Annule à tout moment, sans engagement.',
-    'cr.stripe':'🔒 Paiement sécurisé Stripe · 14 jours satisfait ou remboursé',
-    'cr.members':'membres','cr.newleague':'Nouvelle ligue…',
-    // Profile
-    'profile.pts':'Points saison','profile.league':'Ma ligue','profile.acc':'Précision',
-    'profile.edit':'✏️ Modifier mon profil','profile.reset':'↺ Réinitialiser mon profil',
-    'profile.goprem':'⭐ Passer Premium','profile.gocreator':'🎙️ Devenir Creator',
-    'profile.hist.lbl':'Historique','profile.hist.t':'Mes prédictions récentes',
-    // Next GP
-    'ngp.schedule':'Programme du week-end','ngp.fri':'Vendredi 26 Juin','ngp.sat':'Samedi 27 Juin',
-    'ngp.sun':'Dimanche 28 Juin','ngp.quali':'🔴 Qualifications','ngp.race':'🏁 Course',
-    // Trial/Edit
-    'trial.expired':'Ton accès Premium<br>a expiré','edit.title':'Modifier mon profil',
-    // Toast
-    'toast.locked':'🏁 Prédiction GP Autriche verrouillée !',
-    // Rules
-    'rules.free':'Prédictions P1 à P5','rules.prem':'Prédictions P1 à P10',
-    'rules.timing':'Prédictions ouvertes <strong>48h avant les qualifications</strong>',
-    'rules.open':'· Ouverte à tous les joueurs','rules.global':'· Classement mondial permanent',
-    'rules.pts24':'· Points cumulés sur 24 GP','rules.tb1':'Prédictions P1 correctes','rules.tb2':'Score dernier GP',
-    'rules.thu':'Jeudi — Ouverture','rules.fri':'Vendredi — Essais Libres','rules.sat':'Samedi — Verrouillage',
-    'rules.sun':'Dimanche — Course & Points','rules.cancelled':'Course annulée : GP neutralisé, non comptabilisé',
-    'rules.pts.desc':"Points attribués dans l'heure suivant le drapeau à damier. Classements mis à jour en temps réel.",
-    // Onboarding
-    'ob.profile.t':'Ton profil GridOracle','ob.success':'Profil créé avec succès !',
-    'ob.li1':'Tes infos & ton identifiant joueur','ob.li2':'Ton écurie favorite — 11 teams 2026',
-    'ob.li3':'Ton pilote préféré — grille complète','ob.free':'Gratuit · Sans carte bancaire',
-    // Calendar
-    'cal.fp':'Essais Libres','cal.q':'Qualifications','cal.race':'Course','cal.sprint':'Sprint Weekend',
-    'cal.circuit':'Circuit','cal.dates':'Dates','cal.format':'Format',
-    'status.done':'Terminé','status.next':'▶ En cours','status.cancelled':'❌ Annulé','status.upcoming':'À venir',
-    'ngp.fp1':'Essais Libres 1','ngp.fp2':'Essais Libres 2','ngp.fp3':'Essais Libres 3',
-    'trial.p6p10':'Prédiction P6 à P10 débloquée',
-    'trial.expired.s':"Ton essai gratuit de 48h est terminé. Pour continuer à voir le Top 10 de l'IA et marquer des points sur les positions 6–10, passe en Premium.",
-    'ui.back':'← Retour',
-    'ob.wtag':'⚡ Saison 2026 · 11 équipes · 22 pilotes',
-    'hub.myleague':'Ma ligue','hub.mypts':'Mes pts',
-    'cr.feat1.t':'Ligues privées illimitées',"cr.feat1.s":"Crée autant de ligues que tu veux, avec des codes d'invitation personnalisés pour chaque communauté.",
-    'rules.title':'Règlement GridOracle 2026',
-    'rules.prem.feat':'· Analytics détaillés, ligues illimitées',
-    'ngp.team':'Équipe favorite','ngp.driver':'Pilote favori',
-    'edit.driver':'Pilote favori',
-    'pred.hist.p1':'Mon P1',
   },
   en: {
     // Nav
@@ -2748,76 +2679,6 @@ const _T = {
     'ob.step1.lbl':'Step 1 / 3','ob.step1.t':'Your information','ob.step1.s':'This creates your public GridOracle profile.',
     'ob.step2.lbl':'Step 2 / 3','ob.step2.t':'Your team','ob.step2.s':'11 constructors in 2026. Which livery do you wear?',
     'ob.step3.lbl':'Step 3 / 3','ob.step3.t':'Your driver','ob.step3.s':'22 drivers in 2026. Who do you back race after race?',
-    // Hub sidebar
-    'hub.myteam':'My team','hub.mydriver':'My driver','hub.pts':'pts','hub.rank':'rank','hub.pred':'predicted','hub.acc':'accuracy',
-    'hub.plan':'Current plan','hub.upgrade':'Upgrade Premium →','hub.qualsin':'Qualifying in','hub.predict':'Predict →',
-    'hub.lock.t':'🔒 Positions 6–10 Premium','hub.lock.s':'Access the full AI analysis.','hub.goprem':'Go Premium →',
-    'hub.factors':'ANALYSIS FACTORS','hub.f.car':'Car performance','hub.f.driver':'Driver form',
-    'hub.f.circuit':'Circuit history','hub.f.weather':'Weather conditions','hub.f.engine':'Engine reliability',
-    'hub.indicators':'INDICATORS','hub.schedule':'Race Weekend','hub.viewall':'View full standings →',
-    // Pred
-    'pred.open':'Open','pred.lock.t':'🔒 Positions 6–10 — Premium','pred.lock.btn':'Upgrade',
-    'pred.complete':'positions filled','pred.lock.hub':'🏁 Lock my prediction · Austrian GP',
-    'pred.deadline':'Closes <b>Saturday 27 June at 15:00</b>',
-    // Schedule
-    'sched.fp1':'Fri · FP1','sched.fp2':'Fri · FP2','sched.fp3':'Sat · FP3','sched.q':'Sat · Quali','sched.r':'Sun · Race',
-    // Leagues
-    'leagues.join.t':'Join a league','leagues.join.btn':'Join →',
-    'leagues.create.t':'🔒 Create my own league','leagues.create.s':'Invite your community, set rewards and manage your standings. Available with Premium & Creator.',
-    'leagues.myrank':'My position','leagues.mypts':'My points','leagues.aiacc':'AI accuracy',
-    'leagues.members':'127 players · 2026 Season','leagues.viewall':'View full standings →',
-    // Standings
-    'stand.players':'👥 GridOracle Players',
-    // Creator
-    'cr.stat.leagues':'Leagues created','cr.stat.custom':'Customisation','cr.stat.analytics':'Live analytics','cr.stat.support':'Priority support',
-    'cr.features.t':'🏆 Creator Features','cr.myligues.t':'📋 My Creator Leagues','cr.create':'Create +',
-    'cr.gp.open':'🔴 Austrian GP open','cr.pred.open':'🟡 Predictions open','cr.unlimited':'Unlimited leagues with Creator',
-    'cr.analytics.t':'📈 Community Analytics','cr.active':'Active members','cr.partrate':'Participation rate',
-    'cr.avgacc':'Avg. accuracy','cr.newgp':'New this GP','cr.predsub':'Predictions submitted','cr.p1acc':'P1 accuracy',
-    'cr.top3':'Top 3 correct','cr.cta.t':'Ready to launch your Creator league?',
-    'cr.cta.s':'Join creators who turn their F1 passion into a unique community experience. Cancel anytime, no commitment.',
-    'cr.stripe':'🔒 Secure Stripe payment · 14-day money back guarantee',
-    'cr.members':'members','cr.newleague':'New league…',
-    // Profile
-    'profile.pts':'Season points','profile.league':'My league','profile.acc':'Accuracy',
-    'profile.edit':'✏️ Edit my profile','profile.reset':'↺ Reset my profile',
-    'profile.goprem':'⭐ Go Premium','profile.gocreator':'🎙️ Become Creator',
-    'profile.hist.lbl':'History','profile.hist.t':'My recent predictions',
-    // Next GP
-    'ngp.schedule':'Weekend schedule','ngp.fri':'Friday 26 June','ngp.sat':'Saturday 27 June',
-    'ngp.sun':'Sunday 28 June','ngp.quali':'🔴 Qualifying','ngp.race':'🏁 Race',
-    // Trial/Edit
-    'trial.expired':'Your Premium access<br>has expired','edit.title':'Edit my profile',
-    // Toast
-    'toast.locked':'🏁 Austrian GP prediction locked!',
-    // Rules
-    'rules.free':'Predictions P1 to P5','rules.prem':'Predictions P1 to P10',
-    'rules.timing':'Predictions open <strong>48h before qualifying</strong>',
-    'rules.open':'· Open to all players','rules.global':'· Permanent global standings',
-    'rules.pts24':'· Points cumulated over 24 GPs','rules.tb1':'Correct P1 predictions','rules.tb2':'Last GP score',
-    'rules.thu':'Thursday — Opens','rules.fri':'Friday — Free Practice','rules.sat':'Saturday — Lock-in',
-    'rules.sun':'Sunday — Race & Points','rules.cancelled':'Race cancelled: GP not counted',
-    'rules.pts.desc':'Points awarded within one hour of the chequered flag. Standings updated in real time.',
-    // Onboarding
-    'ob.profile.t':'Your GridOracle profile','ob.success':'Profile created successfully!',
-    'ob.li1':'Your info & player handle','ob.li2':'Your favourite team — 11 teams 2026',
-    'ob.li3':'Your favourite driver — full grid','ob.free':'Free · No credit card required',
-    // Calendar
-    'cal.fp':'Free Practice','cal.q':'Qualifying','cal.race':'Race','cal.sprint':'Sprint Weekend',
-    'cal.circuit':'Circuit','cal.dates':'Dates','cal.format':'Format',
-    'status.done':'Finished','status.next':'▶ Live','status.cancelled':'❌ Cancelled','status.upcoming':'Upcoming',
-    'ngp.fp1':'Free Practice 1','ngp.fp2':'Free Practice 2','ngp.fp3':'Free Practice 3',
-    'trial.p6p10':'P6 to P10 prediction unlocked',
-    'trial.expired.s':'Your free 48h trial has ended. To continue viewing the full AI Top 10 and scoring on positions 6–10, upgrade to Premium.',
-    'ui.back':'← Back',
-    'ob.wtag':'⚡ 2026 Season · 11 teams · 22 drivers',
-    'hub.myleague':'My league','hub.mypts':'My pts',
-    'cr.feat1.t':'Unlimited private leagues','cr.feat1.s':'Create as many leagues as you want, each with its own custom invite code.',
-    'rules.title':'GridOracle 2026 Rules',
-    'rules.prem.feat':'· Detailed analytics, unlimited leagues',
-    'ngp.team':'Favourite team','ngp.driver':'Favourite driver',
-    'edit.driver':'Favourite driver',
-    'pred.hist.p1':'My P1',
   }
 };
 
@@ -2836,10 +2697,6 @@ function applyLang(lang){
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const k = el.getAttribute('data-i18n');
     if(dict[k] !== undefined) el.textContent = dict[k];
-  });
-  document.querySelectorAll('[data-i18n-html]').forEach(el => {
-    const k = el.getAttribute('data-i18n-html');
-    if(dict[k] !== undefined) el.innerHTML = dict[k];
   });
   // Mettre à jour lang attr sur <html>
   document.documentElement.lang = lang;
@@ -3008,7 +2865,7 @@ function buildAIPred(){
       if(homeOverlay)homeOverlay.style.display='none';
     } else {
       let html=AI_DATA.slice(0,5).map((d,i)=>aiRow(d,i)).join('');
-      html+=`<div class="lks"><div class="lkbl">${AI_DATA.slice(5).map((d,i)=>aiRow(d,i+5)).join('')}</div><div class="lkov"><div class="lkm"><h4 data-i18n="hub.lock.t">🔒 Positions 6–10 Premium</h4><p data-i18n="hub.lock.s">Accède à l'analyse complète de l'IA.</p><button class="btn-r" style="font-size:.76rem;padding:.38rem .9rem" onclick="openStripeModal('premium')"data-i18n="hub.goprem">Passer Premium →</button></div></div></div>`;
+      html+=`<div class="lks"><div class="lkbl">${AI_DATA.slice(5).map((d,i)=>aiRow(d,i+5)).join('')}</div><div class="lkov"><div class="lkm"><h4>🔒 Positions 6–10 Premium</h4><p>Accède à l'analyse complète de l'IA.</p><button class="btn-r" style="font-size:.76rem;padding:.38rem .9rem" onclick="openStripeModal('premium')">Passer Premium →</button></div></div></div>`;
       full.innerHTML=html;
     }
   }
@@ -3064,7 +2921,7 @@ function buildPremSection(){
         <li><span class="fc">✓</span><span>Badge GridPro</span></li>
         <li><span class="fx">✕</span><span>Ligues brandées & analytics</span></li>
       </ul>
-      <button class="pc-btn fill" onclick="openStripeModal('premium')"data-i18n="hub.goprem">Passer Premium →</button>
+      <button class="pc-btn fill" onclick="openStripeModal('premium')">Passer Premium →</button>
       <div class="stripe-note">🔒 Paiement sécurisé · <span>Stripe · Résiliation à tout moment</span></div>
     </div>
     <div class="pc creator-plan">
@@ -3370,350 +3227,142 @@ function showShareButton(predArray){
 }
 
 function openShareModal(predArray){
-  const ex=document.getElementById('share-modal');
-  if(ex) ex.remove();
+  const existing = document.getElementById('share-modal');
+  if(existing) existing.remove();
 
-  const isPaid=hasFullAccess(), maxShare=isPaid?10:5;
-  const myHandle=USER.handle||'moi';
-  const pred=(predArray||HP.pred).filter(Boolean).slice(0,maxShare).map(p=>{
-    if(typeof p==='string') return DRIVERS.find(d=>d.sn===p)||{sn:p,n:'?',tc:'#e8001d'};
-    if(p&&p.sn) return DRIVERS.find(d=>d.sn===p.sn)||p;
-    return null;
-  }).filter(Boolean);
-  if(!pred.length){showToast('Ajoute des pilotes à ta prédiction d\'abord');return;}
+  const isPaid   = hasFullAccess();
+  const maxShare = isPaid ? 10 : 5;
+  const myHandle = USER.handle || 'moi';
 
-  const upBar=!isPaid
-    ?'<div style="background:rgba(232,0,29,.05);border:1px solid rgba(232,0,29,.15);border-radius:8px;padding:.5rem .7rem;margin-bottom:.7rem;font-size:.72rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:.5rem">🔒 <span>Premium = <strong style="color:#fff">Top 10</strong></span><button id="sm-up" style="margin-left:auto;background:#e8001d;border:none;color:#fff;border-radius:5px;padding:.18rem .52rem;font-size:.65rem;font-weight:600;cursor:pointer">Upgrade →</button></div>'
-    :'';
+  // Résoudre les pilotes depuis sn strings ou objets
+  const pred = (predArray || HP.pred)
+    .filter(Boolean)
+    .slice(0, maxShare)
+    .map(p => {
+      if(typeof p === 'string') return DRIVERS.find(d=>d.sn===p) || { sn:p, n:'?', tc:'#e8001d' };
+      if(p && p.sn) return DRIVERS.find(d=>d.sn===p.sn) || p;
+      return null;
+    }).filter(Boolean);
 
-  const modal=document.createElement('div');
-  modal.id='share-modal';
-  modal.style.cssText='position:fixed;inset:0;z-index:9500;background:rgba(7,7,14,.92);backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center';
+  if(!pred.length){ showToast('Ajoute des pilotes à ta prédiction d\'abord'); return; }
 
-  modal.innerHTML=
-    '<div style="background:#0e0e1c;border:1px solid rgba(232,0,29,.22);border-radius:16px 16px 0 0;padding:1.1rem 1.1rem 2rem;max-width:460px;width:100%;position:relative;animation:slideUp .22s ease">'
-    +'<div style="width:34px;height:4px;background:rgba(255,255,255,.15);border-radius:2px;margin:0 auto .85rem"></div>'
-    +'<button id="sm-close" style="position:absolute;top:.85rem;right:.85rem;background:transparent;border:none;color:rgba(255,255,255,.3);font-size:1.2rem;cursor:pointer">✕</button>'
-    +'<div style="font-family:Rajdhani,sans-serif;font-size:.84rem;font-weight:700;letter-spacing:.12em;color:#e8001d;margin-bottom:.75rem">📤 PARTAGER MA PRÉDICTION</div>'
-    +upBar
-    // Aperçu image — chargement puis image réelle
-    +'<div id="sm-prev" style="border-radius:12px;overflow:hidden;margin-bottom:.7rem;background:#07070e;min-height:110px;display:flex;align-items:center;justify-content:center">'
-      +'<div style="font-size:.75rem;color:rgba(255,255,255,.3)">Génération de l\'image…</div>'
-    +'</div>'
-    // Instruction (apparaît quand l'image est prête)
-    +'<div id="sm-hint" style="display:none;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:.55rem .75rem;margin-bottom:.75rem;font-size:.73rem;color:rgba(255,255,255,.5);text-align:center;line-height:1.55">'
-      +'📲 <strong style="color:#fff">Appuie longuement sur l\'image</strong> pour la sauvegarder,<br>puis ouvre l\'app de ton choix ci-dessous.'
-    +'</div>'
-    // Boutons app
-    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.5rem">'
-      +'<button id="sm-insta" style="background:#e8001d;color:#fff;border:none;border-radius:10px;padding:.82rem;font-size:.86rem;font-weight:700;cursor:pointer">📸 Instagram</button>'
-      +'<button id="sm-tiktok" style="background:#0a0a0a;color:#fff;border:1.5px solid rgba(255,255,255,.16);border-radius:10px;padding:.82rem;font-size:.86rem;font-weight:700;cursor:pointer">🎵 TikTok</button>'
-    +'</div>'
-    +'<button id="sm-copy" style="width:100%;background:rgba(232,0,29,.07);border:1px solid rgba(232,0,29,.2);border-radius:10px;padding:.62rem;font-size:.8rem;color:#e8001d;cursor:pointer">📋 Copier le texte</button>'
-    +'<div id="sm-copied" style="text-align:center;font-size:.7rem;color:#4caf50;display:none;padding:.22rem">✓ Texte copié !</div>'
-  +'</div>';
+  const shareText = [
+    `${GP_CURRENT.flag} Ma prédiction ${GP_CURRENT.name} sur GridOracle 🤖`,
+    '',
+    ...pred.map((d,i)=>`P${i+1} ${d.sn||'—'}`),
+    '',
+    `Tu fais mieux que l'IA ? gridoracle.vercel.app`
+  ].join('\n');
+
+  const colors = ['#FFD700','#C0C0C0','#CD7F32','rgba(255,255,255,.5)','rgba(255,255,255,.4)','rgba(255,255,255,.35)','rgba(255,255,255,.3)','rgba(255,255,255,.28)','rgba(255,255,255,.25)','rgba(255,255,255,.22)'];
+
+  const predRows = pred.map((d,i)=>`
+    <div style="display:flex;align-items:center;gap:.5rem;padding:.28rem 0;border-bottom:1px solid rgba(255,255,255,.05)">
+      <div style="font-family:'Rajdhani',sans-serif;font-size:.88rem;font-weight:700;color:${colors[i]};min-width:24px">P${i+1}</div>
+      <div style="font-size:.82rem;font-weight:600;color:#fff;flex:1">${d.sn||'—'}</div>
+      <div style="width:7px;height:7px;border-radius:50%;background:${d.tc||'#e8001d'};flex-shrink:0"></div>
+    </div>`).join('');
+
+  const hasNativeShare = !!navigator.share;
+
+  const modal = document.createElement('div');
+  modal.id = 'share-modal';
+  modal.style.cssText = 'position:fixed;inset:0;z-index:9500;background:rgba(7,7,14,.92);backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center;padding:0';
+
+  // Construire le HTML sans template literals imbriqués
+  const nativeBtn = hasNativeShare
+    ? '<button id="sm-native" style="background:#e8001d;color:#fff;border:none;border-radius:10px;padding:.8rem;font-size:.88rem;font-weight:600;cursor:pointer;width:100%">📤 Partager sur mes réseaux</button>'
+    : '';
+  const upgradeBar = !isPaid
+    ? '<div style="background:rgba(232,0,29,.05);border:1px solid rgba(232,0,29,.15);border-radius:8px;padding:.55rem .75rem;margin-bottom:.85rem;font-size:.72rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:.5rem">🔒 <span>Premium = partage ton <strong style="color:#fff">Top 10</strong></span><button id="sm-upgrade" style="margin-left:auto;background:#e8001d;border:none;color:#fff;border-radius:5px;padding:.2rem .6rem;font-size:.65rem;font-weight:600;cursor:pointer">Upgrade →</button></div>'
+    : '';
+
+  modal.innerHTML = '<div style="background:#0e0e1c;border:1px solid rgba(232,0,29,.22);border-radius:16px 16px 0 0;padding:1.4rem 1.3rem 2rem;max-width:480px;width:100%;position:relative;animation:slideUp .25s ease">'
+    + '<div style="width:36px;height:4px;background:rgba(255,255,255,.15);border-radius:2px;margin:0 auto 1.1rem"></div>'
+    + '<button id="sm-close" style="position:absolute;top:1rem;right:1rem;background:transparent;border:none;color:rgba(255,255,255,.35);font-size:1.2rem;cursor:pointer;line-height:1">✕</button>'
+    + '<div style="font-family:Rajdhani,sans-serif;font-size:.88rem;font-weight:700;letter-spacing:.12em;color:#e8001d;margin-bottom:.9rem">📤 PARTAGER MA PRÉDICTION · '+(isPaid?'Top 10':'Top 5')+'</div>'
+    + '<div style="background:linear-gradient(135deg,#07070e,#111128);border:1px solid rgba(232,0,29,.18);border-radius:10px;padding:.9rem;margin-bottom:1rem">'
+      + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">'
+        + '<div style="font-family:Rajdhani,sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.12em">GRID<span style="color:#e8001d">ORACLE</span></div>'
+        + '<div style="font-size:.58rem;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase">'+GP_CURRENT.flag+' '+GP_CURRENT.name+'</div>'
+      + '</div>'
+      + '<div style="font-size:.6rem;color:rgba(255,255,255,.3);margin-bottom:.45rem;letter-spacing:.07em;text-transform:uppercase">@'+myHandle+' · Ma prédiction</div>'
+      + predRows
+      + '<div style="margin-top:.5rem;font-size:.52rem;color:rgba(255,255,255,.18);text-align:center">L&#39;IA PR&Eacute;DIT. TOI TU D&Eacute;FIES. &middot; gridoracle.vercel.app</div>'
+    + '</div>'
+    + upgradeBar
+    + '<div style="display:flex;flex-direction:column;gap:.5rem">'
+      + nativeBtn
+      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">'
+        + '<button id="sm-tiktok" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:.7rem;font-size:.82rem;color:#fff;cursor:pointer">🎵 Ouvrir TikTok</button>'
+        + '<button id="sm-insta" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:.7rem;font-size:.82rem;color:#fff;cursor:pointer">📸 Ouvrir Instagram</button>'
+      + '</div>'
+      + '<button id="sm-copy" style="background:rgba(232,0,29,.07);border:1px solid rgba(232,0,29,.2);border-radius:10px;padding:.7rem;font-size:.82rem;color:#e8001d;cursor:pointer;width:100%">📋 Copier le texte</button>'
+      + '<div id="sm-copied" style="text-align:center;font-size:.72rem;color:#4caf50;display:none;padding:.3rem">✓ Texte copié — colle-le dans ton appli !</div>'
+    + '</div>'
+  + '</div>';
 
   document.body.appendChild(modal);
-  document.getElementById('sm-close').onclick=()=>modal.remove();
-  modal.addEventListener('click',e=>{if(e.target===modal)modal.remove();});
-  const upBtn=document.getElementById('sm-up');
-  if(upBtn) upBtn.onclick=()=>{modal.remove();openStripeModal('premium');};
 
-  // ── Générer + afficher l'image dans le modal ──
-  let _canvas=null;
-  buildPredCanvas(pred,myHandle).then(cv=>{
-    _canvas=cv;
-    const prev=document.getElementById('sm-prev');
-    if(prev){
-      prev.style.minHeight='';
-      prev.innerHTML='<img src="'+cv.toDataURL('image/png')+'" style="width:100%;display:block" alt="Prédiction GridOracle">';
-    }
-    const hint=document.getElementById('sm-hint');
-    if(hint) hint.style.display='block';
-  }).catch(()=>{
-    const prev=document.getElementById('sm-prev');
-    if(prev) prev.innerHTML='<div style="padding:1rem;font-size:.73rem;color:rgba(255,255,255,.35)">Erreur de génération</div>';
-  });
+  // Fermeture
+  document.getElementById('sm-close').onclick = () => modal.remove();
+  modal.addEventListener('click', e => { if(e.target === modal) modal.remove(); });
+  const upBtn = document.getElementById('sm-upgrade');
+  if(upBtn) upBtn.onclick = () => { modal.remove(); openStripeModal('premium'); };
 
-  // ── Instagram : native share avec l'image ──
-  document.getElementById('sm-insta').onclick=async()=>{
-    const cv=_canvas||await buildPredCanvas(pred,myHandle).catch(()=>null);
-    if(!cv){window.open('https://www.instagram.com','_blank');return;}
-    cv.toBlob(async blob=>{
-      const f=new File([blob],'prediction-gridoracle.png',{type:'image/png'});
-      if(navigator.canShare&&navigator.canShare({files:[f]})){
-        try{await navigator.share({files:[f],title:'Ma prédiction '+GP_CURRENT.name});return;}
-        catch(e){if(e.name==='AbortError')return;}
+  // Partage natif iOS/Android
+  if(hasNativeShare){
+    document.getElementById('sm-native').onclick = async () => {
+      try {
+        await navigator.share({ title: `Ma prédiction ${GP_CURRENT.name}`, text: shareText });
+      } catch(e) {
+        if(e.name !== 'AbortError') copyShareText(shareText, 'sm-copied');
       }
-      window.open('https://www.instagram.com','_blank');
-    },'image/png');
+    };
+  }
+
+  // TikTok
+  document.getElementById('sm-tiktok').onclick = () => {
+    copyShareText(shareText, 'sm-copied');
+    // Essayer d'ouvrir TikTok via deep link, fallback sur l'app store
+    const tiktokUrl = 'snssdk1233://'; // deep link TikTok iOS/Android
+    const fallbackUrl = 'https://www.tiktok.com';
+    const start = Date.now();
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = tiktokUrl;
+    document.body.appendChild(iframe);
+    setTimeout(() => {
+      document.body.removeChild(iframe);
+      if(Date.now() - start < 1500) window.open(fallbackUrl, '_blank');
+    }, 1200);
+    showToast('📋 Texte copié ! TikTok s\'ouvre... colle dans ta vidéo 🎵');
   };
 
-  // ── TikTok : ouvrir l'app directement ──
-  document.getElementById('sm-tiktok').onclick=()=>{
-    const ua=navigator.userAgent||'';
-    if(/iPhone|iPad|iPod/i.test(ua)){
-      window.location.href='snssdk1233://';
-      setTimeout(()=>window.open('https://apps.apple.com/app/tiktok/id835599320','_blank'),900);
-    } else if(/Android/i.test(ua)){
-      window.location.href='intent://www.tiktok.com/#Intent;package=com.zhiliaoapp.musically;scheme=https;end';
-      setTimeout(()=>window.open('https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically','_blank'),900);
-    } else {
-      window.open('https://www.tiktok.com','_blank');
-    }
+  // Instagram
+  document.getElementById('sm-insta').onclick = () => {
+    copyShareText(shareText, 'sm-copied');
+    // Deep link Instagram Story camera
+    const instaUrl = 'instagram://story-camera';
+    const fallbackUrl = 'https://www.instagram.com';
+    const start = Date.now();
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = instaUrl;
+    document.body.appendChild(iframe);
+    setTimeout(() => {
+      document.body.removeChild(iframe);
+      if(Date.now() - start < 1500) window.open(fallbackUrl, '_blank');
+    }, 1200);
+    showToast('📋 Texte copié ! Instagram s\'ouvre... colle dans ta story 📸');
   };
 
-  // ── Copier texte ──
-  const txt=[
-    GP_CURRENT.flag+' Ma prédiction '+GP_CURRENT.name+' sur GridOracle 🤖',
-    '',
-    ...pred.map((d,i)=>'P'+(i+1)+' '+(d.sn||'—')),
-    '',
-    'Tu fais mieux que l\'IA ? gridoracle.vercel.app'
-  ].join('\n');
-  document.getElementById('sm-copy').onclick=()=>{
-    copyShareText(txt,'sm-copied');
-    const el=document.getElementById('sm-copied');
-    if(el){el.style.display='block';setTimeout(()=>el.style.display='none',3000);}
+  // Copier seulement
+  document.getElementById('sm-copy').onclick = () => {
+    copyShareText(shareText, 'sm-copied');
+    const el = document.getElementById('sm-copied');
+    if(el){ el.style.display='block'; setTimeout(()=>el.style.display='none', 3000); }
   };
-}
-
-
-
-// ── GÉNÉRATION IMAGE CANVAS 9:16 ── DESIGN: APEX
-// Polyfill roundRect
-if(!CanvasRenderingContext2D.prototype.roundRect){
-  CanvasRenderingContext2D.prototype.roundRect=function(x,y,w,h,r){
-    if(typeof r==='number') r=[r,r,r,r];
-    const[tl,tr,br,bl]=Array.isArray(r)?[...r,...r].slice(0,4):[r,r,r,r];
-    this.beginPath();
-    this.moveTo(x+tl,y);this.lineTo(x+w-tr,y);
-    this.quadraticCurveTo(x+w,y,x+w,y+tr);
-    this.lineTo(x+w,y+h-br);this.quadraticCurveTo(x+w,y+h,x+w-br,y+h);
-    this.lineTo(x+bl,y+h);this.quadraticCurveTo(x,y+h,x,y+h-bl);
-    this.lineTo(x,y+tl);this.quadraticCurveTo(x,y,x+tl,y);
-    this.closePath();
-  };
-}
-
-function buildPredCanvas(pred, handle){
-  return new Promise((resolve, reject) => {
-    try {
-      const W=1080, H=1920, PX=72, CW=1080-72*2;
-      const canvas=document.createElement('canvas');
-      canvas.width=W; canvas.height=H;
-      const ctx=canvas.getContext('2d');
-
-      // ── 1. FOND ──
-      ctx.fillStyle='#05050e';
-      ctx.fillRect(0,0,W,H);
-
-      // Texture diagonale vitesse
-      ctx.save();
-      ctx.strokeStyle='rgba(255,255,255,0.013)';
-      ctx.lineWidth=1;
-      const lAng=55*Math.PI/180, lDx=H*Math.sin(lAng);
-      for(let i=-(lDx+100);i<W+100;i+=26){
-        ctx.beginPath(); ctx.moveTo(i,0); ctx.lineTo(i+lDx,H); ctx.stroke();
-      }
-      ctx.restore();
-
-      // Lueur rouge top-left
-      const gl=ctx.createRadialGradient(80,180,0,80,180,560);
-      gl.addColorStop(0,'rgba(232,0,29,0.17)'); gl.addColorStop(1,'transparent');
-      ctx.fillStyle=gl; ctx.fillRect(0,0,W,H);
-
-      // Second glow bas-droite subtil
-      const gl2=ctx.createRadialGradient(W,H,0,W,H,700);
-      gl2.addColorStop(0,'rgba(100,0,200,0.05)'); gl2.addColorStop(1,'transparent');
-      ctx.fillStyle=gl2; ctx.fillRect(0,0,W,H);
-
-      // Gros P1 fantôme derrière (décalé à droite)
-      ctx.save();
-      ctx.font='bold 560px Arial Black,Impact,sans-serif';
-      ctx.fillStyle='rgba(232,0,29,0.055)';
-      ctx.textAlign='right'; ctx.textBaseline='alphabetic';
-      ctx.fillText('P1',W+80,820);
-      ctx.restore();
-
-      // ── 2. BARRE ROUGE TOP ──
-      const barG=ctx.createLinearGradient(0,0,W,0);
-      barG.addColorStop(0,'#e8001d'); barG.addColorStop(1,'#ff3d3d');
-      ctx.fillStyle=barG; ctx.fillRect(0,0,W,14);
-
-      // ── 3. HEADER ──
-      ctx.textAlign='left'; ctx.textBaseline='alphabetic';
-
-      // Logo GRIDORACLE
-      ctx.font='bold 64px Arial,sans-serif';
-      ctx.fillStyle='#ffffff';
-      ctx.fillText('GRID',PX,112);
-      const gW=ctx.measureText('GRID').width;
-      ctx.fillStyle='#e8001d';
-      ctx.fillText('ORACLE',PX+gW+5,112);
-
-      // Badge rond R + numéro
-      const doneCnt=(typeof F1_CALENDAR_2026!=='undefined')?
-        F1_CALENDAR_2026.filter(g=>g.status==='done').length:7;
-      const gpFlag=(typeof GP_CURRENT!=='undefined'&&GP_CURRENT.flag)||'';
-      const roundBadge=gpFlag+' R'+(doneCnt+1);
-      ctx.font='bold 26px Arial,sans-serif';
-      const rbW=ctx.measureText(roundBadge).width+40;
-      const rbX=W-PX-rbW, rbY=70, rbH=48;
-      ctx.save();
-      ctx.fillStyle='rgba(232,0,29,0.1)';
-      ctx.beginPath(); ctx.roundRect(rbX,rbY,rbW,rbH,24); ctx.fill();
-      ctx.strokeStyle='rgba(232,0,29,0.4)'; ctx.lineWidth=1.5;
-      ctx.beginPath(); ctx.roundRect(rbX,rbY,rbW,rbH,24); ctx.stroke();
-      ctx.fillStyle='#e8001d'; ctx.textAlign='center';
-      ctx.fillText(roundBadge,rbX+rbW/2,rbY+30);
-      ctx.restore();
-
-      // GP name
-      const gpName=(typeof GP_CURRENT!=='undefined'&&GP_CURRENT.name)?
-        GP_CURRENT.name.toUpperCase():'GRAND PRIX';
-      ctx.font='28px Arial,sans-serif';
-      ctx.fillStyle='rgba(255,255,255,0.35)';
-      ctx.textAlign='left';
-      ctx.fillText(gpName,PX,158);
-
-      // Séparateur dégradé rouge
-      const dv=ctx.createLinearGradient(PX,0,W-PX,0);
-      dv.addColorStop(0,'rgba(232,0,29,0.75)');
-      dv.addColorStop(0.5,'rgba(232,0,29,0.18)');
-      dv.addColorStop(1,'transparent');
-      ctx.fillStyle=dv; ctx.fillRect(PX,192,CW,2);
-
-      // Chip handle + "PRÉDICTION OFFICIELLE"
-      const disp='@'+(handle||'gridoraclef1')+'   ·   PRÉDICTION OFFICIELLE';
-      ctx.font='600 24px Arial,sans-serif';
-      const chipW=ctx.measureText(disp).width+52, chipH=44;
-      ctx.fillStyle='rgba(255,255,255,0.03)';
-      ctx.save();
-      ctx.beginPath(); ctx.roundRect(PX,216,chipW,chipH,7); ctx.fill();
-      ctx.strokeStyle='rgba(255,255,255,0.08)'; ctx.lineWidth=1;
-      ctx.beginPath(); ctx.roundRect(PX,216,chipW,chipH,7); ctx.stroke();
-      ctx.restore();
-      ctx.fillStyle='#e8001d';
-      ctx.beginPath(); ctx.arc(PX+20,238,7,0,Math.PI*2); ctx.fill();
-      ctx.fillStyle='rgba(255,255,255,0.38)';
-      ctx.textAlign='left'; ctx.textBaseline='middle';
-      ctx.fillText(disp,PX+36,238);
-      ctx.textBaseline='alphabetic';
-
-      // ── 4. DRIVERS ──
-      const dCnt=Math.min(pred.length,10);
-      const listTop=296, listBottom=1700;
-      const rowH=Math.floor((listBottom-listTop)/dCnt);
-      const rColors=['#FFD700','#C0C0C0','#CD7F32',
-        'rgba(255,255,255,0.82)','rgba(255,255,255,0.72)',
-        'rgba(255,255,255,0.62)','rgba(255,255,255,0.55)',
-        'rgba(255,255,255,0.48)','rgba(255,255,255,0.42)','rgba(255,255,255,0.36)'];
-
-      pred.slice(0,dCnt).forEach((d,i)=>{
-        const rY=listTop+i*rowH;
-        const tc=d.tc||'#e8001d';
-        const rc=rColors[i];
-        const isHex=rc.startsWith('#');
-        const isTop3=i<3;
-
-        // BG row gradient équipe
-        const rbg=ctx.createLinearGradient(PX,rY,PX+CW,rY);
-        rbg.addColorStop(0,tc+(i===0?'2a':i<3?'1c':'0c'));
-        rbg.addColorStop(0.5,tc+'07');
-        rbg.addColorStop(1,'transparent');
-        ctx.fillStyle=rbg;
-        ctx.save(); ctx.beginPath();
-        ctx.roundRect(PX,rY+10,CW,rowH-16,18);
-        ctx.fill(); ctx.restore();
-
-        // Cercle badge position
-        const bR=Math.min(isTop3?(i===0?50:42):33,rowH*0.28);
-        const bCX=PX+bR+16, bCY=rY+rowH/2;
-        ctx.save(); ctx.beginPath(); ctx.arc(bCX,bCY,bR,0,Math.PI*2);
-        ctx.fillStyle=i===0?'rgba(255,215,0,0.11)':
-          i===1?'rgba(192,192,192,0.08)':
-          i===2?'rgba(205,127,50,0.08)':'rgba(255,255,255,0.04)';
-        ctx.fill();
-        ctx.strokeStyle=isHex?rc:'rgba(255,255,255,0.36)';
-        ctx.lineWidth=isTop3?2.5:1.5; ctx.stroke(); ctx.restore();
-
-        // Texte position dans badge
-        const bFs=Math.round(bR*0.52);
-        ctx.font='bold '+bFs+'px Arial,sans-serif';
-        ctx.fillStyle=isHex?rc:'rgba(255,255,255,0.7)';
-        ctx.textAlign='center'; ctx.textBaseline='middle';
-        ctx.fillText('P'+(i+1),bCX,bCY);
-        ctx.textBaseline='alphabetic';
-
-        // Nom pilote
-        const nmX=PX+bR*2+42;
-        const maxNW=CW-bR*2-60;
-        const nmStr=(d.sn||'—').toUpperCase();
-        let nFs=Math.min(i===0?96:i===1?76:i===2?64:52,Math.floor(rowH*0.52));
-        ctx.font='bold '+nFs+'px Arial,sans-serif';
-        while(ctx.measureText(nmStr).width>maxNW&&nFs>28){nFs-=3;ctx.font='bold '+nFs+'px Arial,sans-serif';}
-        const nmY=rY+rowH*(isTop3?0.55:0.62);
-        const alpha=1-i*0.08;
-        ctx.fillStyle=i===0?'#ffffff':'rgba(255,255,255,'+alpha+')';
-        ctx.textAlign='left';
-        ctx.fillText(nmStr,nmX,nmY);
-        const nmW=ctx.measureText(nmStr).width;
-
-        // Barre équipe + nom (top3)
-        if(isTop3){
-          ctx.fillStyle=tc;
-          ctx.fillRect(nmX,nmY+10,44,5);
-          const tnm=(typeof TEAMS!=='undefined')?(TEAMS.find(t=>t.id===d.t)?.name||''):'';
-          ctx.font=Math.round(nFs*0.32)+'px Arial,sans-serif';
-          ctx.fillStyle='rgba(255,255,255,0.26)';
-          ctx.fillText(tnm.toUpperCase(),nmX+56,nmY+14);
-        } else {
-          // Petit dot couleur équipe
-          ctx.fillStyle=tc;
-          ctx.beginPath();
-          ctx.arc(nmX+nmW+20,nmY-Math.round(nFs*0.36),9,0,Math.PI*2);
-          ctx.fill();
-        }
-
-        // Ligne séparatrice légère
-        if(i<dCnt-1){
-          ctx.fillStyle='rgba(255,255,255,0.04)';
-          ctx.fillRect(nmX,rY+rowH-3,CW-nmX+PX,1);
-        }
-      });
-
-      // ── 5. CTA ──
-      const ctaX=PX, ctaY=1718, ctaW=CW, ctaH=148, ctaR=24;
-      // Fond rouge
-      ctx.fillStyle='#e8001d';
-      ctx.save(); ctx.beginPath(); ctx.roundRect(ctaX,ctaY,ctaW,ctaH,ctaR); ctx.fill();
-      // Effet shine diagonal
-      ctx.beginPath(); ctx.roundRect(ctaX,ctaY,ctaW,ctaH,ctaR); ctx.clip();
-      const sh=ctx.createLinearGradient(ctaX,ctaY,ctaX+ctaW*0.5,ctaY+ctaH);
-      sh.addColorStop(0,'rgba(255,255,255,0.13)');
-      sh.addColorStop(0.45,'rgba(255,255,255,0.04)');
-      sh.addColorStop(1,'transparent');
-      ctx.fillStyle=sh; ctx.fillRect(ctaX,ctaY,ctaW,ctaH);
-      ctx.restore();
-
-      // Texte CTA principal
-      ctx.font='bold 50px Arial,sans-serif';
-      ctx.fillStyle='#ffffff'; ctx.textAlign='center'; ctx.textBaseline='middle';
-      ctx.fillText('TU FAIS MIEUX QUE CETTE IA\u00a0?',W/2,ctaY+ctaH/2-14);
-
-      // URL
-      ctx.font='30px Arial,sans-serif';
-      ctx.fillStyle='rgba(255,255,255,0.62)';
-      ctx.fillText('gridoracle.vercel.app',W/2,ctaY+ctaH/2+34);
-      ctx.textBaseline='alphabetic';
-
-      // Barre rouge bas
-      ctx.fillStyle=barG; ctx.fillRect(0,H-14,W,14);
-
-      resolve(canvas);
-    } catch(e){ reject(e); }
-  });
 }
 
 function copyShareText(text, feedbackId){
@@ -3973,7 +3622,7 @@ function openEditModal(){
       <div class="em-grid" id="em-teams"></div>
     </div>
     <div>
-      <div class="em-section" data-i18n="edit.driver">Pilote favori</div>
+      <div class="em-section">Pilote favori</div>
       <div class="em-grid" id="em-drivers"></div>
     </div>
     <button class="em-save" id="em-save-btn" onclick="saveEditProfile()">💾 Enregistrer les modifications</button>`;
@@ -4253,30 +3902,28 @@ document.addEventListener('click',e=>{
 });
 /* ══ PAGE PROCHAIN GP ══ */
 const F1_CALENDAR_2026 = [
-  {r:1,  flag:'🇦🇺', name:'Grand Prix d\'Australie',          loc:'Albert Park · Melbourne',         dates:'6–8 Mars',       el:'13h', q:'14h', race:'15h', circuit:'5.278 km · 58 tours', status:'done', p1:'Russell',p2:'Antonelli',p3:'Leclerc'},
-  {r:2,  flag:'🇨🇳', name:'Grand Prix de Chine',               loc:'Shanghai International Circuit',   dates:'13–15 Mars',     el:'13h', q:'14h', race:'15h', circuit:'5.451 km · 56 tours', status:'done', sprint:true, p1:'Antonelli',p2:'Russell',p3:'Hamilton'},
-  {r:3,  flag:'🇯🇵', name:'Grand Prix du Japon',               loc:'Suzuka Circuit',                   dates:'27–29 Mars',     el:'13h', q:'14h', race:'15h', circuit:'5.807 km · 53 tours', status:'done', p1:'Antonelli',p2:'Piastri',p3:'Leclerc'},
-  {r:4,  flag:'🇧🇭', name:'Grand Prix de Bahreïn',             loc:'Bahrain International Circuit',    dates:'10–12 Avr.',     el:'13h', q:'14h', race:'18h', circuit:'5.412 km · 57 tours', status:'cancelled'},
-  {r:5,  flag:'🇸🇦', name:'Grand Prix d\'Arabie Saoudite',    loc:'Jeddah Corniche Circuit',          dates:'17–19 Avr.',     el:'13h', q:'17h', race:'18h', circuit:'6.174 km · 50 tours', status:'cancelled'},
-  {r:6,  flag:'🇺🇸', name:'Grand Prix de Miami',               loc:'Miami International Autodrome',    dates:'1–3 Mai',        el:'13h', q:'14h', race:'15h', circuit:'5.412 km · 57 tours', status:'done', sprint:true, p1:'Antonelli',p2:'Norris',p3:'Piastri'},
-  {r:7,  flag:'🇨🇦', name:'Grand Prix du Canada',              loc:'Circuit Gilles-Villeneuve',        dates:'22–24 Mai',      el:'13h', q:'14h', race:'14h', circuit:'4.361 km · 70 tours', status:'done', sprint:true, p1:'Antonelli',p2:'Hamilton',p3:'Verstappen'},
-  {r:8,  flag:'🇲🇨', name:'Grand Prix de Monaco',              loc:'Circuit de Monaco',                dates:'5–7 Juin',       el:'13h', q:'15h', race:'15h', circuit:'3.337 km · 78 tours', status:'done', p1:'Antonelli',p2:'Hamilton',p3:'Gasly'},
-  {r:9,  flag:'🇪🇸', name:'Grand Prix de Barcelone-Catalogne', loc:'Circuit de Barcelona-Catalunya',   dates:'12–14 Juin',     el:'13h', q:'15h', race:'15h', circuit:'4.675 km · 66 tours', status:'done', p1:'Hamilton',p2:'Russell',p3:'Norris'},
-  {r:10, flag:'🇦🇹', name:'Grand Prix d\'Autriche',           loc:'Red Bull Ring · Spielberg',        dates:'26–28 Juin',     el:'13h30', q:'16h00', race:'15h00', circuit:'4.318 km · 71 tours', status:'next'},
-  {r:11, flag:'🇬🇧', name:'Grand Prix de Grande-Bretagne',     loc:'Silverstone Circuit',              dates:'3–5 Juil.',      el:'13h', q:'15h', race:'15h', circuit:'5.891 km · 52 tours', status:'upcoming', sprint:true},
-  {r:12, flag:'🇧🇪', name:'Grand Prix de Belgique',            loc:'Circuit de Spa-Francorchamps',     dates:'17–19 Juil.',    el:'13h', q:'15h', race:'15h', circuit:'7.004 km · 44 tours', status:'upcoming'},
-  {r:13, flag:'🇭🇺', name:'Grand Prix de Hongrie',             loc:'Hungaroring · Budapest',           dates:'24–26 Juil.',    el:'13h', q:'15h', race:'15h', circuit:'4.381 km · 70 tours', status:'upcoming'},
-  {r:14, flag:'🇳🇱', name:'Grand Prix des Pays-Bas',           loc:'Circuit Zandvoort',                dates:'21–23 Août',     el:'13h', q:'15h', race:'15h', circuit:'4.259 km · 72 tours', status:'upcoming', sprint:true},
-  {r:15, flag:'🇮🇹', name:'Grand Prix d\'Italie',             loc:'Autodromo Nazionale Monza',        dates:'4–6 Sep.',       el:'13h', q:'15h', race:'15h', circuit:'5.793 km · 53 tours', status:'upcoming'},
-  {r:16, flag:'🇪🇸', name:'Grand Prix d\'Espagne (Madrid)',   loc:'Madring · Madrid',                 dates:'11–13 Sep.',     el:'13h', q:'15h', race:'15h', circuit:'5.474 km · 55 tours', status:'upcoming'},
-  {r:17, flag:'🇦🇿', name:'Grand Prix d\'Azerbaïdjan',        loc:'Baku City Circuit',                dates:'26 Sep.',        el:'13h', q:'15h', race:'13h', circuit:'6.003 km · 51 tours', status:'upcoming'},
-  {r:18, flag:'🇸🇬', name:'Grand Prix de Singapour',           loc:'Marina Bay Street Circuit',        dates:'9–11 Oct.',      el:'13h', q:'15h', race:'20h', circuit:'4.940 km · 62 tours', status:'upcoming', sprint:true},
-  {r:19, flag:'🇺🇸', name:'Grand Prix des États-Unis',         loc:'Circuit of the Americas · Austin', dates:'23–25 Oct.',     el:'13h', q:'15h', race:'20h', circuit:'5.513 km · 56 tours', status:'upcoming'},
-  {r:20, flag:'🇲🇽', name:'Grand Prix du Mexique',             loc:'Autodromo Hermanos Rodriguez',     dates:'30 Oct.–1 Nov.', el:'13h', q:'15h', race:'20h', circuit:'4.304 km · 71 tours', status:'upcoming'},
-  {r:21, flag:'🇧🇷', name:'Grand Prix du Brésil',              loc:'Autodromo Jose Carlos Pace',       dates:'6–8 Nov.',       el:'13h', q:'15h', race:'18h', circuit:'4.309 km · 71 tours', status:'upcoming'},
-  {r:22, flag:'🇺🇸', name:'Grand Prix de Las Vegas',           loc:'Las Vegas Strip Circuit',          dates:'21 Nov.',        el:'13h', q:'22h', race:'22h', circuit:'6.201 km · 50 tours', status:'upcoming'},
-  {r:23, flag:'🇶🇦', name:'Grand Prix du Qatar',               loc:'Lusail International Circuit',     dates:'29 Nov.',        el:'13h', q:'20h', race:'17h', circuit:'5.380 km · 57 tours', status:'upcoming'},
-  {r:24, flag:'🇦🇪', name:'Grand Prix d\'Abu Dhabi',          loc:'Yas Marina Circuit',               dates:'6 Déc.',         el:'13h', q:'17h', race:'14h', circuit:'5.281 km · 58 tours', status:'upcoming'},
+  {r:1,  flag:'🇦🇺', name:'Grand Prix d\'Australie',    loc:'Albert Park · Melbourne',       dates:'6–8 Mars',      el:'13h', q:'14h', race:'15h', circuit:'4.309 km · 58 tours', status:'done', p1:'Russell',p2:'Antonelli',p3:'Leclerc'},
+  {r:2,  flag:'🇨🇳', name:'Grand Prix de Chine',        loc:'Shanghai Circuit',               dates:'13–15 Mars',    el:'13h', q:'14h', race:'15h', circuit:'5.451 km · 56 tours', status:'done', sprint:true, p1:'Antonelli',p2:'Russell',p3:'Hamilton'},
+  {r:3,  flag:'🇯🇵', name:'Grand Prix du Japon',        loc:'Suzuka Circuit',                 dates:'27–29 Mars',    el:'13h', q:'14h', race:'15h', circuit:'5.807 km · 53 tours', status:'done', p1:'Antonelli',p2:'Piastri',p3:'Leclerc'},
+  {r:4,  flag:'🇧🇭', name:'Grand Prix de Bahreïn',      loc:'Bahrain International Circuit',  dates:'10–12 Avr.',    el:'13h', q:'14h', race:'18h', circuit:'5.412 km · 57 tours', status:'done', p1:'Norris',p2:'Hamilton',p3:'Verstappen'},
+  {r:5,  flag:'🇸🇦', name:'Grand Prix d\'Arabie Saoudite', loc:'Jeddah Corniche Circuit',    dates:'17–19 Avr.',    el:'13h', q:'17h', race:'18h', circuit:'6.174 km · 50 tours', status:'done', p1:'Leclerc',p2:'Norris',p3:'Piastri'},
+  {r:6,  flag:'🇺🇸', name:'Grand Prix de Miami',        loc:'Miami International Autodrome', dates:'1–3 Mai',       el:'13h', q:'14h', race:'15h', circuit:'5.412 km · 57 tours', status:'done', sprint:true, p1:'Verstappen',p2:'Norris',p3:'Antonelli'},
+  {r:7,  flag:'🇨🇦', name:'Grand Prix du Canada',       loc:'Circuit Gilles-Villeneuve',     dates:'22–24 Mai',     el:'13h', q:'14h', race:'14h', circuit:'4.361 km · 70 tours', status:'done', sprint:true, p1:'Hamilton',p2:'Antonelli',p3:'Russell'},
+  {r:8,  flag:'🇲🇨', name:'Grand Prix de Monaco',       loc:'Circuit de Monaco',             dates:'5–7 Juin',      el:'13h', q:'15h', race:'15h', circuit:'3.337 km · 78 tours', status:'done', p1:'Leclerc',p2:'Norris',p3:'Piastri'},
+  {r:9,  flag:'🇪🇸', name:'Grand Prix d\'Espagne',      loc:'Circuit de Barcelona-Catalunya', dates:'12–14 Juin',   el:'13h', q:'15h', race:'15h', circuit:'4.655 km · 66 tours', status:'done', p1:'Hamilton',p2:'Verstappen',p3:'Antonelli'},
+  {r:10, flag:'🇦🇹', name:'Grand Prix d\'Autriche',     loc:'Red Bull Ring · Spielberg',     dates:'26–28 Juin',    el:'13h30', q:'16h00', race:'15h00', circuit:'4.318 km · 71 tours', status:'next'},
+  {r:11, flag:'🇬🇧', name:'Grand Prix de Grande-Bretagne', loc:'Silverstone Circuit',        dates:'3–5 Juil.',     el:'13h', q:'15h', race:'15h', circuit:'5.891 km · 52 tours', status:'upcoming', sprint:true},
+  {r:12, flag:'🇧🇪', name:'Grand Prix de Belgique',     loc:'Circuit de Spa-Francorchamps', dates:'17–19 Juil.',   el:'13h', q:'15h', race:'15h', circuit:'7.004 km · 44 tours', status:'upcoming'},
+  {r:13, flag:'🇭🇺', name:'Grand Prix de Hongrie',      loc:'Hungaroring · Budapest',        dates:'24–26 Juil.',   el:'13h', q:'15h', race:'15h', circuit:'4.381 km · 70 tours', status:'upcoming'},
+  {r:14, flag:'🇳🇱', name:'Grand Prix des Pays-Bas',    loc:'Circuit Zandvoort',             dates:'21–23 Août',    el:'13h', q:'15h', race:'15h', circuit:'4.259 km · 72 tours', status:'upcoming', sprint:true},
+  {r:15, flag:'🇮🇹', name:'Grand Prix d\'Italie',       loc:'Autodromo Nazionale Monza',     dates:'4–6 Sep.',      el:'13h', q:'15h', race:'15h', circuit:'5.793 km · 53 tours', status:'upcoming'},
+  {r:16, flag:'🇪🇸', name:'Grand Prix d\'Espagne (Madrid)', loc:'Circuito Madrid Motoring',  dates:'11–13 Sep.',    el:'13h', q:'15h', race:'15h', circuit:'5.474 km · 55 tours', status:'upcoming'},
+  {r:17, flag:'🇦🇿', name:'Grand Prix d\'Azerbaïdjan',  loc:'Baku City Circuit',             dates:'25–27 Sep.',    el:'13h', q:'15h', race:'13h', circuit:'6.003 km · 51 tours', status:'upcoming'},
+  {r:18, flag:'🇸🇬', name:'Grand Prix de Singapour',    loc:'Marina Bay Street Circuit',     dates:'9–11 Oct.',     el:'13h', q:'15h', race:'20h', circuit:'4.940 km · 62 tours', status:'upcoming', sprint:true},
+  {r:19, flag:'🇺🇸', name:'Grand Prix des États-Unis',  loc:'Circuit of the Americas · Austin', dates:'23–25 Oct.', el:'13h', q:'15h', race:'20h', circuit:'5.513 km · 56 tours', status:'upcoming'},
+  {r:20, flag:'🇲🇽', name:'Grand Prix du Mexique',      loc:'Autodromo Hermanos Rodriguez',  dates:'30 Oct.–1 Nov.',el:'13h', q:'15h', race:'20h', circuit:'4.304 km · 71 tours', status:'upcoming'},
+  {r:21, flag:'🇧🇷', name:'Grand Prix du Brésil',       loc:'Autodromo Jose Carlos Pace',    dates:'6–8 Nov.',      el:'13h', q:'15h', race:'18h', circuit:'4.309 km · 71 tours', status:'upcoming'},
+  {r:22, flag:'🇦🇪', name:'Grand Prix d\'Abu Dhabi',    loc:'Yas Marina Circuit',            dates:'4–6 Déc.',      el:'13h', q:'15h', race:'17h', circuit:'5.281 km · 58 tours', status:'upcoming'},
 ];
 
 let calendarOpen = false;
@@ -4299,9 +3946,9 @@ function buildCalendarGrid(){
   F1_CALENDAR_2026.forEach(gp => {
     const item = document.createElement('div');
     item.className = 'ngp-gp-item';
-    const statusLabel = gp.status==='done'?t('status.done'):gp.status==='next'?t('status.next'):gp.status==='cancelled'?t('status.cancelled'):t('status.upcoming');
+    const statusLabel = gp.status==='done'?'Terminé':gp.status==='next'?'▶ En cours':'À venir';
     const resultHTML = gp.p1 ? `<div class="ngp-gp-result"><div class="ngp-gp-res-lbl">Résultats</div><div class="ngp-gp-podium"><div class="ngp-gp-pos"><span class="ngp-gp-pos-n p1">🥇</span> ${gp.p1}</div><div class="ngp-gp-pos"><span class="ngp-gp-pos-n p2">🥈</span> ${gp.p2}</div><div class="ngp-gp-pos"><span class="ngp-gp-pos-n p3">🥉</span> ${gp.p3}</div></div></div>` : '';
-    item.innerHTML = `<div class="ngp-gp-row" onclick="toggleGP(this)"><div class="ngp-gp-round">R${String(gp.r).padStart(2,'0')}</div><div class="ngp-gp-flag">${gp.flag}</div><div class="ngp-gp-name"><div class="ngp-gp-n">${gp.name}${gp.sprint?'<span class="sprint-badge">SPRINT</span>':''}</div><div class="ngp-gp-loc">${gp.loc}</div></div><div class="ngp-gp-dates">${gp.dates}</div><div class="ngp-gp-status ${gp.status}">${statusLabel}</div><div class="ngp-gp-arrow">›</div></div><div class="ngp-gp-detail"><div class="ngp-gp-detail-grid"><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">${t('cal.circuit')}</div><div class="ngp-gp-ds-val">${gp.circuit}</div></div><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">${t('cal.fp')}</div><div class="ngp-gp-ds-val">${gp.el}</div></div><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">${t('cal.q')}</div><div class="ngp-gp-ds-val" style="color:var(--red)">${gp.q}</div></div><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">${t('cal.race')}</div><div class="ngp-gp-ds-val" style="color:var(--gold)">${gp.race}</div></div><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">${t('cal.dates')}</div><div class="ngp-gp-ds-val">${gp.dates} 2026</div></div>${gp.sprint?'<div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">${t('cal.format')}</div><div class="ngp-gp-ds-val" style="color:var(--gold)">${t('cal.sprint')}</div></div>':''}</div>${resultHTML}</div>`;
+    item.innerHTML = `<div class="ngp-gp-row" onclick="toggleGP(this)"><div class="ngp-gp-round">R${String(gp.r).padStart(2,'0')}</div><div class="ngp-gp-flag">${gp.flag}</div><div class="ngp-gp-name"><div class="ngp-gp-n">${gp.name}${gp.sprint?'<span class="sprint-badge">SPRINT</span>':''}</div><div class="ngp-gp-loc">${gp.loc}</div></div><div class="ngp-gp-dates">${gp.dates}</div><div class="ngp-gp-status ${gp.status}">${statusLabel}</div><div class="ngp-gp-arrow">›</div></div><div class="ngp-gp-detail"><div class="ngp-gp-detail-grid"><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">Circuit</div><div class="ngp-gp-ds-val">${gp.circuit}</div></div><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">Essais Libres</div><div class="ngp-gp-ds-val">${gp.el}</div></div><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">Qualifications</div><div class="ngp-gp-ds-val" style="color:var(--red)">${gp.q}</div></div><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">Course</div><div class="ngp-gp-ds-val" style="color:var(--gold)">${gp.race}</div></div><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">Dates</div><div class="ngp-gp-ds-val">${gp.dates} 2026</div></div>${gp.sprint?'<div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">Format</div><div class="ngp-gp-ds-val" style="color:var(--gold)">Sprint Weekend</div></div>':''}</div>${resultHTML}</div>`;
     grid.appendChild(item);
   });
 }
