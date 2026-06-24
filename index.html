@@ -107,6 +107,10 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 .nav-r{display:flex;align-items:center;gap:.65rem;flex-shrink:0}
 .ppill{font-size:.65rem;font-weight:700;letter-spacing:.1em;padding:.18rem .52rem;border-radius:100px;text-transform:uppercase;background:rgba(255,255,255,.06);color:var(--g);border:1px solid var(--b)}
 .btn-prem-nav{background:linear-gradient(90deg,var(--red),#c00);color:#fff;border:none;border-radius:5px;padding:.3rem .8rem;font-size:.72rem;font-weight:700;cursor:pointer;font-family:var(--fb);letter-spacing:.05em;white-space:nowrap}
+.lang-sw{display:flex;align-items:center;overflow:hidden;border:1px solid rgba(255,255,255,.1);border-radius:5px;flex-shrink:0}
+.lang-sw button{background:transparent;border:none;color:rgba(255,255,255,.38);font-size:.67rem;font-weight:700;letter-spacing:.06em;padding:.3rem .58rem;cursor:pointer;transition:all .18s;font-family:var(--fb)}
+.lang-sw button.active{background:#e8001d;color:#fff}
+.lang-sw button:not(.active):hover{color:#fff}
 .bell{position:relative;cursor:pointer;padding:.35rem;border-radius:6px;color:var(--g);font-size:1rem;line-height:1;transition:all .2s}.bell:hover{background:rgba(255,255,255,.06);color:var(--w)}
 .bdot{position:absolute;top:3px;right:3px;background:var(--red);border-radius:50%;width:12px;height:12px;font-size:.53rem;display:flex;align-items:center;justify-content:center;font-weight:700;border:1.5px solid var(--bg)}
 .uchip{display:flex;align-items:center;gap:.5rem;padding:.24rem .44rem;border-radius:8px;cursor:pointer;transition:background .2s}.uchip:hover{background:rgba(255,255,255,.05)}
@@ -1141,12 +1145,12 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
         <li><div class="cli-i">✓</div>Ton écurie favorite — 11 teams 2026</li>
         <li><div class="cli-i">✓</div>Ton pilote préféré — grille complète</li>
       </ul>
-      <button class="ob-btn" style="max-width:300px;margin:0 auto" onclick="go(1)">Créer mon profil →</button>
+      <button class="ob-btn" style="max-width:300px;margin:0 auto" onclick="go(1)" data-i18n="ob.start">Créer mon profil →</button>
       <p style="color:var(--g);font-size:.72rem;margin-top:.85rem">Gratuit · Sans carte bancaire</p>
     </div>
   </div>
   <div class="step" id="s1">
-    <div class="ob-lbl">Étape 1 / 3</div><h2 class="ob-t">Tes informations</h2><p class="ob-s">Ces informations créent ton profil public GridOracle.</p>
+    <div class="ob-lbl" data-i18n="ob.step1.lbl">Étape 1 / 3</div><h2 class="ob-t" data-i18n="ob.step1.t">Tes informations</h2><p class="ob-s" data-i18n="ob.step1.s">Ces informations créent ton profil public GridOracle.</p>
     <div class="r2">
       <div class="field"><label>Prénom</label><input type="text" id="fn" placeholder="Charles" oninput="v1()"></div>
       <div class="field"><label>Nom</label><input type="text" id="ln" placeholder="Leclerc" oninput="v1()"></div>
@@ -1159,17 +1163,17 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
       <div class="emsg e" id="uidErr"></div><div class="emsg o" id="uidOk" style="display:none"></div>
       <div class="emsg h">4–20 caractères · lettres, chiffres, _ et -</div>
     </div>
-    <button class="ob-btn" id="b1" disabled onclick="go(2)">Suivant →</button>
+    <button class="ob-btn" id="b1" disabled onclick="go(2)" data-i18n="ob.next">Suivant →</button>
   </div>
   <div class="step" id="s2">
-    <div class="ob-lbl">Étape 2 / 3</div><h2 class="ob-t">Ton écurie</h2><p class="ob-s">11 constructeurs en 2026. Quelle livrée portes-tu ?</p>
+    <div class="ob-lbl" data-i18n="ob.step2.lbl">Étape 2 / 3</div><h2 class="ob-t" data-i18n="ob.step2.t">Ton écurie</h2><p class="ob-s" data-i18n="ob.step2.s">11 constructeurs en 2026. Quelle livrée portes-tu ?</p>
     <div class="tgrid" id="tgrid"></div>
-    <button class="ob-btn" id="b2" disabled onclick="go(3)">Suivant →</button>
+    <button class="ob-btn" id="b2" disabled onclick="go(3)" data-i18n="ob.next">Suivant →</button>
   </div>
   <div class="step" id="s3">
-    <div class="ob-lbl">Étape 3 / 3</div><h2 class="ob-t">Ton pilote</h2><p class="ob-s">22 pilotes en 2026. Qui défends-tu race après race ?</p>
+    <div class="ob-lbl" data-i18n="ob.step3.lbl">Étape 3 / 3</div><h2 class="ob-t" data-i18n="ob.step3.t">Ton pilote</h2><p class="ob-s" data-i18n="ob.step3.s">22 pilotes en 2026. Qui défends-tu race après race ?</p>
     <div class="dgrid" id="dgrid"></div>
-    <button class="ob-btn" id="b3" disabled onclick="go(4)">Créer mon profil 🏁</button>
+    <button class="ob-btn" id="b3" disabled onclick="go(4)" data-i18n="ob.create">Créer mon profil 🏁</button>
   </div>
   <div class="step" id="s4">
     <div class="conf">🏁</div>
@@ -1178,7 +1182,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
       <h2 class="ob-t" style="text-align:center;font-size:1.85rem">Ton profil GridOracle</h2>
     </div>
     <div class="prof-c" id="pcard"></div>
-    <button class="ob-btn" onclick="goApp()">Accéder à GridOracle → 🏎️</button>
+    <button class="ob-btn" onclick="goApp()" data-i18n="ob.enter">Accéder à GridOracle → 🏎️</button>
   </div>
 </div>
 </div>
@@ -1190,17 +1194,18 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 <nav class="app-nav">
   <a class="logo">GRID<s>ORACLE</s></a>
   <ul class="nav-links">
-    <li><a data-page="home" class="on" onclick="navTo('home')">Hub</a></li>
-    <li><a data-page="prediction" onclick="navTo('prediction')">Prédiction</a></li>
-    <li><a data-page="leagues" onclick="navTo('leagues')">Ligues</a></li>
-    <li><a data-page="standings" onclick="navTo('standings')">Classement</a></li>
-    <li><a data-page="nextgp" onclick="navTo('nextgp')">Prochain GP 🇦🇹</a></li>
+    <li><a data-page="home" class="on" onclick="navTo('home')" data-i18n="nav.hub">Hub</a></li>
+    <li><a data-page="prediction" onclick="navTo('prediction')" data-i18n="nav.pred">Prédiction</a></li>
+    <li><a data-page="leagues" onclick="navTo('leagues')" data-i18n="nav.leagues">Ligues</a></li>
+    <li><a data-page="standings" onclick="navTo('standings')" data-i18n="nav.standings">Classement</a></li>
+    <li><a data-page="nextgp" onclick="navTo('nextgp')" data-i18n="nav.nextgp">Prochain GP 🇦🇹</a></li>
     <li><a data-page="creator" onclick="navTo('creator')">Creator</a></li>
-    <li><a data-page="rules" onclick="navTo('rules')">Règlement</a></li>
+    <li><a data-page="rules" onclick="navTo('rules')" data-i18n="nav.rules">Règlement</a></li>
   </ul>
   <div class="nav-r">
+    <div class="lang-sw" id="lang-sw"><button id="btn-fr" onclick="switchLang('fr')" class="active">FR</button><button id="btn-en" onclick="switchLang('en')">EN</button></div>
     <div class="ppill" id="nav-plan-pill">⭐ Free</div>
-    <button class="btn-prem-nav" onclick="openStripeModal('premium')">Premium →</button>
+    <button class="btn-prem-nav" onclick="openStripeModal('premium')" data-i18n="nav.premium">Premium →</button>
     <div class="bell" onclick="alert('🔔 Hamilton vainqueur Barcelone\n🔔 @gridchampion a soumis sa prédiction Autriche')">🔔<div class="bdot">2</div></div>
     <div class="uchip" onclick="navTo('profile')" title="Mon profil">
       <div class="uav" id="hub-av" style="border-color:rgba(232,0,29,.5)">GO</div>
@@ -1400,7 +1405,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
         <!-- PRÉDICTION IA -->
         <div class="card hw-ia-card">
           <div class="card-h">
-            <div class="card-ht">Prédiction IA — GP Autriche</div>
+            <div class="card-ht" data-i18n="hub.aicard">Prédiction IA — GP Autriche</div>
             <div class="ai-tag">Verstappen fav. 87%</div>
           </div>
           <div class="ai-rows" id="ai-home"></div>
@@ -1420,10 +1425,10 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
         <div class="card hw-pred-card">
           <div class="card-h">
             <div style="display:flex;align-items:center;gap:.45rem">
-              <div class="card-ht" style="color:var(--w)">Ma Prédiction</div>
+              <div class="card-ht" style="color:var(--w)" data-i18n="pred.mine">Ma Prédiction</div>
               <div class="pred-status st-open" id="hpb">En cours</div>
             </div>
-            <div class="p-acts"><button class="bcpai" onclick="hCopy()">Copier IA</button><button class="brst" onclick="hReset()">✕</button></div>
+            <div class="p-acts"><button class="bcpai" onclick="hCopy()" data-i18n="pred.copyai">Copier IA</button><button class="brst" onclick="hReset()">✕</button></div>
           </div>
           <div class="p-slots" id="hslots"></div>
           <div class="prem-lock" id="home-prem-lock"><span class="pl-txt">🔒 Positions 6–10 — Premium</span><button class="pl-btn" onclick="openStripeModal('premium')">Upgrader</button></div>
@@ -1468,15 +1473,15 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
   <!-- BOTTOM SECTIONS -->
   <div class="home-bottom">
     <div class="hs">
-      <div class="hs-hd"><div><span class="sec-lbl">Constructeurs 2026</span><div class="hs-t">Équipes en compétition</div></div><button class="hs-more" onclick="navTo('standings')">Voir classement →</button></div>
+      <div class="hs-hd"><div><span class="sec-lbl" data-i18n="hub.wcc.lbl">Constructeurs 2026</span><div class="hs-t" data-i18n="hub.wcc.t">Équipes en compétition</div></div><button class="hs-more" onclick="navTo('standings')" data-i18n="hub.wcc.more">Voir classement →</button></div>
       <div class="hscroll" id="teams-scroll"></div>
     </div>
     <div class="hs">
-      <div class="hs-hd"><div><span class="sec-lbl">Championnat Pilotes 2026</span><div class="hs-t">Pilotes & classement</div></div><button class="hs-more" onclick="navTo('standings')">WDC complet →</button></div>
+      <div class="hs-hd"><div><span class="sec-lbl" data-i18n="hub.wdc.lbl">Championnat Pilotes 2026</span><div class="hs-t" data-i18n="hub.wdc.t">Pilotes & classement</div></div><button class="hs-more" onclick="navTo('standings')" data-i18n="hub.wdc.more">WDC complet →</button></div>
       <div class="hscroll" id="drivers-scroll"></div>
     </div>
     <div class="hs">
-      <div class="hs-hd"><div><span class="sec-lbl">Mes ligues</span><div class="hs-t">Classement — F1 Fanatics 2026</div></div><button class="hs-more" onclick="navTo('leagues')">Gérer mes ligues →</button></div>
+      <div class="hs-hd"><div><span class="sec-lbl" data-i18n="hub.leagues.lbl">Mes ligues</span><div class="hs-t" data-i18n="hub.leagues.t">Classement — F1 Fanatics 2026</div></div><button class="hs-more" onclick="navTo('leagues')" data-i18n="hub.leagues.more">Gérer mes ligues →</button></div>
       <div class="league-card">
         <div class="lc-hd"><div class="lc-nm">🏆 F1 Fanatics 2026</div><div class="lc-ct">127 joueurs</div></div>
         <div class="lc-metrics">
@@ -1484,13 +1489,13 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
           <div class="lcm"><div class="lcmv">412</div><div class="lcml">Mes pts</div></div>
           <div class="lcm"><div class="lcmv">#2847</div><div class="lcml">Mondial</div></div>
         </div>
-        <div class="tabs"><div class="tab on" onclick="hTab('l',this)">Ma Ligue</div><div class="tab" onclick="hTab('m',this)">Mondial</div></div>
+        <div class="tabs"><div class="tab on" onclick="hTab('l',this)" data-i18n="tab.league">Ma Ligue</div><div class="tab" onclick="hTab('m',this)" data-i18n="tab.global">Mondial</div></div>
         <div class="lcbd" id="hlc"></div>
         <div class="lc-ft"><a onclick="navTo('leagues')">Voir tout le classement →</a></div>
       </div>
     </div>
     <div class="hs">
-      <div class="hs-hd"><div><span class="sec-lbl">Simple & Addictif</span><div class="hs-t">Comment ça marche ?</div></div></div>
+      <div class="hs-hd"><div><span class="sec-lbl" data-i18n="hub.how.lbl">Simple & Addictif</span><div class="hs-t" data-i18n="hub.how.t">Comment ça marche ?</div></div></div>
       <div class="how-grid">
         <div class="how-c"><div class="how-n">01</div><div style="font-size:1.8rem;margin-bottom:.7rem">🤖</div><h3>L'IA analyse</h3><p>48h avant chaque GP, GridOracle génère sa prédiction en analysant données historiques, qualifications, météo et performances récentes.</p></div>
         <div class="how-c"><div class="how-n">02</div><div style="font-size:1.8rem;margin-bottom:.7rem">🏎️</div><h3>Tu prédis</h3><p>Avant les qualifications, soumets ton propre classement. Suis l'IA ou contredis-la. Les prédictions sont verrouillées dès le début des qualifs.</p></div>
@@ -1504,11 +1509,11 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 <!-- ── PAGE: PREDICTION ── -->
 <div id="pg-prediction" class="pg">
   <div class="pred-page-wrap">
-    <div style="margin-bottom:1.2rem"><span class="sec-lbl">Grand Prix d'Autriche 2026 · Round 8</span><div class="sec-t">Prédiction complète</div></div>
+    <div style="margin-bottom:1.2rem"><span class="sec-lbl" data-i18n="pred.gp.lbl">Grand Prix d'Autriche 2026 · Round 8</span><div class="sec-t" data-i18n="pred.gp.t">Prédiction complète</div></div>
     <div class="pred-page-grid">
       <div>
         <div class="card" style="margin-bottom:.85rem">
-          <div class="card-h"><div class="card-ht">Prédiction IA — Top 10</div><div class="ai-tag">Verstappen fav. 87%</div></div>
+          <div class="card-h"><div class="card-ht" data-i18n="pred.ai.top10">Prédiction IA — Top 10</div><div class="ai-tag">Verstappen fav. 87%</div></div>
           <div class="ai-rows" id="ai-pred-full"></div>
         </div>
       </div>
@@ -1516,10 +1521,10 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
         <div class="card">
           <div class="card-h">
             <div style="display:flex;align-items:center;gap:.45rem">
-              <div class="card-ht" style="color:var(--w)">Ma Prédiction</div>
+              <div class="card-ht" style="color:var(--w)" data-i18n="pred.mine">Ma Prédiction</div>
               <div class="pred-status st-open" id="ppb">En cours</div>
             </div>
-            <div class="p-acts"><button class="bcpai" onclick="pCopy()">Copier IA</button><button class="brst" onclick="pReset()">✕</button></div>
+            <div class="p-acts"><button class="bcpai" onclick="pCopy()" data-i18n="pred.copyai">Copier IA</button><button class="brst" onclick="pReset()">✕</button></div>
           </div>
           <div class="p-slots" id="pslots"></div>
           <div class="prem-lock" id="pred-prem-lock"><span class="pl-txt">🔒 Positions 6–10 — Premium</span><button class="pl-btn" onclick="openStripeModal('premium')">Upgrader</button></div>
@@ -1532,7 +1537,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
       </div>
     </div>
     <div style="margin-top:1.4rem">
-      <div style="margin-bottom:.9rem"><span class="sec-lbl">Historique prédictions</span><div class="sec-t">Mes derniers GP</div></div>
+      <div style="margin-bottom:.9rem"><span class="sec-lbl" data-i18n="pred.hist.lbl">Historique prédictions</span><div class="sec-t" data-i18n="pred.hist.t">Mes derniers GP</div></div>
       <div class="card" style="overflow:visible">
         <table style="width:100%;border-collapse:collapse;font-size:.82rem">
           <thead><tr style="border-bottom:1px solid var(--b)">
@@ -1552,7 +1557,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 <!-- ── PAGE: LEAGUES ── -->
 <div id="pg-leagues" class="pg">
   <div class="leagues-wrap">
-    <div style="margin-bottom:1.2rem"><span class="sec-lbl">Compétition</span><div class="sec-t">Mes Ligues</div></div>
+    <div style="margin-bottom:1.2rem"><span class="sec-lbl" data-i18n="leagues.lbl">Compétition</span><div class="sec-t" data-i18n="leagues.t">Mes Ligues</div></div>
     <div class="leagues-grid">
       <div style="display:flex;flex-direction:column;gap:.85rem">
         <div class="league-join">
@@ -1573,7 +1578,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
           <div class="lcm"><div class="lcmv">412</div><div class="lcml">Mes points</div></div>
           <div class="lcm"><div class="lcmv">87%</div><div class="lcml">Précision IA</div></div>
         </div>
-        <div class="tabs"><div class="tab on" onclick="hTab('l',this)">Classement</div><div class="tab" onclick="hTab('m',this)">Mondial</div></div>
+        <div class="tabs"><div class="tab on" onclick="hTab('l',this)" data-i18n="tab.standings">Classement</div><div class="tab" onclick="hTab('m',this)" data-i18n="tab.global">Mondial</div></div>
         <div class="lcbd" id="llc"></div>
         <div class="lc-ft"><a>Voir tout le classement →</a></div>
       </div>
@@ -1584,10 +1589,10 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 <!-- ── PAGE: STANDINGS ── -->
 <div id="pg-standings" class="pg">
   <div class="stand-wrap">
-    <div style="margin-bottom:1.2rem"><span class="sec-lbl">Championnat 2026 · 7 GP joués</span><div class="sec-t">Classements officiels</div></div>
+    <div style="margin-bottom:1.2rem"><span class="sec-lbl" data-i18n="stand.lbl">Championnat 2026 · 7 GP joués</span><div class="sec-t" data-i18n="stand.t">Classements officiels</div></div>
     <div class="tabs" style="background:var(--card);border:1px solid var(--b);border-radius:12px 12px 0 0;overflow:hidden;margin-bottom:0">
-      <div class="tab on" onclick="standTab('wdc',this)">🏎️ Pilotes (WDC)</div>
-      <div class="tab" onclick="standTab('wcc',this)">🏭 Constructeurs (WCC)</div>
+      <div class="tab on" onclick="standTab('wdc',this)" data-i18n="stand.wdc">🏎️ Pilotes (WDC)</div>
+      <div class="tab" onclick="standTab('wcc',this)" data-i18n="stand.wcc">🏭 Constructeurs (WCC)</div>
       <div class="tab" onclick="standTab('players',this)">👥 Joueurs GridOracle</div>
     </div>
     <div class="card" style="border-radius:0 0 12px 12px;border-top:none">
@@ -1766,8 +1771,8 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 <div id="pg-rules" class="pg">
   <div class="rules-wrap">
     <div style="margin-bottom:1.8rem">
-      <span class="sec-lbl">Règles officielles · Saison 2026</span>
-      <h1 style="font-family:var(--fh);font-size:clamp(1.7rem,4vw,2.6rem);font-weight:700;margin-bottom:.6rem;line-height:1.08">Règlement GridOracle 2026</h1>
+      <span class="sec-lbl" data-i18n="rules.lbl">Règles officielles · Saison 2026</span>
+      <h1 style="font-family:var(--fh);font-size:clamp(1.7rem,4vw,2.6rem);font-weight:700;margin-bottom:.6rem;line-height:1.08">Règlement GridOracle 2026</h1><p id="rules-en-notice" style="display:none;background:rgba(232,0,29,.08);border:1px solid rgba(232,0,29,.2);border-radius:8px;padding:.65rem .9rem;font-size:.8rem;color:rgba(255,255,255,.6);margin-bottom:1rem">🇬🇧 Full English rules coming soon — key points available below.</p>
       <p style="color:var(--g);font-size:.9rem;line-height:1.75;max-width:580px">Tout ce qu'il faut savoir pour scorer des points et dominer ta ligue. Lis ce règlement avant de soumettre ta première prédiction.</p>
     </div>
     <!-- BARÈME -->
@@ -1883,11 +1888,11 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 
 <!-- BOTTOM NAV -->
 <nav class="bottom-nav" id="bottom-nav">
-  <div class="bn-tab on" data-page="home" onclick="navTo('home')"><div class="bn-ico">🏠</div><div class="bn-lbl">Hub</div></div>
-  <div class="bn-tab" data-page="prediction" onclick="navTo('prediction')"><div class="bn-ico">🏁</div><div class="bn-lbl">Prédiction</div></div>
-  <div class="bn-tab" data-page="leagues" onclick="navTo('leagues')"><div class="bn-ico">🏆</div><div class="bn-lbl">Ligues</div></div>
+  <div class="bn-tab on" data-page="home" onclick="navTo('home')"><div class="bn-ico">🏠</div><div class="bn-lbl" data-i18n="nav.hub">Hub</div></div>
+  <div class="bn-tab" data-page="prediction" onclick="navTo('prediction')"><div class="bn-ico">🏁</div><div class="bn-lbl" data-i18n="nav.pred">Prédiction</div></div>
+  <div class="bn-tab" data-page="leagues" onclick="navTo('leagues')"><div class="bn-ico">🏆</div><div class="bn-lbl" data-i18n="nav.leagues">Ligues</div></div>
   <div class="bn-tab" data-page="creator" onclick="navTo('creator')"><div class="bn-ico">🎙️</div><div class="bn-lbl">Creator</div></div>
-  <div class="bn-tab" data-page="nextgp" onclick="navTo('nextgp')"><div class="bn-ico">🗓️</div><div class="bn-lbl">Prochain GP</div></div>
+  <div class="bn-tab" data-page="nextgp" onclick="navTo('nextgp')"><div class="bn-ico">🗓️</div><div class="bn-lbl" data-i18n="nav.nextgp">Prochain GP</div></div>
 </nav>
 
 <!-- ── MODALE PROFIL JOUEUR ── -->
@@ -1924,7 +1929,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
       <div class="ngp-hero-bg"></div>
       <div class="ngp-hero-inner">
         <div class="ngp-hero-left">
-          <div class="ngp-kicker">Round 8 · 2026</div>
+          <div class="ngp-kicker" data-i18n="nextgp.round">Round 8 · 2026</div>
           <div class="ngp-title">Grand Prix<br><span class="ngp-title-red">d'Autriche</span></div>
           <div class="ngp-meta">
             <span class="ngp-flag">🇦🇹</span>
@@ -2020,7 +2025,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
       <div class="ngp-card ngp-card-ai">
         <div class="ngp-card-h">
           <span class="ngp-card-ico">🤖</span>
-          <span class="ngp-card-t">Prédiction IA GridOracle</span>
+          <span class="ngp-card-t" data-i18n="nextgp.ai">Prédiction IA GridOracle</span>
           <span class="ngp-live-dot"></span>
         </div>
         <div class="ngp-card-b">
@@ -2608,6 +2613,103 @@ function navTo(page){
 }
 
 /* ── TOAST ── */
+// ═══════════════════════════════════════════════════
+// 🌐 SYSTÈME DE TRADUCTION FR / EN — GridOracle
+// ═══════════════════════════════════════════════════
+const _T = {
+  fr: {
+    // Nav
+    'nav.hub':'Hub','nav.pred':'Prédiction','nav.leagues':'Ligues',
+    'nav.standings':'Classement','nav.nextgp':'Prochain GP 🇦🇹',
+    'nav.rules':'Règlement','nav.premium':'Premium →',
+    // Hub
+    'hub.aicard':'Prédiction IA — GP Autriche',
+    'hub.wdc.lbl':'Championnat Pilotes 2026','hub.wdc.t':'Pilotes & classement','hub.wdc.more':'WDC complet →',
+    'hub.wcc.lbl':'Constructeurs 2026','hub.wcc.t':'Équipes en compétition','hub.wcc.more':'Voir classement →',
+    'hub.leagues.lbl':'Mes ligues','hub.leagues.t':'Classement — F1 Fanatics 2026','hub.leagues.more':'Gérer mes ligues →',
+    'hub.how.lbl':'Simple & Addictif','hub.how.t':'Comment ça marche ?',
+    'tab.league':'Ma Ligue','tab.global':'Mondial','tab.standings':'Classement',
+    // Prediction
+    'pred.gp.lbl':'Grand Prix d\'Autriche 2026 · Round 8','pred.gp.t':'Prédiction complète',
+    'pred.ai.top10':'Prédiction IA — Top 10','pred.mine':'Ma Prédiction','pred.copyai':'Copier IA',
+    'pred.hist.lbl':'Historique prédictions','pred.hist.t':'Mes derniers GP',
+    // Standings
+    'stand.lbl':'Championnat 2026 · 7 GP joués','stand.t':'Classements officiels',
+    'stand.wdc':'🏎️ Pilotes (WDC)','stand.wcc':'🏭 Constructeurs (WCC)',
+    // Leagues
+    'leagues.lbl':'Compétition','leagues.t':'Mes Ligues',
+    // Next GP
+    'nextgp.round':'Round 8 · 2026','nextgp.ai':'Prédiction IA GridOracle',
+    // Rules
+    'rules.lbl':'Règles officielles · Saison 2026',
+    // Onboarding
+    'ob.start':'Créer mon profil →','ob.next':'Suivant →','ob.create':'Créer mon profil 🏁','ob.enter':'Accéder à GridOracle → 🏎️',
+    'ob.step1.lbl':'Étape 1 / 3','ob.step1.t':'Tes informations','ob.step1.s':'Ces informations créent ton profil public GridOracle.',
+    'ob.step2.lbl':'Étape 2 / 3','ob.step2.t':'Ton écurie','ob.step2.s':'11 constructeurs en 2026. Quelle livrée portes-tu ?',
+    'ob.step3.lbl':'Étape 3 / 3','ob.step3.t':'Ton pilote','ob.step3.s':'22 pilotes en 2026. Qui défends-tu race après race ?',
+  },
+  en: {
+    // Nav
+    'nav.hub':'Hub','nav.pred':'Prediction','nav.leagues':'Leagues',
+    'nav.standings':'Standings','nav.nextgp':'Next GP 🇦🇹',
+    'nav.rules':'Rules','nav.premium':'Premium →',
+    // Hub
+    'hub.aicard':'AI Prediction — Austrian GP',
+    'hub.wdc.lbl':'2026 Drivers\' Championship','hub.wdc.t':'Drivers & Standings','hub.wdc.more':'Full WDC →',
+    'hub.wcc.lbl':'2026 Constructors','hub.wcc.t':'Teams in competition','hub.wcc.more':'View Standings →',
+    'hub.leagues.lbl':'My Leagues','hub.leagues.t':'Standings — F1 Fanatics 2026','hub.leagues.more':'Manage my leagues →',
+    'hub.how.lbl':'Simple & Addictive','hub.how.t':'How does it work?',
+    'tab.league':'My League','tab.global':'Global','tab.standings':'Standings',
+    // Prediction
+    'pred.gp.lbl':'2026 Austrian Grand Prix · Round 8','pred.gp.t':'Full Prediction',
+    'pred.ai.top10':'AI Prediction — Top 10','pred.mine':'My Prediction','pred.copyai':'Copy AI',
+    'pred.hist.lbl':'Prediction history','pred.hist.t':'My last GPs',
+    // Standings
+    'stand.lbl':'2026 Championship · 7 GPs raced','stand.t':'Official Standings',
+    'stand.wdc':'🏎️ Drivers (WDC)','stand.wcc':'🏭 Constructors (WCC)',
+    // Leagues
+    'leagues.lbl':'Competition','leagues.t':'My Leagues',
+    // Next GP
+    'nextgp.round':'Round 8 · 2026','nextgp.ai':'GridOracle AI Prediction',
+    // Rules
+    'rules.lbl':'Official Rules · 2026 Season',
+    // Onboarding
+    'ob.start':'Create my profile →','ob.next':'Next →','ob.create':'Create my profile 🏁','ob.enter':'Enter GridOracle → 🏎️',
+    'ob.step1.lbl':'Step 1 / 3','ob.step1.t':'Your information','ob.step1.s':'This creates your public GridOracle profile.',
+    'ob.step2.lbl':'Step 2 / 3','ob.step2.t':'Your team','ob.step2.s':'11 constructors in 2026. Which livery do you wear?',
+    'ob.step3.lbl':'Step 3 / 3','ob.step3.t':'Your driver','ob.step3.s':'22 drivers in 2026. Who do you back race after race?',
+  }
+};
+
+let LANG = localStorage.getItem('go_lang') || 'fr';
+
+function applyLang(lang){
+  LANG = lang;
+  localStorage.setItem('go_lang', lang);
+  // Mettre à jour les boutons toggle
+  document.querySelectorAll('.lang-sw button').forEach(b => {
+    b.classList.toggle('active', b.id === 'btn-'+lang);
+  });
+  // Appliquer les traductions
+  const dict = _T[lang] || _T.fr;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    if(dict[k] !== undefined) el.textContent = dict[k];
+  });
+  // Mettre à jour lang attr sur <html>
+  document.documentElement.lang = lang;
+  // Afficher/cacher notice EN sur la page Règlement
+  const enNotice = document.getElementById('rules-en-notice');
+  if(enNotice) enNotice.style.display = lang === 'en' ? 'block' : 'none';
+}
+
+function switchLang(lang){
+  applyLang(lang);
+}
+
+// Appliquer au chargement
+document.addEventListener('DOMContentLoaded', () => applyLang(LANG));
+
 function showToast(msg, isError=false){
   const t=document.getElementById('toast');
   t.textContent=msg;
