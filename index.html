@@ -3123,164 +3123,101 @@ function showShareButton(predArray){
 }
 
 function openShareModal(predArray){
-  const existing = document.getElementById('share-modal');
-  if(existing) existing.remove();
+  const ex=document.getElementById('share-modal');
+  if(ex) ex.remove();
 
-  const isPaid   = hasFullAccess();
-  const maxShare = isPaid ? 10 : 5;
-  const myHandle = USER.handle || 'moi';
+  const isPaid=hasFullAccess(), maxShare=isPaid?10:5;
+  const myHandle=USER.handle||'moi';
+  const pred=(predArray||HP.pred).filter(Boolean).slice(0,maxShare).map(p=>{
+    if(typeof p==='string') return DRIVERS.find(d=>d.sn===p)||{sn:p,n:'?',tc:'#e8001d'};
+    if(p&&p.sn) return DRIVERS.find(d=>d.sn===p.sn)||p;
+    return null;
+  }).filter(Boolean);
+  if(!pred.length){showToast('Ajoute des pilotes à ta prédiction d\'abord');return;}
 
-  const pred = (predArray || HP.pred)
-    .filter(Boolean)
-    .slice(0, maxShare)
-    .map(p => {
-      if(typeof p === 'string') return DRIVERS.find(d=>d.sn===p) || { sn:p, n:'?', tc:'#e8001d' };
-      if(p && p.sn) return DRIVERS.find(d=>d.sn===p.sn) || p;
-      return null;
-    }).filter(Boolean);
+  const upBar=!isPaid
+    ?'<div style="background:rgba(232,0,29,.05);border:1px solid rgba(232,0,29,.15);border-radius:8px;padding:.5rem .7rem;margin-bottom:.7rem;font-size:.72rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:.5rem">🔒 <span>Premium = <strong style="color:#fff">Top 10</strong></span><button id="sm-up" style="margin-left:auto;background:#e8001d;border:none;color:#fff;border-radius:5px;padding:.18rem .52rem;font-size:.65rem;font-weight:600;cursor:pointer">Upgrade →</button></div>'
+    :'';
 
-  if(!pred.length){ showToast('Ajoute des pilotes à ta prédiction d\'abord'); return; }
+  const modal=document.createElement('div');
+  modal.id='share-modal';
+  modal.style.cssText='position:fixed;inset:0;z-index:9500;background:rgba(7,7,14,.92);backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center';
 
-  const rankColors = ['#FFD700','#C0C0C0','#CD7F32','rgba(255,255,255,.72)','rgba(255,255,255,.62)','rgba(255,255,255,.55)','rgba(255,255,255,.5)','rgba(255,255,255,.45)','rgba(255,255,255,.4)','rgba(255,255,255,.35)'];
-  const predRows = pred.map((d,i)=>`
-    <div style="display:flex;align-items:center;gap:.5rem;padding:.28rem 0;border-bottom:1px solid rgba(255,255,255,.05)">
-      <div style="font-family:'Rajdhani',sans-serif;font-size:.88rem;font-weight:700;color:${rankColors[i]};min-width:24px">P${i+1}</div>
-      <div style="font-size:.82rem;font-weight:600;color:#fff;flex:1">${d.sn||'—'}</div>
-      <div style="width:7px;height:7px;border-radius:50%;background:${d.tc||'#e8001d'};flex-shrink:0"></div>
-    </div>`).join('');
-
-  const upgradeBar = !isPaid
-    ? '<div style="background:rgba(232,0,29,.05);border:1px solid rgba(232,0,29,.15);border-radius:8px;padding:.55rem .75rem;margin-bottom:.85rem;font-size:.72rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:.5rem">🔒 <span>Premium = partage ton <strong style="color:#fff">Top 10</strong></span><button id="sm-upgrade" style="margin-left:auto;background:#e8001d;border:none;color:#fff;border-radius:5px;padding:.2rem .6rem;font-size:.65rem;font-weight:600;cursor:pointer">Upgrade →</button></div>'
-    : '';
-
-  const modal = document.createElement('div');
-  modal.id = 'share-modal';
-  modal.style.cssText = 'position:fixed;inset:0;z-index:9500;background:rgba(7,7,14,.92);backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center;padding:0';
-
-  modal.innerHTML = '<div style="background:#0e0e1c;border:1px solid rgba(232,0,29,.22);border-radius:16px 16px 0 0;padding:1.4rem 1.3rem 2rem;max-width:480px;width:100%;position:relative;animation:slideUp .25s ease">'
-    + '<div style="width:36px;height:4px;background:rgba(255,255,255,.15);border-radius:2px;margin:0 auto 1.1rem"></div>'
-    + '<button id="sm-close" style="position:absolute;top:1rem;right:1rem;background:transparent;border:none;color:rgba(255,255,255,.35);font-size:1.2rem;cursor:pointer;line-height:1">✕</button>'
-    + '<div style="font-family:Rajdhani,sans-serif;font-size:.88rem;font-weight:700;letter-spacing:.12em;color:#e8001d;margin-bottom:.9rem">📤 PARTAGER MA PRÉDICTION · '+(isPaid?'Top 10':'Top 5')+'</div>'
-    + '<div style="background:linear-gradient(135deg,#07070e,#111128);border:1px solid rgba(232,0,29,.18);border-radius:10px;padding:.9rem;margin-bottom:1rem">'
-      + '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem">'
-        + '<div style="font-family:Rajdhani,sans-serif;font-size:.95rem;font-weight:700;letter-spacing:.12em">GRID<span style="color:#e8001d">ORACLE</span></div>'
-        + '<div style="font-size:.58rem;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase">'+GP_CURRENT.flag+' '+GP_CURRENT.name+'</div>'
-      + '</div>'
-      + '<div style="font-size:.6rem;color:rgba(255,255,255,.3);margin-bottom:.45rem;letter-spacing:.07em;text-transform:uppercase">@'+myHandle+' · Ma prédiction</div>'
-      + predRows
-      + '<div style="margin-top:.5rem;font-size:.52rem;color:rgba(255,255,255,.18);text-align:center">L\'IA PRÉDIT. TOI TU DÉFIES. &middot; gridoracle.vercel.app</div>'
-    + '</div>'
-    + upgradeBar
-    + '<div style="display:flex;flex-direction:column;gap:.5rem">'
-      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-bottom:.45rem">'
-        + '<button id="sm-insta" style="background:#e8001d;color:#fff;border:none;border-radius:10px;padding:.8rem .5rem;font-size:.82rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.35rem"><span id="sm-insta-ico">📸</span><span id="sm-insta-lbl">Instagram</span></button>'
-        + '<button id="sm-tiktok" style="background:#010101;color:#fff;border:1.5px solid rgba(255,255,255,.15);border-radius:10px;padding:.8rem .5rem;font-size:.82rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.35rem"><span id="sm-tt-ico">🎵</span><span id="sm-tt-lbl">TikTok</span></button>'
-      + '</div>'
-      + '<div id="sm-tt-steps" style="display:none;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.09);border-radius:10px;padding:.7rem .85rem;margin-bottom:.45rem">'
-        + '<div style="font-size:.72rem;font-weight:700;color:#fff;margin-bottom:.42rem">✅ Image sauvegardée dans ta galerie !</div>'
-        + '<div style="font-size:.68rem;color:rgba(255,255,255,.5);line-height:1.7">① Dans TikTok, appuie sur <strong style="color:#fff">+</strong> (créer)<br>② Sélectionne <strong style="color:#fff">Importer</strong> ou <strong style="color:#fff">Galerie</strong><br>③ Choisis l\'image GridOracle</div>'
-        + '<button id="sm-tt-open" style="width:100%;margin-top:.55rem;background:#ff0050;color:#fff;border:none;border-radius:7px;padding:.5rem;font-size:.76rem;font-weight:700;cursor:pointer">Ouvrir TikTok →</button>'
-      + '</div>'
-      + '<button id="sm-copy" style="background:rgba(232,0,29,.07);border:1px solid rgba(232,0,29,.2);border-radius:10px;padding:.65rem;font-size:.8rem;color:#e8001d;cursor:pointer;width:100%">📋 Copier le texte</button>'
-      + '<div id="sm-copied" style="text-align:center;font-size:.72rem;color:#4caf50;display:none;padding:.25rem">✓ Texte copié !</div>'
-    + '</div>'
-  + '</div>';
+  modal.innerHTML=
+    '<div style="background:#0e0e1c;border:1px solid rgba(232,0,29,.22);border-radius:16px 16px 0 0;padding:1.1rem 1.1rem 2rem;max-width:460px;width:100%;position:relative;animation:slideUp .22s ease">'
+    +'<div style="width:34px;height:4px;background:rgba(255,255,255,.15);border-radius:2px;margin:0 auto .85rem"></div>'
+    +'<button id="sm-close" style="position:absolute;top:.85rem;right:.85rem;background:transparent;border:none;color:rgba(255,255,255,.3);font-size:1.2rem;cursor:pointer">✕</button>'
+    +'<div style="font-family:Rajdhani,sans-serif;font-size:.84rem;font-weight:700;letter-spacing:.12em;color:#e8001d;margin-bottom:.75rem">📤 PARTAGER MA PRÉDICTION</div>'
+    +upBar
+    // Aperçu image — chargement puis image réelle
+    +'<div id="sm-prev" style="border-radius:12px;overflow:hidden;margin-bottom:.7rem;background:#07070e;min-height:110px;display:flex;align-items:center;justify-content:center">'
+      +'<div style="font-size:.75rem;color:rgba(255,255,255,.3)">Génération de l\'image…</div>'
+    +'</div>'
+    // Instruction (apparaît quand l'image est prête)
+    +'<div id="sm-hint" style="display:none;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:.55rem .75rem;margin-bottom:.75rem;font-size:.73rem;color:rgba(255,255,255,.5);text-align:center;line-height:1.55">'
+      +'📲 <strong style="color:#fff">Appuie longuement sur l\'image</strong> pour la sauvegarder,<br>puis ouvre l\'app de ton choix ci-dessous.'
+    +'</div>'
+    // Boutons app
+    +'<div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.5rem">'
+      +'<button id="sm-insta" style="background:#e8001d;color:#fff;border:none;border-radius:10px;padding:.82rem;font-size:.86rem;font-weight:700;cursor:pointer">📸 Instagram</button>'
+      +'<button id="sm-tiktok" style="background:#0a0a0a;color:#fff;border:1.5px solid rgba(255,255,255,.16);border-radius:10px;padding:.82rem;font-size:.86rem;font-weight:700;cursor:pointer">🎵 TikTok</button>'
+    +'</div>'
+    +'<button id="sm-copy" style="width:100%;background:rgba(232,0,29,.07);border:1px solid rgba(232,0,29,.2);border-radius:10px;padding:.62rem;font-size:.8rem;color:#e8001d;cursor:pointer">📋 Copier le texte</button>'
+    +'<div id="sm-copied" style="text-align:center;font-size:.7rem;color:#4caf50;display:none;padding:.22rem">✓ Texte copié !</div>'
+  +'</div>';
 
   document.body.appendChild(modal);
+  document.getElementById('sm-close').onclick=()=>modal.remove();
+  modal.addEventListener('click',e=>{if(e.target===modal)modal.remove();});
+  const upBtn=document.getElementById('sm-up');
+  if(upBtn) upBtn.onclick=()=>{modal.remove();openStripeModal('premium');};
 
-  document.getElementById('sm-close').onclick = () => modal.remove();
-  modal.addEventListener('click', e => { if(e.target === modal) modal.remove(); });
-  const upBtn = document.getElementById('sm-upgrade');
-  if(upBtn) upBtn.onclick = () => { modal.remove(); openStripeModal('premium'); };
-
-  // ── Helper : génère blob + fichier ──
-  async function makeShareFile(){
-    const canvas = await buildPredCanvas(pred, myHandle);
-    return new Promise((res,rej)=>{
-      canvas.toBlob(blob=>{
-        if(!blob) return rej(new Error('canvas toBlob failed'));
-        res({ blob, file: new File([blob],'prediction-gridoracle.png',{type:'image/png'}) });
-      },'image/png');
-    });
-  }
-
-  function setBtnState(id_ico, id_lbl, ico, txt, disabled){
-    const b=document.getElementById(id_ico.replace('-ico',''));
-    const i=document.getElementById(id_ico), l=document.getElementById(id_lbl);
-    if(i) i.textContent=ico;
-    if(l) l.textContent=txt;
-    if(b){ b.disabled=disabled; b.style.opacity=disabled?'0.65':'1'; }
-  }
-
-  function dlBlob(blob){
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a');
-    a.href=url; a.download='prediction-gridoracle.png';
-    document.body.appendChild(a); a.click(); document.body.removeChild(a);
-    setTimeout(()=>URL.revokeObjectURL(url),3000);
-  }
-
-  // ── INSTAGRAM ──
-  document.getElementById('sm-insta').onclick = async ()=>{
-    setBtnState('sm-insta-ico','sm-insta-lbl','⏳','Génération…',true);
-    try{
-      const {blob,file} = await makeShareFile();
-      if(navigator.canShare && navigator.canShare({files:[file]})){
-        try{
-          await navigator.share({files:[file],title:'Ma prédiction '+GP_CURRENT.name,text:'GridOracle 🤖'});
-          setBtnState('sm-insta-ico','sm-insta-lbl','📸','Instagram',false);
-          return;
-        }catch(e){
-          if(e.name==='AbortError'){ setBtnState('sm-insta-ico','sm-insta-lbl','📸','Instagram',false); return; }
-        }
-      }
-      // Fallback : télécharger + instructions
-      dlBlob(blob);
-      showToast('📥 Image sauvegardée — ouvre Instagram et poste-la en story !');
-      setBtnState('sm-insta-ico','sm-insta-lbl','✅','Image sauvegardée',false);
-    }catch(e){
-      setBtnState('sm-insta-ico','sm-insta-lbl','📸','Instagram',false);
-      showToast('Erreur génération image');
+  // ── Générer + afficher l'image dans le modal ──
+  let _canvas=null;
+  buildPredCanvas(pred,myHandle).then(cv=>{
+    _canvas=cv;
+    const prev=document.getElementById('sm-prev');
+    if(prev){
+      prev.style.minHeight='';
+      prev.innerHTML='<img src="'+cv.toDataURL('image/png')+'" style="width:100%;display:block" alt="Prédiction GridOracle">';
     }
-  };
-
-  // ── TIKTOK ──
-  document.getElementById('sm-tiktok').onclick = async ()=>{
-    setBtnState('sm-tt-ico','sm-tt-lbl','⏳','Génération…',true);
-    try{
-      const {blob} = await makeShareFile();
-      dlBlob(blob);
-      // Affiche le guide pas-à-pas
-      const steps=document.getElementById('sm-tt-steps');
-      if(steps) steps.style.display='block';
-      setBtnState('sm-tt-ico','sm-tt-lbl','✅','Image sauvegardée',false);
-      showToast('🎵 Image sauvegardée — suis le guide pour poster sur TikTok !');
-    }catch(e){
-      setBtnState('sm-tt-ico','sm-tt-lbl','🎵','TikTok',false);
-      showToast('Erreur génération image');
-    }
-  };
-
-  // Bouton "Ouvrir TikTok" dans le guide
-  document.addEventListener('click', function onTTOpen(e){
-    if(e.target && e.target.id==='sm-tt-open'){
-      // Deep link TikTok : iOS et Android
-      const ua=navigator.userAgent||'';
-      if(/iPhone|iPad|iPod/i.test(ua)){
-        window.location.href='snssdk1233://';
-        setTimeout(()=>window.open('https://apps.apple.com/app/tiktok/id835599320','_blank'),1200);
-      } else if(/Android/i.test(ua)){
-        window.location.href='intent://www.tiktok.com/#Intent;package=com.zhiliaoapp.musically;scheme=https;end';
-        setTimeout(()=>window.open('https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically','_blank'),1200);
-      } else {
-        window.open('https://www.tiktok.com','_blank');
-      }
-      document.removeEventListener('click',onTTOpen);
-    }
+    const hint=document.getElementById('sm-hint');
+    if(hint) hint.style.display='block';
+  }).catch(()=>{
+    const prev=document.getElementById('sm-prev');
+    if(prev) prev.innerHTML='<div style="padding:1rem;font-size:.73rem;color:rgba(255,255,255,.35)">Erreur de génération</div>';
   });
 
-  // ── COPIER TEXTE ──
-  const shareText=[
+  // ── Instagram : native share avec l'image ──
+  document.getElementById('sm-insta').onclick=async()=>{
+    const cv=_canvas||await buildPredCanvas(pred,myHandle).catch(()=>null);
+    if(!cv){window.open('https://www.instagram.com','_blank');return;}
+    cv.toBlob(async blob=>{
+      const f=new File([blob],'prediction-gridoracle.png',{type:'image/png'});
+      if(navigator.canShare&&navigator.canShare({files:[f]})){
+        try{await navigator.share({files:[f],title:'Ma prédiction '+GP_CURRENT.name});return;}
+        catch(e){if(e.name==='AbortError')return;}
+      }
+      window.open('https://www.instagram.com','_blank');
+    },'image/png');
+  };
+
+  // ── TikTok : ouvrir l'app directement ──
+  document.getElementById('sm-tiktok').onclick=()=>{
+    const ua=navigator.userAgent||'';
+    if(/iPhone|iPad|iPod/i.test(ua)){
+      window.location.href='snssdk1233://';
+      setTimeout(()=>window.open('https://apps.apple.com/app/tiktok/id835599320','_blank'),900);
+    } else if(/Android/i.test(ua)){
+      window.location.href='intent://www.tiktok.com/#Intent;package=com.zhiliaoapp.musically;scheme=https;end';
+      setTimeout(()=>window.open('https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically','_blank'),900);
+    } else {
+      window.open('https://www.tiktok.com','_blank');
+    }
+  };
+
+  // ── Copier texte ──
+  const txt=[
     GP_CURRENT.flag+' Ma prédiction '+GP_CURRENT.name+' sur GridOracle 🤖',
     '',
     ...pred.map((d,i)=>'P'+(i+1)+' '+(d.sn||'—')),
@@ -3288,11 +3225,13 @@ function openShareModal(predArray){
     'Tu fais mieux que l\'IA ? gridoracle.vercel.app'
   ].join('\n');
   document.getElementById('sm-copy').onclick=()=>{
-    copyShareText(shareText,'sm-copied');
+    copyShareText(txt,'sm-copied');
     const el=document.getElementById('sm-copied');
-    if(el){ el.style.display='block'; setTimeout(()=>el.style.display='none',3000); }
+    if(el){el.style.display='block';setTimeout(()=>el.style.display='none',3000);}
   };
 }
+
+
 
 // ── GÉNÉRATION IMAGE CANVAS 9:16 ── DESIGN: APEX
 // Polyfill roundRect
