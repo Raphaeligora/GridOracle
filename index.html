@@ -44,7 +44,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 .ob-logo-w{text-align:center;margin-bottom:1.6rem;display:block}
 .prog{display:flex;align-items:center;gap:.42rem;justify-content:center;margin-bottom:2rem}
 .pd{height:4px;border-radius:2px;background:rgba(255,255,255,.1);transition:all .35s;flex:1;max-width:56px}
-.pd.cur{background:var(--red);max-width:80px}.pd.done{background:rgba(232,0,29,.38)}
+.pd.cur{background:var(--red);max-width:80px}.pd.done{background:rgba(232,0,29,.38)}.ngp-gp-status.cancelled{color:#888;background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1)}
 .plbl{font-size:.7rem;color:var(--g);letter-spacing:.1em;text-transform:uppercase;margin-left:.4rem}
 .step{display:none;animation:fadeUp .32s ease both}.step.on{display:block}
 .ob-lbl{color:var(--red);font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;font-weight:600;margin-bottom:.5rem}
@@ -1584,7 +1584,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 <!-- ── PAGE: STANDINGS ── -->
 <div id="pg-standings" class="pg">
   <div class="stand-wrap">
-    <div style="margin-bottom:1.2rem"><span class="sec-lbl">Championnat 2026 · 9 GP joués</span><div class="sec-t">Classements officiels</div></div>
+    <div style="margin-bottom:1.2rem"><span class="sec-lbl">Championnat 2026 · 7 GP joués</span><div class="sec-t">Classements officiels</div></div>
     <div class="tabs" style="background:var(--card);border:1px solid var(--b);border-radius:12px 12px 0 0;overflow:hidden;margin-bottom:0">
       <div class="tab on" onclick="standTab('wdc',this)">🏎️ Pilotes (WDC)</div>
       <div class="tab" onclick="standTab('wcc',this)">🏭 Constructeurs (WCC)</div>
@@ -2415,37 +2415,37 @@ const TEAMS=[
   {id:'mclaren',name:'McLaren',abr:'MCL',color:'#FF8000',eng:'Mercedes',isNew:false,wccPos:3,wccPts:141,d:['Norris','Piastri']},
   {id:'ferrari',name:'Scuderia Ferrari',abr:'SF',color:'#E8001D',eng:'Ferrari',isNew:false,wccPos:2,wccPts:190,d:['Leclerc','Hamilton']},
   {id:'redbull',name:'Red Bull Racing',abr:'RBR',color:'#3671C6',eng:'Red Bull Ford',isNew:false,wccPos:4,wccPts:89,d:['Verstappen','Hadjar']},
-  {id:'mercedes',name:'Mercedes-AMG',abr:'AMG',color:'#00D2BE',eng:'Mercedes',isNew:false,wccPos:1,wccPts:272,d:['Russell','Antonelli']},
-  {id:'aston',name:'Aston Martin',abr:'AMF',color:'#358C75',eng:'Honda',isNew:false,wccPos:10,wccPts:5,d:['Alonso','Stroll']},
-  {id:'alpine',name:'Alpine F1',abr:'ALP',color:'#FF0060',eng:'Mercedes',isNew:false,wccPos:5,wccPts:60,d:['Gasly','Colapinto']},
-  {id:'williams',name:'Williams Racing',abr:'WIL',color:'#00A0DD',eng:'Mercedes',isNew:false,wccPos:8,wccPts:18,d:['Albon','Sainz']},
-  {id:'haas',name:'TGR Haas F1',abr:'HAA',color:'#CC1800',eng:'Toyota',isNew:false,wccPos:7,wccPts:22,d:['Bearman','Ocon']},
-  {id:'rb',name:'Racing Bulls',abr:'RB',color:'#4E7CB2',eng:'Red Bull Ford',isNew:false,wccPos:6,wccPts:38,d:['Lawson','Lindblad']},
-  {id:'audi',name:'Audi F1',abr:'AUD',color:'#BB0A1E',eng:'Audi',isNew:true,wccPos:9,wccPts:8,d:['Hülkenberg','Bortoleto']},
+  {id:'mercedes',name:'Mercedes-AMG',abr:'AMG',color:'#00D2BE',eng:'Mercedes',isNew:false,wccPos:1,wccPts:262,d:['Russell','Antonelli']},
+  {id:'aston',name:'Aston Martin',abr:'AMF',color:'#358C75',eng:'Honda',isNew:false,wccPos:10,wccPts:1,d:['Alonso','Stroll']},
+  {id:'alpine',name:'Alpine F1',abr:'ALP',color:'#FF0060',eng:'Mercedes',isNew:false,wccPos:5,wccPts:57,d:['Gasly','Colapinto']},
+  {id:'williams',name:'Williams Racing',abr:'WIL',color:'#00A0DD',eng:'Mercedes',isNew:false,wccPos:8,wccPts:11,d:['Albon','Sainz']},
+  {id:'haas',name:'TGR Haas F1',abr:'HAA',color:'#CC1800',eng:'Toyota',isNew:false,wccPos:7,wccPts:21,d:['Bearman','Ocon']},
+  {id:'rb',name:'Racing Bulls',abr:'RB',color:'#4E7CB2',eng:'Red Bull Ford',isNew:false,wccPos:6,wccPts:41,d:['Lawson','Lindblad']},
+  {id:'audi',name:'Audi F1',abr:'AUD',color:'#BB0A1E',eng:'Audi',isNew:true,wccPos:9,wccPts:2,d:['Hülkenberg','Bortoleto']},
   {id:'cadillac',name:'Cadillac F1',abr:'CAD',color:'#1C3F94',eng:'Ferrari',isNew:true,wccPos:11,wccPts:0,d:['Bottas','Pérez']},
 ];
 
 const DRIVERS=[
   {n:'3',sn:'Verstappen',fn:'Max',t:'redbull',tc:'#3671C6',img:CDN+'M/MAXVER01_Max_Verstappen/maxver01.png.transform/1col/image.png',wdcPos:7,wdcPts:55},
-  {n:'6',sn:'Hadjar',fn:'Isack',t:'redbull',tc:'#3671C6',img:CDN+'I/ISAHAD01_Isack_Hadjar/isahad01.png.transform/1col/image.png',wdcPos:8,wdcPts:38},
-  {n:'4',sn:'Norris',fn:'Lando',t:'mclaren',tc:'#FF8000',img:CDN+'L/LANNOR01_Lando_Norris/lannor01.png.transform/1col/image.png',wdc:true,wdcPos:6,wdcPts:76},
-  {n:'81',sn:'Piastri',fn:'Oscar',t:'mclaren',tc:'#FF8000',img:CDN+'O/OSCPIA01_Oscar_Piastri/oscpia01.png.transform/1col/image.png',wdcPos:5,wdcPts:78},
-  {n:'16',sn:'Leclerc',fn:'Charles',t:'ferrari',tc:'#E8001D',img:CDN+'C/CHALEC01_Charles_Leclerc/chalec01.png.transform/1col/image.png',wdcPos:4,wdcPts:84},
-  {n:'44',sn:'Hamilton',fn:'Lewis',t:'ferrari',tc:'#E8001D',img:CDN+'L/LEWHAM01_Lewis_Hamilton/lewham01.png.transform/1col/image.png',wdcPos:2,wdcPts:124},
-  {n:'63',sn:'Russell',fn:'George',t:'mercedes',tc:'#00D2BE',img:CDN+'G/GEORUS01_George_Russell/georus01.png.transform/1col/image.png',wdcPos:3,wdcPts:107},
-  {n:'12',sn:'Antonelli',fn:'Kimi',t:'mercedes',tc:'#00D2BE',img:CDN+'K/KIMANT01_Kimi_Antonelli/kimant01.png.transform/1col/image.png',wdcPos:1,wdcPts:165},
-  {n:'14',sn:'Alonso',fn:'Fernando',t:'aston',tc:'#358C75',img:CDN+'F/FERALO01_Fernando_Alonso/feralo01.png.transform/1col/image.png',wdcPos:12,wdcPts:5},
-  {n:'18',sn:'Stroll',fn:'Lance',t:'aston',tc:'#358C75',img:CDN+'L/LANSTR01_Lance_Stroll/lanstr01.png.transform/1col/image.png',wdcPos:14,wdcPts:0},
-  {n:'10',sn:'Gasly',fn:'Pierre',t:'alpine',tc:'#FF0060',img:CDN+'P/PIEGAS01_Pierre_Gasly/piegas01.png.transform/1col/image.png',wdcPos:9,wdcPts:28},
-  {n:'43',sn:'Colapinto',fn:'Franco',t:'alpine',tc:'#FF0060',img:CDN+'F/FRACOL01_Franco_Colapinto/fracol01.png.transform/1col/image.png',wdcPos:10,wdcPts:22},
-  {n:'23',sn:'Albon',fn:'Alex',t:'williams',tc:'#00A0DD',img:CDN+'A/ALEALB01_Alex_Albon/alealb01.png.transform/1col/image.png',wdcPos:15,wdcPts:8},
-  {n:'55',sn:'Sainz',fn:'Carlos',t:'williams',tc:'#00A0DD',img:CDN+'C/CARSAI01_Carlos_Sainz/carsai01.png.transform/1col/image.png',wdcPos:16,wdcPts:6},
-  {n:'87',sn:'Bearman',fn:'Oliver',t:'haas',tc:'#CC1800',img:CDN+'O/OLIBEA01_Oliver_Bearman/olibea01.png.transform/1col/image.png',wdcPos:13,wdcPts:4},
-  {n:'31',sn:'Ocon',fn:'Esteban',t:'haas',tc:'#CC1800',img:CDN+'E/ESTOCO01_Esteban_Ocon/estoco01.png.transform/1col/image.png',wdcPos:18,wdcPts:0},
-  {n:'30',sn:'Lawson',fn:'Liam',t:'rb',tc:'#4E7CB2',img:CDN+'L/LIALAW01_Liam_Lawson/lialaw01.png.transform/1col/image.png',wdcPos:11,wdcPts:10},
-  {n:'41',sn:'Lindblad',fn:'Arvid',t:'rb',tc:'#4E7CB2',img:CDN+'A/ARVLIN01_Arvid_Lindblad/arvlin01.png.transform/1col/image.png',rookie:true,wdcPos:17,wdcPts:2},
+  {n:'6',sn:'Hadjar',fn:'Isack',t:'redbull',tc:'#3671C6',img:CDN+'I/ISAHAD01_Isack_Hadjar/isahad01.png.transform/1col/image.png',wdcPos:9,wdcPts:34},
+  {n:'4',sn:'Norris',fn:'Lando',t:'mclaren',tc:'#FF8000',img:CDN+'L/LANNOR01_Lando_Norris/lannor01.png.transform/1col/image.png',wdc:true,wdcPos:5,wdcPts:73},
+  {n:'81',sn:'Piastri',fn:'Oscar',t:'mclaren',tc:'#FF8000',img:CDN+'O/OSCPIA01_Oscar_Piastri/oscpia01.png.transform/1col/image.png',wdcPos:6,wdcPts:68},
+  {n:'16',sn:'Leclerc',fn:'Charles',t:'ferrari',tc:'#E8001D',img:CDN+'C/CHALEC01_Charles_Leclerc/chalec01.png.transform/1col/image.png',wdcPos:4,wdcPts:75},
+  {n:'44',sn:'Hamilton',fn:'Lewis',t:'ferrari',tc:'#E8001D',img:CDN+'L/LEWHAM01_Lewis_Hamilton/lewham01.png.transform/1col/image.png',wdcPos:2,wdcPts:115},
+  {n:'63',sn:'Russell',fn:'George',t:'mercedes',tc:'#00D2BE',img:CDN+'G/GEORUS01_George_Russell/georus01.png.transform/1col/image.png',wdcPos:3,wdcPts:106},
+  {n:'12',sn:'Antonelli',fn:'Kimi',t:'mercedes',tc:'#00D2BE',img:CDN+'K/KIMANT01_Kimi_Antonelli/kimant01.png.transform/1col/image.png',wdcPos:1,wdcPts:156},
+  {n:'14',sn:'Alonso',fn:'Fernando',t:'aston',tc:'#358C75',img:CDN+'F/FERALO01_Fernando_Alonso/feralo01.png.transform/1col/image.png',wdcPos:18,wdcPts:1},
+  {n:'18',sn:'Stroll',fn:'Lance',t:'aston',tc:'#358C75',img:CDN+'L/LANSTR01_Lance_Stroll/lanstr01.png.transform/1col/image.png',wdcPos:17,wdcPts:2},
+  {n:'10',sn:'Gasly',fn:'Pierre',t:'alpine',tc:'#FF0060',img:CDN+'P/PIEGAS01_Pierre_Gasly/piegas01.png.transform/1col/image.png',wdcPos:8,wdcPts:41},
+  {n:'43',sn:'Colapinto',fn:'Franco',t:'alpine',tc:'#FF0060',img:CDN+'F/FRACOL01_Franco_Colapinto/fracol01.png.transform/1col/image.png',wdcPos:12,wdcPts:16},
+  {n:'23',sn:'Albon',fn:'Alex',t:'williams',tc:'#00A0DD',img:CDN+'A/ALEALB01_Alex_Albon/alealb01.png.transform/1col/image.png',wdcPos:15,wdcPts:5},
+  {n:'55',sn:'Sainz',fn:'Carlos',t:'williams',tc:'#00A0DD',img:CDN+'C/CARSAI01_Carlos_Sainz/carsai01.png.transform/1col/image.png',wdcPos:14,wdcPts:6},
+  {n:'87',sn:'Bearman',fn:'Oliver',t:'haas',tc:'#CC1800',img:CDN+'O/OLIBEA01_Oliver_Bearman/olibea01.png.transform/1col/image.png',wdcPos:11,wdcPts:18},
+  {n:'31',sn:'Ocon',fn:'Esteban',t:'haas',tc:'#CC1800',img:CDN+'E/ESTOCO01_Esteban_Ocon/estoco01.png.transform/1col/image.png',wdcPos:16,wdcPts:3},
+  {n:'30',sn:'Lawson',fn:'Liam',t:'rb',tc:'#4E7CB2',img:CDN+'L/LIALAW01_Liam_Lawson/lialaw01.png.transform/1col/image.png',wdcPos:10,wdcPts:28},
+  {n:'41',sn:'Lindblad',fn:'Arvid',t:'rb',tc:'#4E7CB2',img:CDN+'A/ARVLIN01_Arvid_Lindblad/arvlin01.png.transform/1col/image.png',rookie:true,wdcPos:13,wdcPts:13},
   {n:'27',sn:'Hülkenberg',fn:'Nico',t:'audi',tc:'#BB0A1E',img:CDN+'N/NICHUL01_Nico_Hulkenberg/nichul01.png.transform/1col/image.png',wdcPos:19,wdcPts:0},
-  {n:'5',sn:'Bortoleto',fn:'Gabriel',t:'audi',tc:'#BB0A1E',img:CDN+'G/GABBOR01_Gabriel_Bortoleto/gabbor01.png.transform/1col/image.png',wdcPos:20,wdcPts:0},
+  {n:'5',sn:'Bortoleto',fn:'Gabriel',t:'audi',tc:'#BB0A1E',img:CDN+'G/GABBOR01_Gabriel_Bortoleto/gabbor01.png.transform/1col/image.png',wdcPos:17,wdcPts:2},
   {n:'77',sn:'Bottas',fn:'Valtteri',t:'cadillac',tc:'#1C3F94',img:CDN+'V/VALBOT01_Valtteri_Bottas/valbot01.png.transform/1col/image.png',wdcPos:21,wdcPts:0},
   {n:'11',sn:'Pérez',fn:'Sergio',t:'cadillac',tc:'#1C3F94',img:CDN+'S/SERPER01_Sergio_Perez/serper01.png.transform/1col/image.png',wdcPos:22,wdcPts:0},
 ];
@@ -3130,7 +3130,6 @@ function openShareModal(predArray){
   const maxShare = isPaid ? 10 : 5;
   const myHandle = USER.handle || 'moi';
 
-  // Résoudre les pilotes depuis sn strings ou objets
   const pred = (predArray || HP.pred)
     .filter(Boolean)
     .slice(0, maxShare)
@@ -3142,36 +3141,21 @@ function openShareModal(predArray){
 
   if(!pred.length){ showToast('Ajoute des pilotes à ta prédiction d\'abord'); return; }
 
-  const shareText = [
-    `${GP_CURRENT.flag} Ma prédiction ${GP_CURRENT.name} sur GridOracle 🤖`,
-    '',
-    ...pred.map((d,i)=>`P${i+1} ${d.sn||'—'}`),
-    '',
-    `Tu fais mieux que l'IA ? gridoracle.vercel.app`
-  ].join('\n');
-
-  const colors = ['#FFD700','#C0C0C0','#CD7F32','rgba(255,255,255,.5)','rgba(255,255,255,.4)','rgba(255,255,255,.35)','rgba(255,255,255,.3)','rgba(255,255,255,.28)','rgba(255,255,255,.25)','rgba(255,255,255,.22)'];
-
+  const rankColors = ['#FFD700','#C0C0C0','#CD7F32','rgba(255,255,255,.72)','rgba(255,255,255,.62)','rgba(255,255,255,.55)','rgba(255,255,255,.5)','rgba(255,255,255,.45)','rgba(255,255,255,.4)','rgba(255,255,255,.35)'];
   const predRows = pred.map((d,i)=>`
     <div style="display:flex;align-items:center;gap:.5rem;padding:.28rem 0;border-bottom:1px solid rgba(255,255,255,.05)">
-      <div style="font-family:'Rajdhani',sans-serif;font-size:.88rem;font-weight:700;color:${colors[i]};min-width:24px">P${i+1}</div>
+      <div style="font-family:'Rajdhani',sans-serif;font-size:.88rem;font-weight:700;color:${rankColors[i]};min-width:24px">P${i+1}</div>
       <div style="font-size:.82rem;font-weight:600;color:#fff;flex:1">${d.sn||'—'}</div>
       <div style="width:7px;height:7px;border-radius:50%;background:${d.tc||'#e8001d'};flex-shrink:0"></div>
     </div>`).join('');
 
-  const hasNativeShare = !!navigator.share;
+  const upgradeBar = !isPaid
+    ? '<div style="background:rgba(232,0,29,.05);border:1px solid rgba(232,0,29,.15);border-radius:8px;padding:.55rem .75rem;margin-bottom:.85rem;font-size:.72rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:.5rem">🔒 <span>Premium = partage ton <strong style="color:#fff">Top 10</strong></span><button id="sm-upgrade" style="margin-left:auto;background:#e8001d;border:none;color:#fff;border-radius:5px;padding:.2rem .6rem;font-size:.65rem;font-weight:600;cursor:pointer">Upgrade →</button></div>'
+    : '';
 
   const modal = document.createElement('div');
   modal.id = 'share-modal';
   modal.style.cssText = 'position:fixed;inset:0;z-index:9500;background:rgba(7,7,14,.92);backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center;padding:0';
-
-  // Construire le HTML sans template literals imbriqués
-  const nativeBtn = hasNativeShare
-    ? '<button id="sm-native" style="background:#e8001d;color:#fff;border:none;border-radius:10px;padding:.8rem;font-size:.88rem;font-weight:600;cursor:pointer;width:100%">📤 Partager sur mes réseaux</button>'
-    : '';
-  const upgradeBar = !isPaid
-    ? '<div style="background:rgba(232,0,29,.05);border:1px solid rgba(232,0,29,.15);border-radius:8px;padding:.55rem .75rem;margin-bottom:.85rem;font-size:.72rem;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:.5rem">🔒 <span>Premium = partage ton <strong style="color:#fff">Top 10</strong></span><button id="sm-upgrade" style="margin-left:auto;background:#e8001d;border:none;color:#fff;border-radius:5px;padding:.2rem .6rem;font-size:.65rem;font-weight:600;cursor:pointer">Upgrade →</button></div>'
-    : '';
 
   modal.innerHTML = '<div style="background:#0e0e1c;border:1px solid rgba(232,0,29,.22);border-radius:16px 16px 0 0;padding:1.4rem 1.3rem 2rem;max-width:480px;width:100%;position:relative;animation:slideUp .25s ease">'
     + '<div style="width:36px;height:4px;background:rgba(255,255,255,.15);border-radius:2px;margin:0 auto 1.1rem"></div>'
@@ -3184,15 +3168,12 @@ function openShareModal(predArray){
       + '</div>'
       + '<div style="font-size:.6rem;color:rgba(255,255,255,.3);margin-bottom:.45rem;letter-spacing:.07em;text-transform:uppercase">@'+myHandle+' · Ma prédiction</div>'
       + predRows
-      + '<div style="margin-top:.5rem;font-size:.52rem;color:rgba(255,255,255,.18);text-align:center">L&#39;IA PR&Eacute;DIT. TOI TU D&Eacute;FIES. &middot; gridoracle.vercel.app</div>'
+      + '<div style="margin-top:.5rem;font-size:.52rem;color:rgba(255,255,255,.18);text-align:center">L\'IA PRÉDIT. TOI TU DÉFIES. &middot; gridoracle.vercel.app</div>'
     + '</div>'
     + upgradeBar
     + '<div style="display:flex;flex-direction:column;gap:.5rem">'
-      + nativeBtn
-      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem">'
-        + '<button id="sm-tiktok" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:.7rem;font-size:.82rem;color:#fff;cursor:pointer">🎵 Ouvrir TikTok</button>'
-        + '<button id="sm-insta" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:.7rem;font-size:.82rem;color:#fff;cursor:pointer">📸 Ouvrir Instagram</button>'
-      + '</div>'
+      + '<button id="sm-img" style="background:#e8001d;color:#fff;border:none;border-radius:10px;padding:.85rem;font-size:.88rem;font-weight:600;cursor:pointer;width:100%;display:flex;align-items:center;justify-content:center;gap:.45rem"><span id="sm-img-ico">📸</span><span id="sm-img-lbl">Créer l\'image &amp; partager</span></button>'
+      + '<div id="sm-img-hint" style="text-align:center;font-size:.7rem;color:rgba(255,255,255,.35);display:none;padding:.2rem 0">Télécharge l\'image puis ouvre TikTok / Instagram pour la poster</div>'
       + '<button id="sm-copy" style="background:rgba(232,0,29,.07);border:1px solid rgba(232,0,29,.2);border-radius:10px;padding:.7rem;font-size:.82rem;color:#e8001d;cursor:pointer;width:100%">📋 Copier le texte</button>'
       + '<div id="sm-copied" style="text-align:center;font-size:.72rem;color:#4caf50;display:none;padding:.3rem">✓ Texte copié — colle-le dans ton appli !</div>'
     + '</div>'
@@ -3200,65 +3181,220 @@ function openShareModal(predArray){
 
   document.body.appendChild(modal);
 
-  // Fermeture
   document.getElementById('sm-close').onclick = () => modal.remove();
   modal.addEventListener('click', e => { if(e.target === modal) modal.remove(); });
   const upBtn = document.getElementById('sm-upgrade');
   if(upBtn) upBtn.onclick = () => { modal.remove(); openStripeModal('premium'); };
 
-  // Partage natif iOS/Android
-  if(hasNativeShare){
-    document.getElementById('sm-native').onclick = async () => {
-      try {
-        await navigator.share({ title: `Ma prédiction ${GP_CURRENT.name}`, text: shareText });
-      } catch(e) {
-        if(e.name !== 'AbortError') copyShareText(shareText, 'sm-copied');
-      }
-    };
-  }
+  // ── BOUTON IMAGE ──
+  document.getElementById('sm-img').onclick = async () => {
+    const btn = document.getElementById('sm-img');
+    const lbl = document.getElementById('sm-img-lbl');
+    const ico = document.getElementById('sm-img-ico');
+    lbl.textContent = 'Génération…';
+    ico.textContent = '⏳';
+    btn.style.opacity = '0.7';
+    btn.disabled = true;
 
-  // TikTok
-  document.getElementById('sm-tiktok').onclick = () => {
-    copyShareText(shareText, 'sm-copied');
-    // Essayer d'ouvrir TikTok via deep link, fallback sur l'app store
-    const tiktokUrl = 'snssdk1233://'; // deep link TikTok iOS/Android
-    const fallbackUrl = 'https://www.tiktok.com';
-    const start = Date.now();
-    const iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.src = tiktokUrl;
-    document.body.appendChild(iframe);
-    setTimeout(() => {
-      document.body.removeChild(iframe);
-      if(Date.now() - start < 1500) window.open(fallbackUrl, '_blank');
-    }, 1200);
-    showToast('📋 Texte copié ! TikTok s\'ouvre... colle dans ta vidéo 🎵');
+    try {
+      const canvas = await buildPredCanvas(pred, myHandle);
+      canvas.toBlob(async (blob) => {
+        const file = new File([blob], 'prediction-gridoracle.png', { type:'image/png' });
+
+        // Tentative partage natif avec image (iOS Safari, Chrome Android)
+        if(navigator.canShare && navigator.canShare({ files:[file] })){
+          try {
+            await navigator.share({ files:[file], title:'Ma prédiction '+GP_CURRENT.name, text:'GridOracle 🤖' });
+            lbl.textContent = 'Créer l\'image & partager';
+            ico.textContent = '📸';
+            btn.style.opacity = '1';
+            btn.disabled = false;
+            return;
+          } catch(e) {
+            if(e.name === 'AbortError'){ lbl.textContent='Créer l\'image & partager'; ico.textContent='📸'; btn.style.opacity='1'; btn.disabled=false; return; }
+          }
+        }
+
+        // Fallback : téléchargement direct
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url; a.download = 'prediction-gridoracle.png';
+        document.body.appendChild(a); a.click();
+        document.body.removeChild(a);
+        setTimeout(() => URL.revokeObjectURL(url), 2000);
+
+        const hint = document.getElementById('sm-img-hint');
+        if(hint) hint.style.display = 'block';
+        showToast('📥 Image enregistrée — ouvre TikTok ou Instagram pour poster !');
+        lbl.textContent = '✓ Image téléchargée';
+        ico.textContent = '✅';
+        btn.style.opacity = '1';
+        btn.disabled = false;
+      }, 'image/png');
+    } catch(err) {
+      lbl.textContent = 'Créer l\'image & partager';
+      ico.textContent = '📸';
+      btn.style.opacity = '1';
+      btn.disabled = false;
+      showToast('Erreur génération image');
+    }
   };
 
-  // Instagram
-  document.getElementById('sm-insta').onclick = () => {
-    copyShareText(shareText, 'sm-copied');
-    // Deep link Instagram Story camera
-    const instaUrl = 'instagram://story-camera';
-    const fallbackUrl = 'https://www.instagram.com';
-    const start = Date.now();
-    const iframe = document.createElement('iframe');
-    iframe.style.display = 'none';
-    iframe.src = instaUrl;
-    document.body.appendChild(iframe);
-    setTimeout(() => {
-      document.body.removeChild(iframe);
-      if(Date.now() - start < 1500) window.open(fallbackUrl, '_blank');
-    }, 1200);
-    showToast('📋 Texte copié ! Instagram s\'ouvre... colle dans ta story 📸');
-  };
-
-  // Copier seulement
+  // Copier texte
+  const shareText = [
+    GP_CURRENT.flag+' Ma prédiction '+GP_CURRENT.name+' sur GridOracle 🤖',
+    '',
+    ...pred.map((d,i)=>`P${i+1} ${d.sn||'—'}`),
+    '',
+    'Tu fais mieux que l\'IA ? gridoracle.vercel.app'
+  ].join('\n');
   document.getElementById('sm-copy').onclick = () => {
     copyShareText(shareText, 'sm-copied');
     const el = document.getElementById('sm-copied');
     if(el){ el.style.display='block'; setTimeout(()=>el.style.display='none', 3000); }
   };
+}
+
+// ── GÉNÉRATION IMAGE CANVAS 9:16 ──
+// Polyfill roundRect for older browsers
+if(!CanvasRenderingContext2D.prototype.roundRect){
+  CanvasRenderingContext2D.prototype.roundRect = function(x,y,w,h,r){
+    this.beginPath();
+    this.moveTo(x+r,y);
+    this.lineTo(x+w-r,y);
+    this.quadraticCurveTo(x+w,y,x+w,y+r);
+    this.lineTo(x+w,y+h-r);
+    this.quadraticCurveTo(x+w,y+h,x+w-r,y+h);
+    this.lineTo(x+r,y+h);
+    this.quadraticCurveTo(x,y+h,x,y+h-r);
+    this.lineTo(x,y+r);
+    this.quadraticCurveTo(x,y,x+r,y);
+    this.closePath();
+  };
+}
+function buildPredCanvas(pred, handle){
+  return new Promise((resolve, reject) => {
+    try {
+      const W=1080, H=1920;
+      const canvas = document.createElement('canvas');
+      canvas.width=W; canvas.height=H;
+      const ctx = canvas.getContext('2d');
+
+      // Fond dégradé
+      const bg = ctx.createLinearGradient(0, 0, W, H);
+      bg.addColorStop(0, '#0d0d1e');
+      bg.addColorStop(0.5, '#0a0a16');
+      bg.addColorStop(1, '#07070e');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, W, H);
+
+      // Barre rouge top
+      ctx.fillStyle = '#e8001d';
+      ctx.fillRect(0, 0, W, 14);
+
+      // Lueur rouge subtile top-left
+      const glow = ctx.createRadialGradient(200, 300, 0, 200, 300, 600);
+      glow.addColorStop(0, 'rgba(232,0,29,0.08)');
+      glow.addColorStop(1, 'transparent');
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, 0, W, H);
+
+      // ── Logo GridOracle ──
+      ctx.textAlign = 'left';
+      ctx.font = 'bold 110px Impact, Arial Black, sans-serif';
+      ctx.fillStyle = '#ffffff';
+      const gx = 90;
+      ctx.fillText('GRID', gx, 220);
+      const gw = ctx.measureText('GRID').width;
+      ctx.fillStyle = '#e8001d';
+      ctx.fillText('ORACLE', gx + gw + 10, 220);
+
+      // ── GP name ──
+      ctx.font = '500 52px Arial, sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.45)';
+      ctx.fillText((GP_CURRENT.flag||'🏁') + '  ' + (GP_CURRENT.name||'Grand Prix').toUpperCase(), gx, 310);
+
+      // ── Handle ──
+      ctx.font = 'bold 56px Arial, sans-serif';
+      ctx.fillStyle = '#e8001d';
+      ctx.fillText('@' + handle, gx, 400);
+
+      // Ligne séparatrice
+      ctx.strokeStyle = 'rgba(232,0,29,0.25)';
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(gx, 440); ctx.lineTo(W-gx, 440); ctx.stroke();
+
+      // ── Titre section ──
+      ctx.font = 'bold 46px Arial, sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.3)';
+      ctx.fillText('MA PRÉDICTION', gx, 510);
+
+      // ── Lignes pilotes ──
+      const rankColors = ['#FFD700','#C0C0C0','#CD7F32','rgba(255,255,255,.82)','rgba(255,255,255,.72)','rgba(255,255,255,.62)','rgba(255,255,255,.55)','rgba(255,255,255,.5)','rgba(255,255,255,.45)','rgba(255,255,255,.4)'];
+      const rowH = (H - 690 - 180) / Math.min(pred.length, 10);
+
+      pred.slice(0, 10).forEach((d, i) => {
+        const y = 560 + i * rowH;
+
+        // Fond de ligne avec couleur équipe
+        const teamColor = d.tc || '#e8001d';
+        const rowBg = ctx.createLinearGradient(gx, y, W-gx, y);
+        rowBg.addColorStop(0, teamColor + '22');
+        rowBg.addColorStop(0.6, teamColor + '08');
+        rowBg.addColorStop(1, 'transparent');
+        ctx.fillStyle = rowBg;
+        const rh = rowH - 8;
+        ctx.beginPath();
+        ctx.roundRect(gx, y - 4, W - gx*2, rh, 14);
+        ctx.fill();
+
+        // Point couleur équipe
+        ctx.fillStyle = teamColor;
+        ctx.beginPath(); ctx.arc(gx + 22, y + rh/2 - 4, 14, 0, Math.PI*2); ctx.fill();
+
+        // Position
+        const posStr = 'P' + (i+1);
+        ctx.font = 'bold ' + Math.round(rowH * 0.55) + 'px Impact, Arial Black, sans-serif';
+        ctx.fillStyle = rankColors[i];
+        ctx.fillText(posStr, gx + 50, y + rh*0.68);
+        const posW = ctx.measureText(posStr).width;
+
+        // Nom pilote
+        ctx.font = 'bold ' + Math.round(rowH * 0.5) + 'px Arial, sans-serif';
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(d.sn || '—', gx + 50 + posW + 18, y + rh*0.68);
+
+        // Séparateur bas
+        if(i < pred.length - 1){
+          ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+          ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(gx+50, y+rh+2); ctx.lineTo(W-gx, y+rh+2); ctx.stroke();
+        }
+      });
+
+      // ── CTA bas ──
+      const ctaY = H - 140;
+      ctx.fillStyle = 'rgba(232,0,29,0.12)';
+      ctx.beginPath(); ctx.roundRect(gx, ctaY - 50, W - gx*2, 130, 16); ctx.fill();
+      ctx.strokeStyle = 'rgba(232,0,29,0.3)';
+      ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.roundRect(gx, ctaY - 50, W - gx*2, 130, 16); ctx.stroke();
+
+      ctx.textAlign = 'center';
+      ctx.font = 'bold 52px Arial, sans-serif';
+      ctx.fillStyle = '#e8001d';
+      ctx.fillText('gridoracle.vercel.app', W/2, ctaY + 10);
+      ctx.font = '38px Arial, sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.35)';
+      ctx.fillText('TU FAIS MIEUX QUE L\'IA ?', W/2, ctaY + 62);
+
+      // Barre rouge bas
+      ctx.fillStyle = '#e8001d';
+      ctx.fillRect(0, H-8, W, 8);
+
+      resolve(canvas);
+    } catch(e) { reject(e); }
+  });
 }
 
 function copyShareText(text, feedbackId){
@@ -3798,28 +3934,30 @@ document.addEventListener('click',e=>{
 });
 /* ══ PAGE PROCHAIN GP ══ */
 const F1_CALENDAR_2026 = [
-  {r:1,  flag:'🇦🇺', name:'Grand Prix d\'Australie',    loc:'Albert Park · Melbourne',       dates:'6–8 Mars',      el:'13h', q:'14h', race:'15h', circuit:'4.309 km · 58 tours', status:'done', p1:'Russell',p2:'Antonelli',p3:'Leclerc'},
-  {r:2,  flag:'🇨🇳', name:'Grand Prix de Chine',        loc:'Shanghai Circuit',               dates:'13–15 Mars',    el:'13h', q:'14h', race:'15h', circuit:'5.451 km · 56 tours', status:'done', sprint:true, p1:'Antonelli',p2:'Russell',p3:'Hamilton'},
-  {r:3,  flag:'🇯🇵', name:'Grand Prix du Japon',        loc:'Suzuka Circuit',                 dates:'27–29 Mars',    el:'13h', q:'14h', race:'15h', circuit:'5.807 km · 53 tours', status:'done', p1:'Antonelli',p2:'Piastri',p3:'Leclerc'},
-  {r:4,  flag:'🇧🇭', name:'Grand Prix de Bahreïn',      loc:'Bahrain International Circuit',  dates:'10–12 Avr.',    el:'13h', q:'14h', race:'18h', circuit:'5.412 km · 57 tours', status:'done', p1:'Norris',p2:'Hamilton',p3:'Verstappen'},
-  {r:5,  flag:'🇸🇦', name:'Grand Prix d\'Arabie Saoudite', loc:'Jeddah Corniche Circuit',    dates:'17–19 Avr.',    el:'13h', q:'17h', race:'18h', circuit:'6.174 km · 50 tours', status:'done', p1:'Leclerc',p2:'Norris',p3:'Piastri'},
-  {r:6,  flag:'🇺🇸', name:'Grand Prix de Miami',        loc:'Miami International Autodrome', dates:'1–3 Mai',       el:'13h', q:'14h', race:'15h', circuit:'5.412 km · 57 tours', status:'done', sprint:true, p1:'Verstappen',p2:'Norris',p3:'Antonelli'},
-  {r:7,  flag:'🇨🇦', name:'Grand Prix du Canada',       loc:'Circuit Gilles-Villeneuve',     dates:'22–24 Mai',     el:'13h', q:'14h', race:'14h', circuit:'4.361 km · 70 tours', status:'done', sprint:true, p1:'Hamilton',p2:'Antonelli',p3:'Russell'},
-  {r:8,  flag:'🇲🇨', name:'Grand Prix de Monaco',       loc:'Circuit de Monaco',             dates:'5–7 Juin',      el:'13h', q:'15h', race:'15h', circuit:'3.337 km · 78 tours', status:'done', p1:'Leclerc',p2:'Norris',p3:'Piastri'},
-  {r:9,  flag:'🇪🇸', name:'Grand Prix d\'Espagne',      loc:'Circuit de Barcelona-Catalunya', dates:'12–14 Juin',   el:'13h', q:'15h', race:'15h', circuit:'4.655 km · 66 tours', status:'done', p1:'Hamilton',p2:'Verstappen',p3:'Antonelli'},
-  {r:10, flag:'🇦🇹', name:'Grand Prix d\'Autriche',     loc:'Red Bull Ring · Spielberg',     dates:'26–28 Juin',    el:'13h30', q:'16h00', race:'15h00', circuit:'4.318 km · 71 tours', status:'next'},
-  {r:11, flag:'🇬🇧', name:'Grand Prix de Grande-Bretagne', loc:'Silverstone Circuit',        dates:'3–5 Juil.',     el:'13h', q:'15h', race:'15h', circuit:'5.891 km · 52 tours', status:'upcoming', sprint:true},
-  {r:12, flag:'🇧🇪', name:'Grand Prix de Belgique',     loc:'Circuit de Spa-Francorchamps', dates:'17–19 Juil.',   el:'13h', q:'15h', race:'15h', circuit:'7.004 km · 44 tours', status:'upcoming'},
-  {r:13, flag:'🇭🇺', name:'Grand Prix de Hongrie',      loc:'Hungaroring · Budapest',        dates:'24–26 Juil.',   el:'13h', q:'15h', race:'15h', circuit:'4.381 km · 70 tours', status:'upcoming'},
-  {r:14, flag:'🇳🇱', name:'Grand Prix des Pays-Bas',    loc:'Circuit Zandvoort',             dates:'21–23 Août',    el:'13h', q:'15h', race:'15h', circuit:'4.259 km · 72 tours', status:'upcoming', sprint:true},
-  {r:15, flag:'🇮🇹', name:'Grand Prix d\'Italie',       loc:'Autodromo Nazionale Monza',     dates:'4–6 Sep.',      el:'13h', q:'15h', race:'15h', circuit:'5.793 km · 53 tours', status:'upcoming'},
-  {r:16, flag:'🇪🇸', name:'Grand Prix d\'Espagne (Madrid)', loc:'Circuito Madrid Motoring',  dates:'11–13 Sep.',    el:'13h', q:'15h', race:'15h', circuit:'5.474 km · 55 tours', status:'upcoming'},
-  {r:17, flag:'🇦🇿', name:'Grand Prix d\'Azerbaïdjan',  loc:'Baku City Circuit',             dates:'25–27 Sep.',    el:'13h', q:'15h', race:'13h', circuit:'6.003 km · 51 tours', status:'upcoming'},
-  {r:18, flag:'🇸🇬', name:'Grand Prix de Singapour',    loc:'Marina Bay Street Circuit',     dates:'9–11 Oct.',     el:'13h', q:'15h', race:'20h', circuit:'4.940 km · 62 tours', status:'upcoming', sprint:true},
-  {r:19, flag:'🇺🇸', name:'Grand Prix des États-Unis',  loc:'Circuit of the Americas · Austin', dates:'23–25 Oct.', el:'13h', q:'15h', race:'20h', circuit:'5.513 km · 56 tours', status:'upcoming'},
-  {r:20, flag:'🇲🇽', name:'Grand Prix du Mexique',      loc:'Autodromo Hermanos Rodriguez',  dates:'30 Oct.–1 Nov.',el:'13h', q:'15h', race:'20h', circuit:'4.304 km · 71 tours', status:'upcoming'},
-  {r:21, flag:'🇧🇷', name:'Grand Prix du Brésil',       loc:'Autodromo Jose Carlos Pace',    dates:'6–8 Nov.',      el:'13h', q:'15h', race:'18h', circuit:'4.309 km · 71 tours', status:'upcoming'},
-  {r:22, flag:'🇦🇪', name:'Grand Prix d\'Abu Dhabi',    loc:'Yas Marina Circuit',            dates:'4–6 Déc.',      el:'13h', q:'15h', race:'17h', circuit:'5.281 km · 58 tours', status:'upcoming'},
+  {r:1,  flag:'🇦🇺', name:'Grand Prix d\'Australie',          loc:'Albert Park · Melbourne',         dates:'6–8 Mars',       el:'13h', q:'14h', race:'15h', circuit:'5.278 km · 58 tours', status:'done', p1:'Russell',p2:'Antonelli',p3:'Leclerc'},
+  {r:2,  flag:'🇨🇳', name:'Grand Prix de Chine',               loc:'Shanghai International Circuit',   dates:'13–15 Mars',     el:'13h', q:'14h', race:'15h', circuit:'5.451 km · 56 tours', status:'done', sprint:true, p1:'Antonelli',p2:'Russell',p3:'Hamilton'},
+  {r:3,  flag:'🇯🇵', name:'Grand Prix du Japon',               loc:'Suzuka Circuit',                   dates:'27–29 Mars',     el:'13h', q:'14h', race:'15h', circuit:'5.807 km · 53 tours', status:'done', p1:'Antonelli',p2:'Piastri',p3:'Leclerc'},
+  {r:4,  flag:'🇧🇭', name:'Grand Prix de Bahreïn',             loc:'Bahrain International Circuit',    dates:'10–12 Avr.',     el:'13h', q:'14h', race:'18h', circuit:'5.412 km · 57 tours', status:'cancelled'},
+  {r:5,  flag:'🇸🇦', name:'Grand Prix d\'Arabie Saoudite',    loc:'Jeddah Corniche Circuit',          dates:'17–19 Avr.',     el:'13h', q:'17h', race:'18h', circuit:'6.174 km · 50 tours', status:'cancelled'},
+  {r:6,  flag:'🇺🇸', name:'Grand Prix de Miami',               loc:'Miami International Autodrome',    dates:'1–3 Mai',        el:'13h', q:'14h', race:'15h', circuit:'5.412 km · 57 tours', status:'done', sprint:true, p1:'Antonelli',p2:'Norris',p3:'Piastri'},
+  {r:7,  flag:'🇨🇦', name:'Grand Prix du Canada',              loc:'Circuit Gilles-Villeneuve',        dates:'22–24 Mai',      el:'13h', q:'14h', race:'14h', circuit:'4.361 km · 70 tours', status:'done', sprint:true, p1:'Antonelli',p2:'Hamilton',p3:'Verstappen'},
+  {r:8,  flag:'🇲🇨', name:'Grand Prix de Monaco',              loc:'Circuit de Monaco',                dates:'5–7 Juin',       el:'13h', q:'15h', race:'15h', circuit:'3.337 km · 78 tours', status:'done', p1:'Antonelli',p2:'Hamilton',p3:'Gasly'},
+  {r:9,  flag:'🇪🇸', name:'Grand Prix de Barcelone-Catalogne', loc:'Circuit de Barcelona-Catalunya',   dates:'12–14 Juin',     el:'13h', q:'15h', race:'15h', circuit:'4.675 km · 66 tours', status:'done', p1:'Hamilton',p2:'Russell',p3:'Norris'},
+  {r:10, flag:'🇦🇹', name:'Grand Prix d\'Autriche',           loc:'Red Bull Ring · Spielberg',        dates:'26–28 Juin',     el:'13h30', q:'16h00', race:'15h00', circuit:'4.318 km · 71 tours', status:'next'},
+  {r:11, flag:'🇬🇧', name:'Grand Prix de Grande-Bretagne',     loc:'Silverstone Circuit',              dates:'3–5 Juil.',      el:'13h', q:'15h', race:'15h', circuit:'5.891 km · 52 tours', status:'upcoming', sprint:true},
+  {r:12, flag:'🇧🇪', name:'Grand Prix de Belgique',            loc:'Circuit de Spa-Francorchamps',     dates:'17–19 Juil.',    el:'13h', q:'15h', race:'15h', circuit:'7.004 km · 44 tours', status:'upcoming'},
+  {r:13, flag:'🇭🇺', name:'Grand Prix de Hongrie',             loc:'Hungaroring · Budapest',           dates:'24–26 Juil.',    el:'13h', q:'15h', race:'15h', circuit:'4.381 km · 70 tours', status:'upcoming'},
+  {r:14, flag:'🇳🇱', name:'Grand Prix des Pays-Bas',           loc:'Circuit Zandvoort',                dates:'21–23 Août',     el:'13h', q:'15h', race:'15h', circuit:'4.259 km · 72 tours', status:'upcoming', sprint:true},
+  {r:15, flag:'🇮🇹', name:'Grand Prix d\'Italie',             loc:'Autodromo Nazionale Monza',        dates:'4–6 Sep.',       el:'13h', q:'15h', race:'15h', circuit:'5.793 km · 53 tours', status:'upcoming'},
+  {r:16, flag:'🇪🇸', name:'Grand Prix d\'Espagne (Madrid)',   loc:'Madring · Madrid',                 dates:'11–13 Sep.',     el:'13h', q:'15h', race:'15h', circuit:'5.474 km · 55 tours', status:'upcoming'},
+  {r:17, flag:'🇦🇿', name:'Grand Prix d\'Azerbaïdjan',        loc:'Baku City Circuit',                dates:'26 Sep.',        el:'13h', q:'15h', race:'13h', circuit:'6.003 km · 51 tours', status:'upcoming'},
+  {r:18, flag:'🇸🇬', name:'Grand Prix de Singapour',           loc:'Marina Bay Street Circuit',        dates:'9–11 Oct.',      el:'13h', q:'15h', race:'20h', circuit:'4.940 km · 62 tours', status:'upcoming', sprint:true},
+  {r:19, flag:'🇺🇸', name:'Grand Prix des États-Unis',         loc:'Circuit of the Americas · Austin', dates:'23–25 Oct.',     el:'13h', q:'15h', race:'20h', circuit:'5.513 km · 56 tours', status:'upcoming'},
+  {r:20, flag:'🇲🇽', name:'Grand Prix du Mexique',             loc:'Autodromo Hermanos Rodriguez',     dates:'30 Oct.–1 Nov.', el:'13h', q:'15h', race:'20h', circuit:'4.304 km · 71 tours', status:'upcoming'},
+  {r:21, flag:'🇧🇷', name:'Grand Prix du Brésil',              loc:'Autodromo Jose Carlos Pace',       dates:'6–8 Nov.',       el:'13h', q:'15h', race:'18h', circuit:'4.309 km · 71 tours', status:'upcoming'},
+  {r:22, flag:'🇺🇸', name:'Grand Prix de Las Vegas',           loc:'Las Vegas Strip Circuit',          dates:'21 Nov.',        el:'13h', q:'22h', race:'22h', circuit:'6.201 km · 50 tours', status:'upcoming'},
+  {r:23, flag:'🇶🇦', name:'Grand Prix du Qatar',               loc:'Lusail International Circuit',     dates:'29 Nov.',        el:'13h', q:'20h', race:'17h', circuit:'5.380 km · 57 tours', status:'upcoming'},
+  {r:24, flag:'🇦🇪', name:'Grand Prix d\'Abu Dhabi',          loc:'Yas Marina Circuit',               dates:'6 Déc.',         el:'13h', q:'17h', race:'14h', circuit:'5.281 km · 58 tours', status:'upcoming'},
 ];
 
 let calendarOpen = false;
@@ -3842,7 +3980,7 @@ function buildCalendarGrid(){
   F1_CALENDAR_2026.forEach(gp => {
     const item = document.createElement('div');
     item.className = 'ngp-gp-item';
-    const statusLabel = gp.status==='done'?'Terminé':gp.status==='next'?'▶ En cours':'À venir';
+    const statusLabel = gp.status==='done'?'Terminé':gp.status==='next'?'▶ En cours':gp.status==='cancelled'?'❌ Annulé':'À venir';
     const resultHTML = gp.p1 ? `<div class="ngp-gp-result"><div class="ngp-gp-res-lbl">Résultats</div><div class="ngp-gp-podium"><div class="ngp-gp-pos"><span class="ngp-gp-pos-n p1">🥇</span> ${gp.p1}</div><div class="ngp-gp-pos"><span class="ngp-gp-pos-n p2">🥈</span> ${gp.p2}</div><div class="ngp-gp-pos"><span class="ngp-gp-pos-n p3">🥉</span> ${gp.p3}</div></div></div>` : '';
     item.innerHTML = `<div class="ngp-gp-row" onclick="toggleGP(this)"><div class="ngp-gp-round">R${String(gp.r).padStart(2,'0')}</div><div class="ngp-gp-flag">${gp.flag}</div><div class="ngp-gp-name"><div class="ngp-gp-n">${gp.name}${gp.sprint?'<span class="sprint-badge">SPRINT</span>':''}</div><div class="ngp-gp-loc">${gp.loc}</div></div><div class="ngp-gp-dates">${gp.dates}</div><div class="ngp-gp-status ${gp.status}">${statusLabel}</div><div class="ngp-gp-arrow">›</div></div><div class="ngp-gp-detail"><div class="ngp-gp-detail-grid"><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">Circuit</div><div class="ngp-gp-ds-val">${gp.circuit}</div></div><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">Essais Libres</div><div class="ngp-gp-ds-val">${gp.el}</div></div><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">Qualifications</div><div class="ngp-gp-ds-val" style="color:var(--red)">${gp.q}</div></div><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">Course</div><div class="ngp-gp-ds-val" style="color:var(--gold)">${gp.race}</div></div><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">Dates</div><div class="ngp-gp-ds-val">${gp.dates} 2026</div></div>${gp.sprint?'<div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">Format</div><div class="ngp-gp-ds-val" style="color:var(--gold)">Sprint Weekend</div></div>':''}</div>${resultHTML}</div>`;
     grid.appendChild(item);
