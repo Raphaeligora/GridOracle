@@ -1038,7 +1038,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
     <p class="trial-popup-s">Avant le GP d'Autriche, découvre les prédictions complètes de l'IA — Top 10 avec les % de confiance. Sans carte bancaire.</p>
     <div class="trial-popup-perks">
       <div class="trial-perk"><span class="trial-perk-ico">●</span>Accès complet au Top 10 de l'IA</div>
-      <div class="trial-perk"><span class="trial-perk-ico">●</span>Prédiction P6 à P10 débloquée</div>
+      <div class="trial-perk"><span class="trial-perk-ico">●</span><span data-i18n="trial.p6p10">Prédiction P6 à P10 débloquée</span></div>
       <div class="trial-perk"><span class="trial-perk-ico">●</span>Expire sam. 27 juin à 16h00 — expire dans <span id="trial-popup-timer" style="color:var(--red);font-weight:600">03j 21h 29m</span></div>
       <div class="trial-perk"><span class="trial-perk-ico">●</span>Sans carte bancaire, sans engagement</div>
     </div>
@@ -1052,8 +1052,8 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 <div id="trial-expire-popup">
   <div class="trial-popup-box">
     <div style="font-size:2.2rem;margin-bottom:.6rem">⏰</div>
-    <div class="trial-popup-t">Ton accès Premium<br>a expiré</div>
-    <p class="trial-popup-s">Ton essai gratuit de 48h est terminé. Pour continuer à voir le Top 10 de l'IA et marquer des points sur les positions 6–10, passe en Premium.</p>
+    <div class="trial-popup-t" data-i18n="trial.expired">Ton accès Premium<br>a expiré</div>
+    <p class="trial-popup-s" data-i18n="trial.expired.s">Ton essai gratuit de 48h est terminé. Pour continuer à voir le Top 10 de l'IA et marquer des points sur les positions 6–10, passe en Premium.</p>
     <div class="trial-popup-perks" style="margin-bottom:1.2rem">
       <div class="trial-perk"><span class="trial-perk-ico">●</span>Top 10 IA pour chaque GP</div>
       <div class="trial-perk"><span class="trial-perk-ico">●</span>+25 pts de bonus saisonnier</div>
@@ -1075,7 +1075,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
   <div class="co-wrap">
     <div class="co-nav">
       <a class="logo">GRID<s>ORACLE</s></a>
-      <button class="co-back" onclick="closeCheckout()">← Retour</button>
+      <button class="co-back" onclick="closeCheckout()"data-i18n="ui.back">← Retour</button>
       <div class="co-trust">🔒 Paiement sécurisé Stripe</div>
     </div>
     <div class="co-grid">
@@ -1115,7 +1115,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 <div id="edit-modal">
   <div class="em-box">
     <div class="em-header">
-      <div class="em-title">Modifier mon profil</div>
+      <div class="em-title" data-i18n="edit.title">Modifier mon profil</div>
       <button class="em-close" onclick="closeEditModal()">✕</button>
     </div>
     <div class="em-body" id="em-body"></div>
@@ -1137,16 +1137,16 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
   </div>
   <div class="step on" id="s0">
     <div style="text-align:center">
-      <div class="wtag">⚡ Saison 2026 · 11 équipes · 22 pilotes</div>
+      <div class="wtag" data-i18n="ob.wtag">⚡ Saison 2026 · 11 équipes · 22 pilotes</div>
       <h1 class="ob-t" style="font-size:clamp(2rem,6vw,2.9rem);text-align:center">Bienvenue sur<br><span style="color:var(--red)">GridOracle</span></h1>
       <p class="ob-s" style="text-align:center;max-width:420px;margin:0 auto 1.5rem">Crée ton profil de pronosticeur en 60 secondes et rejoins la compétition dès le Grand Prix d'Autriche.</p>
       <ul class="cli" style="margin-bottom:1.8rem">
-        <li><div class="cli-i">✓</div>Tes infos & ton identifiant joueur</li>
-        <li><div class="cli-i">✓</div>Ton écurie favorite — 11 teams 2026</li>
-        <li><div class="cli-i">✓</div>Ton pilote préféré — grille complète</li>
+        <li><div class="cli-i">✓</div><span data-i18n="ob.li1">Tes infos & ton identifiant joueur</span></li>
+        <li><div class="cli-i">✓</div><span data-i18n="ob.li2">Ton écurie favorite — 11 teams 2026</span></li>
+        <li><div class="cli-i">✓</div><span data-i18n="ob.li3">Ton pilote préféré — grille complète</span></li>
       </ul>
       <button class="ob-btn" style="max-width:300px;margin:0 auto" onclick="go(1)" data-i18n="ob.start">Créer mon profil →</button>
-      <p style="color:var(--g);font-size:.72rem;margin-top:.85rem">Gratuit · Sans carte bancaire</p>
+      <p style="color:var(--g);font-size:.72rem;margin-top:.85rem" data-i18n="ob.free">Gratuit · Sans carte bancaire</p>
     </div>
   </div>
   <div class="step" id="s1">
@@ -1178,8 +1178,8 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
   <div class="step" id="s4">
     <div class="conf">🏁</div>
     <div style="text-align:center;margin-bottom:1.3rem">
-      <div class="ob-lbl" style="text-align:center">Profil créé avec succès !</div>
-      <h2 class="ob-t" style="text-align:center;font-size:1.85rem">Ton profil GridOracle</h2>
+      <div class="ob-lbl" style="text-align:center" data-i18n="ob.success">Profil créé avec succès !</div>
+      <h2 class="ob-t" style="text-align:center;font-size:1.85rem" data-i18n="ob.profile.t">Ton profil GridOracle</h2>
     </div>
     <div class="prof-c" id="pcard"></div>
     <button class="ob-btn" onclick="goApp()" data-i18n="ob.enter">Accéder à GridOracle → 🏎️</button>
@@ -1234,7 +1234,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
   </div>
   <div class="rb-sep"></div>
   <div class="rb-cd">
-    <div class="rb-lbl">Qualifs dans</div>
+    <div class="rb-lbl" data-i18n="hub.qualsin">Qualifs dans</div>
     <div class="rb-units">
       <div class="rbu"><div class="rbv" id="rd">00</div><div class="rbs">J</div></div>
       <div class="rbc">:</div>
@@ -1244,7 +1244,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
       <div class="rbc">:</div>
       <div class="rbu"><div class="rbv" id="rs">00</div><div class="rbs">S</div></div>
     </div>
-    <button class="btn-pred-rb" onclick="navTo('prediction')">Prédire →</button>
+    <button class="btn-pred-rb" onclick="navTo('prediction')"data-i18n="hub.predict">Prédire →</button>
   </div>
 </div>
 
@@ -1259,23 +1259,23 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
       <div class="hws-name" id="hw-name">GridOracle</div>
       <div class="hws-handle" id="hw-handle">@griduser</div>
       <div class="hws-badge hws-badge-blue" id="hw-team-badge">
-        <div class="hws-bl">Mon écurie</div>
+        <div class="hws-bl" data-i18n="hub.myteam">Mon écurie</div>
         <div class="hws-bv" id="hw-team">—</div>
       </div>
       <div class="hws-badge hws-badge-dark" id="hw-driver-badge">
-        <div class="hws-bl">Mon pilote</div>
+        <div class="hws-bl" data-i18n="hub.mydriver">Mon pilote</div>
         <div class="hws-bv" id="hw-driver">—</div>
       </div>
       <div class="hws-stats">
-        <div class="hws-sc"><div class="hws-sv" id="hw-pts">0</div><div class="hws-sl">pts</div></div>
-        <div class="hws-sc"><div class="hws-sv" id="hw-rank">#—</div><div class="hws-sl">rang</div></div>
-        <div class="hws-sc"><div class="hws-sv" id="hw-pred-count">0/5</div><div class="hws-sl">prédit</div></div>
-        <div class="hws-sc"><div class="hws-sv" id="hw-acc">—%</div><div class="hws-sl">précision</div></div>
+        <div class="hws-sc"><div class="hws-sv" id="hw-pts">0</div><div class="hws-sl" data-i18n="hub.pts">pts</div></div>
+        <div class="hws-sc"><div class="hws-sv" id="hw-rank">#—</div><div class="hws-sl" data-i18n="hub.rank">rang</div></div>
+        <div class="hws-sc"><div class="hws-sv" id="hw-pred-count">0/5</div><div class="hws-sl" data-i18n="hub.pred">prédit</div></div>
+        <div class="hws-sc"><div class="hws-sv" id="hw-acc">—%</div><div class="hws-sl" data-i18n="hub.acc">précision</div></div>
       </div>
       <div class="hws-plan">
-        <div class="hws-bl">Plan actuel</div>
+        <div class="hws-bl" data-i18n="hub.plan">Plan actuel</div>
         <div class="hws-pv" id="hw-plan-lbl">Free</div>
-        <button class="hws-up" onclick="openStripeModal('premium')">Upgrade Premium →</button>
+        <button class="hws-up" onclick="openStripeModal('premium')"data-i18n="hub.upgrade">Upgrade Premium →</button>
       </div>
     </div>
 
@@ -1369,18 +1369,18 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 
             <div class="aic-sep"></div>
 
-            <div class="aic-slbl">FACTEURS D'ANALYSE</div>
+            <div class="aic-slbl" data-i18n="hub.factors">FACTEURS D'ANALYSE</div>
             <div class="aic-bars">
-              <div class="aic-brow"><div class="aic-blbl">Performance voiture</div><div class="aic-bval">95%</div><div class="aic-btrack"><div class="aic-bfill" style="--tw:95%"></div></div></div>
-              <div class="aic-brow"><div class="aic-blbl">Forme pilote</div><div class="aic-bval">88%</div><div class="aic-btrack"><div class="aic-bfill" style="--tw:88%"></div></div></div>
-              <div class="aic-brow"><div class="aic-blbl">Historique circuit</div><div class="aic-bval aic-mid">76%</div><div class="aic-btrack"><div class="aic-bfill aic-bmid" style="--tw:76%"></div></div></div>
-              <div class="aic-brow"><div class="aic-blbl">Conditions météo</div><div class="aic-bval aic-low">63%</div><div class="aic-btrack"><div class="aic-bfill aic-blow" style="--tw:63%"></div></div></div>
-              <div class="aic-brow"><div class="aic-blbl">Fiabilité moteur</div><div class="aic-bval">84%</div><div class="aic-btrack"><div class="aic-bfill" style="--tw:84%"></div></div></div>
+              <div class="aic-brow"><div class="aic-blbl" data-i18n="hub.f.car">Performance voiture</div><div class="aic-bval">95%</div><div class="aic-btrack"><div class="aic-bfill" style="--tw:95%"></div></div></div>
+              <div class="aic-brow"><div class="aic-blbl" data-i18n="hub.f.driver">Forme pilote</div><div class="aic-bval">88%</div><div class="aic-btrack"><div class="aic-bfill" style="--tw:88%"></div></div></div>
+              <div class="aic-brow"><div class="aic-blbl" data-i18n="hub.f.circuit">Historique circuit</div><div class="aic-bval aic-mid">76%</div><div class="aic-btrack"><div class="aic-bfill aic-bmid" style="--tw:76%"></div></div></div>
+              <div class="aic-brow"><div class="aic-blbl" data-i18n="hub.f.weather">Conditions météo</div><div class="aic-bval aic-low">63%</div><div class="aic-btrack"><div class="aic-bfill aic-blow" style="--tw:63%"></div></div></div>
+              <div class="aic-brow"><div class="aic-blbl" data-i18n="hub.f.engine">Fiabilité moteur</div><div class="aic-bval">84%</div><div class="aic-btrack"><div class="aic-bfill" style="--tw:84%"></div></div></div>
             </div>
 
             <div class="aic-sep"></div>
 
-            <div class="aic-slbl">INDICATEURS</div>
+            <div class="aic-slbl" data-i18n="hub.indicators">INDICATEURS</div>
             <div class="aic-inds">
               <div class="aic-ind pos"><div class="aic-indv">+3.2%</div><div class="aic-indl">Avantage Verstappen</div></div>
               <div class="aic-ind neg"><div class="aic-indv">−1.1%</div><div class="aic-indl">Risque Safety Car</div></div>
@@ -1413,9 +1413,9 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
             <div class="lkbl ai-rows" id="ai-home-lock"></div>
             <div class="lkov">
               <div class="lkm">
-                <h4>🔒 Positions 6–10 Premium</h4>
-                <p>Accède à l'analyse complète de l'IA.</p>
-                <button class="btn-r" style="font-size:.76rem;padding:.38rem .9rem" onclick="openStripeModal('premium')">Passer Premium →</button>
+                <h4 data-i18n="hub.lock.t">🔒 Positions 6–10 Premium</h4>
+                <p data-i18n="hub.lock.s">Accède à l'analyse complète de l'IA.</p>
+                <button class="btn-r" style="font-size:.76rem;padding:.38rem .9rem" onclick="openStripeModal('premium')"data-i18n="hub.goprem">Passer Premium →</button>
               </div>
             </div>
           </div>
@@ -1426,28 +1426,28 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
           <div class="card-h">
             <div style="display:flex;align-items:center;gap:.45rem">
               <div class="card-ht" style="color:var(--w)" data-i18n="pred.mine">Ma Prédiction</div>
-              <div class="pred-status st-open" id="hpb">En cours</div>
+              <div class="pred-status st-open" id="hpb" data-i18n="pred.open">En cours</div>
             </div>
             <div class="p-acts"><button class="bcpai" onclick="hCopy()" data-i18n="pred.copyai">Copier IA</button><button class="brst" onclick="hReset()">✕</button></div>
           </div>
           <div class="p-slots" id="hslots"></div>
-          <div class="prem-lock" id="home-prem-lock"><span class="pl-txt">🔒 Positions 6–10 — Premium</span><button class="pl-btn" onclick="openStripeModal('premium')">Upgrader</button></div>
+          <div class="prem-lock" id="home-prem-lock"><span class="pl-txt"><span class="pl-txt" data-i18n="pred.lock.t">🔒 Positions 6–10 — Premium</span><button class="pl-btn" onclick="openStripeModal('premium')" data-i18n="pred.lock.btn">Upgrader</button></div>
           <div class="p-foot">
-            <div class="sub-prog"><b id="hcnt">0</b>/<span id="hmax">5</span> positions complètes</div>
-            <button class="bsub" id="hbs" disabled onclick="hSubmit()">🏁 Verrouiller ma prédiction · GP Autriche</button>
-            <div class="sub-dl">Clôture le <b>Samedi 27 Juin à 15h00</b></div>
+            <div class="sub-prog"><b id="hcnt">0</b>/<span id="hmax">5</span> <span data-i18n="pred.complete">positions complètes</span></div>
+            <button class="bsub" id="hbs" disabled onclick="hSubmit()"data-i18n="pred.lock.hub">🏁 Verrouiller ma prédiction · GP Autriche</button>
+            <div class="sub-dl"data-i18n-html="pred.deadline">Clôture le <b>Samedi 27 Juin à 15h00</b></div>
           </div>
         </div>
 
         <!-- PROGRAMME GP -->
         <div class="card hw-sched-card">
-          <div class="card-h"><div class="card-ht">Programme GP</div></div>
+          <div class="card-h"><div class="card-ht" data-i18n="hub.schedule">Programme GP</div></div>
           <div style="padding:.5rem .8rem">
-            <div class="hw-sr"><span class="hw-sl">Ven · EL1</span><span class="hw-sv">13h30</span></div>
-            <div class="hw-sr"><span class="hw-sl">Ven · EL2</span><span class="hw-sv">17h00</span></div>
-            <div class="hw-sr"><span class="hw-sl">Sam · EL3</span><span class="hw-sv">12h30</span></div>
-            <div class="hw-sr"><span class="hw-sl">Sam · Qualifs</span><span class="hw-sv hw-red">16h00</span></div>
-            <div class="hw-sr" style="border:none"><span class="hw-sl">Dim · Course</span><span class="hw-sv hw-gold">15h00</span></div>
+            <div class="hw-sr"><span class="hw-sl"data-i18n="sched.fp1">Ven · EL1</span><span class="hw-sv">13h30</span></div>
+            <div class="hw-sr"><span class="hw-sl"data-i18n="sched.fp2">Ven · EL2</span><span class="hw-sv">17h00</span></div>
+            <div class="hw-sr"><span class="hw-sl"data-i18n="sched.fp3">Sam · EL3</span><span class="hw-sv">12h30</span></div>
+            <div class="hw-sr"><span class="hw-sl"data-i18n="sched.q">Sam · Qualifs</span><span class="hw-sv hw-red">16h00</span></div>
+            <div class="hw-sr" style="border:none"><span class="hw-sl"data-i18n="sched.r">Dim · Course</span><span class="hw-sv hw-gold">15h00</span></div>
             <div class="hw-timer">
               <div class="rbu"><div class="rbv" id="rd2">00</div><div class="rbs">J</div></div>
               <div class="rbc">:</div>
@@ -1485,13 +1485,13 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
       <div class="league-card">
         <div class="lc-hd"><div class="lc-nm">🏆 F1 Fanatics 2026</div><div class="lc-ct">127 joueurs</div></div>
         <div class="lc-metrics">
-          <div class="lcm"><div class="lcmv red">#4</div><div class="lcml">Ma ligue</div></div>
-          <div class="lcm"><div class="lcmv">412</div><div class="lcml">Mes pts</div></div>
+          <div class="lcm"><div class="lcmv red">#4</div><div class="lcml" data-i18n="hub.myleague">Ma ligue</div></div>
+          <div class="lcm"><div class="lcmv">412</div><div class="lcml" data-i18n="hub.mypts">Mes pts</div></div>
           <div class="lcm"><div class="lcmv">#2847</div><div class="lcml">Mondial</div></div>
         </div>
         <div class="tabs"><div class="tab on" onclick="hTab('l',this)" data-i18n="tab.league">Ma Ligue</div><div class="tab" onclick="hTab('m',this)" data-i18n="tab.global">Mondial</div></div>
         <div class="lcbd" id="hlc"></div>
-        <div class="lc-ft"><a onclick="navTo('leagues')">Voir tout le classement →</a></div>
+        <div class="lc-ft"><a onclick="navTo('leagues')" data-i18n="hub.viewall">Voir tout le classement →</a></div>
       </div>
     </div>
     <div class="hs">
@@ -1527,11 +1527,11 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
             <div class="p-acts"><button class="bcpai" onclick="pCopy()" data-i18n="pred.copyai">Copier IA</button><button class="brst" onclick="pReset()">✕</button></div>
           </div>
           <div class="p-slots" id="pslots"></div>
-          <div class="prem-lock" id="pred-prem-lock"><span class="pl-txt">🔒 Positions 6–10 — Premium</span><button class="pl-btn" onclick="openStripeModal('premium')">Upgrader</button></div>
+          <div class="prem-lock" id="pred-prem-lock"><span class="pl-txt"><span class="pl-txt" data-i18n="pred.lock.t">🔒 Positions 6–10 — Premium</span><button class="pl-btn" onclick="openStripeModal('premium')" data-i18n="pred.lock.btn">Upgrader</button></div>
           <div class="p-foot">
             <div class="sub-prog"><b id="pcnt">0</b>/<span id="pmax">5</span> positions complètes</div>
             <button class="bsub" id="pbs" disabled onclick="pSubmit()">🏁 Verrouiller ma prédiction</button>
-            <div class="sub-dl">Clôture le <b>Samedi 27 Juin à 15h00</b></div>
+            <div class="sub-dl"data-i18n-html="pred.deadline">Clôture le <b>Samedi 27 Juin à 15h00</b></div>
           </div>
         </div>
       </div>
@@ -1544,7 +1544,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
             <th style="text-align:left;padding:.6rem .9rem;color:var(--g);font-weight:500;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase">Grand Prix</th>
             <th style="text-align:center;padding:.6rem .5rem;color:var(--g);font-weight:500;font-size:.7rem;text-transform:uppercase">Points</th>
             <th style="text-align:center;padding:.6rem .5rem;color:var(--g);font-weight:500;font-size:.7rem;text-transform:uppercase">Précision</th>
-            <th style="text-align:center;padding:.6rem .5rem;color:var(--g);font-weight:500;font-size:.7rem;text-transform:uppercase">Mon P1</th>
+            <th style="text-align:center;padding:.6rem .5rem;color:var(--g);font-weight:500;font-size:.7rem;text-transform:uppercase"data-i18n="pred.hist.p1">Mon P1</th>
             <th style="text-align:center;padding:.6rem .5rem;color:var(--g);font-weight:500;font-size:.7rem;text-transform:uppercase">Résultat P1</th>
           </tr></thead>
           <tbody id="pred-history"></tbody>
@@ -1561,26 +1561,26 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
     <div class="leagues-grid">
       <div style="display:flex;flex-direction:column;gap:.85rem">
         <div class="league-join">
-          <div class="lj-t">Rejoindre une ligue</div>
+          <div class="lj-t" data-i18n="leagues.join.t">Rejoindre une ligue</div>
           <input class="lj-input" placeholder="Code d'invitation (ex: F1FAN-2026)" id="join-code">
-          <button class="btn-r" style="width:100%" onclick="joinLeague()">Rejoindre →</button>
+          <button class="btn-r" style="width:100%" onclick="joinLeague()"data-i18n="leagues.join.btn">Rejoindre →</button>
         </div>
         <div class="create-league">
-          <div class="cl-t">🔒 Créer ma propre ligue</div>
-          <div class="cl-s">Invite ta communauté, définis tes récompenses et gère ton classement. Disponible avec Premium & Creator.</div>
-          <button class="btn-r" onclick="openStripeModal('premium')">Passer Premium →</button>
+          <div class="cl-t" data-i18n="leagues.create.t">🔒 Créer ma propre ligue</div>
+          <div class="cl-s" data-i18n="leagues.create.s">Invite ta communauté, définis tes récompenses et gère ton classement. Disponible avec Premium & Creator.</div>
+          <button class="btn-r" onclick="openStripeModal('premium')"data-i18n="hub.goprem">Passer Premium →</button>
         </div>
       </div>
       <div class="league-card">
-        <div class="lc-hd"><div class="lc-nm">🏆 F1 Fanatics 2026</div><div class="lc-ct">127 joueurs · Saison 2026</div></div>
+        <div class="lc-hd"><div class="lc-nm">🏆 F1 Fanatics 2026</div><div class="lc-ct" data-i18n="leagues.members">127 joueurs · Saison 2026</div></div>
         <div class="lc-metrics">
-          <div class="lcm"><div class="lcmv red">#4</div><div class="lcml">Ma position</div></div>
-          <div class="lcm"><div class="lcmv">412</div><div class="lcml">Mes points</div></div>
-          <div class="lcm"><div class="lcmv">87%</div><div class="lcml">Précision IA</div></div>
+          <div class="lcm"><div class="lcmv red">#4</div><div class="lcml" data-i18n="leagues.myrank">Ma position</div></div>
+          <div class="lcm"><div class="lcmv">412</div><div class="lcml" data-i18n="leagues.mypts">Mes points</div></div>
+          <div class="lcm"><div class="lcmv">87%</div><div class="lcml" data-i18n="leagues.aiacc">Précision IA</div></div>
         </div>
         <div class="tabs"><div class="tab on" onclick="hTab('l',this)" data-i18n="tab.standings">Classement</div><div class="tab" onclick="hTab('m',this)" data-i18n="tab.global">Mondial</div></div>
         <div class="lcbd" id="llc"></div>
-        <div class="lc-ft"><a>Voir tout le classement →</a></div>
+        <div class="lc-ft"><adata-i18n="hub.viewall">Voir tout le classement →</a></div>
       </div>
     </div>
   </div>
@@ -1593,7 +1593,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
     <div class="tabs" style="background:var(--card);border:1px solid var(--b);border-radius:12px 12px 0 0;overflow:hidden;margin-bottom:0">
       <div class="tab on" onclick="standTab('wdc',this)" data-i18n="stand.wdc">🏎️ Pilotes (WDC)</div>
       <div class="tab" onclick="standTab('wcc',this)" data-i18n="stand.wcc">🏭 Constructeurs (WCC)</div>
-      <div class="tab" onclick="standTab('players',this)">👥 Joueurs GridOracle</div>
+      <div class="tab" onclick="standTab('players',this)"data-i18n="stand.players">👥 Joueurs GridOracle</div>
     </div>
     <div class="card" style="border-radius:0 0 12px 12px;border-top:none">
       <div style="padding:.5rem" id="stand-body"></div>
@@ -1616,23 +1616,23 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
     </div>
     <!-- STATS -->
     <div class="cr-stats-row">
-      <div class="cr-stat"><div class="cr-stat-v">∞</div><div class="cr-stat-l">Ligues créées</div></div>
-      <div class="cr-stat"><div class="cr-stat-v">100%</div><div class="cr-stat-l">Personnalisation</div></div>
-      <div class="cr-stat"><div class="cr-stat-v">24/7</div><div class="cr-stat-l">Analytics live</div></div>
-      <div class="cr-stat"><div class="cr-stat-v">⭐</div><div class="cr-stat-l">Support prioritaire</div></div>
+      <div class="cr-stat"><div class="cr-stat-v">∞</div><div class="cr-stat-l" data-i18n="cr.stat.leagues">Ligues créées</div></div>
+      <div class="cr-stat"><div class="cr-stat-v">100%</div><div class="cr-stat-l" data-i18n="cr.stat.custom">Personnalisation</div></div>
+      <div class="cr-stat"><div class="cr-stat-v">24/7</div><div class="cr-stat-l" data-i18n="cr.stat.analytics">Analytics live</div></div>
+      <div class="cr-stat"><div class="cr-stat-v">⭐</div><div class="cr-stat-l" data-i18n="cr.stat.support">Support prioritaire</div></div>
     </div>
     <!-- FEATURES + PREVIEW -->
     <div class="cr-grid">
       <!-- FEATURES -->
       <div class="cr-card">
         <div class="cr-card-hd">
-          <div class="cr-card-t">🏆 Fonctionnalités Creator</div>
+          <div class="cr-card-t" data-i18n="cr.features.t">🏆 Fonctionnalités Creator</div>
         </div>
         <div class="cr-card-body">
           <ul class="cr-feature-list">
             <li>
               <div class="cr-feat-icon">🔒</div>
-              <div class="cr-feat-text"><strong>Ligues privées illimitées</strong>Crée autant de ligues que tu veux, avec des codes d'invitation personnalisés pour chaque communauté.</div>
+              <div class="cr-feat-text"><strong data-i18n="cr.feat1.t">Ligues privées illimitées</strong><span data-i18n="cr.feat1.s">Crée autant de ligues que tu veux, avec des codes d'invitation personnalisés pour chaque communauté.</span></div>
             </li>
             <li>
               <div class="cr-feat-icon">🎨</div>
@@ -1660,30 +1660,30 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
       <!-- LEAGUE PREVIEW -->
       <div style="display:flex;flex-direction:column;gap:.9rem">
         <div class="cr-card">
-          <div class="cr-card-hd"><div class="cr-card-t">📋 Mes Ligues Creator</div><button class="btn-r" style="font-size:.7rem;padding:.3rem .7rem" onclick="openStripeModal('creator')">Créer +</button></div>
+          <div class="cr-card-hd"><div class="cr-card-t" data-i18n="cr.myligues.t">📋 Mes Ligues Creator</div><button class="btn-r" style="font-size:.7rem;padding:.3rem .7rem" onclick="openStripeModal('creator')"data-i18n="cr.create">Créer +</button></div>
           <div class="cr-card-body">
             <div class="cr-league-preview">
               <div class="cr-lp">
                 <div class="cr-lp-icon" style="background:rgba(232,0,29,.1)">🏎️</div>
                 <div class="cr-lp-info">
                   <div class="cr-lp-name">F1 Fanatics Elite</div>
-                  <div class="cr-lp-meta"><span>🔴 GP Autriche ouvert</span><span>·</span><span>Saison 2026</span></div>
+                  <div class="cr-lp-meta"><span data-i18n="cr.gp.open">🔴 GP Autriche ouvert</span><span>·</span><span>Saison 2026</span></div>
                 </div>
-                <div class="cr-lp-members">127<br><span style="font-size:.6rem;color:var(--g)">membres</span></div>
+                <div class="cr-lp-members">127<br><span style="font-size:.6rem;color:var(--g)"data-i18n="cr.members">membres</span></div>
               </div>
               <div class="cr-lp">
                 <div class="cr-lp-icon" style="background:rgba(255,200,0,.1)">⚡</div>
                 <div class="cr-lp-info">
                   <div class="cr-lp-name">GridOracle VIP</div>
-                  <div class="cr-lp-meta"><span>🟡 Prédictions ouvertes</span><span>·</span><span>Saison 2026</span></div>
+                  <div class="cr-lp-meta"><span data-i18n="cr.pred.open">🟡 Prédictions ouvertes</span><span>·</span><span>Saison 2026</span></div>
                 </div>
-                <div class="cr-lp-members">84<br><span style="font-size:.6rem;color:var(--g)">membres</span></div>
+                <div class="cr-lp-members">84<br><span style="font-size:.6rem;color:var(--g)"data-i18n="cr.members">membres</span></div>
               </div>
               <div class="cr-lp" style="opacity:.45;border-style:dashed;cursor:pointer" onclick="openStripeModal('creator')">
                 <div class="cr-lp-icon" style="background:rgba(255,255,255,.04)">＋</div>
                 <div class="cr-lp-info">
-                  <div class="cr-lp-name" style="color:var(--g)">Nouvelle ligue…</div>
-                  <div class="cr-lp-meta"><span>Ligues illimitées avec Creator</span></div>
+                  <div class="cr-lp-name" style="color:var(--g)"><span data-i18n="cr.newleague">Nouvelle ligue…</span></div>
+                  <div class="cr-lp-meta"><span data-i18n="cr.unlimited">Ligues illimitées avec Creator</span></div>
                 </div>
               </div>
             </div>
@@ -1691,25 +1691,25 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
         </div>
         <!-- ANALYTICS -->
         <div class="cr-card">
-          <div class="cr-card-hd"><div class="cr-card-t">📈 Analytics Communauté</div><span style="font-size:.66rem;color:var(--g)">Live · GP Autriche</span></div>
+          <div class="cr-card-hd"><div class="cr-card-t" data-i18n="cr.analytics.t">📈 Analytics Communauté</div><span style="font-size:.66rem;color:var(--g)">Live · GP Autriche</span></div>
           <div class="cr-card-body">
             <div class="cr-analytics">
-              <div class="cr-an"><div class="cr-an-v" style="color:var(--gold)">211</div><div class="cr-an-l">Membres actifs</div></div>
-              <div class="cr-an"><div class="cr-an-v" style="color:#4caf50">78%</div><div class="cr-an-l">Taux participation</div></div>
-              <div class="cr-an"><div class="cr-an-v">68%</div><div class="cr-an-l">Précision moy.</div></div>
-              <div class="cr-an"><div class="cr-an-v" style="color:var(--red)">+12</div><div class="cr-an-l">Nouveaux ce GP</div></div>
+              <div class="cr-an"><div class="cr-an-v" style="color:var(--gold)">211</div><div class="cr-an-l" data-i18n="cr.active">Membres actifs</div></div>
+              <div class="cr-an"><div class="cr-an-v" style="color:#4caf50">78%</div><div class="cr-an-l" data-i18n="cr.partrate">Taux participation</div></div>
+              <div class="cr-an"><div class="cr-an-v">68%</div><div class="cr-an-l" data-i18n="cr.avgacc">Précision moy.</div></div>
+              <div class="cr-an"><div class="cr-an-v" style="color:var(--red)">+12</div><div class="cr-an-l" data-i18n="cr.newgp">Nouveaux ce GP</div></div>
             </div>
             <div style="margin-top:.85rem">
               <div class="cr-bar-row">
-                <div class="cr-bar-lbl"><span>Prédictions soumises</span><span>165/211</span></div>
+                <div class="cr-bar-lbl"><span data-i18n="cr.predsub">Prédictions soumises</span><span>165/211</span></div>
                 <div class="cr-bar-track"><div class="cr-bar-fill" style="width:78%"></div></div>
               </div>
               <div class="cr-bar-row">
-                <div class="cr-bar-lbl"><span>Précision P1</span><span>42%</span></div>
+                <div class="cr-bar-lbl"><span data-i18n="cr.p1acc">Précision P1</span><span>42%</span></div>
                 <div class="cr-bar-track"><div class="cr-bar-fill" style="width:42%"></div></div>
               </div>
               <div class="cr-bar-row">
-                <div class="cr-bar-lbl"><span>Top 3 correct</span><span>61%</span></div>
+                <div class="cr-bar-lbl"><span data-i18n="cr.top3">Top 3 correct</span><span>61%</span></div>
                 <div class="cr-bar-track"><div class="cr-bar-fill" style="width:61%"></div></div>
               </div>
             </div>
@@ -1719,10 +1719,10 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
     </div>
     <!-- CTA BOTTOM -->
     <div class="cr-cta">
-      <div class="cr-cta-t">Prêt à lancer ta ligue Creator ?</div>
-      <div class="cr-cta-s">Rejoins les créateurs qui transforment leur passion F1 en expérience communautaire unique. Annule à tout moment, sans engagement.</div>
+      <div class="cr-cta-t" data-i18n="cr.cta.t">Prêt à lancer ta ligue Creator ?</div>
+      <div class="cr-cta-s" data-i18n="cr.cta.s">Rejoins les créateurs qui transforment leur passion F1 en expérience communautaire unique. Annule à tout moment, sans engagement.</div>
       <button class="btn-r" style="background:linear-gradient(135deg,#b8860b,var(--gold));color:#000;font-weight:700;padding:.85rem 2rem;font-size:.92rem" onclick="openStripeModal('creator')">Devenir Creator — 19.99€/mois →</button>
-      <div style="margin-top:.75rem;font-size:.7rem;color:var(--g)">🔒 Paiement sécurisé Stripe · 14 jours satisfait ou remboursé</div>
+      <div style="margin-top:.75rem;font-size:.7rem;color:var(--g)" data-i18n="cr.stripe">🔒 Paiement sécurisé Stripe · 14 jours satisfait ou remboursé</div>
     </div>
   </div>
 </div>
@@ -1740,19 +1740,19 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
         <div class="pcb-email" id="pcb-email">·</div>
         <div class="pcb-tags" id="pcb-tags"></div>
         <div class="profile-stats">
-          <div class="ps-card"><div class="ps-v">412</div><div class="ps-l">Points saison</div></div>
-          <div class="ps-card"><div class="ps-v red">#4</div><div class="ps-l">Ma ligue</div></div>
-          <div class="ps-card"><div class="ps-v">68%</div><div class="ps-l">Précision</div></div>
+          <div class="ps-card"><div class="ps-v">412</div><div class="ps-l" data-i18n="profile.pts">Points saison</div></div>
+          <div class="ps-card"><div class="ps-v red">#4</div><div class="ps-l" data-i18n="profile.league">Ma ligue</div></div>
+          <div class="ps-card"><div class="ps-v">68%</div><div class="ps-l" data-i18n="profile.acc">Précision</div></div>
         </div>
-        <button class="edit-btn" onclick="openEditModal()">✏️ Modifier mon profil</button>
-        <button class="edit-btn" style="margin-top:.5rem;color:rgba(255,255,255,.35);font-size:.72rem" onclick="resetProfile()">↺ Réinitialiser mon profil</button>
+        <button class="edit-btn" onclick="openEditModal()"data-i18n="profile.edit">✏️ Modifier mon profil</button>
+        <button class="edit-btn" style="margin-top:.5rem;color:rgba(255,255,255,.35);font-size:.72rem" onclick="resetProfile()"data-i18n="profile.reset">↺ Réinitialiser mon profil</button>
         <div style="margin-top:.85rem;display:flex;gap:.6rem;flex-wrap:wrap">
-          <button class="btn-r" style="flex:1;min-width:140px;font-size:.78rem" onclick="openStripeModal('premium')">⭐ Passer Premium</button>
-          <button class="btn-r" style="flex:1;min-width:140px;font-size:.78rem;background:linear-gradient(135deg,#b8860b,var(--gold));color:#000" onclick="openStripeModal('creator')">🎙️ Devenir Creator</button>
+          <button class="btn-r" style="flex:1;min-width:140px;font-size:.78rem" onclick="openStripeModal('premium')"data-i18n="profile.goprem">⭐ Passer Premium</button>
+          <button class="btn-r" style="flex:1;min-width:140px;font-size:.78rem;background:linear-gradient(135deg,#b8860b,var(--gold));color:#000" onclick="openStripeModal('creator')"data-i18n="profile.gocreator">🎙️ Devenir Creator</button>
         </div>
       </div>
     </div>
-    <div style="margin-top:1.1rem"><span class="sec-lbl">Historique</span><div class="sec-t" style="font-size:1.1rem;margin-bottom:.8rem">Mes prédictions récentes</div></div>
+    <div style="margin-top:1.1rem"><span class="sec-lbl" data-i18n="profile.hist.lbl">Historique</span><div class="sec-t" style="font-size:1.1rem;margin-bottom:.8rem" data-i18n="profile.hist.t">Mes prédictions récentes</div></div>
     <div class="card" style="overflow:visible">
       <table style="width:100%;border-collapse:collapse;font-size:.82rem">
         <thead><tr style="border-bottom:1px solid var(--b)">
@@ -1772,7 +1772,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
   <div class="rules-wrap">
     <div style="margin-bottom:1.8rem">
       <span class="sec-lbl" data-i18n="rules.lbl">Règles officielles · Saison 2026</span>
-      <h1 style="font-family:var(--fh);font-size:clamp(1.7rem,4vw,2.6rem);font-weight:700;margin-bottom:.6rem;line-height:1.08">Règlement GridOracle 2026</h1><p id="rules-en-notice" style="display:none;background:rgba(232,0,29,.08);border:1px solid rgba(232,0,29,.2);border-radius:8px;padding:.65rem .9rem;font-size:.8rem;color:rgba(255,255,255,.6);margin-bottom:1rem">🇬🇧 Full English rules coming soon — key points available below.</p>
+      <h1 style="font-family:var(--fh);font-size:clamp(1.7rem,4vw,2.6rem);font-weight:700;margin-bottom:.6rem;line-height:1.08" data-i18n="rules.title">Règlement GridOracle 2026</h1><p id="rules-en-notice" style="display:none;background:rgba(232,0,29,.08);border:1px solid rgba(232,0,29,.2);border-radius:8px;padding:.65rem .9rem;font-size:.8rem;color:rgba(255,255,255,.6);margin-bottom:1rem">🇬🇧 Full English rules coming soon — key points available below.</p>
       <p style="color:var(--g);font-size:.9rem;line-height:1.75;max-width:580px">Tout ce qu'il faut savoir pour scorer des points et dominer ta ligue. Lis ce règlement avant de soumettre ta première prédiction.</p>
     </div>
     <!-- BARÈME -->
@@ -1799,12 +1799,12 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
         <div class="plan-cmp">
           <div class="plan-box" style="background:rgba(255,255,255,.03);border-color:var(--b)">
             <div class="plan-name">Free</div>
-            <div class="plan-desc">Prédictions P1 à P5</div>
+            <div class="plan-desc" data-i18n="rules.free">Prédictions P1 à P5</div>
             <div class="plan-max" style="color:var(--g)">63 pts max/GP</div>
           </div>
           <div class="plan-box" style="background:rgba(232,0,29,.05);border-color:rgba(232,0,29,.22)">
             <div class="plan-name" style="color:var(--red)">Premium</div>
-            <div class="plan-desc">Prédictions P1 à P10</div>
+            <div class="plan-desc" data-i18n="rules.prem">Prédictions P1 à P10</div>
             <div class="plan-max" style="color:var(--red)">87 pts max/GP</div>
           </div>
         </div>
@@ -1817,12 +1817,12 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
         <div class="rule-card-hd"><div class="rule-card-ico">⏰</div><div><div class="rule-card-ht">Règles des prédictions</div></div></div>
         <div class="rule-card-body">
           <ul class="rule-list">
-            <li><span class="rule-dot">●</span><span>Prédictions ouvertes <strong>48h avant les qualifications</strong></span></li>
+            <li><span class="rule-dot">●</span><spandata-i18n-html="rules.timing"><span>Prédictions ouvertes <strong>48h avant les qualifications</strong></span></li>
             <li><span class="rule-dot">●</span><span>Verrouillage automatique au <strong>début des qualifications (samedi)</strong></span></li>
             <li><span class="rule-dot">●</span><span>Tu peux modifier ta prédiction autant de fois que tu le souhaites avant verrouillage</span></li>
             <li><span class="rule-dot">●</span><span>Non-soumission = <strong>0 point</strong> pour ce Grand Prix</span></li>
             <li><span class="rule-dot">●</span><span>Points attribués <strong>dans l'heure suivant</strong> le drapeau à damier</span></li>
-            <li><span class="rule-dot">●</span><span>Course annulée : GP neutralisé, non comptabilisé</span></li>
+            <li><span class="rule-dot">●</span><spandata-i18n="rules.cancelled">Course annulée : GP neutralisé, non comptabilisé</span></li>
           </ul>
         </div>
       </div>
@@ -1832,9 +1832,9 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
           <div class="league-box" style="background:rgba(255,255,255,.03);border-color:var(--b)">
             <div class="lb-name">🌍 Ligue Publique — Free</div>
             <div class="lb-items">
-              <div class="lb-item">· Ouverte à tous les joueurs</div>
-              <div class="lb-item">· Classement mondial permanent</div>
-              <div class="lb-item">· Points cumulés sur 24 GP</div>
+              <div class="lb-item"data-i18n="rules.open">· Ouverte à tous les joueurs</div>
+              <div class="lb-item"data-i18n="rules.global">· Classement mondial permanent</div>
+              <div class="lb-item"data-i18n="rules.pts24">· Points cumulés sur 24 GP</div>
             </div>
           </div>
           <div class="league-box" style="background:rgba(232,0,29,.05);border-color:rgba(232,0,29,.22)">
@@ -1850,7 +1850,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
             <div class="lb-items">
               <div class="lb-item">· Tout de la Ligue Privée +</div>
               <div class="lb-item">· Logo et couleurs personnalisées</div>
-              <div class="lb-item">· Analytics détaillés, ligues illimitées</div>
+              <div class="lb-item" data-i18n="rules.prem.feat">· Analytics détaillés, ligues illimitées</div>
             </div>
           </div>
         </div>
@@ -1861,9 +1861,9 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
       <div class="rule-card-hd"><div class="rule-card-ico">⚖️</div><div><div class="rule-card-ht">Règles de départage</div><div class="rule-card-hs">En cas d'égalité parfaite de points</div></div></div>
       <div class="rule-card-body">
         <div class="tb-grid">
-          <div class="tb-card"><div class="tb-num">1</div><div class="tb-t">Prédictions P1 correctes</div><div class="tb-s">Nombre de vainqueurs corrects depuis le début de la saison</div></div>
+          <div class="tb-card"><div class="tb-num">1</div><div class="tb-t" data-i18n="rules.tb1">Prédictions P1 correctes</div><div class="tb-s">Nombre de vainqueurs corrects depuis le début de la saison</div></div>
           <div class="tb-card"><div class="tb-num">2</div><div class="tb-t">Total prédictions correctes</div><div class="tb-s">Toutes positions confondues, sur toute la saison</div></div>
-          <div class="tb-card"><div class="tb-num">3</div><div class="tb-t">Score dernier GP</div><div class="tb-s">Qui a le mieux performé lors du GP le plus récent</div></div>
+          <div class="tb-card"><div class="tb-num">3</div><div class="tb-t" data-i18n="rules.tb2">Score dernier GP</div><div class="tb-s">Qui a le mieux performé lors du GP le plus récent</div></div>
           <div class="tb-card"><div class="tb-num">4</div><div class="tb-t">Date d'inscription</div><div class="tb-s">Le membre GridOracle le plus ancien l'emporte</div></div>
         </div>
       </div>
@@ -1873,10 +1873,10 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
       <div class="rule-card-hd"><div class="rule-card-ico">📅</div><div><div class="rule-card-ht">Calendrier type d'un Grand Prix</div></div></div>
       <div class="rule-card-body">
         <div class="cal-grid">
-          <div class="cal-item"><div class="cal-ico">🔓</div><div><div class="cal-t">Jeudi — Ouverture</div><div class="cal-s">Les prédictions ouvrent 48h avant les qualifications. La prédiction IA GridOracle est publiée.</div></div></div>
-          <div class="cal-item"><div class="cal-ico">🏎️</div><div><div class="cal-t">Vendredi — Essais Libres</div><div class="cal-s">Tu peux analyser les performances et modifier ta prédiction librement selon les EL1 et EL2.</div></div></div>
-          <div class="cal-item" style="border:1px solid rgba(232,0,29,.2);border-radius:7px;background:rgba(232,0,29,.04)"><div class="cal-ico">🔒</div><div><div class="cal-t" style="color:var(--red)">Samedi — Verrouillage</div><div class="cal-s">Dès le premier tour des qualifications, toutes les prédictions sont <strong style="color:var(--w)">définitivement verrouillées</strong>.</div></div></div>
-          <div class="cal-item"><div class="cal-ico">🏁</div><div><div class="cal-t">Dimanche — Course & Points</div><div class="cal-s">Points attribués dans l'heure suivant le drapeau à damier. Classements mis à jour en temps réel.</div></div></div>
+          <div class="cal-item"><div class="cal-ico">🔓</div><div><div class="cal-t"data-i18n="rules.thu">Jeudi — Ouverture</div><div class="cal-s">Les prédictions ouvrent 48h avant les qualifications. La prédiction IA GridOracle est publiée.</div></div></div>
+          <div class="cal-item"><div class="cal-ico">🏎️</div><div><div class="cal-t"data-i18n="rules.fri">Vendredi — Essais Libres</div><div class="cal-s">Tu peux analyser les performances et modifier ta prédiction librement selon les EL1 et EL2.</div></div></div>
+          <div class="cal-item" style="border:1px solid rgba(232,0,29,.2);border-radius:7px;background:rgba(232,0,29,.04)"><div class="cal-ico">🔒</div><div><div class="cal-t" style="color:var(--red)"data-i18n="rules.sat">Samedi — Verrouillage</div><div class="cal-s">Dès le premier tour des qualifications, toutes les prédictions sont <strong style="color:var(--w)">définitivement verrouillées</strong>.</div></div></div>
+          <div class="cal-item"><div class="cal-ico">🏁</div><div><div class="cal-t"data-i18n="rules.sun"data-i18n="rules.sun">Dimanche — Course & Points</div><div class="cal-s"data-i18n="rules.pts.desc">Points attribués dans l'heure suivant le drapeau à damier. Classements mis à jour en temps réel.</div></div></div>
         </div>
       </div>
     </div>
@@ -1913,8 +1913,8 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
       <div class="pm-stat"><div class="pm-stat-v" id="pm-gps">0</div><div class="pm-stat-l">GPs joués</div></div>
     </div>
     <div class="pm-team-driver">
-      <div class="pm-td"><div class="pm-td-lbl">Équipe favorite</div><div class="pm-td-val" id="pm-team">—</div></div>
-      <div class="pm-td"><div class="pm-td-lbl">Pilote favori</div><div class="pm-td-val" id="pm-driver">—</div></div>
+      <div class="pm-td"><div class="pm-td-lbl" data-i18n="ngp.team">Équipe favorite</div><div class="pm-td-val" id="pm-team">—</div></div>
+      <div class="pm-td"><div class="pm-td-lbl" data-i18n="ngp.driver">Pilote favori</div><div class="pm-td-val" id="pm-driver">—</div></div>
     </div>
     <div class="pm-joined" id="pm-joined"></div>
   </div>
@@ -1974,23 +1974,23 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
       <div class="ngp-card">
         <div class="ngp-card-h">
           <span class="ngp-card-ico">📅</span>
-          <span class="ngp-card-t">Programme du week-end</span>
+          <span class="ngp-card-t" data-i18n="ngp.schedule">Programme du week-end</span>
         </div>
         <div class="ngp-card-b">
           <div class="ngp-sched">
             <div class="ngp-sday">
-              <div class="ngp-sday-lbl">Vendredi 26 Juin</div>
-              <div class="ngp-session"><span class="ngp-sl">Essais Libres 1</span><span class="ngp-sv">13h30</span></div>
-              <div class="ngp-session"><span class="ngp-sl">Essais Libres 2</span><span class="ngp-sv">17h00</span></div>
+              <div class="ngp-sday-lbl" data-i18n="ngp.fri">Vendredi 26 Juin</div>
+              <div class="ngp-session"><span class="ngp-sl" data-i18n="ngp.fp1">Essais Libres 1</span><span class="ngp-sv">13h30</span></div>
+              <div class="ngp-session"><span class="ngp-sl" data-i18n="ngp.fp2">Essais Libres 2</span><span class="ngp-sv">17h00</span></div>
             </div>
             <div class="ngp-sday">
-              <div class="ngp-sday-lbl">Samedi 27 Juin</div>
-              <div class="ngp-session"><span class="ngp-sl">Essais Libres 3</span><span class="ngp-sv">12h30</span></div>
-              <div class="ngp-session ngp-session-red"><span class="ngp-sl">🔴 Qualifications</span><span class="ngp-sv ngp-sv-red">16h00</span></div>
+              <div class="ngp-sday-lbl" data-i18n="ngp.sat">Samedi 27 Juin</div>
+              <div class="ngp-session"><span class="ngp-sl" data-i18n="ngp.fp3">Essais Libres 3</span><span class="ngp-sv">12h30</span></div>
+              <div class="ngp-session ngp-session-red"><span class="ngp-sl" data-i18n="ngp.quali">🔴 Qualifications</span><span class="ngp-sv ngp-sv-red">16h00</span></div>
             </div>
             <div class="ngp-sday">
-              <div class="ngp-sday-lbl">Dimanche 28 Juin</div>
-              <div class="ngp-session ngp-session-gold"><span class="ngp-sl">🏁 Course</span><span class="ngp-sv ngp-sv-gold">15h00</span></div>
+              <div class="ngp-sday-lbl" data-i18n="ngp.sun">Dimanche 28 Juin</div>
+              <div class="ngp-session ngp-session-gold"><span class="ngp-sl" data-i18n="ngp.race">🏁 Course</span><span class="ngp-sv ngp-sv-gold">15h00</span></div>
             </div>
           </div>
         </div>
@@ -2072,7 +2072,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 </div><!-- /pg-nextgp -->
 
 </div><!-- /app -->
-<div class="toast" id="toast">🏁 Prédiction GP Autriche verrouillée !</div>
+<div class="toast" id="toast"data-i18n="toast.locked">🏁 Prédiction GP Autriche verrouillée !</div>
 
 <script>
 /* ═══════════════════════════════════════════════
@@ -2647,6 +2647,76 @@ const _T = {
     'ob.step1.lbl':'Étape 1 / 3','ob.step1.t':'Tes informations','ob.step1.s':'Ces informations créent ton profil public GridOracle.',
     'ob.step2.lbl':'Étape 2 / 3','ob.step2.t':'Ton écurie','ob.step2.s':'11 constructeurs en 2026. Quelle livrée portes-tu ?',
     'ob.step3.lbl':'Étape 3 / 3','ob.step3.t':'Ton pilote','ob.step3.s':'22 pilotes en 2026. Qui défends-tu race après race ?',
+    // Hub sidebar
+    'hub.myteam':'Mon écurie','hub.mydriver':'Mon pilote','hub.pts':'pts','hub.rank':'rang','hub.pred':'prédit','hub.acc':'précision',
+    'hub.plan':'Plan actuel','hub.upgrade':'Upgrade Premium →','hub.qualsin':'Qualifs dans','hub.predict':'Prédire →',
+    'hub.lock.t':'🔒 Positions 6–10 Premium','hub.lock.s':"Accède à l'analyse complète de l'IA.",'hub.goprem':'Passer Premium →',
+    'hub.factors':'FACTEURS D'ANALYSE','hub.f.car':'Performance voiture','hub.f.driver':'Forme pilote',
+    'hub.f.circuit':'Historique circuit','hub.f.weather':'Conditions météo','hub.f.engine':'Fiabilité moteur',
+    'hub.indicators':'INDICATEURS','hub.schedule':'Programme GP','hub.viewall':'Voir tout le classement →',
+    // Pred
+    'pred.open':'En cours','pred.lock.t':'🔒 Positions 6–10 — Premium','pred.lock.btn':'Upgrader',
+    'pred.complete':'positions complètes','pred.lock.hub':'🏁 Verrouiller ma prédiction · GP Autriche',
+    'pred.deadline':'Clôture le <b>Samedi 27 Juin à 15h00</b>',
+    // Schedule
+    'sched.fp1':'Ven · EL1','sched.fp2':'Ven · EL2','sched.fp3':'Sam · EL3','sched.q':'Sam · Qualifs','sched.r':'Dim · Course',
+    // Leagues
+    'leagues.join.t':'Rejoindre une ligue','leagues.join.btn':'Rejoindre →',
+    'leagues.create.t':'🔒 Créer ma propre ligue','leagues.create.s':'Invite ta communauté, définis tes récompenses et gère ton classement. Disponible avec Premium & Creator.',
+    'leagues.myrank':'Ma position','leagues.mypts':'Mes points','leagues.aiacc':'Précision IA',
+    'leagues.members':'127 joueurs · Saison 2026','leagues.viewall':'Voir tout le classement →',
+    // Standings
+    'stand.players':'👥 Joueurs GridOracle',
+    // Creator
+    'cr.stat.leagues':'Ligues créées','cr.stat.custom':'Personnalisation','cr.stat.analytics':'Analytics live','cr.stat.support':'Support prioritaire',
+    'cr.features.t':'🏆 Fonctionnalités Creator','cr.myligues.t':'📋 Mes Ligues Creator','cr.create':'Créer +',
+    'cr.gp.open':'🔴 GP Autriche ouvert','cr.pred.open':'🟡 Prédictions ouvertes','cr.unlimited':'Ligues illimitées avec Creator',
+    'cr.analytics.t':'📈 Analytics Communauté','cr.active':'Membres actifs','cr.partrate':'Taux participation',
+    'cr.avgacc':'Précision moy.','cr.newgp':'Nouveaux ce GP','cr.predsub':'Prédictions soumises','cr.p1acc':'Précision P1',
+    'cr.top3':'Top 3 correct','cr.cta.t':'Prêt à lancer ta ligue Creator ?',
+    'cr.cta.s':'Rejoins les créateurs qui transforment leur passion F1 en expérience communautaire unique. Annule à tout moment, sans engagement.',
+    'cr.stripe':'🔒 Paiement sécurisé Stripe · 14 jours satisfait ou remboursé',
+    'cr.members':'membres','cr.newleague':'Nouvelle ligue…',
+    // Profile
+    'profile.pts':'Points saison','profile.league':'Ma ligue','profile.acc':'Précision',
+    'profile.edit':'✏️ Modifier mon profil','profile.reset':'↺ Réinitialiser mon profil',
+    'profile.goprem':'⭐ Passer Premium','profile.gocreator':'🎙️ Devenir Creator',
+    'profile.hist.lbl':'Historique','profile.hist.t':'Mes prédictions récentes',
+    // Next GP
+    'ngp.schedule':'Programme du week-end','ngp.fri':'Vendredi 26 Juin','ngp.sat':'Samedi 27 Juin',
+    'ngp.sun':'Dimanche 28 Juin','ngp.quali':'🔴 Qualifications','ngp.race':'🏁 Course',
+    // Trial/Edit
+    'trial.expired':'Ton accès Premium<br>a expiré','edit.title':'Modifier mon profil',
+    // Toast
+    'toast.locked':'🏁 Prédiction GP Autriche verrouillée !',
+    // Rules
+    'rules.free':'Prédictions P1 à P5','rules.prem':'Prédictions P1 à P10',
+    'rules.timing':'Prédictions ouvertes <strong>48h avant les qualifications</strong>',
+    'rules.open':'· Ouverte à tous les joueurs','rules.global':'· Classement mondial permanent',
+    'rules.pts24':'· Points cumulés sur 24 GP','rules.tb1':'Prédictions P1 correctes','rules.tb2':'Score dernier GP',
+    'rules.thu':'Jeudi — Ouverture','rules.fri':'Vendredi — Essais Libres','rules.sat':'Samedi — Verrouillage',
+    'rules.sun':'Dimanche — Course & Points','rules.cancelled':'Course annulée : GP neutralisé, non comptabilisé',
+    'rules.pts.desc':"Points attribués dans l'heure suivant le drapeau à damier. Classements mis à jour en temps réel.",
+    // Onboarding
+    'ob.profile.t':'Ton profil GridOracle','ob.success':'Profil créé avec succès !',
+    'ob.li1':'Tes infos & ton identifiant joueur','ob.li2':'Ton écurie favorite — 11 teams 2026',
+    'ob.li3':'Ton pilote préféré — grille complète','ob.free':'Gratuit · Sans carte bancaire',
+    // Calendar
+    'cal.fp':'Essais Libres','cal.q':'Qualifications','cal.race':'Course','cal.sprint':'Sprint Weekend',
+    'cal.circuit':'Circuit','cal.dates':'Dates','cal.format':'Format',
+    'status.done':'Terminé','status.next':'▶ En cours','status.cancelled':'❌ Annulé','status.upcoming':'À venir',
+    'ngp.fp1':'Essais Libres 1','ngp.fp2':'Essais Libres 2','ngp.fp3':'Essais Libres 3',
+    'trial.p6p10':'Prédiction P6 à P10 débloquée',
+    'trial.expired.s':"Ton essai gratuit de 48h est terminé. Pour continuer à voir le Top 10 de l'IA et marquer des points sur les positions 6–10, passe en Premium.",
+    'ui.back':'← Retour',
+    'ob.wtag':'⚡ Saison 2026 · 11 équipes · 22 pilotes',
+    'hub.myleague':'Ma ligue','hub.mypts':'Mes pts',
+    'cr.feat1.t':'Ligues privées illimitées',"cr.feat1.s":'Crée autant de ligues que tu veux, avec des codes d'invitation personnalisés pour chaque communauté.',
+    'rules.title':'Règlement GridOracle 2026',
+    'rules.prem.feat':'· Analytics détaillés, ligues illimitées',
+    'ngp.team':'Équipe favorite','ngp.driver':'Pilote favori',
+    'edit.driver':'Pilote favori',
+    'pred.hist.p1':'Mon P1',
   },
   en: {
     // Nav
@@ -2678,10 +2748,81 @@ const _T = {
     'ob.step1.lbl':'Step 1 / 3','ob.step1.t':'Your information','ob.step1.s':'This creates your public GridOracle profile.',
     'ob.step2.lbl':'Step 2 / 3','ob.step2.t':'Your team','ob.step2.s':'11 constructors in 2026. Which livery do you wear?',
     'ob.step3.lbl':'Step 3 / 3','ob.step3.t':'Your driver','ob.step3.s':'22 drivers in 2026. Who do you back race after race?',
+    // Hub sidebar
+    'hub.myteam':'My team','hub.mydriver':'My driver','hub.pts':'pts','hub.rank':'rank','hub.pred':'predicted','hub.acc':'accuracy',
+    'hub.plan':'Current plan','hub.upgrade':'Upgrade Premium →','hub.qualsin':'Qualifying in','hub.predict':'Predict →',
+    'hub.lock.t':'🔒 Positions 6–10 Premium','hub.lock.s':'Access the full AI analysis.','hub.goprem':'Go Premium →',
+    'hub.factors':'ANALYSIS FACTORS','hub.f.car':'Car performance','hub.f.driver':'Driver form',
+    'hub.f.circuit':'Circuit history','hub.f.weather':'Weather conditions','hub.f.engine':'Engine reliability',
+    'hub.indicators':'INDICATORS','hub.schedule':'Race Weekend','hub.viewall':'View full standings →',
+    // Pred
+    'pred.open':'Open','pred.lock.t':'🔒 Positions 6–10 — Premium','pred.lock.btn':'Upgrade',
+    'pred.complete':'positions filled','pred.lock.hub':'🏁 Lock my prediction · Austrian GP',
+    'pred.deadline':'Closes <b>Saturday 27 June at 15:00</b>',
+    // Schedule
+    'sched.fp1':'Fri · FP1','sched.fp2':'Fri · FP2','sched.fp3':'Sat · FP3','sched.q':'Sat · Quali','sched.r':'Sun · Race',
+    // Leagues
+    'leagues.join.t':'Join a league','leagues.join.btn':'Join →',
+    'leagues.create.t':'🔒 Create my own league','leagues.create.s':'Invite your community, set rewards and manage your standings. Available with Premium & Creator.',
+    'leagues.myrank':'My position','leagues.mypts':'My points','leagues.aiacc':'AI accuracy',
+    'leagues.members':'127 players · 2026 Season','leagues.viewall':'View full standings →',
+    // Standings
+    'stand.players':'👥 GridOracle Players',
+    // Creator
+    'cr.stat.leagues':'Leagues created','cr.stat.custom':'Customisation','cr.stat.analytics':'Live analytics','cr.stat.support':'Priority support',
+    'cr.features.t':'🏆 Creator Features','cr.myligues.t':'📋 My Creator Leagues','cr.create':'Create +',
+    'cr.gp.open':'🔴 Austrian GP open','cr.pred.open':'🟡 Predictions open','cr.unlimited':'Unlimited leagues with Creator',
+    'cr.analytics.t':'📈 Community Analytics','cr.active':'Active members','cr.partrate':'Participation rate',
+    'cr.avgacc':'Avg. accuracy','cr.newgp':'New this GP','cr.predsub':'Predictions submitted','cr.p1acc':'P1 accuracy',
+    'cr.top3':'Top 3 correct','cr.cta.t':'Ready to launch your Creator league?',
+    'cr.cta.s':'Join creators who turn their F1 passion into a unique community experience. Cancel anytime, no commitment.',
+    'cr.stripe':'🔒 Secure Stripe payment · 14-day money back guarantee',
+    'cr.members':'members','cr.newleague':'New league…',
+    // Profile
+    'profile.pts':'Season points','profile.league':'My league','profile.acc':'Accuracy',
+    'profile.edit':'✏️ Edit my profile','profile.reset':'↺ Reset my profile',
+    'profile.goprem':'⭐ Go Premium','profile.gocreator':'🎙️ Become Creator',
+    'profile.hist.lbl':'History','profile.hist.t':'My recent predictions',
+    // Next GP
+    'ngp.schedule':'Weekend schedule','ngp.fri':'Friday 26 June','ngp.sat':'Saturday 27 June',
+    'ngp.sun':'Sunday 28 June','ngp.quali':'🔴 Qualifying','ngp.race':'🏁 Race',
+    // Trial/Edit
+    'trial.expired':'Your Premium access<br>has expired','edit.title':'Edit my profile',
+    // Toast
+    'toast.locked':'🏁 Austrian GP prediction locked!',
+    // Rules
+    'rules.free':'Predictions P1 to P5','rules.prem':'Predictions P1 to P10',
+    'rules.timing':'Predictions open <strong>48h before qualifying</strong>',
+    'rules.open':'· Open to all players','rules.global':'· Permanent global standings',
+    'rules.pts24':'· Points cumulated over 24 GPs','rules.tb1':'Correct P1 predictions','rules.tb2':'Last GP score',
+    'rules.thu':'Thursday — Opens','rules.fri':'Friday — Free Practice','rules.sat':'Saturday — Lock-in',
+    'rules.sun':'Sunday — Race & Points','rules.cancelled':'Race cancelled: GP not counted',
+    'rules.pts.desc':'Points awarded within one hour of the chequered flag. Standings updated in real time.',
+    // Onboarding
+    'ob.profile.t':'Your GridOracle profile','ob.success':'Profile created successfully!',
+    'ob.li1':'Your info & player handle','ob.li2':'Your favourite team — 11 teams 2026',
+    'ob.li3':'Your favourite driver — full grid','ob.free':'Free · No credit card required',
+    // Calendar
+    'cal.fp':'Free Practice','cal.q':'Qualifying','cal.race':'Race','cal.sprint':'Sprint Weekend',
+    'cal.circuit':'Circuit','cal.dates':'Dates','cal.format':'Format',
+    'status.done':'Finished','status.next':'▶ Live','status.cancelled':'❌ Cancelled','status.upcoming':'Upcoming',
+    'ngp.fp1':'Free Practice 1','ngp.fp2':'Free Practice 2','ngp.fp3':'Free Practice 3',
+    'trial.p6p10':'P6 to P10 prediction unlocked',
+    'trial.expired.s':'Your free 48h trial has ended. To continue viewing the full AI Top 10 and scoring on positions 6–10, upgrade to Premium.',
+    'ui.back':'← Back',
+    'ob.wtag':'⚡ 2026 Season · 11 teams · 22 drivers',
+    'hub.myleague':'My league','hub.mypts':'My pts',
+    'cr.feat1.t':'Unlimited private leagues','cr.feat1.s':'Create as many leagues as you want, each with its own custom invite code.',
+    'rules.title':'GridOracle 2026 Rules',
+    'rules.prem.feat':'· Detailed analytics, unlimited leagues',
+    'ngp.team':'Favourite team','ngp.driver':'Favourite driver',
+    'edit.driver':'Favourite driver',
+    'pred.hist.p1':'My P1',
   }
 };
 
 let LANG = localStorage.getItem('go_lang') || 'fr';
+function t(k){ return ((_T[LANG]||_T.fr)[k])||(_T.fr[k])||k; }
 
 function applyLang(lang){
   LANG = lang;
@@ -2695,6 +2836,10 @@ function applyLang(lang){
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const k = el.getAttribute('data-i18n');
     if(dict[k] !== undefined) el.textContent = dict[k];
+  });
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const k = el.getAttribute('data-i18n-html');
+    if(dict[k] !== undefined) el.innerHTML = dict[k];
   });
   // Mettre à jour lang attr sur <html>
   document.documentElement.lang = lang;
@@ -2863,7 +3008,7 @@ function buildAIPred(){
       if(homeOverlay)homeOverlay.style.display='none';
     } else {
       let html=AI_DATA.slice(0,5).map((d,i)=>aiRow(d,i)).join('');
-      html+=`<div class="lks"><div class="lkbl">${AI_DATA.slice(5).map((d,i)=>aiRow(d,i+5)).join('')}</div><div class="lkov"><div class="lkm"><h4>🔒 Positions 6–10 Premium</h4><p>Accède à l'analyse complète de l'IA.</p><button class="btn-r" style="font-size:.76rem;padding:.38rem .9rem" onclick="openStripeModal('premium')">Passer Premium →</button></div></div></div>`;
+      html+=`<div class="lks"><div class="lkbl">${AI_DATA.slice(5).map((d,i)=>aiRow(d,i+5)).join('')}</div><div class="lkov"><div class="lkm"><h4 data-i18n="hub.lock.t">🔒 Positions 6–10 Premium</h4><p data-i18n="hub.lock.s">Accède à l'analyse complète de l'IA.</p><button class="btn-r" style="font-size:.76rem;padding:.38rem .9rem" onclick="openStripeModal('premium')"data-i18n="hub.goprem">Passer Premium →</button></div></div></div>`;
       full.innerHTML=html;
     }
   }
@@ -2919,7 +3064,7 @@ function buildPremSection(){
         <li><span class="fc">✓</span><span>Badge GridPro</span></li>
         <li><span class="fx">✕</span><span>Ligues brandées & analytics</span></li>
       </ul>
-      <button class="pc-btn fill" onclick="openStripeModal('premium')">Passer Premium →</button>
+      <button class="pc-btn fill" onclick="openStripeModal('premium')"data-i18n="hub.goprem">Passer Premium →</button>
       <div class="stripe-note">🔒 Paiement sécurisé · <span>Stripe · Résiliation à tout moment</span></div>
     </div>
     <div class="pc creator-plan">
@@ -3163,7 +3308,7 @@ async function doSubmit(inst, badgeId, btnId){
       bs.innerHTML='✓ Prédiction sauvegardée · <span style="opacity:.7;font-size:.8em">Modifier jusqu\'aux qualifs</span>';
       bs.onclick = () => unlockPredEdit(inst, badgeId, btnId);
     }
-    showToast('🏁 Prédiction sauvegardée dans GridOracle !');
+    showToast(LANG==='en'?'🏁 Prediction saved in GridOracle!':'🏁 Prédiction sauvegardée dans GridOracle !');
     // Afficher le bouton de partage
     showShareButton(inst.pred.filter(Boolean));
   } else if(result.reason === 'locked'){
@@ -3828,7 +3973,7 @@ function openEditModal(){
       <div class="em-grid" id="em-teams"></div>
     </div>
     <div>
-      <div class="em-section">Pilote favori</div>
+      <div class="em-section" data-i18n="edit.driver">Pilote favori</div>
       <div class="em-grid" id="em-drivers"></div>
     </div>
     <button class="em-save" id="em-save-btn" onclick="saveEditProfile()">💾 Enregistrer les modifications</button>`;
@@ -3931,7 +4076,7 @@ async function saveEditProfile(){
 
 /* ── RESET PROFILE (lets user redo onboarding) ── */
 function resetProfile(){
-  if(!confirm('Réinitialiser ton profil ? Tu devras resaisir tes informations. Ton abonnement Stripe ne sera pas affecté.')) return;
+  if(!confirm(LANG==='en'?'Reset your profile? You will need to re-enter your information. Your Stripe subscription will not be affected.':'Réinitialiser ton profil ? Tu devras resaisir tes informations. Ton abonnement Stripe ne sera pas affecté.')) return;
   ['go_profile','go_plan','go_billing','go_pending_plan','go_pending_billing','go_pending_ts','go_after_onboarding_plan','go_after_onboarding_billing'].forEach(k=>localStorage.removeItem(k));
   location.reload();
 }
@@ -4154,9 +4299,9 @@ function buildCalendarGrid(){
   F1_CALENDAR_2026.forEach(gp => {
     const item = document.createElement('div');
     item.className = 'ngp-gp-item';
-    const statusLabel = gp.status==='done'?'Terminé':gp.status==='next'?'▶ En cours':gp.status==='cancelled'?'❌ Annulé':'À venir';
+    const statusLabel = gp.status==='done'?t('status.done'):gp.status==='next'?t('status.next'):gp.status==='cancelled'?t('status.cancelled'):t('status.upcoming');
     const resultHTML = gp.p1 ? `<div class="ngp-gp-result"><div class="ngp-gp-res-lbl">Résultats</div><div class="ngp-gp-podium"><div class="ngp-gp-pos"><span class="ngp-gp-pos-n p1">🥇</span> ${gp.p1}</div><div class="ngp-gp-pos"><span class="ngp-gp-pos-n p2">🥈</span> ${gp.p2}</div><div class="ngp-gp-pos"><span class="ngp-gp-pos-n p3">🥉</span> ${gp.p3}</div></div></div>` : '';
-    item.innerHTML = `<div class="ngp-gp-row" onclick="toggleGP(this)"><div class="ngp-gp-round">R${String(gp.r).padStart(2,'0')}</div><div class="ngp-gp-flag">${gp.flag}</div><div class="ngp-gp-name"><div class="ngp-gp-n">${gp.name}${gp.sprint?'<span class="sprint-badge">SPRINT</span>':''}</div><div class="ngp-gp-loc">${gp.loc}</div></div><div class="ngp-gp-dates">${gp.dates}</div><div class="ngp-gp-status ${gp.status}">${statusLabel}</div><div class="ngp-gp-arrow">›</div></div><div class="ngp-gp-detail"><div class="ngp-gp-detail-grid"><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">Circuit</div><div class="ngp-gp-ds-val">${gp.circuit}</div></div><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">Essais Libres</div><div class="ngp-gp-ds-val">${gp.el}</div></div><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">Qualifications</div><div class="ngp-gp-ds-val" style="color:var(--red)">${gp.q}</div></div><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">Course</div><div class="ngp-gp-ds-val" style="color:var(--gold)">${gp.race}</div></div><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">Dates</div><div class="ngp-gp-ds-val">${gp.dates} 2026</div></div>${gp.sprint?'<div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">Format</div><div class="ngp-gp-ds-val" style="color:var(--gold)">Sprint Weekend</div></div>':''}</div>${resultHTML}</div>`;
+    item.innerHTML = `<div class="ngp-gp-row" onclick="toggleGP(this)"><div class="ngp-gp-round">R${String(gp.r).padStart(2,'0')}</div><div class="ngp-gp-flag">${gp.flag}</div><div class="ngp-gp-name"><div class="ngp-gp-n">${gp.name}${gp.sprint?'<span class="sprint-badge">SPRINT</span>':''}</div><div class="ngp-gp-loc">${gp.loc}</div></div><div class="ngp-gp-dates">${gp.dates}</div><div class="ngp-gp-status ${gp.status}">${statusLabel}</div><div class="ngp-gp-arrow">›</div></div><div class="ngp-gp-detail"><div class="ngp-gp-detail-grid"><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">${t('cal.circuit')}</div><div class="ngp-gp-ds-val">${gp.circuit}</div></div><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">${t('cal.fp')}</div><div class="ngp-gp-ds-val">${gp.el}</div></div><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">${t('cal.q')}</div><div class="ngp-gp-ds-val" style="color:var(--red)">${gp.q}</div></div><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">${t('cal.race')}</div><div class="ngp-gp-ds-val" style="color:var(--gold)">${gp.race}</div></div><div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">${t('cal.dates')}</div><div class="ngp-gp-ds-val">${gp.dates} 2026</div></div>${gp.sprint?'<div class="ngp-gp-ds"><div class="ngp-gp-ds-lbl">${t('cal.format')}</div><div class="ngp-gp-ds-val" style="color:var(--gold)">${t('cal.sprint')}</div></div>':''}</div>${resultHTML}</div>`;
     grid.appendChild(item);
   });
 }
