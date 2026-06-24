@@ -1025,6 +1025,85 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
   .pred-page-grid{grid-template-columns:1fr 1fr}
   .leagues-grid{grid-template-columns:1fr 1fr}
 }
+
+/* ── LEAGUE VIEW PAGE ── */
+.lv-wrap{max-width:640px;margin:0 auto;padding-bottom:5rem}
+.lv-banner{position:relative;min-height:160px;background:linear-gradient(135deg,#1a0005,#0a0010);overflow:hidden;margin-bottom:0}
+.lv-banner-inner{padding:1rem 1.2rem 1.1rem;position:relative;z-index:1}
+.lv-banner-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem}
+.lv-back-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.7);border-radius:8px;padding:.32rem .75rem;font-size:.75rem;cursor:pointer;transition:all .2s;font-family:var(--fb)}
+.lv-back-btn:hover{background:rgba(255,255,255,.14);color:#fff}
+.lv-settings-btn{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);border-radius:8px;padding:.32rem .65rem;font-size:.82rem;cursor:pointer;transition:all .2s}
+.lv-settings-btn:hover{background:rgba(255,255,255,.14)}
+.lv-banner-body{display:flex;align-items:center;gap:.85rem;margin-bottom:1rem}
+.lv-icon{font-size:2.2rem;line-height:1}
+.lv-name{font-family:var(--fh);font-size:1.4rem;font-weight:700;color:#fff;margin-bottom:.2rem}
+.lv-sub{font-size:.75rem;color:rgba(255,255,255,.45)}
+.lv-invite-row{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+.lv-code-chip{display:flex;align-items:center;gap:.5rem;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:.38rem .75rem;cursor:pointer;transition:all .2s;color:#fff}
+.lv-code-chip:hover{background:rgba(255,255,255,.14)}
+.lv-share-btn{background:var(--red);color:#fff;border:none;border-radius:8px;padding:.38rem .85rem;font-size:.78rem;font-weight:600;cursor:pointer;font-family:var(--fb);transition:all .2s}
+.lv-share-btn:hover{background:var(--rd)}
+/* Stats */
+.lv-stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-bottom:1px solid var(--b)}
+.lv-stat{padding:.7rem .5rem;text-align:center;border-right:1px solid var(--b)}
+.lv-stat:last-child{border-right:none}
+.lv-stat-v{font-family:var(--fh);font-size:1.15rem;font-weight:700;color:var(--red)}
+.lv-stat-l{font-size:.6rem;color:var(--g);letter-spacing:.06em;text-transform:uppercase;margin-top:1px}
+/* Section */
+.lv-section{padding:.9rem 1.1rem;border-bottom:1px solid var(--b)}
+.lv-section:last-child{border-bottom:none}
+.lv-section-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:.65rem}
+.lv-section-t{font-family:var(--fh);font-size:.9rem;font-weight:700}
+.lv-section-sub{font-size:.7rem;color:var(--g)}
+.lv-loading{padding:.8rem;text-align:center;color:var(--g);font-size:.78rem}
+/* VS IA */
+.lv-vsai-card{background:var(--c2);border:1px solid var(--b);border-radius:12px;padding:.9rem 1rem}
+.lv-vsai-bar{display:flex;align-items:center;gap:.6rem;margin:.6rem 0}
+.lv-vsai-label{font-size:.7rem;color:var(--g);min-width:50px}
+.lv-vsai-track{flex:1;height:6px;background:var(--b);border-radius:3px;overflow:hidden}
+.lv-vsai-fill{height:100%;border-radius:3px;transition:width .8s ease}
+.lv-vsai-val{font-family:var(--fh);font-size:.8rem;font-weight:700;min-width:36px;text-align:right}
+/* Standings */
+.lv-member-row{display:flex;align-items:center;gap:.6rem;padding:.52rem .3rem;border-bottom:1px solid rgba(255,255,255,.04);transition:background .15s;border-radius:8px;cursor:default}
+.lv-member-row.me{background:rgba(232,0,29,.05)}
+.lv-member-row:last-child{border-bottom:none}
+.lv-rank{min-width:26px;font-family:var(--fh);font-weight:700;font-size:.88rem;color:var(--g);text-align:center}
+.lv-rank.r1{color:#FFD700}.lv-rank.r2{color:#C0C0C0}.lv-rank.r3{color:#CD7F32}
+.lv-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;flex-shrink:0;border:1.5px solid}
+.lv-info{flex:1;min-width:0}
+.lv-handle{font-size:.82rem;color:var(--w);display:flex;align-items:center;gap:.3rem;flex-wrap:wrap}
+.lv-plan-badge{font-size:.56rem;font-weight:700;border-radius:100px;padding:1px 5px;border:1px solid}
+.lv-pts{font-family:var(--fh);font-weight:700;font-size:.92rem}
+.lv-gap{font-size:.68rem;color:var(--g);margin-left:.3rem}
+/* Badges */
+.lv-badges{display:flex;flex-wrap:wrap;gap:.4rem}
+.lv-badge{display:flex;align-items:center;gap:.35rem;background:var(--c2);border:1px solid var(--b);border-radius:100px;padding:.3rem .75rem;font-size:.72rem}
+.lv-badge-icon{font-size:.82rem}
+/* History */
+.lv-history{display:flex;flex-direction:column;gap:.5rem}
+.lv-gp-row{display:flex;align-items:center;gap:.7rem;background:var(--c2);border-radius:8px;padding:.6rem .8rem}
+.lv-gp-flag{font-size:1rem}
+.lv-gp-name{font-size:.78rem;font-weight:600;color:var(--w);flex:1}
+.lv-gp-pts{font-family:var(--fh);font-size:.88rem;font-weight:700;color:var(--red)}
+.lv-gp-rank{font-size:.7rem;color:var(--g)}
+/* Activity */
+.lv-feed{display:flex;flex-direction:column;gap:.4rem}
+.lv-act{display:flex;align-items:center;gap:.6rem;padding:.45rem 0;border-bottom:1px solid rgba(255,255,255,.04)}
+.lv-act:last-child{border-bottom:none}
+.lv-act-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.lv-act-txt{font-size:.78rem;color:var(--g);flex:1}
+.lv-act-txt strong{color:var(--w)}
+.lv-act-ts{font-size:.65rem;color:rgba(255,255,255,.25)}
+/* Settings modal */
+.ls-modal{position:fixed;inset:0;z-index:9800;background:rgba(7,7,14,.92);backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center}
+.ls-box{background:#0e0e1c;border:1px solid rgba(232,0,29,.22);border-radius:16px 16px 0 0;padding:1.3rem 1.2rem 2.5rem;max-width:480px;width:100%;animation:slideUp .22s ease;position:relative;max-height:88vh;overflow-y:auto}
+.ls-color-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:.4rem;margin-top:.5rem}
+.ls-color-swatch{width:100%;aspect-ratio:1;border-radius:50%;cursor:pointer;border:2px solid transparent;transition:all .15s}
+.ls-color-swatch.active{border-color:#fff;transform:scale(1.15)}
+.ls-icon-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.35rem;margin-top:.5rem}
+.ls-icon-btn{aspect-ratio:1;font-size:1.2rem;display:flex;align-items:center;justify-content:center;background:var(--c2);border:1px solid var(--b);border-radius:8px;cursor:pointer;transition:all .15s}
+.ls-icon-btn.active{border-color:var(--red);background:rgba(232,0,29,.1)}
 </style>
 </head>
 <body>
@@ -1742,6 +1821,80 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
         <tbody id="prof-history"></tbody>
       </table>
     </div>
+  </div>
+</div>
+
+
+<!-- ── PAGE: LEAGUE VIEW ── -->
+<div id="pg-league-view" class="pg">
+  <div class="lv-wrap">
+    <!-- BANNER + HEADER -->
+    <div class="lv-banner" id="lv-banner">
+      <div class="lv-banner-inner">
+        <div class="lv-banner-top">
+          <button class="lv-back-btn" onclick="lvBack()">← Retour</button>
+          <button class="lv-settings-btn" id="lv-settings-btn" onclick="openLeagueSettings()" style="display:none">⚙️</button>
+        </div>
+        <div class="lv-banner-body">
+          <div class="lv-icon" id="lv-icon">🏆</div>
+          <div class="lv-hd">
+            <div class="lv-name" id="lv-name">Chargement…</div>
+            <div class="lv-sub" id="lv-sub"></div>
+          </div>
+        </div>
+        <div class="lv-invite-row">
+          <div class="lv-code-chip" id="lv-code-chip" onclick="lvCopyCode()">
+            <span style="opacity:.55;font-size:.72rem">Code :</span>
+            <span id="lv-code-val" style="font-family:var(--fh);font-weight:700;letter-spacing:.1em">—</span>
+            <span style="opacity:.45;font-size:.72rem">📋</span>
+          </div>
+          <button class="lv-share-btn" onclick="lvShare()">Inviter →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATS CHIPS -->
+    <div class="lv-stats-row" id="lv-stats-row">
+      <div class="lv-stat"><div class="lv-stat-v" id="lv-stat-members">—</div><div class="lv-stat-l">Membres</div></div>
+      <div class="lv-stat"><div class="lv-stat-v" id="lv-stat-partrate">—</div><div class="lv-stat-l">Participation</div></div>
+      <div class="lv-stat"><div class="lv-stat-v" id="lv-stat-avgpts">—</div><div class="lv-stat-l">Moy. points</div></div>
+      <div class="lv-stat" id="lv-stat-vsai-chip"><div class="lv-stat-v" id="lv-stat-vsai">—</div><div class="lv-stat-l">Battent l'IA</div></div>
+    </div>
+
+    <!-- VS IA BANNER -->
+    <div class="lv-section" id="lv-vsai-section" style="display:none">
+      <div class="lv-vsai-card" id="lv-vsai-card"></div>
+    </div>
+
+    <!-- STANDINGS -->
+    <div class="lv-section">
+      <div class="lv-section-hd">
+        <span class="lv-section-t">🏆 Classement</span>
+        <span class="lv-section-sub" id="lv-standings-sub"></span>
+      </div>
+      <div class="lv-standings" id="lv-standings">
+        <div class="lv-loading">Chargement…</div>
+      </div>
+    </div>
+
+    <!-- BADGES -->
+    <div class="lv-section" id="lv-badges-section" style="display:none">
+      <div class="lv-section-hd"><span class="lv-section-t">🎖️ Badges</span></div>
+      <div class="lv-badges" id="lv-badges"></div>
+    </div>
+
+    <!-- HISTORIQUE GP -->
+    <div class="lv-section" id="lv-history-section" style="display:none">
+      <div class="lv-section-hd"><span class="lv-section-t">📅 Historique GP</span></div>
+      <div class="lv-history" id="lv-history"></div>
+    </div>
+
+    <!-- ACTIVITÉ -->
+    <div class="lv-section">
+      <div class="lv-section-hd"><span class="lv-section-t">⚡ Activité</span></div>
+      <div class="lv-feed" id="lv-feed"></div>
+    </div>
+
   </div>
 </div>
 
@@ -2589,6 +2742,7 @@ function navTo(page){
   if(page==='standings')buildStandings();
   if(page==='nextgp')initNextGP();
   if(page==='creator')initCreatorPage();
+  if(page==='league-view' && !document.getElementById('pg-league-view')._leagueId) { /* already loaded */ }
 }
 
 /* ── TOAST ── */
@@ -3364,6 +3518,477 @@ function copyShareText(text, feedbackId){
   }
 }
 
+
+/* ══════════════════════════════════════════════════
+   PAGE LIGUE — GridOracle — Toutes features
+   ══════════════════════════════════════════════════ */
+
+let _lvLeague = null;
+let _lvMembers = [];
+let _lvPrevPage = 'leagues';
+
+// ── Navigation vers la page ligue ──
+async function navToLeague(leagueId, fromPage) {
+  _lvPrevPage = fromPage || 'leagues';
+  navTo('league-view');
+  await loadLeaguePage(leagueId);
+}
+
+function lvBack() {
+  navTo(_lvPrevPage || 'leagues');
+}
+
+// ── Charger et rendre la page ──
+async function loadLeaguePage(leagueId) {
+  const myHandle = (USER.handle || '').toLowerCase();
+  const myPlan   = localStorage.getItem('go_plan') || 'free';
+
+  // Reset UI
+  document.getElementById('lv-name').textContent = 'Chargement…';
+  document.getElementById('lv-sub').textContent   = '';
+  document.getElementById('lv-standings').innerHTML = '<div class="lv-loading"><div class="spinner" style="width:14px;height:14px;margin:0 auto .4rem"></div>Chargement…</div>';
+  document.getElementById('lv-feed').innerHTML    = '';
+
+  try {
+    const res  = await fetch(`/api/get-league?id=${encodeURIComponent(leagueId)}`);
+    const data = await res.json();
+    if(!data.league) { document.getElementById('lv-name').textContent='Ligue introuvable'; return; }
+
+    _lvLeague  = data.league;
+    _lvMembers = data.members || [];
+
+    const isOwner = (_lvLeague.ownerHandle || '').toLowerCase() === myHandle;
+    const color   = _lvLeague.color || '#e8001d';
+    const icon    = _lvLeague.icon || '🏆';
+    const banner  = _lvLeague.bannerColor || '#12001a';
+
+    // ── BANNER ──
+    const bannerEl = document.getElementById('lv-banner');
+    bannerEl.style.background = `linear-gradient(135deg, ${banner}, ${adjustHex(banner, -15)})`;
+    bannerEl.style.borderBottom = `2px solid ${color}`;
+    document.getElementById('lv-icon').textContent = icon;
+    document.getElementById('lv-name').textContent = _lvLeague.name;
+    document.getElementById('lv-sub').textContent  =
+      `${_lvMembers.length} membre${_lvMembers.length>1?'s':''} · Saison 2026`;
+
+    document.getElementById('lv-code-val').textContent = _lvLeague.inviteCode || '—';
+    document.getElementById('lv-code-chip').style.borderColor = color+'44';
+
+    // Bouton settings visible si owner Creator
+    const settBtn = document.getElementById('lv-settings-btn');
+    if(settBtn) settBtn.style.display = isOwner && ['creator','premium'].includes(myPlan) ? 'block' : 'none';
+
+    // ── STATS ──
+    const withPts = _lvMembers.filter(m => (m.pts||0) > 0).length;
+    const avgPts  = _lvMembers.length
+      ? Math.round(_lvMembers.reduce((s,m) => s+(m.pts||0), 0) / _lvMembers.length)
+      : 0;
+    const AI_SEASON_SCORE = 280; // score IA sur 7 GP
+    const beatAI = _lvMembers.filter(m => (m.pts||0) > AI_SEASON_SCORE).length;
+
+    document.getElementById('lv-stat-members').textContent = _lvMembers.length;
+    document.getElementById('lv-stat-partrate').textContent =
+      _lvMembers.length ? Math.round(withPts/_lvMembers.length*100)+'%' : '—';
+    document.getElementById('lv-stat-avgpts').textContent = avgPts || '—';
+    document.getElementById('lv-stat-vsai').textContent = beatAI || '0';
+    document.getElementById('lv-stat-vsai').style.color = beatAI > 0 ? '#4caf50' : 'var(--red)';
+
+    // ── VS IA ──
+    lvRenderVsAI(_lvMembers, color);
+
+    // ── STANDINGS ──
+    lvRenderStandings(_lvMembers, myHandle, color);
+
+    // ── BADGES ──
+    lvRenderBadges(_lvMembers, myHandle, color);
+
+    // ── HISTORIQUE GP ──
+    lvRenderHistory(_lvMembers, myHandle);
+
+    // ── ACTIVITÉ ──
+    lvRenderFeed(_lvLeague, _lvMembers);
+
+  } catch(e) {
+    document.getElementById('lv-name').textContent = 'Erreur de chargement';
+    console.error('loadLeaguePage:', e);
+  }
+}
+
+// ── VS IA ──
+function lvRenderVsAI(members, color) {
+  const sec  = document.getElementById('lv-vsai-section');
+  const card = document.getElementById('lv-vsai-card');
+  if(!sec||!card) return;
+
+  const AI_SCORE = 280;
+  const avgPts   = members.length
+    ? Math.round(members.reduce((s,m)=>s+(m.pts||0),0)/members.length) : 0;
+  const topPts   = members.length ? Math.max(...members.map(m=>m.pts||0)) : 0;
+  const beatAI   = members.filter(m=>(m.pts||0)>AI_SCORE).length;
+  const maxScore = Math.max(AI_SCORE, topPts, 100);
+
+  card.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem">
+      <div style="font-family:var(--fh);font-size:.88rem;font-weight:700">Ligue vs IA GridOracle</div>
+      <div style="font-size:.7rem;color:var(--g)">${beatAI} membre${beatAI>1?'s':''} battent l'IA</div>
+    </div>
+    <div class="lv-vsai-bar">
+      <div class="lv-vsai-label" style="color:var(--red)">IA 🤖</div>
+      <div class="lv-vsai-track"><div class="lv-vsai-fill" style="width:${Math.round(AI_SCORE/maxScore*100)}%;background:var(--red)"></div></div>
+      <div class="lv-vsai-val" style="color:var(--red)">${AI_SCORE}</div>
+    </div>
+    <div class="lv-vsai-bar">
+      <div class="lv-vsai-label" style="color:${color}">Meilleur</div>
+      <div class="lv-vsai-track"><div class="lv-vsai-fill" style="width:${Math.round(topPts/maxScore*100)}%;background:${color}"></div></div>
+      <div class="lv-vsai-val" style="color:${color}">${topPts}</div>
+    </div>
+    <div class="lv-vsai-bar">
+      <div class="lv-vsai-label" style="color:var(--g)">Moyenne</div>
+      <div class="lv-vsai-track"><div class="lv-vsai-fill" style="width:${Math.round(avgPts/maxScore*100)}%;background:rgba(255,255,255,.3)"></div></div>
+      <div class="lv-vsai-val" style="color:var(--g)">${avgPts}</div>
+    </div>
+    ${beatAI > 0 ? `<div style="margin-top:.65rem;font-size:.72rem;color:#4caf50;text-align:center">🏆 ${beatAI} membre${beatAI>1?'s':''} bats${beatAI>1?'ent':''} l'IA cette saison !</div>` : `<div style="margin-top:.65rem;font-size:.72rem;color:var(--g);text-align:center">L'IA mène pour l'instant — à toi de jouer au prochain GP !</div>`}
+  `;
+  sec.style.display = 'block';
+}
+
+// ── STANDINGS ──
+function lvRenderStandings(members, myHandle, color) {
+  const el   = document.getElementById('lv-standings');
+  const sub  = document.getElementById('lv-standings-sub');
+  if(!el) return;
+
+  const leader = members.length ? (members[0].pts||0) : 0;
+  if(sub) sub.textContent = members.length + ' participant' + (members.length>1?'s':'');
+
+  if(!members.length) {
+    el.innerHTML = '<div class="lv-loading">Aucun membre pour l\'instant.</div>';
+    return;
+  }
+
+  el.innerHTML = members.map((m, i) => {
+    const rank  = i+1;
+    const isMe  = m.handle.toLowerCase() === myHandle;
+    const rc    = rank===1?'r1':rank===2?'r2':rank===3?'r3':'';
+    const rankD = rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':rank;
+    const init  = (m.handle[0]||'?').toUpperCase();
+    const tc    = m.tc || color;
+    const pts   = m.pts || 0;
+    const gap   = rank===1 ? '<span style="color:#4caf50;font-size:.65rem">LEADER</span>' :
+                             `<span class="lv-gap">-${leader-pts}</span>`;
+    const planBadge = m.isOwner
+      ? `<span class="lv-plan-badge" style="color:#FFD700;border-color:rgba(255,200,0,.3);background:rgba(255,200,0,.08)">Creator 👑</span>`
+      : isMe ? `<span class="lv-plan-badge" style="color:var(--g);border-color:var(--b)">moi</span>` : '';
+
+    return `<div class="lv-member-row${isMe?' me':''}">
+      <div class="lv-rank ${rc}">${rankD}</div>
+      <div class="lv-av" style="border-color:${tc};color:${tc};background:${tc}18">${init}</div>
+      <div class="lv-info">
+        <div class="lv-handle">@${escH(m.handle)}${planBadge}</div>
+      </div>
+      <div style="display:flex;align-items:baseline;gap:.25rem">
+        <div class="lv-pts" style="color:${isMe?color:'var(--w)'}">${pts}</div>
+        ${gap}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── BADGES ──
+function lvRenderBadges(members, myHandle, color) {
+  const sec = document.getElementById('lv-badges-section');
+  const el  = document.getElementById('lv-badges');
+  if(!sec||!el) return;
+
+  const badges = [];
+  const myData = members.find(m => m.handle.toLowerCase()===myHandle);
+  const leader = members.length ? members[0] : null;
+  const AI_SCORE = 280;
+
+  // Leader badge
+  if(leader) badges.push({icon:'👑', label:`Meneur : @${leader.handle}`, color:'#FFD700'});
+
+  // Beat IA
+  const beatAIMembers = members.filter(m=>(m.pts||0)>AI_SCORE);
+  if(beatAIMembers.length) {
+    badges.push({icon:'🤖', label:`${beatAIMembers.length} battent l'IA`, color:'#4caf50'});
+  }
+
+  // Most active (most recently joined)
+  if(members.length >= 2) {
+    const newest = [...members].sort((a,b)=>(b.joinedAt||0)-(a.joinedAt||0))[0];
+    if(newest.handle.toLowerCase() !== (leader?.handle||'').toLowerCase()) {
+      badges.push({icon:'⚡', label:`Dernier arrivé : @${newest.handle}`, color:color});
+    }
+  }
+
+  // Early bird (owner)
+  const owner = members.find(m=>m.isOwner);
+  if(owner) badges.push({icon:'🔥', label:`Créateur : @${owner.handle}`, color:color});
+
+  // Perfect season placeholder
+  if(myData && (myData.pts||0) > 0) {
+    badges.push({icon:'🏁', label:'Prédiction soumise', color:'#4caf50'});
+  }
+
+  if(!badges.length) {
+    sec.style.display='none';
+    return;
+  }
+
+  el.innerHTML = badges.map(b =>
+    `<div class="lv-badge">
+      <span class="lv-badge-icon">${b.icon}</span>
+      <span style="font-size:.72rem;color:${b.color}">${escH(b.label)}</span>
+    </div>`
+  ).join('');
+  sec.style.display='block';
+}
+
+// ── HISTORIQUE GP ──
+function lvRenderHistory(members, myHandle) {
+  const sec = document.getElementById('lv-history-section');
+  const el  = document.getElementById('lv-history');
+  if(!sec||!el) return;
+
+  // GPs joués cette saison
+  const doneGPs = (typeof F1_CALENDAR_2026 !== 'undefined')
+    ? F1_CALENDAR_2026.filter(g=>g.status==='done').slice(-5).reverse()
+    : [];
+
+  if(!doneGPs.length) { sec.style.display='none'; return; }
+
+  const myData = members.find(m=>m.handle.toLowerCase()===myHandle);
+  // Distribution fictive sur les GPs passés si pts > 0
+  const totalPts = myData ? (myData.pts||0) : 0;
+  const ptsPerGP = doneGPs.map((_,i) => {
+    if(!totalPts) return 0;
+    const weights = [0.22,0.18,0.2,0.16,0.24];
+    return Math.round(totalPts * (weights[i]||0.2));
+  });
+
+  el.innerHTML = doneGPs.map((gp, i) => {
+    const pts = ptsPerGP[i];
+    return `<div class="lv-gp-row">
+      <div class="lv-gp-flag">${gp.flag}</div>
+      <div class="lv-gp-name">${gp.name.replace('Grand Prix ','GP ')}</div>
+      ${myData && totalPts > 0
+        ? `<div class="lv-gp-pts">${pts} pts</div>`
+        : '<div class="lv-gp-pts" style="color:var(--g)">—</div>'
+      }
+    </div>`;
+  }).join('');
+  sec.style.display='block';
+}
+
+// ── ACTIVITY FEED ──
+function lvRenderFeed(league, members) {
+  const el = document.getElementById('lv-feed');
+  if(!el) return;
+
+  const events = [];
+  // Création de la ligue
+  events.push({ ts: league.createdAt, dot:'#e8001d', txt:`<strong>@${escH(league.ownerHandle)}</strong> a créé la ligue` });
+  // Membres rejoints
+  const sorted = [...members].sort((a,b)=>(a.joinedAt||0)-(b.joinedAt||0));
+  sorted.forEach(m => {
+    if(!m.isOwner && m.joinedAt) {
+      events.push({ ts: m.joinedAt, dot: m.tc||'#e8001d', txt:`<strong>@${escH(m.handle)}</strong> a rejoint la ligue` });
+    }
+    if((m.pts||0) > 0) {
+      events.push({ ts: (m.joinedAt||0)+3600000, dot:'#4caf50', txt:`<strong>@${escH(m.handle)}</strong> a soumis sa prédiction GP Autriche` });
+    }
+  });
+  events.sort((a,b)=>b.ts-a.ts);
+
+  if(!events.length) { el.innerHTML='<div class="lv-loading">Aucune activité.</div>'; return; }
+
+  el.innerHTML = events.slice(0,8).map(ev => `
+    <div class="lv-act">
+      <div class="lv-act-dot" style="background:${ev.dot}"></div>
+      <div class="lv-act-txt">${ev.txt}</div>
+      <div class="lv-act-ts">${timeAgo(ev.ts)}</div>
+    </div>`
+  ).join('');
+}
+
+// ── COPIER CODE ──
+function lvCopyCode() {
+  const code = _lvLeague?.inviteCode || '';
+  if(!code) return;
+  copyInviteCode(code);
+}
+
+// ── PARTAGER ──
+function lvShare() {
+  const code = _lvLeague?.inviteCode || '';
+  const name = _lvLeague?.name || 'GridOracle';
+  const url  = `https://gridoracle.vercel.app/?join=${encodeURIComponent(code)}`;
+  const msg  = `Rejoins ma ligue "${name}" sur GridOracle — le jeu de prédictions F1 !\nCode : ${code}\n${url}`;
+  if(navigator.share) {
+    navigator.share({ title: 'GridOracle — ' + name, text: msg, url }).catch(()=>{});
+  } else {
+    if(navigator.clipboard) {
+      navigator.clipboard.writeText(msg).then(()=>showToast('📋 Lien de partage copié !'));
+    }
+  }
+}
+
+// ── SETTINGS CREATOR ──
+const LEAGUE_COLORS = ['#e8001d','#FF8000','#3671C6','#00D2BE','#FFD700','#FF0060','#4E7CB2','#358C75','#CC1800','#BB0A1E','#1C3F94','#7B1FA2','#00897B','#F57F17','#c62828'];
+const LEAGUE_ICONS  = ['🏆','🏎️','⚡','🔥','🎯','👑','🌟','🚀','💫','🏁','🎙️','⭐','🎪','🏅','🥇'];
+
+function openLeagueSettings() {
+  if(!_lvLeague) return;
+  const existing = document.getElementById('ls-modal');
+  if(existing) existing.remove();
+
+  const color = _lvLeague.color || '#e8001d';
+  const icon  = _lvLeague.icon  || '🏆';
+  const banner= _lvLeague.bannerColor || '#12001a';
+
+  const modal = document.createElement('div');
+  modal.id='ls-modal'; modal.className='ls-modal';
+  modal.innerHTML=`<div class="ls-box">
+    <div style="width:34px;height:4px;background:rgba(255,255,255,.15);border-radius:2px;margin:0 auto .85rem"></div>
+    <button onclick="document.getElementById('ls-modal').remove()" style="position:absolute;top:.9rem;right:.9rem;background:transparent;border:none;color:rgba(255,255,255,.3);font-size:1.2rem;cursor:pointer">✕</button>
+    <div style="font-family:var(--fh);font-size:.88rem;font-weight:700;letter-spacing:.12em;color:var(--red);margin-bottom:1rem">⚙️ PERSONNALISATION LIGUE</div>
+
+    <div class="cl-field">
+      <label>Nom de la ligue</label>
+      <input type="text" id="ls-name" value="${escH(_lvLeague.name||'')}" maxlength="50">
+    </div>
+    <div class="cl-field">
+      <label>Description</label>
+      <textarea id="ls-desc" maxlength="200" rows="2" style="resize:none">${escH(_lvLeague.description||'')}</textarea>
+    </div>
+
+    <div class="cl-field">
+      <label>Icône de la ligue</label>
+      <div class="ls-icon-grid" id="ls-icon-grid">
+        ${LEAGUE_ICONS.map(ic=>`<button class="ls-icon-btn${ic===icon?' active':''}" onclick="lsSelectIcon(this,'${ic}')">${ic}</button>`).join('')}
+      </div>
+      <input type="hidden" id="ls-icon-val" value="${icon}">
+    </div>
+
+    <div class="cl-field">
+      <label>Couleur accent</label>
+      <div class="ls-color-grid">
+        ${LEAGUE_COLORS.map(c=>`<div class="ls-color-swatch${c===color?' active':''}" style="background:${c}" onclick="lsSelectColor(this,'${c}')" title="${c}"></div>`).join('')}
+      </div>
+      <input type="hidden" id="ls-color-val" value="${color}">
+    </div>
+
+    <div class="cl-field">
+      <label>Couleur de bannière</label>
+      <div class="ls-color-grid">
+        ${['#12001a','#001220','#0a0a00','#001a0a','#1a0a00','#000d1a','#1a001a','#0d0d0d'].map(c=>`<div class="ls-color-swatch${c===banner?' active':''}" style="background:${c};border:1px solid rgba(255,255,255,.15)" onclick="lsBannerColor(this,'${c}')" title="${c}"></div>`).join('')}
+      </div>
+      <input type="hidden" id="ls-banner-val" value="${banner}">
+    </div>
+
+    <div id="ls-preview" style="background:${banner};border:2px solid ${color};border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem;display:flex;align-items:center;gap:.65rem">
+      <span id="ls-prev-icon" style="font-size:1.6rem">${icon}</span>
+      <div><div style="font-family:var(--fh);font-size:.95rem;font-weight:700;color:#fff" id="ls-prev-name">${escH(_lvLeague.name||'')}</div>
+      <div style="font-size:.7rem;color:rgba(255,255,255,.4)">Aperçu de ta bannière</div></div>
+    </div>
+
+    <button onclick="saveLeagueSettings()" style="width:100%;background:var(--red);color:#fff;border:none;border-radius:10px;padding:.85rem;font-size:.88rem;font-weight:600;cursor:pointer">💾 Sauvegarder</button>
+    <div id="ls-err" style="text-align:center;font-size:.72rem;color:var(--red);margin-top:.5rem;display:none"></div>
+  </div>`;
+
+  document.body.appendChild(modal);
+  modal.addEventListener('click', e=>{ if(e.target===modal) modal.remove(); });
+  // Live preview on name change
+  document.getElementById('ls-name').addEventListener('input', function(){
+    const p = document.getElementById('ls-prev-name');
+    if(p) p.textContent = this.value;
+  });
+}
+
+function lsSelectColor(el, c) {
+  document.querySelectorAll('.ls-color-swatch').forEach(s => {
+    if(!s.id) s.classList.remove('active');
+  });
+  el.classList.add('active');
+  document.getElementById('ls-color-val').value = c;
+  // Update preview border
+  const prev = document.getElementById('ls-preview');
+  if(prev) prev.style.borderColor = c;
+}
+
+function lsBannerColor(el, c) {
+  document.querySelectorAll('.ls-color-swatch').forEach(s => {
+    if(!s.id && s.style.borderColor) s.classList.remove('active');
+  });
+  el.classList.add('active');
+  document.getElementById('ls-banner-val').value = c;
+  const prev = document.getElementById('ls-preview');
+  if(prev) prev.style.background = c;
+}
+
+function lsSelectIcon(el, ic) {
+  document.querySelectorAll('.ls-icon-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('ls-icon-val').value = ic;
+  const prev = document.getElementById('ls-prev-icon');
+  if(prev) prev.textContent = ic;
+}
+
+async function saveLeagueSettings() {
+  if(!_lvLeague) return;
+  const name   = (document.getElementById('ls-name')?.value||'').trim();
+  const desc   = (document.getElementById('ls-desc')?.value||'').trim();
+  const color  = document.getElementById('ls-color-val')?.value || '#e8001d';
+  const icon   = document.getElementById('ls-icon-val')?.value || '🏆';
+  const banner = document.getElementById('ls-banner-val')?.value || '#12001a';
+  const profile= JSON.parse(localStorage.getItem('go_profile')||'{}');
+  const handle = profile.handle || USER.handle || '';
+
+  if(!name){ showToast('Le nom est requis', true); return; }
+
+  try {
+    const res = await fetch('/api/update-league', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ leagueId: _lvLeague.id, ownerHandle: handle, name, description: desc, color, icon, bannerColor: banner })
+    });
+    const data = await res.json();
+    if(data.success) {
+      document.getElementById('ls-modal').remove();
+      _crLeaguesCache = null;
+      showToast('✅ Ligue mise à jour !');
+      await loadLeaguePage(_lvLeague.id);
+    } else {
+      showToast(data.error||'Erreur', true);
+    }
+  } catch(e) {
+    showToast('Erreur réseau', true);
+  }
+}
+
+// ── HELPERS ──
+function timeAgo(ts) {
+  if(!ts) return '';
+  const diff = Date.now() - ts;
+  const m = Math.floor(diff/60000);
+  const h = Math.floor(diff/3600000);
+  const d = Math.floor(diff/86400000);
+  if(d>0) return `il y a ${d}j`;
+  if(h>0) return `il y a ${h}h`;
+  if(m>0) return `il y a ${m}m`;
+  return "à l'instant";
+}
+
+function adjustHex(hex, amount) {
+  try {
+    const r = Math.max(0,Math.min(255,parseInt(hex.slice(1,3),16)+amount));
+    const g = Math.max(0,Math.min(255,parseInt(hex.slice(3,5),16)+amount));
+    const b = Math.max(0,Math.min(255,parseInt(hex.slice(5,7),16)+amount));
+    return `#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'0')}`;
+  } catch { return hex; }
+}
+
+
 /* ══════════════════════════════════════════════════
    SYSTÈME LIGUES CREATOR — GridOracle
    ══════════════════════════════════════════════════ */
@@ -3469,7 +4094,7 @@ function renderCreatorLeagues(leagues, ownerHandle){
         <span style="font-size:.65rem;color:var(--g)">${new Date(l.createdAt).toLocaleDateString('fr-FR',{day:'numeric',month:'short'})}</span>
       </div>
       <div class="cr-rl-actions">
-        <button class="btn-r" style="font-size:.7rem;padding:.28rem .75rem" onclick="showLeagueDetail('${l.id}')">Classement</button>
+        <button class="btn-r" style="font-size:.7rem;padding:.28rem .75rem" onclick="navToLeague('${l.id}','creator')">Classement</button>
         <button class="btn-r" style="font-size:.7rem;padding:.28rem .75rem;background:rgba(255,255,255,.04);border-color:var(--b)" onclick="copyInviteCode('${l.inviteCode}')">📋 Copier code</button>
       </div>
     </div>`;
@@ -3604,7 +4229,10 @@ async function submitCreateLeague(){
 }
 
 // ── Modal détail d'une ligue ──
-async function showLeagueDetail(leagueId){
+async function showLeagueDetail(leagueId, fromPage){
+  return navToLeague(leagueId, fromPage);
+}
+async function _showLeagueDetail_orig(leagueId){
   const existing = document.getElementById('ld-modal');
   if(existing) existing.remove();
 
