@@ -1,11 +1,5 @@
 {
   "rewrites": [
     { "source": "/ligue/:pseudo", "destination": "/index.html" }
-  ],
-  "crons": [
-    { "path": "/api/auto-calculate-scores", "schedule": "0 17,18,19,20 * * 0" },
-    { "path": "/api/update-standings",      "schedule": "0 21 * * 0" },
-    { "path": "/api/send-race-email?type=thursday", "schedule": "0 10 * * 4" },
-    { "path": "/api/send-race-email?type=saturday", "schedule": "0 9 * * 6" }
   ]
 }
