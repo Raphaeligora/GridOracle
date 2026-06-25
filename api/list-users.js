@@ -1,93 +1,74 @@
 // api/list-users.js
-// Vercel Edge Function — Liste tous les utilisateurs GridOracle depuis Redis
-// Retourne les profils publics (sans email) triés par points décroissants
-
+// Retourne le classement mondial de tous les joueurs
+// Le compte espion (raphaeligora@gmail.com) est exclu automatiquement
 export const config = { runtime: 'edge' };
 
+const KV  = () => process.env.KV_REST_API_URL;
+const TOK = () => process.env.KV_REST_API_TOKEN;
+const GHOST_EMAIL = 'raphaeligora@gmail.com';
+
+async function kvGet(key) {
+  const r = await fetch(`${KV()}/get/${encodeURIComponent(key)}`, {
+    headers: { Authorization: `Bearer ${TOK()}` }
+  });
+  return (await r.json()).result ?? null;
+}
+
 export default async function handler(req) {
-  const headers = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'GET, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
-    'Content-Type': 'application/json',
-  };
-
-  if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers });
-  if (req.method !== 'GET') return new Response(JSON.stringify({ error: 'Méthode non autorisée' }), { status: 405, headers });
-
   try {
-    const KV_URL   = process.env.KV_REST_API_URL;
-    const KV_TOKEN = process.env.KV_REST_API_TOKEN;
-
-    // 1. SCAN pour récupérer toutes les clés profile:*
-    let cursor = 0;
-    let allKeys = [];
-
-    do {
-      const scanRes = await fetch(
-        `${KV_URL}/scan/${cursor}?match=${encodeURIComponent('profile:*')}&count=100`,
-        { headers: { Authorization: `Bearer ${KV_TOKEN}` } }
-      );
-      const scanData = await scanRes.json();
-      // Upstash retourne [nextCursor, [keys]]
-      const result = scanData.result;
-      cursor = parseInt(result[0]);
-      allKeys = allKeys.concat(result[1]);
-    } while (cursor !== 0);
-
-    if (allKeys.length === 0) {
-      return new Response(JSON.stringify({ users: [], total: 0 }), { status: 200, headers });
-    }
-
-    // 2. MGET pour récupérer tous les profils en une seule requête
-    const mgetBody = allKeys.map(k => encodeURIComponent(k)).join('/');
-    const mgetRes = await fetch(
-      `${KV_URL}/mget/${mgetBody}`,
-      { headers: { Authorization: `Bearer ${KV_TOKEN}` } }
-    );
-    const mgetData = await mgetRes.json();
-    const rawValues = mgetData.result || [];
-
-    // 3. Parser et nettoyer — supprimer l'email, garder infos publiques
+    let cursor = '0';
     const users = [];
-    rawValues.forEach((raw, i) => {
-      if (!raw) return;
-      try {
-        const p = typeof raw === 'string' ? JSON.parse(raw) : raw;
-        if (!p || !p.handle) return;
-        users.push({
-          handle:    p.handle,
-          fn:        p.fn || '',
-          ln:        p.ln || '',
-          tc:        p.tc || '#e8001d',
-          teamId:    p.teamId || null,
-          driverSn:  p.driverSn || null,
-          plan:      p.plan || 'free',
-          points:    p.points || 0,
-          rank:      p.rank || null,
-          createdAt: p.createdAt || 0,
-          gpsPlayed: p.gpsPlayed || 0,
-          precision: p.precision || 0,
-          // NE PAS inclure email
-        });
-      } catch(e) {
-        // Profil malformé — on l'ignore
-      }
-    });
 
-    // 4. Trier par points décroissants, puis par date d'inscription
-    users.sort((a, b) => {
-      if (b.points !== a.points) return b.points - a.points;
-      return a.createdAt - b.createdAt;
-    });
+    // Scanner tous les profils Redis
+    do {
+      const res = await fetch(
+        `${KV()}/scan/${cursor}/match/${encodeURIComponent('profile:*')}/count/200`,
+        { headers: { Authorization: `Bearer ${TOK()}` } }
+      );
+      const data = await res.json();
+      const [nextCursor, keys] = data.result || ['0', []];
+      cursor = nextCursor;
 
-    // 5. Assigner les rangs
-    users.forEach((u, i) => { u.rank = i + 1; });
+      await Promise.allSettled((keys || []).map(async (key) => {
+        try {
+          const raw = await kvGet(key);
+          if (!raw) return;
+          const p = JSON.parse(raw);
+          if (!p.handle || !p.email) return;
 
-    return new Response(JSON.stringify({ users, total: users.length }), { status: 200, headers });
+          // Exclure le compte espion du classement public
+          if (p.email.toLowerCase() === GHOST_EMAIL) return;
 
-  } catch (err) {
-    console.error('list-users error:', err);
-    return new Response(JSON.stringify({ error: 'Erreur serveur', users: [] }), { status: 500, headers });
+          users.push({
+            handle:    p.handle,
+            email:     p.email,
+            fn:        p.fn || '',
+            ln:        p.ln || '',
+            points:    p.points || 0,
+            plan:      p.plan || 'free',
+            tc:        p.tc || '#e8001d',
+            teamId:    p.teamId || null,
+            driverSn:  p.driverSn || null,
+            createdAt: p.createdAt || 0
+          });
+        } catch {}
+      }));
+    } while (cursor !== '0');
+
+    // Trier par points décroissants et ajouter le rang
+    const sorted = users
+      .sort((a, b) => (b.points || 0) - (a.points || 0))
+      .map((u, i) => ({ ...u, rank: i + 1 }));
+
+    return new Response(
+      JSON.stringify({ users: sorted, total: sorted.length }),
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+
+  } catch (e) {
+    return new Response(
+      JSON.stringify({ error: e.message, users: [], total: 0 }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    );
   }
 }
