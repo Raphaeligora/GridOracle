@@ -1139,6 +1139,68 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 .lv-stat-card-t{font-size:.78rem;font-weight:700;margin-bottom:.55rem;color:var(--w)}
 /* Manage */
 .lv-danger-zone{background:rgba(232,0,29,.05);border:1px solid rgba(232,0,29,.15);border-radius:10px;padding:.85rem 1rem;margin-top:1rem}
+
+/* ── MOBILE FIXES (Points 6) ── */
+@media (max-width: 600px) {
+  .lv-wrap { padding-bottom: 5rem; }
+  .lv-banner-inner { padding: .8rem 1rem .9rem; }
+  .lv-name { font-size: 1.15rem; }
+  .lv-stats-row { grid-template-columns: repeat(4,1fr); }
+  .lv-stat-v { font-size: .95rem; }
+  .lv-stat-l { font-size: .52rem; }
+  #lv-tabs { top: 48px; overflow-x: auto; white-space: nowrap; display: flex; }
+  #lv-tabs .tab { flex-shrink: 0; font-size: .75rem; padding: .55rem .6rem; }
+  .lv-tab { padding: .7rem .75rem 5rem; }
+  .lv-chat-wrap { height: calc(100vh - 310px); }
+  .lv-messages { padding-bottom: .5rem; }
+  .lv-chat-input-wrap { position: sticky; bottom: 0; background: var(--bg); padding: .5rem 0 .8rem; }
+  .lv-member-row-wrap { margin-bottom: .3rem; }
+  .lv-stat-card { padding: .6rem .8rem; }
+  .creator-wrap { padding: 1rem 1rem 4rem; }
+  .lv-vsai-bar .lv-vsai-label { font-size: .65rem; min-width: 42px; }
+  .leagues-wrap { padding: 1rem 1rem 5rem; }
+  .lv-banner { min-height: 130px; }
+}
+
+/* ════════════════════════════════════════
+   POINT 6 — MOBILE CSS FIXES
+   ════════════════════════════════════════ */
+@media (max-width: 600px) {
+  /* League page */
+  .lv-wrap { padding-bottom: 5rem; }
+  .lv-banner-inner { padding: .75rem .9rem .85rem; }
+  .lv-name { font-size: 1.1rem; }
+  .lv-sub { font-size: .68rem; }
+  .lv-invite-row { flex-wrap: wrap; gap: .4rem; }
+  .lv-stats-row { grid-template-columns: repeat(4,1fr); }
+  .lv-stat-v { font-size: .88rem; }
+  .lv-stat-l { font-size: .5rem; }
+  /* Tabs sticky scrollables */
+  #lv-tabs { top: 48px; overflow-x: auto; white-space: nowrap; display: flex; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  #lv-tabs::-webkit-scrollbar { display: none; }
+  #lv-tabs .tab { flex-shrink: 0; font-size: .73rem; padding: .52rem .6rem; }
+  /* Tab content */
+  .lv-tab { padding: .7rem .75rem 5rem; }
+  /* Chat */
+  .lv-chat-wrap { height: calc(100vh - 300px); min-height: 240px; }
+  .lv-chat-input-wrap { position: sticky; bottom: 0; background: var(--bg); padding: .5rem 0 .75rem; }
+  .lv-msg-bubble { font-size: .79rem; }
+  /* Standings */
+  .lv-member-row-wrap { margin-bottom: .3rem; }
+  /* Stats */
+  .lv-stat-card { padding: .65rem .8rem; }
+  /* Manage */
+  .lv-danger-zone { padding: .75rem .85rem; }
+  /* Creator page */
+  .creator-wrap { padding: .9rem .9rem 5rem; }
+  .cr-card { margin-bottom: .75rem; }
+  /* Leagues page */
+  .leagues-wrap { padding: .9rem .9rem 5rem; }
+  /* General overlay modals */
+  .cl-box, .ls-box { padding: 1.1rem 1rem 2rem; border-radius: 12px 12px 0 0; }
+  /* Hub league card */
+  #hub-league-card .lc-metrics { grid-template-columns: repeat(3,1fr); }
+}
 </style>
 </head>
 <body>
@@ -1250,6 +1312,12 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
     <span class="plbl" id="plbl">1/3</span>
   </div>
   <div class="step on" id="s0">
+      <!-- Banner ligue en attente — visible si ?join= ou /ligue/ -->
+      <div id="pending-join-banner" style="display:none;background:rgba(232,0,29,.08);border:1px solid rgba(232,0,29,.25);border-radius:10px;padding:.75rem 1rem;margin-bottom:1rem;text-align:center">
+        <div style="font-size:.78rem;color:var(--red);font-weight:700;margin-bottom:.25rem">🏆 Ligue en attente</div>
+        <div id="pending-join-name" style="font-size:.82rem;color:var(--w);margin-bottom:.2rem">Chargement…</div>
+        <div style="font-size:.72rem;color:var(--g)">Crée ton compte et tu la rejoindras automatiquement !</div>
+      </div>
     <div style="text-align:center">
       <div class="wtag">⚡ Saison 2026 · 11 équipes · 22 pilotes</div>
       <h1 class="ob-t" style="font-size:clamp(2rem,6vw,2.9rem);text-align:center">Bienvenue sur<br><span style="color:var(--red)">GridOracle</span></h1>
@@ -1596,16 +1664,8 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
     </div>
     <div class="hs">
       <div class="hs-hd"><div><span class="sec-lbl" data-i18n="hub.leagues.lbl">Mes ligues</span><div class="hs-t" data-i18n="hub.leagues.t">Classement — F1 Fanatics 2026</div></div><button class="hs-more" onclick="navTo('leagues')" data-i18n="hub.leagues.more">Gérer mes ligues →</button></div>
-      <div class="league-card">
-        <div class="lc-hd"><div class="lc-nm">🏆 F1 Fanatics 2026</div><div class="lc-ct">127 joueurs</div></div>
-        <div class="lc-metrics">
-          <div class="lcm"><div class="lcmv red">#4</div><div class="lcml">Ma ligue</div></div>
-          <div class="lcm"><div class="lcmv">412</div><div class="lcml">Mes pts</div></div>
-          <div class="lcm"><div class="lcmv">#2847</div><div class="lcml">Mondial</div></div>
-        </div>
-        <div class="tabs"><div class="tab on" onclick="hTab('l',this)" data-i18n="tab.league">Ma Ligue</div><div class="tab" onclick="hTab('m',this)" data-i18n="tab.global">Mondial</div></div>
-        <div class="lcbd" id="hlc"></div>
-        <div class="lc-ft"><a onclick="navTo('leagues')">Voir tout le classement →</a></div>
+      <div class="league-card" id="hub-league-card">
+        <div id="hub-league-inner" style="padding:.4rem 0;text-align:center;color:var(--g);font-size:.75rem">Chargement…</div>
       </div>
     </div>
     <div class="hs">
@@ -2824,6 +2884,20 @@ const _T = {
     'ob.step1.lbl':'Étape 1 / 3','ob.step1.t':'Tes informations','ob.step1.s':'Ces informations créent ton profil public GridOracle.',
     'ob.step2.lbl':'Étape 2 / 3','ob.step2.t':'Ton écurie','ob.step2.s':'11 constructeurs en 2026. Quelle livrée portes-tu ?',
     'ob.step3.lbl':'Étape 3 / 3','ob.step3.t':'Ton pilote','ob.step3.s':'22 pilotes en 2026. Qui défends-tu race après race ?',
+    // Nouvelles sections ligue + creator
+    'lv.standings':'🏆 Classement','lv.chat':'💬 Chat','lv.stats':'📊 Stats','lv.manage':'⚙️ Gérer',
+    'lv.members':'Membres','lv.part':'Participation','lv.avg':'Moy. pts','lv.beatai':'Beat IA',
+    'lv.back':'← Retour','lv.invite':'Inviter',
+    'lv.join.lbl':'🔗 Rejoindre une ligue',
+    'lv.join.sub':"Entre le code que ton Creator t'a envoyé",
+    'lv.join.btn':'Rejoindre →',
+    'lv.chat.empty':"Aucun message pour l'instant. Sois le premier !",
+    'lv.chat.ph':'Écris un message…',
+    'lv.vsai.lead':"L'IA mène — donne-lui tout au prochain GP !",
+    'hub.league.empty':'Pas encore de ligue — rejoins-en une !',
+    'hub.league.manage':'Gérer mes ligues →',
+    'cr.join.lbl':'🔗 Rejoindre une ligue',
+    'cr.join.sub':"Entre le code d'une ligue pour la rejoindre en tant que membre",
   },
   en: {
     // Nav
@@ -2855,6 +2929,20 @@ const _T = {
     'ob.step1.lbl':'Step 1 / 3','ob.step1.t':'Your information','ob.step1.s':'This creates your public GridOracle profile.',
     'ob.step2.lbl':'Step 2 / 3','ob.step2.t':'Your team','ob.step2.s':'11 constructors in 2026. Which livery do you wear?',
     'ob.step3.lbl':'Step 3 / 3','ob.step3.t':'Your driver','ob.step3.s':'22 drivers in 2026. Who do you back race after race?',
+    // New league + creator sections
+    'lv.standings':'🏆 Standings','lv.chat':'💬 Chat','lv.stats':'📊 Stats','lv.manage':'⚙️ Manage',
+    'lv.members':'Members','lv.part':'Participation','lv.avg':'Avg pts','lv.beatai':'Beat AI',
+    'lv.back':'← Back','lv.invite':'Invite',
+    'lv.join.lbl':'🔗 Join a League',
+    'lv.join.sub':'Enter the code your Creator sent you',
+    'lv.join.btn':'Join →',
+    'lv.chat.empty':'No messages yet. Be the first!',
+    'lv.chat.ph':'Write a message…',
+    'lv.vsai.lead':'The AI leads — give it your best next GP!',
+    'hub.league.empty':'No league yet — join one in the Leagues tab!',
+    'hub.league.manage':'Manage my leagues →',
+    'cr.join.lbl':'🔗 Join a League',
+    'cr.join.sub':'Enter a league code to join as a member',
   }
 };
 
@@ -2886,7 +2974,31 @@ function switchLang(lang){
 }
 
 // Appliquer au chargement
-document.addEventListener('DOMContentLoaded', () => applyLang(LANG));
+document.addEventListener('DOMContentLoaded', () => {
+  applyLang(LANG);
+  // Afficher banner ligue en attente dans l'onboarding si un code est stocké
+  const pendingRaw = localStorage.getItem('go_pending_join');
+  if(pendingRaw){
+    const banner = document.getElementById('pending-join-banner');
+    const nameEl = document.getElementById('pending-join-name');
+    if(banner) banner.style.display = 'block';
+    try{
+      const pending = JSON.parse(pendingRaw);
+      if(pending.type === 'code'){
+        // Chercher le nom de la ligue pour l'afficher
+        fetch('/api/get-league?code=' + encodeURIComponent(pending.value))
+          .then(r=>r.json())
+          .then(d=>{ if(d.league && nameEl) nameEl.textContent = '🏆 ' + d.league.name; })
+          .catch(()=>{ if(nameEl) nameEl.textContent = 'Code : ' + pending.value; });
+      } else if(pending.type === 'handle'){
+        fetch('/api/get-creator-league?handle=' + encodeURIComponent(pending.value))
+          .then(r=>r.json())
+          .then(d=>{ if(d.league && nameEl) nameEl.textContent = '🏆 ' + d.league.name; })
+          .catch(()=>{ if(nameEl) nameEl.textContent = 'Ligue de @' + pending.value; });
+      }
+    }catch{}
+  }
+});
 
 function showToast(msg, isError=false){
   const t=document.getElementById('toast');
@@ -2914,6 +3026,129 @@ function hasFullAccess(){
 }
 
 // ── INIT HUB DASHBOARD SIDEBAR ──
+/* ══ HUB — LIGUES DYNAMIQUES (Point 4) ══ */
+async function loadHubLeagues(){
+  const el = document.getElementById('hub-league-inner');
+  if(!el) return;
+  const profile = JSON.parse(localStorage.getItem('go_profile')||'{}');
+  const handle  = profile.handle || USER.handle || '';
+  if(!handle){ el.innerHTML='<div style="padding:.5rem;color:var(--g);font-size:.78rem;text-align:center">Connecte-toi pour voir tes ligues.</div>'; return; }
+
+  try{
+    const res  = await fetch('/api/my-leagues?handle='+encodeURIComponent(handle));
+    const data = await res.json();
+    const leagues = data.leagues||[];
+
+    if(!leagues.length){
+      el.innerHTML=`<div style="padding:.6rem 0;text-align:center">
+        <div style="font-size:.78rem;color:var(--g);margin-bottom:.5rem">${t('hub.league.empty')}</div>
+        <button class="btn-r" style="font-size:.72rem" onclick="navTo('leagues')">Rejoindre une ligue →</button>
+      </div>`;
+      return;
+    }
+
+    // Afficher la première ligue (celle de l'owner en priorité)
+    const owned = leagues.find(l=>l.ownerHandle===handle)||leagues[0];
+    const color  = owned.color||'#e8001d';
+    const icon   = owned.icon||'🏆';
+    const myMember = (owned.members||[]).find(m=>m.handle===handle)||{};
+    const rank   = myMember.rank || '—';
+    const pts    = myMember.pts || 0;
+
+    el.innerHTML = `
+      <div class="lc-hd" style="cursor:pointer" onclick="navToLeague('${owned.id}','home')">
+        <div class="lc-nm">${icon} ${escH(owned.name)}</div>
+        <div class="lc-ct">${owned.memberCount||0} membres · Saison 2026</div>
+      </div>
+      <div class="lc-metrics">
+        <div class="lcm"><div class="lcmv red" style="color:${color}">#${rank}</div><div class="lcml">${t('leagues.myrank')}</div></div>
+        <div class="lcm"><div class="lcmv">${pts}</div><div class="lcml">${t('leagues.mypts')}</div></div>
+        <div class="lcm"><div class="lcmv">${owned.memberCount||0}</div><div class="lcml">${t('lv.members')}</div></div>
+      </div>
+      <div class="lc-ft" style="cursor:pointer" onclick="navToLeague('${owned.id}','home')">
+        <a>Voir le classement complet →</a>
+      </div>
+    `;
+
+    // Mettre à jour le sous-titre hub
+    const subEl = document.querySelector('[data-i18n="hub.leagues.t"]');
+    if(subEl) subEl.textContent = escH(owned.name);
+  }catch(e){
+    el.innerHTML='<div style="padding:.5rem;color:var(--g);font-size:.78rem;text-align:center">Erreur chargement ligues</div>';
+  }
+}
+
+/* ══ DÉTECTION URL : ?join=CODE et /ligue/pseudo (Points 1 + 8) ══ */
+/* ═══════════════════════════════════════════════════
+   GESTION DU LIEN D'INVITATION LIGUE
+   1. detectAndStoreJoinURL() — tourne avant l'auth
+   2. executePendingJoin()    — tourne après bootApp
+   ═══════════════════════════════════════════════════ */
+
+// Étape 1 : détecte ?join=CODE ou /ligue/pseudo et stocke dans localStorage
+// Appelé AVANT la vérification du profil, pour tous les utilisateurs
+function detectAndStoreJoinURL(){
+  const params    = new URLSearchParams(window.location.search);
+  const joinCode  = params.get('join');
+  const pathParts = window.location.pathname.split('/').filter(Boolean);
+  const isLigue   = pathParts[0] === 'ligue' && pathParts[1];
+
+  if(joinCode){
+    const code = joinCode.toUpperCase().trim();
+    localStorage.setItem('go_pending_join', JSON.stringify({type:'code', value:code}));
+    window.history.replaceState({}, '', '/');
+    console.log('[GridOracle] Ligue en attente (code):', code);
+  } else if(isLigue){
+    const pseudo = decodeURIComponent(pathParts[1]);
+    localStorage.setItem('go_pending_join', JSON.stringify({type:'handle', value:pseudo}));
+    window.history.replaceState({}, '', '/');
+    console.log('[GridOracle] Ligue en attente (handle):', pseudo);
+  }
+}
+
+// Étape 2 : exécute le join en attente APRÈS que l'utilisateur est connecté
+async function executePendingJoin(){
+  const raw = localStorage.getItem('go_pending_join');
+  if(!raw) return;
+  localStorage.removeItem('go_pending_join');
+  let pending;
+  try{ pending = JSON.parse(raw); }catch{ return; }
+
+  if(pending.type === 'code'){
+    // Rejoindre via code
+    showToast('🔗 Rejoindre ta ligue en cours…');
+    setTimeout(() => {
+      navTo('leagues');
+      setTimeout(async () => {
+        const inp = document.getElementById('join-code');
+        if(inp){ inp.value = pending.value; await joinLeague(); }
+      }, 350);
+    }, 400);
+  } else if(pending.type === 'handle'){
+    // Rejoindre via lien créateur
+    showToast('🔗 Chargement de la ligue…');
+    setTimeout(() => loadLeagueByCreatorHandle(pending.value), 500);
+  }
+}
+
+// Compat (conservé pour les appels existants)
+function detectAndHandleURL(){ executePendingJoin(); }
+
+async function loadLeagueByCreatorHandle(handle){
+  try{
+    const res  = await fetch('/api/get-creator-league?handle=' + encodeURIComponent(handle));
+    const data = await res.json();
+    if(data.success && data.league){
+      navToLeague(data.league.id, 'home');
+    } else {
+      showToast('Ligue introuvable pour @' + handle, true);
+      navTo('home');
+    }
+  }catch{
+    showToast('Erreur de chargement de la ligue', true);
+  }
+}
+
 function initHubDashboard(){
   const raw = localStorage.getItem('go_profile');
   const p = raw ? JSON.parse(raw) : {};
@@ -3023,6 +3258,7 @@ function initHubDashboard(){
       if(el) el.textContent = 'Il y a '+mins+' minute'+(mins>1?'s':'');
     }, 60000);
   }, 400);
+  loadHubLeagues();
 }
 function buildAIPred(){
   const isPaid = hasFullAccess();
@@ -4166,8 +4402,46 @@ function renderCreatorLeagues(leagues, ownerHandle){
     const isOwner = l.ownerHandle===ownerHandle;
     const color   = l.color||'#e8001d';
     const icon    = l.icon||'🏆';
-    return '<div class="cr-rl" style="margin-bottom:.6rem"><div class="cr-rl-hd"><div class="cr-rl-name">'+icon+' '+escH(l.name)+'</div><div class="cr-rl-cnt">'+(l.memberCount||0)+' membre'+((l.memberCount||0)>1?'s':'')+'</div></div><div class="cr-rl-meta"><div class="cr-rl-code" onclick="copyInviteCode(\''+l.inviteCode+'\')" title="Copier le code">🔗 '+escH(l.inviteCode||'—')+'</div>'+(isOwner?'<span style="font-size:.62rem;color:var(--gold);border:1px solid rgba(255,200,0,.2);border-radius:100px;padding:1px 6px">Creator 👑</span>':'')+'</div><div class="cr-rl-actions"><button class="btn-r" style="font-size:.7rem;padding:.28rem .75rem" onclick="navToLeague(\''+l.id+'\',\'creator\')">Classement & Chat</button><button class="btn-r" style="font-size:.7rem;padding:.28rem .75rem;background:rgba(255,255,255,.04);border-color:var(--b)" onclick="copyInviteCode(\''+l.inviteCode+'\')">📋 Code</button></div></div>';
+    return '<div class="cr-rl" style="margin-bottom:.8rem">'+
+      '<div class="cr-rl-hd"><div class="cr-rl-name">'+icon+' '+escH(l.name)+'</div><div class="cr-rl-cnt">'+(l.memberCount||0)+' membre'+((l.memberCount||0)>1?'s':'')+'</div></div>'+
+      '<div class="cr-rl-meta">'+
+        '<div class="cr-rl-code" onclick="copyInviteCode(\''+l.inviteCode+'\')" title="Copier le code">🔗 '+escH(l.inviteCode||'—')+'</div>'+
+        (isOwner?'<span style="font-size:.62rem;color:var(--gold);border:1px solid rgba(255,200,0,.2);border-radius:100px;padding:1px 6px">Creator 👑</span>':'')+'</div>'+
+      // Lien complet copiable
+      '<div style="background:rgba(255,255,255,.04);border:1px dashed rgba(255,255,255,.12);border-radius:7px;padding:.45rem .75rem;display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin-bottom:.55rem;cursor:pointer" onclick="crCopyShareLink(\''+l.inviteCode+'\')" title="Copier le lien de partage">'+
+        '<span style="font-size:.7rem;color:rgba(255,255,255,.45);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1">🌐 gridoracle.vercel.app/?join='+escH(l.inviteCode)+'</span>'+
+        '<span style="font-size:.7rem;color:var(--red);flex-shrink:0;font-weight:700">Copier 📋</span>'+
+      '</div>'+
+      '<div class="cr-rl-actions">'+
+        '<button class="btn-r" style="font-size:.7rem;padding:.32rem .85rem;background:var(--red);border-color:var(--red);flex:1" onclick="crShareLeague(\''+l.inviteCode+'\',\''+escH(l.name)+'\')" >📤 Partager</button>'+
+        '<button class="btn-r" style="font-size:.7rem;padding:.32rem .7rem" onclick="navToLeague(\''+l.id+'\',\'creator\')">Voir la ligue</button>'+
+      '</div>'+
+    '</div>';
   }).join('') + '<div class="cr-lp" style="opacity:.5;border-style:dashed;cursor:pointer;margin-top:.4rem" onclick="openCreateLeagueModal()"><div class="cr-lp-icon" style="background:rgba(255,255,255,.04)">＋</div><div class="cr-lp-info"><div class="cr-lp-name" style="color:var(--g)">Nouvelle ligue…</div></div></div>';
+}
+
+/* ── PARTAGE LIGUE CREATOR ── */
+function crShareLeague(code, name){
+  const link = 'https://gridoracle.vercel.app/?join=' + encodeURIComponent(code);
+  const msg  = 'Rejoins ma ligue "' + name + '" sur GridOracle 🏎️\n' +
+               'Prédit les résultats F1 et défie-moi race après race !\n\n' +
+               '🔗 ' + link + '\n' +
+               '📋 Code : ' + code;
+  if(navigator.share){
+    navigator.share({title: 'GridOracle — ' + name, text: msg, url: link}).catch(()=>{});
+  } else {
+    navigator.clipboard.writeText(msg).then(()=>showToast('📤 Message de partage copié !'));
+  }
+}
+
+function crCopyShareLink(code){
+  const link = 'https://gridoracle.vercel.app/?join=' + encodeURIComponent(code);
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(link).then(()=>showToast('📋 Lien copié : ' + link));
+  } else {
+    const t=document.createElement('textarea');t.value=link;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);
+    showToast('📋 Lien copié !');
+  }
 }
 
 /* ── MODAL CRÉER LIGUE ── */
@@ -5107,7 +5381,7 @@ function resetProfile(){
 // Lance l'app avec un profil donné (localStorage ou cloud)
 function bootApp(profile) {
   // Admin override — accès Creator gratuit
-  const _ADMINS = ['raphaeligora@gmail.com'];
+  const _ADMINS = ['raphaeligora@gmail.com','ferreiraraphael89@gmail.com']; // Raphaël Creator TikTok
   if(_ADMINS.includes((profile.email||'').toLowerCase())){
     profile.plan = 'creator'; profile.billing = 'yearly';
     localStorage.setItem('go_plan','creator');
@@ -5140,6 +5414,8 @@ function bootApp(profile) {
   applyRestoredPlan();
   setTimeout(animBars, 150);
   initHubDashboard();
+  // Détecter ?join=CODE ou /ligue/pseudo dans l'URL
+  executePendingJoin();
   // Charger prédiction sauvegardée depuis Redis
   loadSavedPrediction();
   if(isPredLocked()) setTimeout(lockPredUI, 500);
@@ -5252,6 +5528,9 @@ function reconSkip() {
 
 /* ══ POINT D'ENTRÉE PRINCIPAL ══ */
 (()=>{
+  // 0. Détecter et stocker un lien d'invitation AVANT tout (même si pas connecté)
+  detectAndStoreJoinURL();
+
   // 1. Vérifier localStorage d'abord (même appareil, accès instantané)
   const saved = localStorage.getItem('go_profile');
   if (saved) {
