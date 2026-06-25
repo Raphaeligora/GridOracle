@@ -2885,7 +2885,7 @@ function goApp(){
   loadSavedPrediction();
   if(isPredLocked()) setTimeout(lockPredUI, 500);
   // Afficher onglet Admin si compte admin
-  const _ADMIN_EMAILS=['raphaeligora@gmail.com','ferreiraraphael89@gmail.com'];
+  const _ADMIN_EMAILS=['raphaeligora@gmail.com'];
   if(_ADMIN_EMAILS.includes((profile.email||'').toLowerCase())){
     const adminTab=document.getElementById('bn-admin');
     if(adminTab) adminTab.style.display='flex';
@@ -4988,7 +4988,7 @@ function lvCopyCode(){ copyInviteCode(_lv.league?.inviteCode||''); }
 
 /* ══ PAGE ADMIN ══ */
 function initAdminPage(){
-  const admins = ['raphaeligora@gmail.com','ferreiraraphael89@gmail.com'];
+  const admins = ['raphaeligora@gmail.com'];
   const profile = JSON.parse(localStorage.getItem('go_profile')||'{}');
   if(!admins.includes((profile.email||'').toLowerCase())){
     showToast('Accès non autorisé',true);
@@ -5555,7 +5555,7 @@ function resetProfile(){
 // Lance l'app avec un profil donné (localStorage ou cloud)
 function bootApp(profile) {
   // Admin override — accès Creator gratuit
-  const _ADMINS = ['raphaeligora@gmail.com','ferreiraraphael89@gmail.com']; // Raphaël Creator TikTok
+  const _ADMINS = ['raphaeligora@gmail.com'];
   if(_ADMINS.includes((profile.email||'').toLowerCase())){
     profile.plan = 'creator'; profile.billing = 'yearly';
     localStorage.setItem('go_plan','creator');
@@ -5594,7 +5594,7 @@ function bootApp(profile) {
   loadSavedPrediction();
   if(isPredLocked()) setTimeout(lockPredUI, 500);
   // Afficher onglet Admin si compte admin
-  const _ADMIN_EMAILS=['raphaeligora@gmail.com','ferreiraraphael89@gmail.com'];
+  const _ADMIN_EMAILS=['raphaeligora@gmail.com'];
   if(_ADMIN_EMAILS.includes((profile.email||'').toLowerCase())){
     const adminTab=document.getElementById('bn-admin');
     if(adminTab) adminTab.style.display='flex';
