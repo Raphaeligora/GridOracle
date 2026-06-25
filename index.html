@@ -1780,6 +1780,23 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
       </div>
       <!-- LEAGUE PREVIEW -->
       <div style="display:flex;flex-direction:column;gap:.9rem">
+
+        <!-- REJOINDRE UNE LIGUE (Creator) -->
+        <div class="cr-card">
+          <div class="cr-card-hd"><div class="cr-card-t">🔗 Rejoindre une ligue</div></div>
+          <div class="cr-card-body">
+            <div style="font-size:.75rem;color:var(--g);margin-bottom:.65rem">Entre le code d'une ligue pour la rejoindre en tant que membre</div>
+            <div style="display:flex;gap:.5rem">
+              <input class="lj-input" id="cr-join-code" style="margin:0;flex:1;font-family:var(--fh);font-size:.95rem;letter-spacing:.08em;text-transform:uppercase"
+                placeholder="XXXX-XXXX" maxlength="9"
+                oninput="this.value=this.value.toUpperCase()"
+                onkeydown="if(event.key==='Enter')crJoinLeague()">
+              <button class="btn-r" id="cr-join-btn" onclick="crJoinLeague()" style="flex-shrink:0;padding:.68rem 1rem">Rejoindre →</button>
+            </div>
+            <div id="cr-join-feedback" style="display:none;margin-top:.55rem;font-size:.76rem;border-radius:7px;padding:.45rem .75rem"></div>
+          </div>
+        </div>
+
         <div class="cr-card">
           <div class="cr-card-hd"><div class="cr-card-t">📋 Mes Ligues Creator</div><button class="btn-r" style="font-size:.7rem;padding:.3rem .7rem" onclick="openCreateLeagueModal()" id="cr-create-btn">Créer +</button></div>
           <div class="cr-card-body">
@@ -3289,6 +3306,86 @@ function lockPredUI(){
   });
 }
 
+/* ── REJOINDRE LIGUE DEPUIS PAGE CREATOR ── */
+async function crJoinLeague(){
+  const codeEl = document.getElementById('cr-join-code');
+  const btn    = document.getElementById('cr-join-btn');
+  const fb     = document.getElementById('cr-join-feedback');
+  const code   = (codeEl?.value||'').trim().toUpperCase();
+
+  function showFb(msg, ok){
+    if(!fb) return;
+    fb.style.display='block';
+    fb.style.background = ok?'rgba(76,175,80,.1)':'rgba(232,0,29,.08)';
+    fb.style.border      = ok?'1px solid rgba(76,175,80,.25)':'1px solid rgba(232,0,29,.2)';
+    fb.style.color       = ok?'#4caf50':'var(--red)';
+    fb.textContent       = msg;
+  }
+
+  if(!code){ showFb("Entre un code d'invitation"); return; }
+
+  const profile = JSON.parse(localStorage.getItem('go_profile')||'{}');
+  const handle  = profile.handle||USER.handle||'';
+  const email   = profile.email||'';
+  if(!handle){ showFb("Connecte-toi d'abord"); return; }
+
+  if(btn){ btn.disabled=true; btn.textContent='...'; }
+
+  try{
+    const res  = await fetch('/api/join-league',{
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({handle, email, inviteCode: code, tc: USER.tc||profile.tc||'#e8001d'})
+    });
+    const data = await res.json();
+
+    if(data.success){
+      const msg = data.alreadyMember
+        ? 'Tu es déjà dans cette ligue !'
+        : '🏆 Ligue "'+data.league.name+'" rejointe !';
+      showFb(msg, true);
+      if(codeEl) codeEl.value='';
+      const lids=JSON.parse(localStorage.getItem('go_leagues')||'[]');
+      if(!lids.includes(data.league.id)){ lids.push(data.league.id); localStorage.setItem('go_leagues',JSON.stringify(lids)); }
+      // Rafraîchir les ligues Creator si c'est la sienne
+      _crLeaguesCache=null;
+      loadCreatorLeagues(true);
+    } else {
+      showFb(data.error||'Code invalide — vérifie et réessaie');
+    }
+  }catch(e){
+    showFb('Erreur réseau — réessaie');
+  }finally{
+    if(btn){ btn.disabled=false; btn.textContent='Rejoindre →'; }
+  }
+}
+
+/* ── SYNC PRÉDICTION → LIGUES ── */
+async function syncPredToLeagues(pred){
+  const profile = JSON.parse(localStorage.getItem('go_profile')||'{}');
+  const handle  = profile.handle||USER.handle||'';
+  const email   = profile.email||'';
+  if(!handle) return;
+
+  // Construire la liste des handles (sn) de la prédiction
+  const predList = pred.map(d=>{
+    if(typeof d==='string') return d;
+    if(d&&d.sn) return d.sn;
+    return null;
+  }).filter(Boolean);
+
+  try{
+    const res = await fetch('/api/sync-league',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({handle, email, gp: GP_CURRENT.id, pred: predList})
+    });
+    const data = await res.json();
+    if(data.synced>0) console.log('✅ Ligues synced:', data.synced+'/'+data.total);
+  }catch(e){
+    console.warn('League sync failed (non-blocking):', e);
+  }
+}
+
 async function doSubmit(inst, badgeId, btnId){
   const filled = inst.pred.filter(Boolean);
   if(filled.length < 5) return;
@@ -3327,6 +3424,8 @@ async function doSubmit(inst, badgeId, btnId){
     showToast(LANG==='en'?'🏁 Prediction saved in GridOracle!':'🏁 Prédiction sauvegardée dans GridOracle !');
     // Afficher le bouton de partage
     showShareButton(inst.pred.filter(Boolean));
+    // Sync prédiction vers toutes les ligues du joueur
+    syncPredToLeagues(inst.pred.filter(Boolean));
   } else if(result.reason === 'locked'){
     showToast('🔒 Prédictions fermées — qualifs commencées');
     lockPredUI();
@@ -4262,7 +4361,15 @@ function lvRenderStandings(){
           <div><span style="color:var(--g)">Rôle :</span> ${m.isOwner?'👑 Creator':'Membre'}</div>
           <div><span style="color:var(--g)">Rang :</span> #${rank}</div>
           ${_lv.isOwner&&m.email?`<div style="grid-column:1/-1"><span style="color:var(--g)">Email :</span> ${escH(m.email)}</div>`:''}
-          ${pts>0&&_lv.isOwner?`<div style="grid-column:1/-1;margin-top:.3rem"><span style="color:var(--g)">Prédiction :</span> <span style="color:#4caf50">Soumise ce GP ✅</span></div>`:''}
+          <div style="grid-column:1/-1;margin-top:.3rem">
+            <span style="color:var(--g)">Prédiction GP :</span>
+            ${m.hasPredicted
+              ? `<span style="color:#4caf50">✅ Soumise</span>${_lv.isOwner&&m.lastPred&&m.lastPred.length
+                  ? '<div style="margin-top:.3rem;display:flex;gap:.3rem;flex-wrap:wrap">'+m.lastPred.slice(0,5).map((d,i)=>`<span style="font-size:.65rem;background:var(--c2);border:1px solid var(--b);border-radius:4px;padding:2px 6px">P${i+1} ${escH(d)}</span>`).join('')+'</div>'
+                  : ''}`
+              : '<span style="color:var(--g)">⏳ Pas encore prédite</span>'
+            }
+          </div>
         </div>
       </div>
     </div>`;
@@ -4377,7 +4484,7 @@ function lvRenderStats(){
   const el=document.getElementById('lv-stats-body');
   if(!el||!_lv.league) return;
   const AI_PTS=280, m=_lv.members, color=_lv.league.color||'#e8001d';
-  const withPts=m.filter(x=>(x.pts||0)>0).length;
+  const withPts=m.filter(x=>x.hasPredicted||(x.pts||0)>0).length;
   const avgPts=m.length?Math.round(m.reduce((s,x)=>s+(x.pts||0),0)/m.length):0;
   const topM=m.length?[...m].sort((a,b)=>(b.pts||0)-(a.pts||0))[0]:null;
   const beatAI=m.filter(x=>(x.pts||0)>AI_PTS).length;
