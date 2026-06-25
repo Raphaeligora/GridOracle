@@ -1104,6 +1104,41 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 .ls-icon-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.35rem;margin-top:.5rem}
 .ls-icon-btn{aspect-ratio:1;font-size:1.2rem;display:flex;align-items:center;justify-content:center;background:var(--c2);border:1px solid var(--b);border-radius:8px;cursor:pointer;transition:all .15s}
 .ls-icon-btn.active{border-color:var(--red);background:rgba(232,0,29,.1)}
+
+/* ── LEAGUE PAGE EXTRA ── */
+.lv-tab{padding:.9rem 1rem 5rem;min-height:50vh}
+.lv-tabs .tab{font-size:.8rem;padding:.6rem .75rem}
+/* Chat */
+.lv-chat-wrap{display:flex;flex-direction:column;height:calc(100vh - 320px);min-height:300px}
+.lv-messages{flex:1;overflow-y:auto;padding:.5rem 0;display:flex;flex-direction:column;gap:.35rem}
+.lv-msg{display:flex;gap:.5rem;align-items:flex-start;padding:.15rem 0}
+.lv-msg.mine{flex-direction:row-reverse}
+.lv-msg-av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;flex-shrink:0;border:1.5px solid;margin-top:2px}
+.lv-msg-body{max-width:72%;display:flex;flex-direction:column;gap:2px}
+.lv-msg.mine .lv-msg-body{align-items:flex-end}
+.lv-msg-meta{display:flex;align-items:center;gap:.35rem;flex-wrap:wrap}
+.lv-msg-handle{font-size:.65rem;font-weight:700}
+.lv-msg-creator-tag{font-size:.55rem;background:rgba(255,200,0,.15);color:#FFD700;border:1px solid rgba(255,200,0,.25);border-radius:100px;padding:1px 5px}
+.lv-msg-ts{font-size:.6rem;color:rgba(255,255,255,.25)}
+.lv-msg-bubble{background:var(--c2);border:1px solid var(--b);border-radius:14px;padding:.42rem .72rem;font-size:.82rem;color:var(--w);line-height:1.45;word-break:break-word}
+.lv-msg.mine .lv-msg-bubble{background:rgba(232,0,29,.12);border-color:rgba(232,0,29,.25)}
+.lv-msg-system .lv-msg-bubble{background:transparent;border:none;color:rgba(255,255,255,.3);font-size:.72rem;font-style:italic;text-align:center}
+.lv-chat-input-wrap{display:flex;gap:.5rem;padding:.65rem 0 .4rem;border-top:1px solid var(--b);flex-shrink:0}
+.lv-chat-input{flex:1;background:var(--c2);border:1px solid var(--b);border-radius:10px;color:#fff;font-family:var(--fb);font-size:.84rem;padding:.58rem .85rem;outline:none}
+.lv-chat-input:focus{border-color:rgba(232,0,29,.4)}
+.lv-send-btn{background:var(--red);color:#fff;border:none;border-radius:10px;padding:.58rem 1rem;font-size:.9rem;cursor:pointer;flex-shrink:0;transition:opacity .2s}
+.lv-send-btn:disabled{opacity:.4}
+/* Standings member row */
+.lv-member-expanded{display:none;background:rgba(255,255,255,.025);border-top:1px solid rgba(255,255,255,.05);padding:.6rem .8rem;border-radius:0 0 10px 10px}
+.lv-member-expanded.open{display:block}
+.lv-member-row-wrap{border:1px solid var(--b);border-radius:10px;margin-bottom:.4rem;overflow:hidden}
+.lv-member-row{cursor:pointer;border-bottom:none}
+.lv-member-row:hover{background:rgba(255,255,255,.04)}
+/* Stats */
+.lv-stat-card{background:var(--c2);border:1px solid var(--b);border-radius:10px;padding:.75rem 1rem;margin-bottom:.6rem}
+.lv-stat-card-t{font-size:.78rem;font-weight:700;margin-bottom:.55rem;color:var(--w)}
+/* Manage */
+.lv-danger-zone{background:rgba(232,0,29,.05);border:1px solid rgba(232,0,29,.15);border-radius:10px;padding:.85rem 1rem;margin-top:1rem}
 </style>
 </head>
 <body>
@@ -1637,31 +1672,38 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 <div id="pg-leagues" class="pg">
   <div class="leagues-wrap">
     <div style="margin-bottom:1.2rem"><span class="sec-lbl" data-i18n="leagues.lbl">Compétition</span><div class="sec-t" data-i18n="leagues.t">Mes Ligues</div></div>
-    <div class="leagues-grid">
-      <div style="display:flex;flex-direction:column;gap:.85rem">
-        <div class="league-join">
-          <div class="lj-t" data-i18n="leagues.join.t">Rejoindre une ligue</div>
-          <input class="lj-input" placeholder="Code d'invitation (ex: F1FAN-2026)" id="join-code">
-          <button class="btn-r" style="width:100%" onclick="joinLeague()"data-i18n="leagues.join.btn">Rejoindre →</button>
-        </div>
-        <div class="create-league">
-          <div class="cl-t">🔒 Créer ma propre ligue</div>
-          <div class="cl-s">Invite ta communauté, définis tes récompenses et gère ton classement. Disponible avec Premium & Creator.</div>
-          <button class="btn-r" onclick="openStripeModal('premium')">Passer Premium →</button>
-        </div>
+
+    <!-- REJOINDRE — visible en haut, toujours accessible -->
+    <div class="league-join" style="margin-bottom:1rem">
+      <div class="lj-t" data-i18n="leagues.join.t">Rejoindre une ligue</div>
+      <div style="font-size:.75rem;color:var(--g);margin-bottom:.65rem">Entre le code que ton Creator t'a envoyé</div>
+      <div style="display:flex;gap:.5rem">
+        <input class="lj-input" style="margin-bottom:0;flex:1;font-family:var(--fh);font-size:.95rem;letter-spacing:.08em;text-transform:uppercase"
+          placeholder="XXXX-XXXX" id="join-code" maxlength="9"
+          oninput="this.value=this.value.toUpperCase()"
+          onkeydown="if(event.key==='Enter')joinLeague()">
+        <button class="btn-r" id="join-btn" onclick="joinLeague()" style="flex-shrink:0;padding:.7rem 1.1rem">Rejoindre →</button>
       </div>
-      <div class="league-card">
-        <div class="lc-hd"><div class="lc-nm">🏆 F1 Fanatics 2026</div><div class="lc-ct">127 joueurs · Saison 2026</div></div>
-        <div class="lc-metrics">
-          <div class="lcm"><div class="lcmv red">#4</div><div class="lcml" data-i18n="leagues.myrank">Ma position</div></div>
-          <div class="lcm"><div class="lcmv">412</div><div class="lcml" data-i18n="leagues.mypts">Mes points</div></div>
-          <div class="lcm"><div class="lcmv">87%</div><div class="lcml">Précision IA</div></div>
-        </div>
-        <div class="tabs"><div class="tab on" onclick="hTab('l',this)" data-i18n="tab.standings">Classement</div><div class="tab" onclick="hTab('m',this)" data-i18n="tab.global">Mondial</div></div>
-        <div class="lcbd" id="llc"></div>
-        <div class="lc-ft"><a>Voir tout le classement →</a></div>
+      <div id="join-feedback" style="display:none;margin-top:.55rem;font-size:.76rem;border-radius:7px;padding:.45rem .75rem"></div>
+    </div>
+
+    <!-- MES LIGUES -->
+    <div id="user-leagues-list">
+      <div style="text-align:center;padding:1.5rem;color:var(--g);font-size:.8rem">
+        <div class="spinner" style="width:14px;height:14px;margin:0 auto .5rem"></div>
+        Chargement de tes ligues…
       </div>
     </div>
+
+    <!-- CRÉER (si Creator/Premium) -->
+    <div id="leagues-create-cta" style="display:none;margin-top:1rem">
+      <div class="create-league">
+        <div class="cl-t" data-i18n="leagues.create.t">🔒 Créer ma propre ligue</div>
+        <div class="cl-s" data-i18n="leagues.create.s">Invite ta communauté, définis tes récompenses et gère ton classement. Disponible avec Premium & Creator.</div>
+        <button class="btn-r" onclick="openCreateLeagueModal()">Créer ma ligue →</button>
+      </div>
+    </div>
+
   </div>
 </div>
 
@@ -1828,12 +1870,14 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 <!-- ── PAGE: LEAGUE VIEW ── -->
 <div id="pg-league-view" class="pg">
   <div class="lv-wrap">
-    <!-- BANNER + HEADER -->
     <div class="lv-banner" id="lv-banner">
       <div class="lv-banner-inner">
         <div class="lv-banner-top">
           <button class="lv-back-btn" onclick="lvBack()">← Retour</button>
-          <button class="lv-settings-btn" id="lv-settings-btn" onclick="openLeagueSettings()" style="display:none">⚙️</button>
+          <div style="display:flex;gap:.4rem">
+            <button class="lv-share-btn" onclick="lvShare()">Inviter</button>
+            <button class="lv-settings-btn" id="lv-settings-btn" style="display:none" onclick="lTab('manage',null)">⚙️</button>
+          </div>
         </div>
         <div class="lv-banner-body">
           <div class="lv-icon" id="lv-icon">🏆</div>
@@ -1844,57 +1888,38 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
         </div>
         <div class="lv-invite-row">
           <div class="lv-code-chip" id="lv-code-chip" onclick="lvCopyCode()">
-            <span style="opacity:.55;font-size:.72rem">Code :</span>
+            <span style="opacity:.55;font-size:.7rem">Code :</span>
             <span id="lv-code-val" style="font-family:var(--fh);font-weight:700;letter-spacing:.1em">—</span>
-            <span style="opacity:.45;font-size:.72rem">📋</span>
+            <span style="opacity:.4;font-size:.7rem">📋</span>
           </div>
-          <button class="lv-share-btn" onclick="lvShare()">Inviter →</button>
         </div>
       </div>
     </div>
-
-    <!-- STATS CHIPS -->
-    <div class="lv-stats-row" id="lv-stats-row">
-      <div class="lv-stat"><div class="lv-stat-v" id="lv-stat-members">—</div><div class="lv-stat-l">Membres</div></div>
-      <div class="lv-stat"><div class="lv-stat-v" id="lv-stat-partrate">—</div><div class="lv-stat-l">Participation</div></div>
-      <div class="lv-stat"><div class="lv-stat-v" id="lv-stat-avgpts">—</div><div class="lv-stat-l">Moy. points</div></div>
-      <div class="lv-stat" id="lv-stat-vsai-chip"><div class="lv-stat-v" id="lv-stat-vsai">—</div><div class="lv-stat-l">Battent l'IA</div></div>
+    <div class="lv-stats-row">
+      <div class="lv-stat"><div class="lv-stat-v" id="lv-s-members">—</div><div class="lv-stat-l">Membres</div></div>
+      <div class="lv-stat"><div class="lv-stat-v" id="lv-s-part">—</div><div class="lv-stat-l">Participation</div></div>
+      <div class="lv-stat"><div class="lv-stat-v" id="lv-s-avg">—</div><div class="lv-stat-l">Moy. pts</div></div>
+      <div class="lv-stat"><div class="lv-stat-v" id="lv-s-vsai">—</div><div class="lv-stat-l">Beat IA</div></div>
     </div>
-
-    <!-- VS IA BANNER -->
-    <div class="lv-section" id="lv-vsai-section" style="display:none">
-      <div class="lv-vsai-card" id="lv-vsai-card"></div>
+    <div class="tabs" id="lv-tabs" style="border-radius:0;border-left:none;border-right:none;position:sticky;top:52px;z-index:50;background:var(--bg)">
+      <div class="tab on" id="lv-t-standings" onclick="lTab('standings',this)">🏆 Classement</div>
+      <div class="tab" id="lv-t-chat" onclick="lTab('chat',this)">💬 Chat</div>
+      <div class="tab" id="lv-t-stats" onclick="lTab('stats',this)">📊 Stats</div>
+      <div class="tab" id="lv-t-manage" style="display:none" onclick="lTab('manage',this)">⚙️ Gérer</div>
     </div>
-
-    <!-- STANDINGS -->
-    <div class="lv-section">
-      <div class="lv-section-hd">
-        <span class="lv-section-t">🏆 Classement</span>
-        <span class="lv-section-sub" id="lv-standings-sub"></span>
+    <div id="lv-tab-standings" class="lv-tab"><div id="lv-standings-body"><div class="lv-loading">Chargement…</div></div></div>
+    <div id="lv-tab-chat" class="lv-tab" style="display:none">
+      <div class="lv-chat-wrap">
+        <div class="lv-messages" id="lv-messages"><div class="lv-loading">Chargement des messages…</div></div>
+        <div class="lv-chat-input-wrap">
+          <input class="lv-chat-input" id="lv-chat-input" placeholder="Écris un message…" maxlength="500"
+            onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();lvSendMsg();}">
+          <button class="lv-send-btn" onclick="lvSendMsg()">→</button>
+        </div>
       </div>
-      <div class="lv-standings" id="lv-standings">
-        <div class="lv-loading">Chargement…</div>
-      </div>
     </div>
-
-    <!-- BADGES -->
-    <div class="lv-section" id="lv-badges-section" style="display:none">
-      <div class="lv-section-hd"><span class="lv-section-t">🎖️ Badges</span></div>
-      <div class="lv-badges" id="lv-badges"></div>
-    </div>
-
-    <!-- HISTORIQUE GP -->
-    <div class="lv-section" id="lv-history-section" style="display:none">
-      <div class="lv-section-hd"><span class="lv-section-t">📅 Historique GP</span></div>
-      <div class="lv-history" id="lv-history"></div>
-    </div>
-
-    <!-- ACTIVITÉ -->
-    <div class="lv-section">
-      <div class="lv-section-hd"><span class="lv-section-t">⚡ Activité</span></div>
-      <div class="lv-feed" id="lv-feed"></div>
-    </div>
-
+    <div id="lv-tab-stats" class="lv-tab" style="display:none"><div id="lv-stats-body"><div class="lv-loading">Chargement…</div></div></div>
+    <div id="lv-tab-manage" class="lv-tab" style="display:none"><div id="lv-manage-body"><div class="lv-loading">Chargement…</div></div></div>
   </div>
 </div>
 
@@ -2742,6 +2767,7 @@ function navTo(page){
   if(page==='standings')buildStandings();
   if(page==='nextgp')initNextGP();
   if(page==='creator')initCreatorPage();
+  if(page==='leagues')loadUserLeagues();
   if(page==='league-view' && !document.getElementById('pg-league-view')._leagueId) { /* already loaded */ }
 }
 
@@ -3989,309 +4015,408 @@ function adjustHex(hex, amount) {
 }
 
 
-/* ══════════════════════════════════════════════════
-   SYSTÈME LIGUES CREATOR — GridOracle
-   ══════════════════════════════════════════════════ */
 
-// ── CSS additionnel injecté une fois ──
-(function injectLeagueCSS(){
-  if(document.getElementById('league-css')) return;
-  const s=document.createElement('style');
-  s.id='league-css';
-  s.textContent=`
-.cl-modal{position:fixed;inset:0;z-index:9600;background:rgba(7,7,14,.92);backdrop-filter:blur(8px);display:flex;align-items:flex-end;justify-content:center}
-.cl-box{background:#0e0e1c;border:1px solid rgba(232,0,29,.22);border-radius:16px 16px 0 0;padding:1.4rem 1.3rem 2rem;max-width:480px;width:100%;animation:slideUp .22s ease;position:relative}
-.cl-field{margin-bottom:.9rem}
-.cl-field label{display:block;font-size:.72rem;color:var(--g);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.35rem}
-.cl-field input,.cl-field textarea{width:100%;background:var(--c2);border:1px solid var(--b);border-radius:8px;color:var(--w);font-family:var(--fb);font-size:.88rem;padding:.68rem .85rem;outline:none;transition:border-color .2s;box-sizing:border-box}
-.cl-field input:focus,.cl-field textarea:focus{border-color:rgba(232,0,29,.5)}
-.cl-code-row{display:flex;gap:.5rem;align-items:center}
-.cl-code-badge{background:rgba(232,0,29,.1);border:1px solid rgba(232,0,29,.3);color:var(--red);border-radius:8px;padding:.65rem .9rem;font-family:var(--fh);font-size:1.05rem;font-weight:700;letter-spacing:.1em;white-space:nowrap}
-.cl-copy-btn{background:rgba(255,255,255,.06);border:1px solid var(--b);border-radius:8px;color:var(--g);font-size:.75rem;padding:.62rem .75rem;cursor:pointer;white-space:nowrap;transition:all .2s}
-.cl-copy-btn:hover{color:var(--w);border-color:rgba(255,255,255,.2)}
-/* League card dans Creator */
-.cr-rl{background:var(--c2);border:1px solid var(--b);border-radius:12px;padding:.85rem 1rem;display:flex;flex-direction:column;gap:.6rem;transition:border-color .2s}
-.cr-rl:hover{border-color:rgba(232,0,29,.25)}
-.cr-rl-hd{display:flex;align-items:center;justify-content:space-between;gap:.5rem}
-.cr-rl-name{font-family:var(--fh);font-size:.95rem;font-weight:700}
-.cr-rl-cnt{font-size:.72rem;color:var(--g)}
-.cr-rl-meta{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
-.cr-rl-code{background:rgba(232,0,29,.08);border:1px solid rgba(232,0,29,.2);color:var(--red);border-radius:6px;padding:.18rem .6rem;font-size:.72rem;font-weight:700;letter-spacing:.1em;font-family:var(--fh);cursor:pointer;transition:background .2s}
-.cr-rl-code:hover{background:rgba(232,0,29,.15)}
-.cr-rl-actions{display:flex;gap:.4rem;flex-wrap:wrap}
-/* League detail modal */
-.ld-modal{position:fixed;inset:0;z-index:9700;background:rgba(7,7,14,.92);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:1rem}
-.ld-box{background:#0e0e1c;border:1px solid rgba(232,0,29,.22);border-radius:16px;padding:1.4rem;max-width:480px;width:100%;max-height:85vh;overflow-y:auto;position:relative}
-.ld-member-row{display:flex;align-items:center;gap:.6rem;padding:.45rem .6rem;border-radius:8px;transition:background .15s}
-.ld-member-row:hover{background:rgba(255,255,255,.03)}
-.ld-rank{min-width:28px;font-family:var(--fh);font-weight:700;font-size:.9rem;color:var(--g)}
-.ld-rank.r1{color:#FFD700}.ld-rank.r2{color:#C0C0C0}.ld-rank.r3{color:#CD7F32}
-.ld-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;border:1.5px solid}
-.ld-handle{flex:1;font-size:.82rem;color:var(--w)}
-.ld-pts{font-family:var(--fh);font-weight:700;font-size:.9rem;color:var(--red)}
-.ld-crown{font-size:.7rem;margin-left:.25rem}
-  `;
-  document.head.appendChild(s);
-})();
+/* ═══════════════════════════════════════════════════════
+   PAGE LIGUE COMPLÈTE — GridOracle
+   Classement · Chat · Stats · Gérer
+   ═══════════════════════════════════════════════════════ */
 
-// ── Charger les ligues du Creator ──
-let _crLeaguesCache = null;
+let _lv = { league:null, members:[], isOwner:false, myHandle:'', myPlan:'', prevPage:'leagues', chatInterval:null, lastMsgTs:0 };
 
-async function loadCreatorLeagues(force){
-  const plan = localStorage.getItem('go_plan') || 'free';
-  const profile = JSON.parse(localStorage.getItem('go_profile') || '{}');
-  const handle = profile.handle || USER.handle || '';
-  const el = document.getElementById('cr-leagues-list');
-  if(!el) return;
+// ── Navigation ──
+async function navToLeague(leagueId, fromPage){
+  _lv.prevPage = fromPage||'leagues';
+  lvStopChat();
+  navTo('league-view');
+  await lvLoad(leagueId);
+}
 
-  if(!handle){ el.innerHTML='<div style="padding:.6rem;color:var(--g);font-size:.78rem">Connecte-toi pour voir tes ligues.</div>'; return; }
-  if(!['creator','premium'].includes(plan)){
-    el.innerHTML='<div style="padding:.6rem;color:var(--g);font-size:.78rem">Passe en <strong style="color:var(--w)">Creator</strong> pour créer et gérer des ligues.</div>';
-    return;
-  }
+function lvBack(){ lvStopChat(); navTo(_lv.prevPage||'leagues'); }
 
-  if(_crLeaguesCache && !force){
-    renderCreatorLeagues(_crLeaguesCache, handle);
-    return;
-  }
+// ── Tab switch ──
+function lTab(name, el){
+  ['standings','chat','stats','manage'].forEach(t=>{
+    const tab=document.getElementById('lv-tab-'+t), btn=document.getElementById('lv-t-'+t);
+    if(tab) tab.style.display = t===name?'block':'none';
+    if(btn) btn.classList.toggle('on', t===name);
+  });
+  if(name==='chat'){ lvLoadChat(); lvStartChat(); }
+  else { lvStopChat(); }
+  if(name==='stats') lvRenderStats();
+  if(name==='manage') lvRenderManage();
+}
 
-  el.innerHTML='<div style="padding:.6rem;color:var(--g);font-size:.78rem;display:flex;align-items:center;gap:.5rem"><div class="spinner" style="width:12px;height:12px"></div> Chargement…</div>';
+// ── Charger la ligue ──
+async function lvLoad(leagueId){
+  const profile = JSON.parse(localStorage.getItem('go_profile')||'{}');
+  _lv.myHandle  = (profile.handle || USER.handle || '').toLowerCase();
+  _lv.myPlan    = localStorage.getItem('go_plan')||'free';
+
+  document.getElementById('lv-name').textContent='Chargement…';
+  document.getElementById('lv-standings-body').innerHTML='<div class="lv-loading"><div class="spinner" style="margin:0 auto .4rem;width:14px;height:14px"></div>Chargement…</div>';
+  lTab('standings', document.getElementById('lv-t-standings'));
 
   try{
-    const res = await fetch(`/api/my-leagues?handle=${encodeURIComponent(handle)}`);
+    const res  = await fetch('/api/get-league?id='+encodeURIComponent(leagueId));
     const data = await res.json();
-    _crLeaguesCache = data.leagues || [];
-    renderCreatorLeagues(_crLeaguesCache, handle);
+    if(!data.league){ document.getElementById('lv-name').textContent='Ligue introuvable'; return; }
+
+    _lv.league  = data.league;
+    _lv.members = data.members||[];
+    _lv.isOwner = (_lv.league.ownerHandle||'').toLowerCase()===_lv.myHandle;
+
+    const color  = _lv.league.color||'#e8001d';
+    const banner = _lv.league.bannerColor||'#12001a';
+    const icon   = _lv.league.icon||'🏆';
+
+    // Banner
+    document.getElementById('lv-banner').style.cssText += `;background:linear-gradient(135deg,${banner},${adjustHex(banner,-12)});border-bottom:2px solid ${color}`;
+    document.getElementById('lv-icon').textContent  = icon;
+    document.getElementById('lv-name').textContent  = _lv.league.name||'Ligue';
+    document.getElementById('lv-sub').textContent   = _lv.members.length+' membre'+(_lv.members.length>1?'s':'')+' · Saison 2026';
+    document.getElementById('lv-code-val').textContent = _lv.league.inviteCode||'—';
+    document.getElementById('lv-code-chip').style.borderColor = color+'44';
+
+    // Bouton settings visible si owner
+    const sBtn = document.getElementById('lv-settings-btn');
+    if(sBtn) sBtn.style.display = _lv.isOwner?'block':'none';
+    const mTab = document.getElementById('lv-t-manage');
+    if(mTab) mTab.style.display = _lv.isOwner?'':'none';
+
+    // Stats bar
+    const withPts = _lv.members.filter(m=>(m.pts||0)>0).length;
+    const avgPts  = _lv.members.length ? Math.round(_lv.members.reduce((s,m)=>s+(m.pts||0),0)/_lv.members.length) : 0;
+    const AI_PTS  = 280;
+    const beatAI  = _lv.members.filter(m=>(m.pts||0)>AI_PTS).length;
+    document.getElementById('lv-s-members').textContent = _lv.members.length;
+    document.getElementById('lv-s-part').textContent    = _lv.members.length ? Math.round(withPts/_lv.members.length*100)+'%' : '—';
+    document.getElementById('lv-s-avg').textContent     = avgPts||'0';
+    document.getElementById('lv-s-vsai').textContent    = beatAI;
+    document.getElementById('lv-s-vsai').style.color    = beatAI>0?'#4caf50':'var(--red)';
+
+    // Render standings
+    lvRenderStandings();
+
   }catch(e){
-    el.innerHTML='<div style="padding:.6rem;color:var(--g);font-size:.78rem">Erreur de chargement — <a onclick="loadCreatorLeagues(true)" style="color:var(--red);cursor:pointer">Réessayer</a></div>';
+    document.getElementById('lv-name').textContent='Erreur';
+    console.error('lvLoad:',e);
   }
 }
 
-function renderCreatorLeagues(leagues, ownerHandle){
-  const el = document.getElementById('cr-leagues-list');
-  if(!el) return;
+// ── CLASSEMENT ──
+function lvRenderStandings(){
+  const el = document.getElementById('lv-standings-body');
+  if(!el||!_lv.members.length){ if(el) el.innerHTML='<div class="lv-loading">Aucun membre pour l\'instant.</div>'; return; }
 
-  if(!leagues.length){
-    el.innerHTML=`
-      <div style="padding:.8rem 0;text-align:center">
-        <div style="font-size:1.5rem;margin-bottom:.5rem">🏆</div>
-        <div style="font-size:.82rem;color:var(--g);margin-bottom:.75rem">Aucune ligue créée pour l'instant.</div>
-        <button class="btn-r" style="font-size:.78rem" onclick="openCreateLeagueModal()">Créer ma première ligue →</button>
-      </div>`;
-    return;
-  }
+  const leader    = _lv.members[0]?.pts||0;
+  const color     = _lv.league?.color||'#e8001d';
+  const rankIco   = ['🥇','🥈','🥉'];
 
-  el.innerHTML = leagues.map(l => {
-    const isOwner = l.ownerHandle === ownerHandle;
-    return `<div class="cr-rl" style="margin-bottom:.6rem">
-      <div class="cr-rl-hd">
-        <div class="cr-rl-name">${escH(l.name)}</div>
-        <div class="cr-rl-cnt">${l.memberCount || 0} membre${(l.memberCount||0)>1?'s':''}</div>
-      </div>
-      <div class="cr-rl-meta">
-        <div class="cr-rl-code" onclick="copyInviteCode('${l.inviteCode}')" title="Copier le code">🔗 ${l.inviteCode}</div>
-        ${isOwner?'<span style="font-size:.62rem;color:var(--gold);border:1px solid rgba(255,200,0,.2);border-radius:100px;padding:1px 6px">Creator</span>':''}
-        <span style="font-size:.65rem;color:var(--g)">${new Date(l.createdAt).toLocaleDateString('fr-FR',{day:'numeric',month:'short'})}</span>
-      </div>
-      <div class="cr-rl-actions">
-        <button class="btn-r" style="font-size:.7rem;padding:.28rem .75rem" onclick="navToLeague('${l.id}','creator')">Classement</button>
-        <button class="btn-r" style="font-size:.7rem;padding:.28rem .75rem;background:rgba(255,255,255,.04);border-color:var(--b)" onclick="copyInviteCode('${l.inviteCode}')">📋 Copier code</button>
-      </div>
-    </div>`;
-  }).join('') + `
-    <div class="cr-lp" style="opacity:.5;border-style:dashed;cursor:pointer;margin-top:.4rem" onclick="openCreateLeagueModal()">
-      <div class="cr-lp-icon" style="background:rgba(255,255,255,.04)">＋</div>
-      <div class="cr-lp-info"><div class="cr-lp-name" style="color:var(--g)">Nouvelle ligue…</div></div>
-    </div>`;
-}
+  el.innerHTML = _lv.members.map((m,i)=>{
+    const rank  = i+1, isMe = m.handle.toLowerCase()===_lv.myHandle;
+    const pts   = m.pts||0, gap = rank===1?'<span style="color:#4caf50;font-size:.62rem">LEADER</span>':`<span style="font-size:.7rem;color:var(--g)">-${leader-pts}</span>`;
+    const init  = (m.handle[0]||'?').toUpperCase();
+    const tc    = m.tc||color;
+    const ownerBadge = m.isOwner?'<span style="font-size:.58rem;color:#FFD700;background:rgba(255,200,0,.1);border:1px solid rgba(255,200,0,.25);border-radius:100px;padding:1px 5px">👑 Creator</span>':'';
+    const meBadge = isMe&&!m.isOwner?'<span style="font-size:.58rem;color:var(--g);border:1px solid var(--b);border-radius:100px;padding:1px 5px">moi</span>':'';
+    const kickBtn = _lv.isOwner&&!m.isOwner?`<button onclick="lvKick('${escH(m.handle)}')" style="background:rgba(232,0,29,.08);border:1px solid rgba(232,0,29,.2);color:var(--red);border-radius:6px;padding:.18rem .5rem;font-size:.65rem;cursor:pointer;margin-left:.4rem;flex-shrink:0">Expulser</button>`:'';
 
-function copyInviteCode(code){
-  if(navigator.clipboard) navigator.clipboard.writeText(code).then(()=>showToast('📋 Code copié : '+code));
-  else { const t=document.createElement('textarea');t.value=code;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);showToast('📋 Code copié : '+code); }
-}
-
-function escH(str){ return (str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-
-// ── Modal Créer une ligue ──
-function openCreateLeagueModal(){
-  const plan = localStorage.getItem('go_plan') || 'free';
-  if(!['creator','premium'].includes(plan)){
-    openStripeModal('creator');
-    return;
-  }
-
-  const existing = document.getElementById('cl-modal');
-  if(existing) existing.remove();
-
-  // Générer un code suggéré
-  const handle = USER.handle || 'USER';
-  const prefix = handle.slice(0,4).toUpperCase().replace(/[^A-Z0-9]/g,'');
-  const suffix = Math.random().toString(36).slice(2,6).toUpperCase();
-  const suggestedCode = (prefix || 'GRID') + '-' + suffix;
-
-  const modal = document.createElement('div');
-  modal.id = 'cl-modal';
-  modal.className = 'cl-modal';
-  modal.innerHTML = `
-    <div class="cl-box">
-      <div style="width:34px;height:4px;background:rgba(255,255,255,.15);border-radius:2px;margin:0 auto .85rem"></div>
-      <button onclick="document.getElementById('cl-modal').remove()" style="position:absolute;top:.9rem;right:.9rem;background:transparent;border:none;color:rgba(255,255,255,.3);font-size:1.2rem;cursor:pointer">✕</button>
-      <div style="font-family:var(--fh);font-size:.88rem;font-weight:700;letter-spacing:.12em;color:var(--red);margin-bottom:1rem">🏆 CRÉER UNE LIGUE</div>
-
-      <div class="cl-field">
-        <label>Nom de la ligue *</label>
-        <input type="text" id="cl-name" placeholder="Ex: F1 Fanatics Elite" maxlength="50" oninput="clValidate()">
-      </div>
-
-      <div class="cl-field">
-        <label>Description <span style="opacity:.4">(optionnel)</span></label>
-        <textarea id="cl-desc" placeholder="Décris ta ligue en quelques mots…" maxlength="200" rows="2" style="resize:none"></textarea>
-      </div>
-
-      <div class="cl-field">
-        <label>Code d'invitation</label>
-        <div class="cl-code-row">
-          <input type="text" id="cl-code" value="${suggestedCode}" maxlength="9" placeholder="XXXX-XXXX"
-            style="font-family:var(--fh);font-weight:700;letter-spacing:.1em;text-transform:uppercase;flex:1"
-            oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9-]/g,'').slice(0,9)">
-          <button class="cl-copy-btn" onclick="clNewCode()">🎲 Générer</button>
+    return `<div class="lv-member-row-wrap">
+      <div class="lv-member-row${isMe?' me':''}" style="${isMe?'background:rgba(232,0,29,.05)':''}" onclick="lvToggleMember('m-exp-${i}')">
+        <div style="display:flex;align-items:center;gap:.55rem;padding:.52rem .65rem">
+          <div class="lv-rank ${rank<=3?'r'+rank:''}" style="${rank<=3?'':'color:var(--g)'}min-width:26px;text-align:center;font-family:var(--fh);font-weight:700;font-size:.88rem">${rank<=3?rankIco[rank-1]:rank}</div>
+          <div class="lv-av" style="border-color:${tc};color:${tc};background:${tc}18;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0;border:1.5px solid">${init}</div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:.3rem;flex-wrap:wrap;font-size:.82rem;color:var(--w)">@${escH(m.handle)} ${ownerBadge}${meBadge}</div>
+            <div style="font-size:.68rem;color:var(--g)">Rejoint le ${m.joinedAt?new Date(m.joinedAt).toLocaleDateString('fr-FR',{day:'numeric',month:'short'}):'-'}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:.3rem;flex-shrink:0">
+            <div style="text-align:right"><div style="font-family:var(--fh);font-weight:700;font-size:.92rem;color:${isMe?color:'var(--w)'}">${pts}</div>${gap}</div>
+            ${kickBtn}
+            <div style="color:var(--g);font-size:.65rem;margin-left:.25rem">▸</div>
+          </div>
         </div>
-        <div style="font-size:.65rem;color:var(--g);margin-top:.3rem">Code unique que tu partages à ta communauté</div>
       </div>
-
-      <button id="cl-submit" disabled onclick="submitCreateLeague()"
-        style="width:100%;background:#e8001d;color:#fff;border:none;border-radius:10px;padding:.85rem;font-size:.88rem;font-weight:600;cursor:pointer;opacity:.4;transition:all .2s">
-        Créer la ligue 🏆
-      </button>
-      <div id="cl-err" style="text-align:center;font-size:.72rem;color:var(--red);margin-top:.5rem;display:none"></div>
+      <div class="lv-member-expanded" id="m-exp-${i}">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;font-size:.75rem">
+          <div><span style="color:var(--g)">Points :</span> <strong>${pts}</strong></div>
+          <div><span style="color:var(--g)">Statut :</span> <span style="color:${pts>0?'#4caf50':'var(--g)'}">${pts>0?'✅ Prédit':'⏳ En attente'}</span></div>
+          <div><span style="color:var(--g)">Rôle :</span> ${m.isOwner?'👑 Creator':'Membre'}</div>
+          <div><span style="color:var(--g)">Rang :</span> #${rank}</div>
+          ${_lv.isOwner&&m.email?`<div style="grid-column:1/-1"><span style="color:var(--g)">Email :</span> ${escH(m.email)}</div>`:''}
+          ${pts>0&&_lv.isOwner?`<div style="grid-column:1/-1;margin-top:.3rem"><span style="color:var(--g)">Prédiction :</span> <span style="color:#4caf50">Soumise ce GP ✅</span></div>`:''}
+        </div>
+      </div>
     </div>`;
-
-  document.body.appendChild(modal);
-  modal.addEventListener('click', e => { if(e.target === modal) modal.remove(); });
-  document.getElementById('cl-name').focus();
-  clValidate();
+  }).join('');
 }
 
-function clValidate(){
-  const name = (document.getElementById('cl-name')?.value || '').trim();
-  const btn  = document.getElementById('cl-submit');
-  if(btn){ btn.disabled = !name; btn.style.opacity = name ? '1' : '.4'; }
+function lvToggleMember(id){
+  const el=document.getElementById(id);
+  if(el) el.classList.toggle('open');
 }
 
-function clNewCode(){
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let c = '';
-  for(let i=0;i<8;i++) c+=chars[Math.floor(Math.random()*chars.length)];
-  const code = c.slice(0,4)+'-'+c.slice(4);
-  const inp = document.getElementById('cl-code');
-  if(inp){ inp.value = code; }
-}
-
-async function submitCreateLeague(){
-  const name   = (document.getElementById('cl-name')?.value || '').trim();
-  const desc   = (document.getElementById('cl-desc')?.value || '').trim();
-  const code   = (document.getElementById('cl-code')?.value || '').trim();
-  const profile = JSON.parse(localStorage.getItem('go_profile') || '{}');
-  const handle  = profile.handle || USER.handle || '';
-  const email   = profile.email || '';
-
-  if(!name || !handle){ showToast('Nom et compte requis', true); return; }
-
-  const btn = document.getElementById('cl-submit');
-  const err = document.getElementById('cl-err');
-  if(btn){ btn.disabled=true; btn.textContent='Création…'; }
-  if(err) err.style.display='none';
-
+// ── KICK ──
+async function lvKick(targetHandle){
+  if(!confirm('Expulser @'+targetHandle+' de la ligue ?')) return;
+  const profile = JSON.parse(localStorage.getItem('go_profile')||'{}');
+  const handle  = profile.handle||USER.handle||'';
   try{
-    const res = await fetch('/api/create-league', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ ownerHandle: handle, ownerEmail: email, name, description: desc, customCode: code })
-    });
+    const res  = await fetch('/api/kick-member',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({leagueId:_lv.league.id,ownerHandle:handle,targetHandle})});
     const data = await res.json();
-
     if(data.success){
-      document.getElementById('cl-modal').remove();
-      showToast('🏆 Ligue "' + data.league.name + '" créée ! Code : ' + data.league.inviteCode);
-      // Stocker en localStorage
-      const lids = JSON.parse(localStorage.getItem('go_leagues') || '[]');
-      if(!lids.includes(data.league.id)){ lids.push(data.league.id); localStorage.setItem('go_leagues', JSON.stringify(lids)); }
-      _crLeaguesCache = null;
-      loadCreatorLeagues(true);
-    }else{
-      if(err){ err.textContent = data.error || 'Erreur'; err.style.display='block'; }
-      if(btn){ btn.disabled=false; btn.textContent='Créer la ligue 🏆'; }
-    }
-  }catch(e){
-    if(err){ err.textContent='Erreur réseau'; err.style.display='block'; }
-    if(btn){ btn.disabled=false; btn.textContent='Créer la ligue 🏆'; }
-  }
+      showToast('@'+targetHandle+' expulsé');
+      await lvLoad(_lv.league.id);
+    }else showToast(data.error||'Erreur',true);
+  }catch{ showToast('Erreur réseau',true); }
 }
 
-// ── Modal détail d'une ligue ──
-async function showLeagueDetail(leagueId, fromPage){
-  return navToLeague(leagueId, fromPage);
+// ── CHAT ──
+async function lvLoadChat(){
+  _lv.lastMsgTs=0;
+  const el=document.getElementById('lv-messages');
+  if(el) el.innerHTML='<div class="lv-loading">Chargement des messages…</div>';
+  await lvFetchMsgs(true);
 }
-async function _showLeagueDetail_orig(leagueId){
-  const existing = document.getElementById('ld-modal');
-  if(existing) existing.remove();
 
-  const modal = document.createElement('div');
-  modal.id = 'ld-modal';
-  modal.className = 'ld-modal';
-  modal.innerHTML = `<div class="ld-box">
-    <button onclick="document.getElementById('ld-modal').remove()" style="position:absolute;top:1rem;right:1rem;background:transparent;border:none;color:rgba(255,255,255,.3);font-size:1.2rem;cursor:pointer;z-index:1">✕</button>
-    <div id="ld-content" style="padding-top:.5rem"><div style="text-align:center;padding:2rem;color:var(--g)"><div class="spinner" style="margin:0 auto .5rem"></div>Chargement…</div></div>
-  </div>`;
-  document.body.appendChild(modal);
-  modal.addEventListener('click', e => { if(e.target === modal) modal.remove(); });
-
+async function lvFetchMsgs(initial){
+  if(!_lv.league) return;
   try{
-    const res  = await fetch(`/api/get-league?id=${encodeURIComponent(leagueId)}`);
+    const url = '/api/get-messages?leagueId='+encodeURIComponent(_lv.league.id)+(_lv.lastMsgTs?'&since='+_lv.lastMsgTs:'');
+    const res  = await fetch(url);
     const data = await res.json();
-    if(!data.league){ document.getElementById('ld-content').innerHTML='<div style="color:var(--g);padding:1rem">Ligue introuvable</div>'; return; }
+    const msgs = data.messages||[];
+    if(msgs.length||initial) lvRenderMsgs(msgs, initial);
+    if(msgs.length) _lv.lastMsgTs = Math.max(...msgs.map(m=>m.ts));
+  }catch{}
+}
 
-    const { league, members } = data;
-    const myHandle = (USER.handle || '').toLowerCase();
-    const rankColors = ['#FFD700','#C0C0C0','#CD7F32'];
+function lvRenderMsgs(msgs, replace){
+  const el=document.getElementById('lv-messages');
+  if(!el) return;
+  if(replace) el.innerHTML='';
+  if(!msgs.length&&replace){
+    el.innerHTML='<div style="text-align:center;padding:2rem;color:var(--g);font-size:.8rem">Aucun message pour l\'instant.<br>Sois le premier à écrire !</div>';
+    return;
+  }
+  msgs.forEach(m=>{
+    const isMe     = m.handle.toLowerCase()===_lv.myHandle;
+    const isSystem = m.isSystem||m.handle==='Système';
+    const isOwner  = m.isOwner||m.handle.toLowerCase()===(_lv.league?.ownerHandle||'').toLowerCase();
+    const tc       = m.tc||'#e8001d';
+    const init     = isSystem?'🔧':(m.handle[0]||'?').toUpperCase();
+    const div = document.createElement('div');
+    div.className='lv-msg'+(isMe?' mine':'')+(isSystem?' lv-msg-system':'');
+    div.innerHTML=`
+      ${!isSystem?`<div class="lv-msg-av" style="${!isMe?`border-color:${tc};color:${tc};background:${tc}18`:'border-color:var(--red);color:var(--red);background:rgba(232,0,29,.1)'}">${init}</div>`:''}
+      <div class="lv-msg-body">
+        ${!isSystem?`<div class="lv-msg-meta">
+          <span class="lv-msg-handle" style="color:${isMe?'var(--red)':tc}">@${escH(m.handle)}</span>
+          ${isOwner?'<span class="lv-msg-creator-tag">Creator</span>':''}
+          <span class="lv-msg-ts">${new Date(m.ts).toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'})}</span>
+        </div>`:''}
+        <div class="lv-msg-bubble">${escH(m.text)}</div>
+      </div>`;
+    el.appendChild(div);
+  });
+  // Auto-scroll bas
+  if(msgs.length) el.scrollTop=el.scrollHeight;
+}
 
-    document.getElementById('ld-content').innerHTML = `
-      <div style="margin-bottom:1rem">
-        <div style="font-family:var(--fh);font-size:1.1rem;font-weight:700;margin-bottom:.3rem">${escH(league.name)}</div>
-        ${league.description?`<div style="font-size:.78rem;color:var(--g);margin-bottom:.3rem">${escH(league.description)}</div>`:''}
-        <div style="display:flex;align-items:center;gap:.5rem;flex-wrap:wrap">
-          <div class="cr-rl-code" onclick="copyInviteCode('${league.inviteCode}')" style="cursor:pointer">🔗 ${league.inviteCode}</div>
-          <span style="font-size:.68rem;color:var(--g)">${members.length} membre${members.length>1?'s':''}</span>
+async function lvSendMsg(){
+  const inp   = document.getElementById('lv-chat-input');
+  const btn   = document.getElementById('lv-send-btn') || document.querySelector('.lv-send-btn');
+  const text  = inp?.value.trim()||'';
+  if(!text) return;
+  const profile = JSON.parse(localStorage.getItem('go_profile')||'{}');
+  const handle  = profile.handle||USER.handle||'';
+  if(!handle){ showToast('Connecte-toi',true); return; }
+  inp.value='';
+  if(btn) btn.disabled=true;
+  try{
+    const res  = await fetch('/api/send-message',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({leagueId:_lv.league.id,handle,text,tc:USER.tc||profile.tc||'#e8001d'})});
+    const data = await res.json();
+    if(data.success){
+      lvRenderMsgs([data.message],false);
+      _lv.lastMsgTs = data.message.ts;
+    }else showToast(data.error||'Erreur',true);
+  }catch{ showToast('Erreur réseau',true); }
+  finally{ if(btn) btn.disabled=false; if(inp) inp.focus(); }
+}
+
+function lvStartChat(){
+  lvStopChat();
+  _lv.chatInterval = setInterval(()=>lvFetchMsgs(false),5000);
+}
+function lvStopChat(){
+  if(_lv.chatInterval){ clearInterval(_lv.chatInterval); _lv.chatInterval=null; }
+}
+
+// ── STATS ──
+function lvRenderStats(){
+  const el=document.getElementById('lv-stats-body');
+  if(!el||!_lv.league) return;
+  const AI_PTS=280, m=_lv.members, color=_lv.league.color||'#e8001d';
+  const withPts=m.filter(x=>(x.pts||0)>0).length;
+  const avgPts=m.length?Math.round(m.reduce((s,x)=>s+(x.pts||0),0)/m.length):0;
+  const topM=m.length?[...m].sort((a,b)=>(b.pts||0)-(a.pts||0))[0]:null;
+  const beatAI=m.filter(x=>(x.pts||0)>AI_PTS).length;
+  const maxBar=Math.max(AI_PTS,topM?.pts||1,100);
+
+  el.innerHTML=`
+    <div class="lv-stat-card">
+      <div class="lv-stat-card-t">🤖 Ligue vs IA GridOracle</div>
+      <div style="display:flex;flex-direction:column;gap:.5rem">
+        <div style="display:flex;align-items:center;gap:.6rem">
+          <span style="font-size:.7rem;color:var(--red);min-width:55px">IA 🤖</span>
+          <div style="flex:1;height:7px;background:var(--b);border-radius:4px;overflow:hidden"><div style="height:100%;width:${Math.round(AI_PTS/maxBar*100)}%;background:var(--red);border-radius:4px"></div></div>
+          <span style="font-family:var(--fh);font-size:.82rem;color:var(--red);min-width:32px;text-align:right">${AI_PTS}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:.6rem">
+          <span style="font-size:.7rem;color:${color};min-width:55px">Meilleur</span>
+          <div style="flex:1;height:7px;background:var(--b);border-radius:4px;overflow:hidden"><div style="height:100%;width:${topM?Math.round((topM.pts||0)/maxBar*100):0}%;background:${color};border-radius:4px"></div></div>
+          <span style="font-family:var(--fh);font-size:.82rem;color:${color};min-width:32px;text-align:right">${topM?.pts||0}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:.6rem">
+          <span style="font-size:.7rem;color:var(--g);min-width:55px">Moyenne</span>
+          <div style="flex:1;height:7px;background:var(--b);border-radius:4px;overflow:hidden"><div style="height:100%;width:${Math.round(avgPts/maxBar*100)}%;background:rgba(255,255,255,.3);border-radius:4px"></div></div>
+          <span style="font-family:var(--fh);font-size:.82rem;color:var(--g);min-width:32px;text-align:right">${avgPts}</span>
         </div>
       </div>
-      <div style="font-size:.7rem;color:var(--g);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem;padding:0 .3rem">Classement</div>
-      ${members.length === 0
-        ? '<div style="text-align:center;padding:1.5rem;color:var(--g);font-size:.82rem">Aucun membre pour l\'instant.<br>Partage le code d\'invitation !</div>'
-        : members.map(m => {
-            const isMe = m.handle.toLowerCase() === myHandle;
-            const init = (m.handle[0]||'?').toUpperCase();
-            const rankCls = m.rank===1?'r1':m.rank===2?'r2':m.rank===3?'r3':'';
-            const rankDisp = m.rank===1?'🥇':m.rank===2?'🥈':m.rank===3?'🥉':m.rank;
-            return `<div class="ld-member-row${isMe?' lcr me':''}">
-              <div class="ld-rank ${rankCls}">${rankDisp}</div>
-              <div class="ld-av" style="border-color:${m.tc||'#e8001d'};color:${m.tc||'#e8001d'};background:${m.tc||'#e8001d'}18">${init}</div>
-              <div class="ld-handle">@${escH(m.handle)}${m.isOwner?'<span class="ld-crown" title="Creator">👑</span>':''}${isMe?' <span style="font-size:.6rem;color:var(--g)">(moi)</span>':''}</div>
-              <div class="ld-pts">${m.pts||0}</div>
-            </div>`;
-          }).join('')
-      }`;
-  }catch(e){
-    document.getElementById('ld-content').innerHTML='<div style="color:var(--red);padding:1rem">Erreur de chargement</div>';
-  }
+      <div style="margin-top:.65rem;font-size:.72rem;text-align:center;color:${beatAI>0?'#4caf50':'var(--g)'}">
+        ${beatAI>0?'🏆 '+beatAI+' membre'+(beatAI>1?'s':'')+'  bats'+(beatAI>1?'ent':'')+' l\'IA cette saison !':'L\'IA mène — à toi de jouer au prochain GP !'}
+      </div>
+    </div>
+
+    <div class="lv-stat-card">
+      <div class="lv-stat-card-t">📊 Participation</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.65rem">
+        <div><div style="font-family:var(--fh);font-size:1.2rem;font-weight:700;color:var(--red)">${withPts}/${m.length}</div><div style="font-size:.7rem;color:var(--g)">ont prédit ce GP</div></div>
+        <div><div style="font-family:var(--fh);font-size:1.2rem;font-weight:700;color:var(--w)">${m.length?Math.round(withPts/m.length*100):0}%</div><div style="font-size:.7rem;color:var(--g)">taux participation</div></div>
+      </div>
+    </div>
+
+    ${topM?`<div class="lv-stat-card">
+      <div class="lv-stat-card-t">👑 Meilleur prédicteur</div>
+      <div style="display:flex;align-items:center;gap:.65rem">
+        <div style="width:36px;height:36px;border-radius:50%;background:${topM.tc||color}18;border:1.5px solid ${topM.tc||color};display:flex;align-items:center;justify-content:center;font-weight:700;color:${topM.tc||color}">${(topM.handle[0]||'?').toUpperCase()}</div>
+        <div><div style="font-weight:600">@${escH(topM.handle)}</div><div style="font-size:.72rem;color:var(--g)">${topM.pts||0} points · #1 de la ligue</div></div>
+      </div>
+    </div>`:''  }
+
+    ${_lv.isOwner?`<div class="lv-stat-card">
+      <div class="lv-stat-card-t">🎙️ Vue Creator</div>
+      <div style="display:flex;flex-direction:column;gap:.35rem">
+        ${m.map(x=>`<div style="display:flex;align-items:center;justify-content:space-between;font-size:.78rem">
+          <span style="color:var(--g)">@${escH(x.handle)}</span>
+          <span style="${(x.pts||0)>0?'color:#4caf50':'color:var(--g)'}">${(x.pts||0)>0?'✅ Prédit':'⏳ En attente'} · ${x.pts||0} pts</span>
+        </div>`).join('')}
+      </div>
+    </div>`:''}
+  `;
 }
 
-// ── Charger ligues à l'ouverture de la page Creator ──
-function initCreatorPage(){
-  const plan = localStorage.getItem('go_plan') || 'free';
-  if(['creator','premium'].includes(plan)){
-    loadCreatorLeagues(false);
-  }
+// ── GÉRER (Creator) ──
+function lvRenderManage(){
+  const el=document.getElementById('lv-manage-body');
+  if(!el||!_lv.league) return;
+  const color=_lv.league.color||'#e8001d';
+  el.innerHTML=`
+    <div class="lv-stat-card">
+      <div class="lv-stat-card-t">✏️ Modifier la ligue</div>
+      <div class="cl-field" style="margin-bottom:.7rem">
+        <label>Nom</label>
+        <input type="text" id="mg-name" value="${escH(_lv.league.name||'')}" maxlength="50" class="lj-input" style="margin:0">
+      </div>
+      <div class="cl-field" style="margin-bottom:.7rem">
+        <label>Description</label>
+        <textarea id="mg-desc" maxlength="200" rows="2" class="lj-input" style="margin:0;resize:none">${escH(_lv.league.description||'')}</textarea>
+      </div>
+      <div class="cl-field" style="margin-bottom:.7rem">
+        <label>Icône</label>
+        <div style="display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.3rem">
+          ${['🏆','🏎️','⚡','🔥','🎯','👑','🌟','🚀','💫','🏁','🎙️','⭐'].map(ic=>`<button onclick="mgSetIcon('${ic}',this)" style="font-size:1.1rem;padding:.3rem .45rem;background:var(--c2);border:1px solid var(--b);border-radius:7px;cursor:pointer" class="${ic===(_lv.league.icon||'🏆')?'mgico active':''}">${ic}</button>`).join('')}
+        </div>
+        <input type="hidden" id="mg-icon" value="${_lv.league.icon||'🏆'}">
+      </div>
+      <div class="cl-field" style="margin-bottom:.9rem">
+        <label>Couleur accent</label>
+        <div style="display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.3rem">
+          ${['#e8001d','#FF8000','#3671C6','#00D2BE','#FFD700','#FF0060','#4E7CB2','#358C75','#c62828','#7B1FA2'].map(c=>`<div onclick="mgSetColor('${c}',this)" style="width:26px;height:26px;border-radius:50%;background:${c};cursor:pointer;border:${c===color?'3px solid #fff':'2px solid transparent'}" class="${c===color?'mgcolor active':'mgcolor'}"></div>`).join('')}
+        </div>
+        <input type="hidden" id="mg-color" value="${color}">
+      </div>
+      <button onclick="lvSaveSettings()" style="background:var(--red);color:#fff;border:none;border-radius:10px;padding:.78rem 1rem;font-size:.85rem;font-weight:600;cursor:pointer;width:100%">💾 Sauvegarder les modifications</button>
+    </div>
+
+    <div class="lv-stat-card">
+      <div class="lv-stat-card-t">👥 Membres (${_lv.members.length})</div>
+      ${_lv.members.map(m=>`<div style="display:flex;align-items:center;justify-content:space-between;padding:.4rem 0;border-bottom:1px solid rgba(255,255,255,.04)">
+        <div style="display:flex;align-items:center;gap:.5rem">
+          <div style="width:24px;height:24px;border-radius:50%;background:${m.tc||color}18;border:1.5px solid ${m.tc||color};display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:${m.tc||color}">${(m.handle[0]||'?').toUpperCase()}</div>
+          <div><div style="font-size:.8rem">@${escH(m.handle)}${m.isOwner?' 👑':''}</div>${m.email?`<div style="font-size:.65rem;color:var(--g)">${escH(m.email)}</div>`:''}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:.4rem">
+          <span style="font-size:.72rem;font-family:var(--fh);font-weight:700">${m.pts||0} pts</span>
+          ${!m.isOwner?`<button onclick="lvKick('${escH(m.handle)}')" style="background:rgba(232,0,29,.08);border:1px solid rgba(232,0,29,.2);color:var(--red);border-radius:6px;padding:.15rem .45rem;font-size:.62rem;cursor:pointer">Expulser</button>`:''}
+        </div>
+      </div>`).join('')}
+    </div>
+
+    <div class="lv-danger-zone">
+      <div style="font-size:.82rem;font-weight:700;color:var(--red);margin-bottom:.5rem">⚠️ Zone de danger</div>
+      <div style="font-size:.75rem;color:var(--g);margin-bottom:.7rem">Ces actions sont irréversibles.</div>
+      <button onclick="lvDeleteLeague()" style="background:transparent;border:1px solid rgba(232,0,29,.3);color:var(--red);border-radius:8px;padding:.6rem 1rem;font-size:.78rem;cursor:pointer;width:100%">🗑️ Supprimer la ligue</button>
+    </div>
+  `;
 }
+
+function mgSetIcon(ic, el){
+  document.querySelectorAll('.mgico').forEach(b=>b.style.borderColor='var(--b)');
+  el.style.borderColor='var(--red)';
+  const inp=document.getElementById('mg-icon'); if(inp) inp.value=ic;
+}
+function mgSetColor(c, el){
+  document.querySelectorAll('.mgcolor').forEach(d=>d.style.border='2px solid transparent');
+  el.style.border='3px solid #fff';
+  const inp=document.getElementById('mg-color'); if(inp) inp.value=c;
+}
+
+async function lvSaveSettings(){
+  const profile=JSON.parse(localStorage.getItem('go_profile')||'{}');
+  const handle=profile.handle||USER.handle||'';
+  const name=document.getElementById('mg-name')?.value.trim();
+  const desc=document.getElementById('mg-desc')?.value.trim()||'';
+  const icon=document.getElementById('mg-icon')?.value||'🏆';
+  const color=document.getElementById('mg-color')?.value||'#e8001d';
+  if(!name){showToast('Nom requis',true);return;}
+  try{
+    const res=await fetch('/api/update-league',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({leagueId:_lv.league.id,ownerHandle:handle,name,description:desc,icon,color})});
+    const data=await res.json();
+    if(data.success){showToast('✅ Ligue mise à jour !');_crLeaguesCache=null;await lvLoad(_lv.league.id);}
+    else showToast(data.error||'Erreur',true);
+  }catch{showToast('Erreur réseau',true);}
+}
+
+async function lvDeleteLeague(){
+  if(!confirm('Supprimer définitivement la ligue "'+_lv.league.name+'" ? Cette action est irréversible.')) return;
+  showToast('Fonction à venir — contacte le support GridOracle.');
+}
+
+// ── PARTAGE ──
+function lvShare(){
+  const code=_lv.league?.inviteCode||'', name=_lv.league?.name||'GridOracle';
+  const url='https://gridoracle.vercel.app/?join='+encodeURIComponent(code);
+  const msg='Rejoins ma ligue "'+name+'" sur GridOracle 🏎️\nCode : '+code+'\n'+url;
+  if(navigator.share) navigator.share({title:'GridOracle — '+name,text:msg,url}).catch(()=>{});
+  else if(navigator.clipboard) navigator.clipboard.writeText(msg).then(()=>showToast('📋 Lien copié !'));
+}
+function lvCopyCode(){ copyInviteCode(_lv.league?.inviteCode||''); }
+
+
 
 function shareTo(){ openShareModal(HP.pred.filter(Boolean)); }
 
@@ -4496,37 +4621,116 @@ function updateProfilePage(){
 
 /* ── LEAGUE JOIN ── */
 async function joinLeague(){
-  const codeEl=document.getElementById('join-code');
-  const code=codeEl?.value.trim();
-  if(!code){showToast("Entre un code d'invitation",true);return;}
-  const profile=JSON.parse(localStorage.getItem('go_profile')||'{}');
-  const handle=profile.handle||USER.handle||'';
-  const email=profile.email||'';
-  if(!handle){showToast("Connecte-toi d'abord",true);return;}
-  const btn=document.querySelector('.league-join .btn-r');
-  if(btn){btn.disabled=true;btn.textContent='...';}
-  try{
-    const res=await fetch('/api/join-league',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({handle,email,inviteCode:code,tc:USER.tc||profile.tc||'#e8001d'})
+  const codeEl = document.getElementById('join-code');
+  const code   = (codeEl?.value||'').trim().toUpperCase();
+  const fb     = document.getElementById('join-feedback');
+  const btn    = document.getElementById('join-btn');
+
+  function showFb(msg, ok) {
+    if(!fb) return;
+    fb.style.display = 'block';
+    fb.style.background = ok ? 'rgba(76,175,80,.1)' : 'rgba(232,0,29,.08)';
+    fb.style.border = ok ? '1px solid rgba(76,175,80,.25)' : '1px solid rgba(232,0,29,.2)';
+    fb.style.color  = ok ? '#4caf50' : 'var(--red)';
+    fb.textContent  = msg;
+  }
+  function hideFb(){ if(fb) fb.style.display='none'; }
+
+  if(!code){ showFb("Entre un code d'invitation",''); return; }
+  if(code.replace(/-/g,'').length < 4){ showFb('Code trop court'); return; }
+
+  const profile = JSON.parse(localStorage.getItem('go_profile')||'{}');
+  const handle  = profile.handle || USER.handle || '';
+  const email   = profile.email  || '';
+  if(!handle){ showFb("Connecte-toi d'abord"); return; }
+
+  if(btn){ btn.disabled=true; btn.textContent='...'; }
+  hideFb();
+
+  try {
+    const res  = await fetch('/api/join-league',{
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({handle, email, inviteCode: code, tc: USER.tc||profile.tc||'#e8001d'})
     });
-    const data=await res.json();
+    const data = await res.json();
     if(data.success){
-      if(data.alreadyMember){showToast('Tu es déjà dans cette ligue !');}
-      else{showToast('🏆 Ligue "'+data.league.name+'" rejointe !');}
-      if(codeEl)codeEl.value='';
-      // Stocker en localStorage
-      const lids=JSON.parse(localStorage.getItem('go_leagues')||'[]');
-      if(!lids.includes(data.league.id)){lids.push(data.league.id);localStorage.setItem('go_leagues',JSON.stringify(lids));}
-      buildLeague();
-    }else{
-      showToast(data.error||'Code invalide',true);
+      const msg = data.alreadyMember
+        ? 'Tu es déjà dans cette ligue !'
+        : '🏆 Ligue "'+data.league.name+'" rejointe avec succès !';
+      showFb(msg, true);
+      if(codeEl) codeEl.value='';
+      // Stocker l'ID en localStorage
+      const lids = JSON.parse(localStorage.getItem('go_leagues')||'[]');
+      if(!lids.includes(data.league.id)){ lids.push(data.league.id); localStorage.setItem('go_leagues',JSON.stringify(lids)); }
+      // Rafraîchir la liste
+      await loadUserLeagues();
+    } else {
+      showFb(data.error || 'Code invalide — vérifie et réessaie');
     }
-  }catch(e){
-    showToast('Erreur réseau',true);
-  }finally{
-    if(btn){btn.disabled=false;btn.textContent='Rejoindre →';}
+  } catch(e) {
+    showFb('Erreur réseau — réessaie');
+  } finally {
+    if(btn){ btn.disabled=false; btn.textContent='Rejoindre →'; }
+  }
+}
+
+/* ── CHARGER LES LIGUES DE L'UTILISATEUR ── */
+async function loadUserLeagues(){
+  const el = document.getElementById('user-leagues-list');
+  if(!el) return;
+
+  const profile = JSON.parse(localStorage.getItem('go_profile')||'{}');
+  const handle  = profile.handle || USER.handle || '';
+  const plan    = localStorage.getItem('go_plan') || 'free';
+
+  // Afficher CTA create si creator/premium
+  const createCta = document.getElementById('leagues-create-cta');
+  if(createCta) createCta.style.display = ['creator','premium'].includes(plan) ? 'block' : 'none';
+
+  if(!handle){
+    el.innerHTML='<div style="padding:1rem;color:var(--g);font-size:.8rem;text-align:center">Connecte-toi pour voir tes ligues.</div>';
+    return;
+  }
+
+  try {
+    const res  = await fetch('/api/my-leagues?handle='+encodeURIComponent(handle));
+    const data = await res.json();
+    const leagues = data.leagues || [];
+
+    if(!leagues.length){
+      el.innerHTML=`<div style="text-align:center;padding:1.5rem 1rem;border:1px dashed var(--b);border-radius:12px;color:var(--g)">
+        <div style="font-size:1.5rem;margin-bottom:.5rem">🏆</div>
+        <div style="font-size:.83rem;margin-bottom:.75rem">Tu n'as rejoint aucune ligue.</div>
+        <div style="font-size:.75rem;opacity:.6">Entre un code d'invitation ci-dessus pour rejoindre la ligue de ton Creator !</div>
+      </div>`;
+      return;
+    }
+
+    el.innerHTML = '<div style="display:flex;flex-direction:column;gap:.65rem">' +
+      leagues.map(l => {
+        const isOwner = l.ownerHandle === handle;
+        const color   = l.color || '#e8001d';
+        const icon    = l.icon  || '🏆';
+        return `<div style="background:var(--c2);border:1px solid var(--b);border-radius:12px;overflow:hidden;cursor:pointer" onclick="navToLeague('${l.id}','leagues')">
+          <div style="background:${l.bannerColor||'#12001a'};border-bottom:2px solid ${color};padding:.65rem 1rem;display:flex;align-items:center;justify-content:space-between">
+            <div style="display:flex;align-items:center;gap:.55rem">
+              <span style="font-size:1.2rem">${icon}</span>
+              <div>
+                <div style="font-family:var(--fh);font-size:.9rem;font-weight:700;color:#fff">${escH(l.name)}</div>
+                <div style="font-size:.65rem;color:rgba(255,255,255,.4)">${l.memberCount||0} membre${(l.memberCount||0)>1?'s':''}</div>
+              </div>
+            </div>
+            ${isOwner?'<span style="font-size:.62rem;font-weight:700;color:#FFD700;border:1px solid rgba(255,200,0,.3);border-radius:100px;padding:1px 7px;background:rgba(255,200,0,.08)">👑 Creator</span>':''}
+          </div>
+          <div style="padding:.65rem 1rem;display:flex;align-items:center;justify-content:space-between">
+            <div style="font-size:.72rem;color:var(--g)">Code : <span style="font-family:var(--fh);font-weight:700;color:${color};letter-spacing:.08em">${l.inviteCode||'—'}</span></div>
+            <div style="font-size:.75rem;color:var(--g)">Voir le classement →</div>
+          </div>
+        </div>`;
+      }).join('') +
+    '</div>';
+  } catch(e) {
+    el.innerHTML='<div style="padding:1rem;color:var(--g);font-size:.78rem;text-align:center">Erreur de chargement — <a onclick="loadUserLeagues()" style="color:var(--red);cursor:pointer">Réessayer</a></div>';
   }
 }
 
@@ -4677,6 +4881,13 @@ function resetProfile(){
 
 // Lance l'app avec un profil donné (localStorage ou cloud)
 function bootApp(profile) {
+  // Admin override — accès Creator gratuit
+  const _ADMINS = ['raphaeligora@gmail.com'];
+  if(_ADMINS.includes((profile.email||'').toLowerCase())){
+    profile.plan = 'creator'; profile.billing = 'yearly';
+    localStorage.setItem('go_plan','creator');
+    localStorage.setItem('go_billing','yearly');
+  }
   const team = TEAMS.find(t => t.id === profile.teamId) || null;
   const driver = DRIVERS.find(d => d.sn === profile.driverSn) || null;
   USER = { fn: profile.fn, ln: profile.ln, handle: profile.handle, tc: profile.tc || '#e8001d', team, driver };
