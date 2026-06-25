@@ -5635,7 +5635,14 @@ function resetProfile(){
 // Lance l'app avec un profil donné (localStorage ou cloud)
 function bootApp(profile) {
   // Admin override — accès Creator gratuit
-  const _ADMINS = ['raphaeligora@gmail.com'];
+  const _ADMINS = ['raphaeligora@gmail.com']; // Admin unique
+  // Creators gratuits (partenaires TikTok)
+  const _CREATORS_FREE = ['ferreiraraphael89@gmail.com'];
+  if(_CREATORS_FREE.includes((profile.email||'').toLowerCase())){
+    profile.plan='creator'; profile.billing='yearly';
+    localStorage.setItem('go_plan','creator');
+    localStorage.setItem('go_billing','yearly');
+  }
   if(_ADMINS.includes((profile.email||'').toLowerCase())){
     profile.plan = 'creator'; profile.billing = 'yearly';
     localStorage.setItem('go_plan','creator');
