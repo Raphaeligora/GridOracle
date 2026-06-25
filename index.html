@@ -2000,6 +2000,67 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
   </div>
 </div>
 
+
+<!-- ── PAGE: ADMIN (raphaeligora@gmail.com uniquement) ── -->
+<div id="pg-admin" class="pg">
+  <div style="max-width:640px;margin:0 auto;padding:1.2rem 1rem 5rem">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem">
+      <div>
+        <div style="font-size:.7rem;color:var(--red);font-weight:700;letter-spacing:.12em;text-transform:uppercase;margin-bottom:4px">🔐 Admin GridOracle</div>
+        <div style="font-family:var(--fh);font-size:1.4rem;font-weight:700">Gestion du site</div>
+      </div>
+      <div id="admin-gp-badge" style="background:rgba(232,0,29,.1);border:1px solid rgba(232,0,29,.25);border-radius:8px;padding:.4rem .8rem;font-size:.75rem;text-align:center"></div>
+    </div>
+
+    <!-- STATUT ACTUEL -->
+    <div id="admin-status-card" style="background:var(--c2);border:1px solid var(--b);border-radius:12px;padding:.9rem 1rem;margin-bottom:.9rem">
+      <div style="font-size:.72rem;font-weight:700;color:var(--g);text-transform:uppercase;letter-spacing:.1em;margin-bottom:.6rem">📊 Statut actuel</div>
+      <div id="admin-status-body" style="font-size:.82rem;color:var(--w)">Chargement…</div>
+    </div>
+
+    <!-- ENTRER LES RÉSULTATS -->
+    <div style="background:var(--c2);border:1px solid rgba(232,0,29,.2);border-radius:12px;padding:.9rem 1rem;margin-bottom:.9rem">
+      <div style="font-family:var(--fh);font-size:.95rem;font-weight:700;margin-bottom:.8rem">🏁 Résultats de la course</div>
+      <div style="font-size:.75rem;color:var(--g);margin-bottom:.8rem">Entre le nom exact des pilotes (ex: Verstappen, Antonelli, Hamilton...)</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-bottom:.9rem">
+        <div><label style="font-size:.68rem;color:var(--g);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:.3rem">P1 (25 pts)</label><input id="r-p1" class="lj-input" style="margin:0;font-weight:700" placeholder="Pilote P1"></div>
+        <div><label style="font-size:.68rem;color:var(--g);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:.3rem">P2 (18 pts)</label><input id="r-p2" class="lj-input" style="margin:0" placeholder="Pilote P2"></div>
+        <div><label style="font-size:.68rem;color:var(--g);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:.3rem">P3 (15 pts)</label><input id="r-p3" class="lj-input" style="margin:0" placeholder="Pilote P3"></div>
+        <div><label style="font-size:.68rem;color:var(--g);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:.3rem">P4 (12 pts)</label><input id="r-p4" class="lj-input" style="margin:0" placeholder="Pilote P4"></div>
+        <div><label style="font-size:.68rem;color:var(--g);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:.3rem">P5 (10 pts)</label><input id="r-p5" class="lj-input" style="margin:0" placeholder="Pilote P5"></div>
+        <div><label style="font-size:.68rem;color:var(--g);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:.3rem">P6 (8 pts)</label><input id="r-p6" class="lj-input" style="margin:0" placeholder="Pilote P6 (Premium)"></div>
+        <div><label style="font-size:.68rem;color:var(--g);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:.3rem">P7 (6 pts)</label><input id="r-p7" class="lj-input" style="margin:0" placeholder="Pilote P7"></div>
+        <div><label style="font-size:.68rem;color:var(--g);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:.3rem">P8 (4 pts)</label><input id="r-p8" class="lj-input" style="margin:0" placeholder="Pilote P8"></div>
+        <div><label style="font-size:.68rem;color:var(--g);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:.3rem">P9 (2 pts)</label><input id="r-p9" class="lj-input" style="margin:0" placeholder="Pilote P9"></div>
+        <div><label style="font-size:.68rem;color:var(--g);letter-spacing:.08em;text-transform:uppercase;display:block;margin-bottom:.3rem">P10 (1 pt)</label><input id="r-p10" class="lj-input" style="margin:0" placeholder="Pilote P10"></div>
+      </div>
+      <button onclick="adminCalculateScores()" style="width:100%;background:var(--red);color:#fff;border:none;border-radius:10px;padding:.85rem;font-size:.88rem;font-weight:700;cursor:pointer">
+        ⚡ Calculer les points de tous les joueurs
+      </button>
+      <div id="admin-score-result" style="margin-top:.6rem;font-size:.78rem;text-align:center;color:var(--g)"></div>
+    </div>
+
+    <!-- PROCHAIN GP -->
+    <div style="background:var(--c2);border:1px solid var(--b);border-radius:12px;padding:.9rem 1rem;margin-bottom:.9rem">
+      <div style="font-family:var(--fh);font-size:.95rem;font-weight:700;margin-bottom:.4rem">🗓️ Transition GP automatique</div>
+      <div style="font-size:.78rem;color:var(--g);margin-bottom:.6rem">Le site change de GP automatiquement le lundi à midi après chaque course. Aucune action requise.</div>
+      <div id="admin-next-gp-info" style="background:rgba(255,255,255,.04);border-radius:8px;padding:.7rem .9rem;font-size:.82rem"></div>
+    </div>
+
+    <!-- REFRESH LIGUES MANUEL -->
+    <div style="background:var(--c2);border:1px solid var(--b);border-radius:12px;padding:.9rem 1rem">
+      <div style="font-family:var(--fh);font-size:.95rem;font-weight:700;margin-bottom:.4rem">🔄 Synchronisation manuelle</div>
+      <div style="display:flex;flex-direction:column;gap:.5rem">
+        <button onclick="adminRefreshLeagues()" style="background:rgba(255,255,255,.06);border:1px solid var(--b);color:var(--w);border-radius:8px;padding:.65rem;font-size:.82rem;cursor:pointer">
+          Rafraîchir les scores dans toutes les ligues
+        </button>
+        <div id="admin-refresh-result" style="font-size:.75rem;color:var(--g);text-align:center"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <!-- ── PAGE: RULES ── -->
 <div id="pg-rules" class="pg">
   <div class="rules-wrap">
@@ -2126,6 +2187,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
   <div class="bn-tab" data-page="leagues" onclick="navTo('leagues')"><div class="bn-ico">🏆</div><div class="bn-lbl" data-i18n="nav.leagues">Ligues</div></div>
   <div class="bn-tab" data-page="creator" onclick="navTo('creator')"><div class="bn-ico">🎙️</div><div class="bn-lbl">Creator</div></div>
   <div class="bn-tab" data-page="nextgp" onclick="navTo('nextgp')"><div class="bn-ico">🗓️</div><div class="bn-lbl" data-i18n="nav.nextgp">Prochain GP</div></div>
+  <div class="bn-tab admin-only-tab" id="bn-admin" data-page="admin" onclick="navTo('admin')" style="display:none"><div class="bn-ico">🔐</div><div class="bn-lbl">Admin</div></div>
 </nav>
 
 <!-- ── MODALE PROFIL JOUEUR ── -->
@@ -2822,6 +2884,12 @@ function goApp(){
   // Charger prédiction sauvegardée + vérifier deadline qualifs
   loadSavedPrediction();
   if(isPredLocked()) setTimeout(lockPredUI, 500);
+  // Afficher onglet Admin si compte admin
+  const _ADMIN_EMAILS=['raphaeligora@gmail.com','ferreiraraphael89@gmail.com'];
+  if(_ADMIN_EMAILS.includes((profile.email||'').toLowerCase())){
+    const adminTab=document.getElementById('bn-admin');
+    if(adminTab) adminTab.style.display='flex';
+  }
   // ── ACTIVATE PLAN IF USER PAID BEFORE COMPLETING ONBOARDING ──
   const afterPlan = localStorage.getItem('go_after_onboarding_plan');
   const afterBilling = localStorage.getItem('go_after_onboarding_billing');
@@ -2844,6 +2912,7 @@ function navTo(page){
   if(page==='standings')buildStandings();
   if(page==='nextgp')initNextGP();
   if(page==='creator')initCreatorPage();
+  if(page==='admin')initAdminPage();
   if(page==='leagues')loadUserLeagues();
   if(page==='league-view' && !document.getElementById('pg-league-view')._leagueId) { /* already loaded */ }
 }
@@ -3398,9 +3467,9 @@ function hReset(){HP.pred=new Array(10).fill(null);HP.opk=-1;hRender()}
 function pReset(){PP.pred=new Array(10).fill(null);PP.opk=-1;pRender()}
 /* ══ PRÉDICTION — SAUVEGARDE REDIS + PARTAGE ══ */
 
-const GP_CURRENT = { id: 'austria-2026', name: 'GP Autriche 2026', flag: '🇦🇹' };
+let GP_CURRENT = { id: 'austria-2026', name: "Grand Prix d'Autriche", flag: '🇦🇹', r: 10, loc: 'Red Bull Ring · Spielberg' };
 // Deadline qualifs : samedi 27 juin 2026 à 15h45 Paris
-const QUALI_DEADLINE_TS = new Date('2026-06-27T13:45:00Z').getTime();
+let QUALI_DEADLINE_TS = new Date('2026-06-27T13:45:00Z').getTime();
 
 function isPredLocked(){ return Date.now() >= QUALI_DEADLINE_TS; }
 
@@ -4917,6 +4986,111 @@ function lvCopyCode(){ copyInviteCode(_lv.league?.inviteCode||''); }
 
 
 
+/* ══ PAGE ADMIN ══ */
+function initAdminPage(){
+  const admins = ['raphaeligora@gmail.com','ferreiraraphael89@gmail.com'];
+  const profile = JSON.parse(localStorage.getItem('go_profile')||'{}');
+  if(!admins.includes((profile.email||'').toLowerCase())){
+    showToast('Accès non autorisé',true);
+    navTo('home');
+    return;
+  }
+
+  // Statut actuel
+  const badgeEl  = document.getElementById('admin-gp-badge');
+  const statusEl = document.getElementById('admin-status-body');
+  const nextEl   = document.getElementById('admin-next-gp-info');
+
+  if(badgeEl) badgeEl.textContent = GP_CURRENT.flag+' '+GP_CURRENT.name.replace('Grand Prix de ','').replace("Grand Prix d'","").replace('Grand Prix du ','');
+
+  if(statusEl){
+    const locked    = isPredLocked();
+    const deadline  = new Date(QUALI_DEADLINE_TS).toLocaleString('fr-FR',{weekday:'long',day:'numeric',month:'long',hour:'2-digit',minute:'2-digit'});
+    statusEl.innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem">
+        <div><div style="font-size:.7rem;color:var(--g)">GP actuel</div><div style="font-weight:700">${GP_CURRENT.flag} ${GP_CURRENT.name}</div></div>
+        <div><div style="font-size:.7rem;color:var(--g)">Round</div><div style="font-weight:700">#${GP_CURRENT.r||'—'}</div></div>
+        <div><div style="font-size:.7rem;color:var(--g)">Prédictions</div><div style="font-weight:700;color:${locked?'var(--red)':'#4caf50'}">${locked?'🔒 Verrouillées':'✅ Ouvertes'}</div></div>
+        <div><div style="font-size:.7rem;color:var(--g)">Verrouillage</div><div style="font-size:.75rem">${deadline}</div></div>
+      </div>`;
+  }
+
+  // Prochain GP
+  const currentIdx = F1_CALENDAR_2026.findIndex(g=>g.r===GP_CURRENT.r);
+  const nextGP = F1_CALENDAR_2026[currentIdx+1];
+  if(nextEl && nextGP){
+    const switchTs = new Date(F1_CALENDAR_2026[currentIdx].raceDay+'T10:00:00Z').getTime()+86400000;
+    const diff = switchTs - Date.now();
+    const days = Math.floor(diff/86400000);
+    const hrs  = Math.floor((diff%86400000)/3600000);
+    nextEl.innerHTML = `<strong>Prochain :</strong> ${nextGP.flag} ${nextGP.name} — ${nextGP.dates}<br>
+      <span style="color:var(--g);font-size:.75rem">Transition automatique ${days>0?'dans '+days+'j '+hrs+'h':'bientôt'} (lundi midi)</span>`;
+  } else if(nextEl) {
+    nextEl.textContent = 'Dernier GP de la saison';
+  }
+
+  // Pré-remplir les champs avec la prédiction IA si disponible
+  if(GP_CURRENT.r){
+    const curGP = F1_CALENDAR_2026.find(g=>g.r===GP_CURRENT.r);
+    if(curGP?.aiPred) {
+      curGP.aiPred.forEach((p,i)=>{
+        const inp=document.getElementById('r-p'+(i+1));
+        if(inp && !inp.value) inp.placeholder='Ex: '+p.sn;
+      });
+    }
+  }
+}
+
+async function adminCalculateScores(){
+  const results=[];
+  for(let i=1;i<=10;i++){
+    const v=(document.getElementById('r-p'+i)?.value||'').trim();
+    if(v) results.push(v);
+  }
+  if(results.length<3){
+    showToast('Entre au moins P1, P2 et P3',true);
+    return;
+  }
+  const btn=document.querySelector('#pg-admin button[onclick="adminCalculateScores()"]');
+  const res=document.getElementById('admin-score-result');
+  if(btn){btn.disabled=true;btn.textContent='Calcul en cours…';}
+  if(res) res.textContent='Calcul des points…';
+  try{
+    const response=await fetch('/api/calculate-scores',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({secret:'go2026admin',gpId:GP_CURRENT.id,results})
+    });
+    const data=await response.json();
+    if(data.success){
+      const msg='✅ '+data.updated+' joueurs mis à jour · Moy : '+data.avgPts+' pts';
+      if(res) res.textContent=msg;
+      showToast(msg);
+    }else{
+      if(res) res.textContent='❌ '+(data.error||'Erreur');
+      showToast(data.error||'Erreur',true);
+    }
+  }catch{
+    if(res) res.textContent='❌ Erreur réseau';
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent='⚡ Calculer les points de tous les joueurs';}
+  }
+}
+
+async function adminRefreshLeagues(){
+  const el=document.getElementById('admin-refresh-result');
+  if(el) el.textContent='Synchronisation…';
+  try{
+    const r=await fetch('/api/refresh-league-scores?secret=go2026admin');
+    const d=await r.json();
+    const msg=d.success?('✅ '+d.total+' ligue(s) synchronisée(s)'):'❌ Erreur';
+    if(el) el.textContent=msg;
+    showToast(msg);
+  }catch{
+    if(el) el.textContent='❌ Erreur réseau';
+  }
+}
+
 function shareTo(){ openShareModal(HP.pred.filter(Boolean)); }
 
 /* ══ END PRÉDICTION SAUVEGARDE ══ */
@@ -5419,6 +5593,12 @@ function bootApp(profile) {
   // Charger prédiction sauvegardée depuis Redis
   loadSavedPrediction();
   if(isPredLocked()) setTimeout(lockPredUI, 500);
+  // Afficher onglet Admin si compte admin
+  const _ADMIN_EMAILS=['raphaeligora@gmail.com','ferreiraraphael89@gmail.com'];
+  if(_ADMIN_EMAILS.includes((profile.email||'').toLowerCase())){
+    const adminTab=document.getElementById('bn-admin');
+    if(adminTab) adminTab.style.display='flex';
+  }
   // Activer plan post-onboarding si paiement fait avant profil
   const afterPlan = localStorage.getItem('go_after_onboarding_plan');
   const afterBilling = localStorage.getItem('go_after_onboarding_billing');
@@ -5558,29 +5738,251 @@ document.addEventListener('click',e=>{
 });
 /* ══ PAGE PROCHAIN GP ══ */
 const F1_CALENDAR_2026 = [
-  {r:1,  flag:'🇦🇺', name:'Grand Prix d\'Australie',    loc:'Albert Park · Melbourne',       dates:'6–8 Mars',      el:'13h', q:'14h', race:'15h', circuit:'4.309 km · 58 tours', status:'done', p1:'Russell',p2:'Antonelli',p3:'Leclerc'},
-  {r:2,  flag:'🇨🇳', name:'Grand Prix de Chine',        loc:'Shanghai Circuit',               dates:'13–15 Mars',    el:'13h', q:'14h', race:'15h', circuit:'5.451 km · 56 tours', status:'done', sprint:true, p1:'Antonelli',p2:'Russell',p3:'Hamilton'},
-  {r:3,  flag:'🇯🇵', name:'Grand Prix du Japon',        loc:'Suzuka Circuit',                 dates:'27–29 Mars',    el:'13h', q:'14h', race:'15h', circuit:'5.807 km · 53 tours', status:'done', p1:'Antonelli',p2:'Piastri',p3:'Leclerc'},
-  {r:4,  flag:'🇧🇭', name:'Grand Prix de Bahreïn',      loc:'Bahrain International Circuit',  dates:'10–12 Avr.',    el:'13h', q:'14h', race:'18h', circuit:'5.412 km · 57 tours', status:'done', p1:'Norris',p2:'Hamilton',p3:'Verstappen'},
-  {r:5,  flag:'🇸🇦', name:'Grand Prix d\'Arabie Saoudite', loc:'Jeddah Corniche Circuit',    dates:'17–19 Avr.',    el:'13h', q:'17h', race:'18h', circuit:'6.174 km · 50 tours', status:'done', p1:'Leclerc',p2:'Norris',p3:'Piastri'},
-  {r:6,  flag:'🇺🇸', name:'Grand Prix de Miami',        loc:'Miami International Autodrome', dates:'1–3 Mai',       el:'13h', q:'14h', race:'15h', circuit:'5.412 km · 57 tours', status:'done', sprint:true, p1:'Verstappen',p2:'Norris',p3:'Antonelli'},
-  {r:7,  flag:'🇨🇦', name:'Grand Prix du Canada',       loc:'Circuit Gilles-Villeneuve',     dates:'22–24 Mai',     el:'13h', q:'14h', race:'14h', circuit:'4.361 km · 70 tours', status:'done', sprint:true, p1:'Hamilton',p2:'Antonelli',p3:'Russell'},
-  {r:8,  flag:'🇲🇨', name:'Grand Prix de Monaco',       loc:'Circuit de Monaco',             dates:'5–7 Juin',      el:'13h', q:'15h', race:'15h', circuit:'3.337 km · 78 tours', status:'done', p1:'Leclerc',p2:'Norris',p3:'Piastri'},
-  {r:9,  flag:'🇪🇸', name:'Grand Prix d\'Espagne',      loc:'Circuit de Barcelona-Catalunya', dates:'12–14 Juin',   el:'13h', q:'15h', race:'15h', circuit:'4.655 km · 66 tours', status:'done', p1:'Hamilton',p2:'Verstappen',p3:'Antonelli'},
-  {r:10, flag:'🇦🇹', name:'Grand Prix d\'Autriche',     loc:'Red Bull Ring · Spielberg',     dates:'26–28 Juin',    el:'13h30', q:'16h00', race:'15h00', circuit:'4.318 km · 71 tours', status:'next'},
-  {r:11, flag:'🇬🇧', name:'Grand Prix de Grande-Bretagne', loc:'Silverstone Circuit',        dates:'3–5 Juil.',     el:'13h', q:'15h', race:'15h', circuit:'5.891 km · 52 tours', status:'upcoming', sprint:true},
-  {r:12, flag:'🇧🇪', name:'Grand Prix de Belgique',     loc:'Circuit de Spa-Francorchamps', dates:'17–19 Juil.',   el:'13h', q:'15h', race:'15h', circuit:'7.004 km · 44 tours', status:'upcoming'},
-  {r:13, flag:'🇭🇺', name:'Grand Prix de Hongrie',      loc:'Hungaroring · Budapest',        dates:'24–26 Juil.',   el:'13h', q:'15h', race:'15h', circuit:'4.381 km · 70 tours', status:'upcoming'},
-  {r:14, flag:'🇳🇱', name:'Grand Prix des Pays-Bas',    loc:'Circuit Zandvoort',             dates:'21–23 Août',    el:'13h', q:'15h', race:'15h', circuit:'4.259 km · 72 tours', status:'upcoming', sprint:true},
-  {r:15, flag:'🇮🇹', name:'Grand Prix d\'Italie',       loc:'Autodromo Nazionale Monza',     dates:'4–6 Sep.',      el:'13h', q:'15h', race:'15h', circuit:'5.793 km · 53 tours', status:'upcoming'},
-  {r:16, flag:'🇪🇸', name:'Grand Prix d\'Espagne (Madrid)', loc:'Circuito Madrid Motoring',  dates:'11–13 Sep.',    el:'13h', q:'15h', race:'15h', circuit:'5.474 km · 55 tours', status:'upcoming'},
-  {r:17, flag:'🇦🇿', name:'Grand Prix d\'Azerbaïdjan',  loc:'Baku City Circuit',             dates:'25–27 Sep.',    el:'13h', q:'15h', race:'13h', circuit:'6.003 km · 51 tours', status:'upcoming'},
-  {r:18, flag:'🇸🇬', name:'Grand Prix de Singapour',    loc:'Marina Bay Street Circuit',     dates:'9–11 Oct.',     el:'13h', q:'15h', race:'20h', circuit:'4.940 km · 62 tours', status:'upcoming', sprint:true},
-  {r:19, flag:'🇺🇸', name:'Grand Prix des États-Unis',  loc:'Circuit of the Americas · Austin', dates:'23–25 Oct.', el:'13h', q:'15h', race:'20h', circuit:'5.513 km · 56 tours', status:'upcoming'},
-  {r:20, flag:'🇲🇽', name:'Grand Prix du Mexique',      loc:'Autodromo Hermanos Rodriguez',  dates:'30 Oct.–1 Nov.',el:'13h', q:'15h', race:'20h', circuit:'4.304 km · 71 tours', status:'upcoming'},
-  {r:21, flag:'🇧🇷', name:'Grand Prix du Brésil',       loc:'Autodromo Jose Carlos Pace',    dates:'6–8 Nov.',      el:'13h', q:'15h', race:'18h', circuit:'4.309 km · 71 tours', status:'upcoming'},
-  {r:22, flag:'🇦🇪', name:'Grand Prix d\'Abu Dhabi',    loc:'Yas Marina Circuit',            dates:'4–6 Déc.',      el:'13h', q:'15h', race:'17h', circuit:'5.281 km · 58 tours', status:'upcoming'},
+  {r:1,  flag:'🇦🇺', name:"Grand Prix d'Australie",      loc:'Albert Park · Melbourne',          dates:'6–8 Mars',      el:'13h', q:'14h', race:'15h', circuit:'4.309 km · 58 tours', status:'done', raceDay:'2026-03-08', qualiDay:'2026-03-07', p1:'Russell',   p2:'Antonelli', p3:'Leclerc'},
+  {r:2,  flag:'🇨🇳', name:'Grand Prix de Chine',          loc:'Shanghai Circuit',                 dates:'13–15 Mars',    el:'13h', q:'14h', race:'15h', circuit:'5.451 km · 56 tours', status:'done', raceDay:'2026-03-15', qualiDay:'2026-03-14', sprint:true, p1:'Antonelli', p2:'Russell',   p3:'Hamilton'},
+  {r:3,  flag:'🇯🇵', name:'Grand Prix du Japon',          loc:'Suzuka Circuit',                   dates:'27–29 Mars',    el:'13h', q:'14h', race:'15h', circuit:'5.807 km · 53 tours', status:'done', raceDay:'2026-03-29', qualiDay:'2026-03-28', p1:'Antonelli', p2:'Piastri',   p3:'Leclerc'},
+  {r:4,  flag:'🇧🇭', name:'Grand Prix de Bahreïn',        loc:'Bahrain International Circuit',    dates:'10–12 Avr.',    el:'13h', q:'14h', race:'18h', circuit:'5.412 km · 57 tours', status:'done', raceDay:'2026-04-12', qualiDay:'2026-04-11', p1:'Norris',    p2:'Hamilton',  p3:'Verstappen'},
+  {r:5,  flag:'🇸🇦', name:"Grand Prix d'Arabie Saoudite", loc:'Jeddah Corniche Circuit',          dates:'17–19 Avr.',    el:'13h', q:'17h', race:'18h', circuit:'6.174 km · 50 tours', status:'done', raceDay:'2026-04-19', qualiDay:'2026-04-18', p1:'Leclerc',   p2:'Norris',    p3:'Piastri'},
+  {r:6,  flag:'🇺🇸', name:'Grand Prix de Miami',          loc:'Miami International Autodrome',    dates:'1–3 Mai',       el:'13h', q:'14h', race:'15h', circuit:'5.412 km · 57 tours', status:'done', raceDay:'2026-05-03', qualiDay:'2026-05-02', sprint:true, p1:'Verstappen',p2:'Norris',    p3:'Antonelli'},
+  {r:7,  flag:'🇨🇦', name:'Grand Prix du Canada',         loc:'Circuit Gilles-Villeneuve',        dates:'22–24 Mai',     el:'13h', q:'14h', race:'14h', circuit:'4.361 km · 70 tours', status:'done', raceDay:'2026-05-24', qualiDay:'2026-05-23', sprint:true, p1:'Hamilton',  p2:'Antonelli', p3:'Russell'},
+  {r:8,  flag:'🇲🇨', name:'Grand Prix de Monaco',         loc:'Circuit de Monaco',                dates:'5–7 Juin',      el:'13h', q:'15h', race:'15h', circuit:'3.337 km · 78 tours', status:'done', raceDay:'2026-06-07', qualiDay:'2026-06-06', p1:'Leclerc',   p2:'Norris',    p3:'Piastri'},
+  {r:9,  flag:'🇪🇸', name:"Grand Prix d'Espagne",         loc:'Circuit de Barcelona-Catalunya',   dates:'12–14 Juin',    el:'13h', q:'15h', race:'15h', circuit:'4.655 km · 66 tours', status:'done', raceDay:'2026-06-14', qualiDay:'2026-06-13', p1:'Hamilton',  p2:'Verstappen',p3:'Antonelli'},
+  // ── GP en cours ──────────────────────────────────────────────────
+  {r:10, flag:'🇦🇹', name:"Grand Prix d'Autriche",        loc:'Red Bull Ring · Spielberg',        dates:'26–28 Juin',    el:'13h30', q:'16h00', race:'15h00', circuit:'4.318 km · 71 tours', status:'next', raceDay:'2026-06-28', qualiDay:'2026-06-27',
+    aiPred:[
+      {sn:'Verstappen',t:'redbull',  tc:'#3671C6',note:'🏠 Home RBR',pct:87,pts:25},
+      {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'Ldr WDC',    pct:81,pts:18},
+      {sn:'Hamilton',  t:'ferrari',  tc:'#E8001D',note:'',           pct:73,pts:15},
+      {sn:'Russell',   t:'mercedes', tc:'#00D2BE',note:'',           pct:67,pts:12},
+      {sn:'Norris',    t:'mclaren',  tc:'#FF8000',note:'',           pct:61,pts:10},
+      {sn:'Piastri',   t:'mclaren',  tc:'#FF8000',note:'',           pct:57,pts:8 },
+      {sn:'Hadjar',    t:'redbull',  tc:'#3671C6',note:'',           pct:48,pts:6 },
+      {sn:'Leclerc',   t:'ferrari',  tc:'#E8001D',note:'',           pct:44,pts:4 },
+      {sn:'Gasly',     t:'alpine',   tc:'#FF0060',note:'',           pct:38,pts:2 },
+      {sn:'Sainz',     t:'williams', tc:'#00A0DD',note:'',           pct:31,pts:1 },
+    ]},
+  // ── GPS à venir ───────────────────────────────────────────────────
+  {r:11, flag:'🇬🇧', name:'Grand Prix de Grande-Bretagne', loc:'Silverstone Circuit',             dates:'3–5 Juil.',     el:'13h', q:'15h', race:'15h', circuit:'5.891 km · 52 tours', status:'upcoming', raceDay:'2026-07-05', qualiDay:'2026-07-04', sprint:true,
+    aiPred:[
+      {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'🏠 Silverstone',pct:85,pts:25},
+      {sn:'Russell',   t:'mercedes', tc:'#00D2BE',note:'Fort ici',      pct:79,pts:18},
+      {sn:'Hamilton',  t:'ferrari',  tc:'#E8001D',note:'💛 Home race',  pct:74,pts:15},
+      {sn:'Norris',    t:'mclaren',  tc:'#FF8000',note:'🏠 Home',       pct:68,pts:12},
+      {sn:'Piastri',   t:'mclaren',  tc:'#FF8000',note:'',             pct:62,pts:10},
+      {sn:'Verstappen',t:'redbull',  tc:'#3671C6',note:'',             pct:55,pts:8 },
+      {sn:'Leclerc',   t:'ferrari',  tc:'#E8001D',note:'',             pct:47,pts:6 },
+      {sn:'Hadjar',    t:'redbull',  tc:'#3671C6',note:'',             pct:41,pts:4 },
+      {sn:'Gasly',     t:'alpine',   tc:'#FF0060',note:'',             pct:35,pts:2 },
+      {sn:'Sainz',     t:'williams', tc:'#00A0DD',note:'🏠 British',   pct:29,pts:1 },
+    ]},
+  {r:12, flag:'🇧🇪', name:'Grand Prix de Belgique',        loc:'Circuit de Spa-Francorchamps',    dates:'17–19 Juil.',   el:'13h', q:'15h', race:'15h', circuit:'7.004 km · 44 tours', status:'upcoming', raceDay:'2026-07-19', qualiDay:'2026-07-18',
+    aiPred:[
+      {sn:'Verstappen',t:'redbull',  tc:'#3671C6',note:'Fort à Spa',   pct:83,pts:25},
+      {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'',             pct:77,pts:18},
+      {sn:'Hamilton',  t:'ferrari',  tc:'#E8001D',note:'',             pct:71,pts:15},
+      {sn:'Russell',   t:'mercedes', tc:'#00D2BE',note:'',             pct:65,pts:12},
+      {sn:'Norris',    t:'mclaren',  tc:'#FF8000',note:'',             pct:59,pts:10},
+      {sn:'Piastri',   t:'mclaren',  tc:'#FF8000',note:'',             pct:53,pts:8 },
+      {sn:'Leclerc',   t:'ferrari',  tc:'#E8001D',note:'',             pct:46,pts:6 },
+      {sn:'Hadjar',    t:'redbull',  tc:'#3671C6',note:'',             pct:40,pts:4 },
+      {sn:'Sainz',     t:'williams', tc:'#00A0DD',note:'',             pct:34,pts:2 },
+      {sn:'Gasly',     t:'alpine',   tc:'#FF0060',note:'',             pct:28,pts:1 },
+    ]},
+  {r:13, flag:'🇭🇺', name:'Grand Prix de Hongrie',         loc:'Hungaroring · Budapest',          dates:'24–26 Juil.',   el:'13h', q:'15h', race:'15h', circuit:'4.381 km · 70 tours', status:'upcoming', raceDay:'2026-07-26', qualiDay:'2026-07-25',
+    aiPred:[
+      {sn:'Hamilton',  t:'ferrari',  tc:'#E8001D',note:'💛 Budapest',  pct:81,pts:25},
+      {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'',             pct:75,pts:18},
+      {sn:'Russell',   t:'mercedes', tc:'#00D2BE',note:'',             pct:69,pts:15},
+      {sn:'Norris',    t:'mclaren',  tc:'#FF8000',note:'',             pct:63,pts:12},
+      {sn:'Verstappen',t:'redbull',  tc:'#3671C6',note:'',             pct:57,pts:10},
+      {sn:'Piastri',   t:'mclaren',  tc:'#FF8000',note:'',             pct:51,pts:8 },
+      {sn:'Leclerc',   t:'ferrari',  tc:'#E8001D',note:'',             pct:45,pts:6 },
+      {sn:'Hadjar',    t:'redbull',  tc:'#3671C6',note:'',             pct:39,pts:4 },
+      {sn:'Gasly',     t:'alpine',   tc:'#FF0060',note:'',             pct:33,pts:2 },
+      {sn:'Sainz',     t:'williams', tc:'#00A0DD',note:'',             pct:27,pts:1 },
+    ]},
+  {r:14, flag:'🇳🇱', name:'Grand Prix des Pays-Bas',       loc:'Circuit Zandvoort',               dates:'21–23 Août',    el:'13h', q:'15h', race:'15h', circuit:'4.259 km · 72 tours', status:'upcoming', raceDay:'2026-08-23', qualiDay:'2026-08-22', sprint:true,
+    aiPred:[
+      {sn:'Verstappen',t:'redbull',  tc:'#3671C6',note:'🏠 Home RBR',  pct:88,pts:25},
+      {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'',             pct:76,pts:18},
+      {sn:'Hamilton',  t:'ferrari',  tc:'#E8001D',note:'',             pct:70,pts:15},
+      {sn:'Russell',   t:'mercedes', tc:'#00D2BE',note:'',             pct:64,pts:12},
+      {sn:'Norris',    t:'mclaren',  tc:'#FF8000',note:'',             pct:58,pts:10},
+      {sn:'Piastri',   t:'mclaren',  tc:'#FF8000',note:'',             pct:52,pts:8 },
+      {sn:'Leclerc',   t:'ferrari',  tc:'#E8001D',note:'',             pct:46,pts:6 },
+      {sn:'Hadjar',    t:'redbull',  tc:'#3671C6',note:'',             pct:40,pts:4 },
+      {sn:'Sainz',     t:'williams', tc:'#00A0DD',note:'',             pct:34,pts:2 },
+      {sn:'Gasly',     t:'alpine',   tc:'#FF0060',note:'',             pct:28,pts:1 },
+    ]},
+  {r:15, flag:'🇮🇹', name:"Grand Prix d'Italie",           loc:'Autodromo Nazionale Monza',       dates:'4–6 Sep.',      el:'13h', q:'15h', race:'15h', circuit:'5.793 km · 53 tours', status:'upcoming', raceDay:'2026-09-06', qualiDay:'2026-09-05',
+    aiPred:[
+      {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'🏠 Monza',     pct:84,pts:25},
+      {sn:'Russell',   t:'mercedes', tc:'#00D2BE',note:'',             pct:78,pts:18},
+      {sn:'Hamilton',  t:'ferrari',  tc:'#E8001D',note:'🏠 Ferrari',   pct:72,pts:15},
+      {sn:'Norris',    t:'mclaren',  tc:'#FF8000',note:'',             pct:66,pts:12},
+      {sn:'Verstappen',t:'redbull',  tc:'#3671C6',note:'',             pct:60,pts:10},
+      {sn:'Leclerc',   t:'ferrari',  tc:'#E8001D',note:'',             pct:54,pts:8 },
+      {sn:'Piastri',   t:'mclaren',  tc:'#FF8000',note:'',             pct:48,pts:6 },
+      {sn:'Hadjar',    t:'redbull',  tc:'#3671C6',note:'',             pct:42,pts:4 },
+      {sn:'Sainz',     t:'williams', tc:'#00A0DD',note:'',             pct:36,pts:2 },
+      {sn:'Gasly',     t:'alpine',   tc:'#FF0060',note:'',             pct:30,pts:1 },
+    ]},
+  {r:16, flag:'🇪🇸', name:'Grand Prix de Madrid',          loc:'Circuito Madrid Motoring',        dates:'11–13 Sep.',    el:'13h', q:'15h', race:'15h', circuit:'5.474 km · 55 tours', status:'upcoming', raceDay:'2026-09-13', qualiDay:'2026-09-12',
+    aiPred:[
+      {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'',             pct:80,pts:25},
+      {sn:'Hamilton',  t:'ferrari',  tc:'#E8001D',note:'',             pct:74,pts:18},
+      {sn:'Russell',   t:'mercedes', tc:'#00D2BE',note:'',             pct:68,pts:15},
+      {sn:'Norris',    t:'mclaren',  tc:'#FF8000',note:'',             pct:62,pts:12},
+      {sn:'Verstappen',t:'redbull',  tc:'#3671C6',note:'',             pct:56,pts:10},
+      {sn:'Piastri',   t:'mclaren',  tc:'#FF8000',note:'',             pct:50,pts:8 },
+      {sn:'Leclerc',   t:'ferrari',  tc:'#E8001D',note:'',             pct:44,pts:6 },
+      {sn:'Hadjar',    t:'redbull',  tc:'#3671C6',note:'',             pct:38,pts:4 },
+      {sn:'Sainz',     t:'williams', tc:'#00A0DD',note:'',             pct:32,pts:2 },
+      {sn:'Gasly',     t:'alpine',   tc:'#FF0060',note:'',             pct:26,pts:1 },
+    ]},
+  {r:17, flag:'🇦🇿', name:"Grand Prix d'Azerbaïdjan",      loc:'Baku City Circuit',               dates:'25–27 Sep.',    el:'13h', q:'15h', race:'13h', circuit:'6.003 km · 51 tours', status:'upcoming', raceDay:'2026-09-27', qualiDay:'2026-09-26',
+    aiPred:[
+      {sn:'Leclerc',   t:'ferrari',  tc:'#E8001D',note:'Fort à Baku',  pct:82,pts:25},
+      {sn:'Hamilton',  t:'ferrari',  tc:'#E8001D',note:'',             pct:76,pts:18},
+      {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'',             pct:70,pts:15},
+      {sn:'Russell',   t:'mercedes', tc:'#00D2BE',note:'',             pct:64,pts:12},
+      {sn:'Verstappen',t:'redbull',  tc:'#3671C6',note:'',             pct:58,pts:10},
+      {sn:'Norris',    t:'mclaren',  tc:'#FF8000',note:'',             pct:52,pts:8 },
+      {sn:'Piastri',   t:'mclaren',  tc:'#FF8000',note:'',             pct:46,pts:6 },
+      {sn:'Hadjar',    t:'redbull',  tc:'#3671C6',note:'',             pct:40,pts:4 },
+      {sn:'Sainz',     t:'williams', tc:'#00A0DD',note:'',             pct:34,pts:2 },
+      {sn:'Gasly',     t:'alpine',   tc:'#FF0060',note:'',             pct:28,pts:1 },
+    ]},
+  {r:18, flag:'🇸🇬', name:'Grand Prix de Singapour',       loc:'Marina Bay Street Circuit',       dates:'9–11 Oct.',     el:'13h', q:'15h', race:'20h', circuit:'4.940 km · 62 tours', status:'upcoming', raceDay:'2026-10-11', qualiDay:'2026-10-10', sprint:true,
+    aiPred:[
+      {sn:'Hamilton',  t:'ferrari',  tc:'#E8001D',note:'💛 Marina Bay', pct:83,pts:25},
+      {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'',             pct:77,pts:18},
+      {sn:'Leclerc',   t:'ferrari',  tc:'#E8001D',note:'',             pct:71,pts:15},
+      {sn:'Russell',   t:'mercedes', tc:'#00D2BE',note:'',             pct:65,pts:12},
+      {sn:'Norris',    t:'mclaren',  tc:'#FF8000',note:'',             pct:59,pts:10},
+      {sn:'Verstappen',t:'redbull',  tc:'#3671C6',note:'',             pct:53,pts:8 },
+      {sn:'Piastri',   t:'mclaren',  tc:'#FF8000',note:'',             pct:47,pts:6 },
+      {sn:'Hadjar',    t:'redbull',  tc:'#3671C6',note:'',             pct:41,pts:4 },
+      {sn:'Sainz',     t:'williams', tc:'#00A0DD',note:'',             pct:35,pts:2 },
+      {sn:'Gasly',     t:'alpine',   tc:'#FF0060',note:'',             pct:29,pts:1 },
+    ]},
+  {r:19, flag:'🇺🇸', name:"Grand Prix des États-Unis",     loc:'Circuit of the Americas · Austin', dates:'23–25 Oct.',   el:'13h', q:'15h', race:'20h', circuit:'5.513 km · 56 tours', status:'upcoming', raceDay:'2026-10-25', qualiDay:'2026-10-24',
+    aiPred:[
+      {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'',             pct:79,pts:25},
+      {sn:'Hamilton',  t:'ferrari',  tc:'#E8001D',note:'',             pct:73,pts:18},
+      {sn:'Russell',   t:'mercedes', tc:'#00D2BE',note:'',             pct:67,pts:15},
+      {sn:'Verstappen',t:'redbull',  tc:'#3671C6',note:'',             pct:61,pts:12},
+      {sn:'Norris',    t:'mclaren',  tc:'#FF8000',note:'',             pct:55,pts:10},
+      {sn:'Piastri',   t:'mclaren',  tc:'#FF8000',note:'',             pct:49,pts:8 },
+      {sn:'Leclerc',   t:'ferrari',  tc:'#E8001D',note:'',             pct:43,pts:6 },
+      {sn:'Hadjar',    t:'redbull',  tc:'#3671C6',note:'',             pct:37,pts:4 },
+      {sn:'Sainz',     t:'williams', tc:'#00A0DD',note:'',             pct:31,pts:2 },
+      {sn:'Gasly',     t:'alpine',   tc:'#FF0060',note:'',             pct:25,pts:1 },
+    ]},
+  {r:20, flag:'🇲🇽', name:'Grand Prix du Mexique',         loc:'Autodromo Hermanos Rodriguez',    dates:'30 Oct.–1 Nov.',el:'13h', q:'15h', race:'20h', circuit:'4.304 km · 71 tours', status:'upcoming', raceDay:'2026-11-01', qualiDay:'2026-10-31',
+    aiPred:[
+      {sn:'Verstappen',t:'redbull',  tc:'#3671C6',note:'Fort en altitude',pct:85,pts:25},
+      {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'',               pct:75,pts:18},
+      {sn:'Hamilton',  t:'ferrari',  tc:'#E8001D',note:'',               pct:69,pts:15},
+      {sn:'Norris',    t:'mclaren',  tc:'#FF8000',note:'',               pct:63,pts:12},
+      {sn:'Russell',   t:'mercedes', tc:'#00D2BE',note:'',               pct:57,pts:10},
+      {sn:'Piastri',   t:'mclaren',  tc:'#FF8000',note:'',               pct:51,pts:8 },
+      {sn:'Leclerc',   t:'ferrari',  tc:'#E8001D',note:'',               pct:45,pts:6 },
+      {sn:'Hadjar',    t:'redbull',  tc:'#3671C6',note:'',               pct:39,pts:4 },
+      {sn:'Sainz',     t:'williams', tc:'#00A0DD',note:'',               pct:33,pts:2 },
+      {sn:'Gasly',     t:'alpine',   tc:'#FF0060',note:'',               pct:27,pts:1 },
+    ]},
+  {r:21, flag:'🇧🇷', name:'Grand Prix du Brésil',          loc:'Autodromo Jose Carlos Pace',      dates:'6–8 Nov.',      el:'13h', q:'15h', race:'18h', circuit:'4.309 km · 71 tours', status:'upcoming', raceDay:'2026-11-08', qualiDay:'2026-11-07', sprint:true,
+    aiPred:[
+      {sn:'Hamilton',  t:'ferrari',  tc:'#E8001D',note:'💛 Interlagos', pct:82,pts:25},
+      {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'',             pct:76,pts:18},
+      {sn:'Russell',   t:'mercedes', tc:'#00D2BE',note:'',             pct:70,pts:15},
+      {sn:'Norris',    t:'mclaren',  tc:'#FF8000',note:'',             pct:64,pts:12},
+      {sn:'Verstappen',t:'redbull',  tc:'#3671C6',note:'',             pct:58,pts:10},
+      {sn:'Piastri',   t:'mclaren',  tc:'#FF8000',note:'',             pct:52,pts:8 },
+      {sn:'Leclerc',   t:'ferrari',  tc:'#E8001D',note:'',             pct:46,pts:6 },
+      {sn:'Hadjar',    t:'redbull',  tc:'#3671C6',note:'',             pct:40,pts:4 },
+      {sn:'Sainz',     t:'williams', tc:'#00A0DD',note:'',             pct:34,pts:2 },
+      {sn:'Gasly',     t:'alpine',   tc:'#FF0060',note:'',             pct:28,pts:1 },
+    ]},
+  {r:22, flag:'🇦🇪', name:"Grand Prix d'Abu Dhabi",        loc:'Yas Marina Circuit',              dates:'4–6 Déc.',      el:'13h', q:'15h', race:'17h', circuit:'5.281 km · 58 tours', status:'upcoming', raceDay:'2026-12-06', qualiDay:'2026-12-05',
+    aiPred:[
+      {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'Final saison',  pct:78,pts:25},
+      {sn:'Russell',   t:'mercedes', tc:'#00D2BE',note:'',             pct:72,pts:18},
+      {sn:'Hamilton',  t:'ferrari',  tc:'#E8001D',note:'',             pct:66,pts:15},
+      {sn:'Verstappen',t:'redbull',  tc:'#3671C6',note:'',             pct:60,pts:12},
+      {sn:'Norris',    t:'mclaren',  tc:'#FF8000',note:'',             pct:54,pts:10},
+      {sn:'Piastri',   t:'mclaren',  tc:'#FF8000',note:'',             pct:48,pts:8 },
+      {sn:'Leclerc',   t:'ferrari',  tc:'#E8001D',note:'',             pct:42,pts:6 },
+      {sn:'Hadjar',    t:'redbull',  tc:'#3671C6',note:'',             pct:36,pts:4 },
+      {sn:'Sainz',     t:'williams', tc:'#00A0DD',note:'',             pct:30,pts:2 },
+      {sn:'Gasly',     t:'alpine',   tc:'#FF0060',note:'',             pct:24,pts:1 },
+    ]},
 ];
+
+/* ══════════════════════════════════════════════════════════════════
+   DÉTECTION AUTOMATIQUE DU GP ACTUEL — date-based
+   Lundi midi (Paris) = 10h UTC après le dimanche de course
+   ══════════════════════════════════════════════════════════════════ */
+
+function computeCurrentGP(){
+  const now = Date.now();
+  // Trouver le premier GP dont le lundi midi UTC n'est pas encore passé
+  for(const gp of F1_CALENDAR_2026){
+    if(!gp.raceDay) continue;
+    // Lundi midi Paris (UTC+2 été) = lundi 10h UTC = raceDay + 1 jour + 10h
+    const switchTs = new Date(gp.raceDay + 'T10:00:00Z').getTime() + 86400000;
+    if(now < switchTs) return gp; // Ce GP est encore "actif"
+  }
+  // Saison terminée → dernier GP
+  return F1_CALENDAR_2026[F1_CALENDAR_2026.length - 1];
+}
+
+// Calcule le timestamp de verrouillage des qualifs pour un GP donné
+function computeQualiDeadline(gp){
+  if(!gp.qualiDay) return Infinity;
+  // Heure des qualifs depuis gp.q (ex: '15h' ou '16h00')
+  const raw = (gp.q||'15h').replace('h','').replace(/[^0-9]/g,'').slice(0,2);
+  const parisHour = parseInt(raw)||15;
+  const utcHour   = parisHour - 2; // UTC+2 en été
+  return new Date(gp.qualiDay + 'T' + String(utcHour).padStart(2,'0') + ':00:00Z').getTime();
+}
+
+// Applique le GP actuel — appelé une fois après chargement du calendrier
+(function autoInitCurrentGP(){
+  const current = computeCurrentGP();
+  if(!current) return;
+
+  // Mettre à jour GP_CURRENT
+  GP_CURRENT.id   = current.id   || ('gp-r' + current.r + '-2026');
+  GP_CURRENT.name = current.name || ('GP Round ' + current.r);
+  GP_CURRENT.flag = current.flag || '🏁';
+  GP_CURRENT.r    = current.r;
+  GP_CURRENT.loc  = current.loc  || '';
+
+  // Mettre à jour le deadline des qualifications
+  QUALI_DEADLINE_TS = computeQualiDeadline(current);
+
+  // Mettre à jour AI_DATA si le GP a ses propres prédictions
+  if(current.aiPred && current.aiPred.length){
+    AI_DATA.splice(0, AI_DATA.length, ...current.aiPred);
+    AI5.splice(0, AI5.length,  ...AI_DATA.slice(0,5).map(d=>d.sn));
+    AI10.splice(0, AI10.length, ...AI_DATA.map(d=>d.sn));
+  }
+
+  // Mettre à jour le statut du calendrier (done/next/upcoming)
+  F1_CALENDAR_2026.forEach((gp, i) => {
+    const switchTs = gp.raceDay
+      ? new Date(gp.raceDay + 'T10:00:00Z').getTime() + 86400000
+      : Infinity;
+    if(Date.now() >= switchTs)        gp.status = 'done';
+    else if(gp.r === current.r)       gp.status = 'next';
+    else                               gp.status = 'upcoming';
+  });
+
+  console.log('[GridOracle] GP actuel :', GP_CURRENT.name, '— Verrouillage :', new Date(QUALI_DEADLINE_TS).toLocaleString('fr-FR'));
+})();
+
 
 let calendarOpen = false;
 
