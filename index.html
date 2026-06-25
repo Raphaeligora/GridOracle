@@ -1922,6 +1922,9 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
         </div>
         <button class="edit-btn" onclick="openEditModal()"data-i18n="profile.edit">✏️ Modifier mon profil</button>
         <button class="edit-btn" style="margin-top:.5rem;color:rgba(255,255,255,.35);font-size:.72rem" onclick="resetProfile()"data-i18n="profile.reset">↺ Réinitialiser mon profil</button>
+        <div id="admin-profile-btn" style="display:none;margin-top:1rem;padding-top:.9rem;border-top:1px solid rgba(232,0,29,.15)">
+          <button class="edit-btn" style="background:rgba(232,0,29,.08);border:1px solid rgba(232,0,29,.25);color:var(--red);font-weight:700" onclick="navTo('admin')">🔐 Panel Admin</button>
+        </div>
         <div style="margin-top:.85rem;display:flex;gap:.6rem;flex-wrap:wrap">
           <button class="btn-r" style="flex:1;min-width:140px;font-size:.78rem" onclick="openStripeModal('premium')">⭐ Passer Premium</button>
           <button class="btn-r" style="flex:1;min-width:140px;font-size:.78rem;background:linear-gradient(135deg,#b8860b,var(--gold));color:#000" onclick="openStripeModal('creator')">🎙️ Devenir Creator</button>
@@ -2187,7 +2190,6 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
   <div class="bn-tab" data-page="leagues" onclick="navTo('leagues')"><div class="bn-ico">🏆</div><div class="bn-lbl" data-i18n="nav.leagues">Ligues</div></div>
   <div class="bn-tab" data-page="creator" onclick="navTo('creator')"><div class="bn-ico">🎙️</div><div class="bn-lbl">Creator</div></div>
   <div class="bn-tab" data-page="nextgp" onclick="navTo('nextgp')"><div class="bn-ico">🗓️</div><div class="bn-lbl" data-i18n="nav.nextgp">Prochain GP</div></div>
-  <div class="bn-tab admin-only-tab" id="bn-admin" data-page="admin" onclick="navTo('admin')" style="display:none"><div class="bn-ico">🔐</div><div class="bn-lbl">Admin</div></div>
 </nav>
 
 <!-- ── MODALE PROFIL JOUEUR ── -->
@@ -2884,12 +2886,12 @@ function goApp(){
   // Charger prédiction sauvegardée + vérifier deadline qualifs
   loadSavedPrediction();
   if(isPredLocked()) setTimeout(lockPredUI, 500);
-  // Afficher onglet Admin si compte admin
-  const _ADMIN_EMAILS=['raphaeligora@gmail.com'];
-  if(_ADMIN_EMAILS.includes((profile.email||'').toLowerCase())){
-    const adminTab=document.getElementById('bn-admin');
-    if(adminTab) adminTab.style.display='flex';
+  // Afficher bouton Admin dans le profil si compte admin
+  if((profile.email||'').toLowerCase()==='raphaeligora@gmail.com'){
+    const ab=document.getElementById('admin-profile-btn');
+    if(ab) ab.style.display='block';
   }
+
   // ── ACTIVATE PLAN IF USER PAID BEFORE COMPLETING ONBOARDING ──
   const afterPlan = localStorage.getItem('go_after_onboarding_plan');
   const afterBilling = localStorage.getItem('go_after_onboarding_billing');
@@ -5593,12 +5595,12 @@ function bootApp(profile) {
   // Charger prédiction sauvegardée depuis Redis
   loadSavedPrediction();
   if(isPredLocked()) setTimeout(lockPredUI, 500);
-  // Afficher onglet Admin si compte admin
-  const _ADMIN_EMAILS=['raphaeligora@gmail.com'];
-  if(_ADMIN_EMAILS.includes((profile.email||'').toLowerCase())){
-    const adminTab=document.getElementById('bn-admin');
-    if(adminTab) adminTab.style.display='flex';
+  // Afficher bouton Admin dans le profil si compte admin
+  if((profile.email||'').toLowerCase()==='raphaeligora@gmail.com'){
+    const ab=document.getElementById('admin-profile-btn');
+    if(ab) ab.style.display='block';
   }
+
   // Activer plan post-onboarding si paiement fait avant profil
   const afterPlan = localStorage.getItem('go_after_onboarding_plan');
   const afterBilling = localStorage.getItem('go_after_onboarding_billing');
