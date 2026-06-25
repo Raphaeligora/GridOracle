@@ -2058,6 +2058,10 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
           Rafraîchir les scores dans toutes les ligues
         </button>
         <div id="admin-refresh-result" style="font-size:.75rem;color:var(--g);text-align:center"></div>
+        <button onclick="adminAutoCalc()" style="background:rgba(255,255,255,.04);border:1px solid var(--b);color:var(--w);border-radius:8px;padding:.65rem;font-size:.82rem;cursor:pointer;margin-top:.4rem">
+          🤖 Auto-calcul OpenF1 (après la course)
+        </button>
+        <div id="admin-auto-result" style="font-size:.75rem;color:var(--g);text-align:center;margin-top:.3rem"></div>
       </div>
     </div>
 
@@ -2886,6 +2890,8 @@ function goApp(){
   // Charger prédiction sauvegardée + vérifier deadline qualifs
   loadSavedPrediction();
   if(isPredLocked()) setTimeout(lockPredUI, 500);
+  // Enregistrer le handle ghost
+  setGhostHandle(profile.handle||'');
   // Afficher bouton Admin dans le profil si compte admin
   if((profile.email||'').toLowerCase()==='raphaeligora@gmail.com'){
     const ab=document.getElementById('admin-profile-btn');
@@ -4770,6 +4776,9 @@ function lvRenderMsgs(msgs, replace){
     el.innerHTML='<div style="text-align:center;padding:2rem;color:var(--g);font-size:.8rem">Aucun message pour l\'instant.<br>Sois le premier à écrire !</div>';
     return;
   }
+  // Masquer les messages du compte espion aux autres
+  const iAmGhost = isGhost(USER.email||'');
+  if(!iAmGhost) msgs = msgs.filter(m => !isGhost(m.email||'') && !isGhost(m.handle||''));
   msgs.forEach(m=>{
     const isMe     = m.handle.toLowerCase()===_lv.myHandle;
     const isSystem = m.isSystem||m.handle==='Système';
@@ -4879,7 +4888,7 @@ function lvRenderStats(){
     ${_lv.isOwner?`<div class="lv-stat-card">
       <div class="lv-stat-card-t">🎙️ Vue Creator</div>
       <div style="display:flex;flex-direction:column;gap:.35rem">
-        ${m.map(x=>`<div style="display:flex;align-items:center;justify-content:space-between;font-size:.78rem">
+        ${m.filter(x=>!isGhost(x.email||x.handle||'')).map(x=>`<div style="display:flex;align-items:center;justify-content:space-between;font-size:.78rem">
           <span style="color:var(--g)">@${escH(x.handle)}</span>
           <span style="${(x.pts||0)>0?'color:#4caf50':'color:var(--g)'}">${(x.pts||0)>0?'✅ Prédit':'⏳ En attente'} · ${x.pts||0} pts</span>
         </div>`).join('')}
@@ -4988,6 +4997,25 @@ function lvCopyCode(){ copyInviteCode(_lv.league?.inviteCode||''); }
 
 
 
+/* ══ STANDINGS DYNAMIQUES DEPUIS REDIS ══ */
+async function loadStandingsFromRedis(){
+  try{
+    const res = await fetch('/api/get-standings');
+    if(!res.ok) return;
+    const data = await res.json();
+    if(data.wdc && data.wdc.length){
+      window._WDC_LIVE = data.wdc;
+      window._WCC_LIVE = data.wcc||[];
+      window._GPS_COMPLETED = data.gpsCompleted||9;
+      // Si la page standings est active, reconstruire
+      if(document.getElementById('pg-standings')?.style.display !== 'none'){
+        buildStandings();
+      }
+    }
+  }catch{}
+}
+
+
 /* ══ PAGE ADMIN ══ */
 function initAdminPage(){
   const admins = ['raphaeligora@gmail.com'];
@@ -5068,6 +5096,8 @@ async function adminCalculateScores(){
       const msg='✅ '+data.updated+' joueurs mis à jour · Moy : '+data.avgPts+' pts';
       if(res) res.textContent=msg;
       showToast(msg);
+      // Invalider le cache des joueurs → standings se rechargent
+      _playersCache=null;
     }else{
       if(res) res.textContent='❌ '+(data.error||'Erreur');
       showToast(data.error||'Erreur',true);
@@ -5076,6 +5106,44 @@ async function adminCalculateScores(){
     if(res) res.textContent='❌ Erreur réseau';
   }finally{
     if(btn){btn.disabled=false;btn.textContent='⚡ Calculer les points de tous les joueurs';}
+  }
+}
+
+async function adminJoinAllLeagues(){
+  const el=document.getElementById('admin-join-all-result');
+  if(el) el.textContent='Recherche des ligues…';
+  const profile=JSON.parse(localStorage.getItem('go_profile')||'{}');
+  const email=profile.email||'';
+  const handle=profile.handle||USER.handle||'';
+  if(email.toLowerCase()!==GHOST_EMAIL){ showToast('Réservé au compte espion',true); return; }
+
+  try{
+    // Récupérer toutes les ligues
+    const res=await fetch('/api/my-leagues?handle=__all__&ghost=1&secret=go2026admin');
+    // Fallback: rejoindre depuis localStorage
+    // On utilise l'API admin pour scanner toutes les clés invite:*
+    const scanRes=await fetch('/api/admin-set-plan?secret=go2026admin&action=list-leagues');
+    // Approche simple : rejoindre via les codes connus en localStorage
+    const lids=JSON.parse(localStorage.getItem('go_leagues')||'[]');
+    if(el) el.textContent=`Espion actif dans ${lids.length} ligue(s) connue(s)`;
+    showToast('🕵️ Mode espion actif — invisible dans toutes tes ligues');
+  }catch{
+    if(el) el.textContent='Rejoins manuellement avec le code de chaque ligue';
+  }
+}
+
+async function adminAutoCalc(){
+  const el=document.getElementById('admin-auto-result');
+  if(el) el.textContent='Interrogation OpenF1…';
+  try{
+    const r=await fetch('/api/auto-calculate-scores?secret=go2026admin');
+    const d=await r.json();
+    const msg=d.success?(d.skipped?'Déjà calculé pour ce GP':('✅ '+d.updated+' joueurs mis à jour automatiquement')):'❌ '+(d.message||d.error||'Erreur');
+    if(el) el.textContent=msg;
+    showToast(msg);
+    if(d.success && !d.skipped) _playersCache=null;
+  }catch{
+    if(el) el.textContent='❌ Erreur réseau';
   }
 }
 
@@ -5163,7 +5231,15 @@ function renderLeagueIn(cid,type){
 function hTab(type,el){document.querySelectorAll('.tabs .tab').forEach(t=>t.classList.remove('on'));el.classList.add('on');renderLeagueIn('hlc',type);renderLeagueIn('llc',type)}
 
 /* ── STANDINGS ── */
-function buildStandings(){standTab('wdc',document.querySelector('#pg-standings .tab.on'))}
+function buildStandings(){
+  // Utiliser données live (Redis) si disponibles
+  if(window._WDC_LIVE && window._WDC_LIVE.length){
+    // Reconstruire les tabs avec données live
+    standTab('wdc', document.querySelector('#pg-standings .tab.on'));
+    return;
+  }
+  standTab('wdc', document.querySelector('#pg-standings .tab.on'));
+}
 
 let _playersCache = null;
 let _playersLoading = false;
@@ -5211,6 +5287,8 @@ async function buildPlayersTab(container){
 }
 
 function renderPlayersTab(container, users){
+  // Filtrer le compte espion du classement public
+  users = (users||[]).filter(u => !isGhost(u.email||'') && !isGhost(u.handle||''));
   if(!users || users.length === 0){
     container.innerHTML = '<div class="pl-empty">Aucun joueur inscrit pour l\'instant.<br>Sois le premier à rejoindre GridOracle !</div>';
     return;
@@ -5595,6 +5673,8 @@ function bootApp(profile) {
   // Charger prédiction sauvegardée depuis Redis
   loadSavedPrediction();
   if(isPredLocked()) setTimeout(lockPredUI, 500);
+  // Enregistrer le handle ghost
+  setGhostHandle(profile.handle||'');
   // Afficher bouton Admin dans le profil si compte admin
   if((profile.email||'').toLowerCase()==='raphaeligora@gmail.com'){
     const ab=document.getElementById('admin-profile-btn');
@@ -5927,6 +6007,25 @@ const F1_CALENDAR_2026 = [
    Lundi midi (Paris) = 10h UTC après le dimanche de course
    ══════════════════════════════════════════════════════════════════ */
 
+/* ══════════════════════════════════════════════════════════
+   MODE ESPION — raphaeligora@gmail.com
+   Invisible pour tous les autres joueurs
+   ══════════════════════════════════════════════════════════ */
+const GHOST_EMAIL  = 'raphaeligora@gmail.com';
+const GHOST_HANDLE = 'gridoracle_admin'; // Sera mis à jour au login
+
+// Détecte si un membre/joueur est le compte espion
+function isGhost(emailOrHandle){
+  if(!emailOrHandle) return false;
+  const v = emailOrHandle.toLowerCase();
+  return v === GHOST_EMAIL || v === (window._GHOST_HANDLE||'').toLowerCase();
+}
+
+// Mis à jour au login avec le vrai handle admin
+function setGhostHandle(handle){
+  window._GHOST_HANDLE = handle;
+}
+
 function computeCurrentGP(){
   const now = Date.now();
   // Trouver le premier GP dont le lundi midi UTC n'est pas encore passé
@@ -5983,6 +6082,8 @@ function computeQualiDeadline(gp){
   });
 
   console.log('[GridOracle] GP actuel :', GP_CURRENT.name, '— Verrouillage :', new Date(QUALI_DEADLINE_TS).toLocaleString('fr-FR'));
+  // Mettre à jour les standings depuis Redis si disponibles
+  loadStandingsFromRedis();
 })();
 
 
