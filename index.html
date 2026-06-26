@@ -4757,15 +4757,16 @@ async function lvLoadChat(){
 }
 
 async function lvFetchMsgs(initial){
-  if(!_lv.league) return;
+  if(!_lv.league?.id) return;
   try{
     const url = '/api/get-messages?leagueId='+encodeURIComponent(_lv.league.id)+(_lv.lastMsgTs?'&since='+_lv.lastMsgTs:'');
     const res  = await fetch(url);
+    if(!res.ok){ console.error('[Chat] get-messages HTTP',res.status); return; }
     const data = await res.json();
     const msgs = data.messages||[];
     if(msgs.length||initial) lvRenderMsgs(msgs, initial);
     if(msgs.length) _lv.lastMsgTs = Math.max(...msgs.map(m=>m.ts));
-  }catch{}
+  }catch(e){ console.error('[Chat] fetch error:',e); }
 }
 
 function lvRenderMsgs(msgs, replace){
@@ -4776,10 +4777,16 @@ function lvRenderMsgs(msgs, replace){
     el.innerHTML='<div style="text-align:center;padding:2rem;color:var(--g);font-size:.8rem">Aucun message pour l\'instant.<br>Sois le premier à écrire !</div>';
     return;
   }
-  // Masquer les messages du compte espion aux autres
-  const iAmGhost = isGhost(USER.email||'');
-  if(!iAmGhost) msgs = msgs.filter(m => !isGhost(m.email||'') && !isGhost(m.handle||''));
-  msgs.forEach(m=>{
+  // Masquer les messages du compte espion aux autres (filtrage sûr)
+  const iAmGhost = isGhost(USER.email||'') || isGhost(USER.handle||'');
+  const safeMsgs = iAmGhost
+    ? msgs  // L'admin voit tout
+    : msgs.filter(m => {
+        const mEmail = (m.email||'').toLowerCase();
+        const mHandle = (m.handle||'').toLowerCase();
+        return !isGhost(mEmail) && !isGhost(mHandle);
+      });
+  safeMsgs.forEach(m=>{
     const isMe     = m.handle.toLowerCase()===_lv.myHandle;
     const isSystem = m.isSystem||m.handle==='Système';
     const isOwner  = m.isOwner||m.handle.toLowerCase()===(_lv.league?.ownerHandle||'').toLowerCase();
@@ -4800,7 +4807,7 @@ function lvRenderMsgs(msgs, replace){
     el.appendChild(div);
   });
   // Auto-scroll bas
-  if(msgs.length) el.scrollTop=el.scrollHeight;
+  if(safeMsgs.length) el.scrollTop=el.scrollHeight;
 }
 
 async function lvSendMsg(){
@@ -4815,13 +4822,22 @@ async function lvSendMsg(){
   if(btn) btn.disabled=true;
   try{
     const res  = await fetch('/api/send-message',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({leagueId:_lv.league.id,handle,text,tc:USER.tc||profile.tc||'#e8001d'})});
+      body:JSON.stringify({
+        leagueId: _lv.league?.id||'',
+        handle,
+        email: profile.email||'',
+        text,
+        tc: USER.tc||profile.tc||'#e8001d'
+      })});
     const data = await res.json();
     if(data.success){
       lvRenderMsgs([data.message],false);
       _lv.lastMsgTs = data.message.ts;
-    }else showToast(data.error||'Erreur',true);
-  }catch{ showToast('Erreur réseau',true); }
+    }else{
+      console.error('[Chat] send-message error:', data);
+      showToast(data.error||"Impossible d'envoyer",true);
+    }
+  }catch(e){ console.error('[Chat] network error:',e); showToast('Erreur réseau',true); }
   finally{ if(btn) btn.disabled=false; if(inp) inp.focus(); }
 }
 
