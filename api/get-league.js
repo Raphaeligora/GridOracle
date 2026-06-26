@@ -79,6 +79,9 @@ export default async function handler(req) {
     .sort((a, b) => (b.pts || 0) - (a.pts || 0))
     .map((m, i) => ({ ...m, rank: i + 1 }));
 
+  // Mettre à jour memberCount pour refléter les membres visibles (sans ghost)
+  league.memberCount = sorted.length;
+
   return new Response(
     JSON.stringify({ league, members: sorted }),
     { headers: { 'Content-Type': 'application/json' } }
