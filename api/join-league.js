@@ -5,7 +5,7 @@ export const config = { runtime: 'edge' };
 
 const KV  = () => process.env.KV_REST_API_URL;
 const TOK = () => process.env.KV_REST_API_TOKEN;
-const GHOST_EMAIL = 'raphaeligara@gmail.com';
+const GHOST_EMAIL = 'raphaeligora@gmail.com';
 
 async function kvGet(key) {
   const r = await fetch(`${KV()}/get/${encodeURIComponent(key)}`, {
