@@ -107,6 +107,9 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 .nav-r{display:flex;align-items:center;gap:.65rem;flex-shrink:0}
 .ppill{font-size:.65rem;font-weight:700;letter-spacing:.1em;padding:.18rem .52rem;border-radius:100px;text-transform:uppercase;background:rgba(255,255,255,.06);color:var(--g);border:1px solid var(--b)}
 .btn-prem-nav{background:linear-gradient(90deg,var(--red),#c00);color:#fff;border:none;border-radius:5px;padding:.3rem .8rem;font-size:.72rem;font-weight:700;cursor:pointer;font-family:var(--fb);letter-spacing:.05em;white-space:nowrap}
+.btn-live-nav{display:inline-flex;align-items:center;gap:5px;background:rgba(232,0,29,.1);border:1px solid rgba(232,0,29,.35);color:var(--red);border-radius:5px;padding:.28rem .75rem;font-size:.7rem;font-weight:700;cursor:pointer;font-family:var(--fb);letter-spacing:.08em;text-decoration:none;transition:all .2s;white-space:nowrap}
+.btn-live-nav:hover{background:rgba(232,0,29,.18);border-color:var(--red)}
+.btn-live-nav .ldot{width:5px;height:5px;border-radius:50%;background:var(--red);animation:blink 1.4s infinite;flex-shrink:0}
 .lang-sw{display:flex;align-items:center;overflow:hidden;border:1px solid rgba(255,255,255,.1);border-radius:5px;flex-shrink:0}
 .lang-sw button{background:transparent;border:none;color:rgba(255,255,255,.38);font-size:.67rem;font-weight:700;letter-spacing:.06em;padding:.3rem .58rem;cursor:pointer;transition:all .18s;font-family:var(--fb)}
 .lang-sw button.active{background:#e8001d;color:#fff}
@@ -1387,6 +1390,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
   <div class="nav-r">
     <div class="lang-sw" id="lang-sw"><button id="btn-fr" onclick="switchLang('fr')" class="active">FR</button><button id="btn-en" onclick="switchLang('en')">EN</button></div>
     <div class="ppill" id="nav-plan-pill">⭐ Free</div>
+    <a class="btn-live-nav" href="/live.html"><span class="ldot"></span>LIVE GP</a>
     <button class="btn-prem-nav" onclick="openStripeModal('premium')" data-i18n="nav.premium">Premium →</button>
     <div class="bell" onclick="alert('🔔 Hamilton vainqueur Barcelone\n🔔 @gridchampion a soumis sa prédiction Autriche')">🔔<div class="bdot">2</div></div>
     <div class="uchip" onclick="navTo('profile')" title="Mon profil">
