@@ -34,11 +34,12 @@ export default async function handler(req) {
     }
     const raw = await kvGet(`pred:${email.toLowerCase()}:${gp}`);
     if (!raw) {
-      return new Response(JSON.stringify({ prediction: null }), {
+      return new Response(JSON.stringify({ found: false, prediction: null }), {
         headers: { 'Content-Type': 'application/json' }
       });
     }
-    return new Response(JSON.stringify({ prediction: JSON.parse(raw) }), {
+    const prediction = JSON.parse(raw);
+    return new Response(JSON.stringify({ found: true, prediction }), {
       headers: { 'Content-Type': 'application/json' }
     });
   }
