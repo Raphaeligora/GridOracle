@@ -1,7 +1,6 @@
 // api/save-prediction.js
-// Sauvegarde la prédiction d'un joueur pour un GP donné
-// POST { email, handle, gpId, gpName, prediction }
-// GET  ?email=...&gp=... (charger la prédiction sauvegardée)
+// Sauvegarde et lecture des prédictions F1
+// Double-clé pour compatibilité : austria-2026 ET gp-r10-2026
 export const config = { runtime: 'edge' };
 
 const KV  = () => process.env.KV_REST_API_URL;
@@ -21,24 +20,64 @@ async function kvSet(key, value) {
   });
 }
 
+// Génère les clés alternatives pour un gpId donné
+// ex: 'austria-2026' ↔ 'gp-r10-2026'
+function altKey(email, gpId) {
+  const altIds = {
+    'austria-2026':       'gp-r10-2026',
+    'gp-r10-2026':        'austria-2026',
+    'britain-2026':       'gp-r11-2026',
+    'gp-r11-2026':        'britain-2026',
+    'belgium-2026':       'gp-r12-2026',
+    'gp-r12-2026':        'belgium-2026',
+    'hungary-2026':       'gp-r13-2026',
+    'gp-r13-2026':        'hungary-2026',
+    'netherlands-2026':   'gp-r14-2026',
+    'gp-r14-2026':        'netherlands-2026',
+  };
+  const alt = altIds[gpId];
+  if (!alt) return null;
+  return `pred:${email.toLowerCase()}:${alt}`;
+}
+
 export default async function handler(req) {
-  // ── GET : charger la prédiction d'un joueur ──────────────────────
+
+  // ── GET : charger la prédiction ──────────────────────────────────
   if (req.method === 'GET') {
     const url   = new URL(req.url);
     const email = url.searchParams.get('email');
     const gp    = url.searchParams.get('gp');
+
     if (!email || !gp) {
-      return new Response(JSON.stringify({ error: 'email et gp requis' }), {
+      return new Response(JSON.stringify({ found: false, error: 'email et gp requis' }), {
         status: 400, headers: { 'Content-Type': 'application/json' }
       });
     }
-    const raw = await kvGet(`pred:${email.toLowerCase()}:${gp}`);
+
+    // Essayer la clé principale d'abord
+    const primaryKey = `pred:${email.toLowerCase()}:${gp}`;
+    let raw = await kvGet(primaryKey);
+
+    // Si pas trouvée, essayer la clé alternative (compat ancienne version)
+    if (!raw) {
+      const alt = altKey(email, gp);
+      if (alt) raw = await kvGet(alt);
+    }
+
     if (!raw) {
       return new Response(JSON.stringify({ found: false, prediction: null }), {
         headers: { 'Content-Type': 'application/json' }
       });
     }
-    const prediction = JSON.parse(raw);
+
+    let prediction;
+    try { prediction = JSON.parse(raw); }
+    catch {
+      return new Response(JSON.stringify({ found: false, prediction: null }), {
+        headers: { 'Content-Type': 'application/json' }
+      });
+    }
+
     return new Response(JSON.stringify({ found: true, prediction }), {
       headers: { 'Content-Type': 'application/json' }
     });
@@ -55,14 +94,14 @@ export default async function handler(req) {
     }
 
     const { email, handle, gpId, gpName, prediction } = body;
+
     if (!email || !gpId || !prediction) {
       return new Response(JSON.stringify({ error: 'email, gpId et prediction requis' }), {
         status: 400, headers: { 'Content-Type': 'application/json' }
       });
     }
 
-    // Vérifier que les qualifs ne sont pas verrouillées
-    // (Le frontend gère déjà ça, mais on double-vérifie côté serveur)
+    // Vérification verrouillage côté serveur
     const lockRaw = await kvGet(`config:quali_locked:${gpId}`);
     if (lockRaw === '1') {
       return new Response(JSON.stringify({ success: false, locked: true, reason: 'Qualifications verrouillées' }), {
@@ -70,7 +109,7 @@ export default async function handler(req) {
       });
     }
 
-    // Normaliser la prédiction (garder seulement sn, n, tc)
+    // Normaliser la prédiction
     const normalized = (Array.isArray(prediction) ? prediction : [])
       .filter(Boolean)
       .map(d => ({
@@ -86,27 +125,31 @@ export default async function handler(req) {
       });
     }
 
-    // Sauvegarder dans Redis : pred:{email}:{gpId}
-    await kvSet(`pred:${email.toLowerCase()}:${gpId}`, normalized);
+    // Sauvegarder sous la clé principale
+    const primaryKey = `pred:${email.toLowerCase()}:${gpId}`;
+    await kvSet(primaryKey, normalized);
 
-    // Mettre à jour le profil avec le timestamp de la dernière prédiction
-    const profileRaw = await kvGet(`profile:${email.toLowerCase()}`);
-    if (profileRaw) {
-      const profile = JSON.parse(profileRaw);
-      profile.lastPredGp  = gpId;
-      profile.lastPredTs  = Date.now();
-      profile.predsCount  = (profile.predsCount || 0) + 1;
-      await kvSet(`profile:${email.toLowerCase()}`, profile);
-    }
+    // Sauvegarder aussi sous la clé alternative pour compatibilité
+    const alt = altKey(email, gpId);
+    if (alt) await kvSet(alt, normalized);
+
+    // Mettre à jour le profil
+    try {
+      const profileRaw = await kvGet(`profile:${email.toLowerCase()}`);
+      if (profileRaw) {
+        const profile = JSON.parse(profileRaw);
+        profile.lastPredGp  = gpId;
+        profile.lastPredTs  = Date.now();
+        profile.predsCount  = (profile.predsCount || 0) + 1;
+        await kvSet(`profile:${email.toLowerCase()}`, profile);
+      }
+    } catch {}
 
     return new Response(JSON.stringify({
       success: true,
       gpId,
       saved: normalized.length,
-      message: `✅ Prédiction sauvegardée pour ${gpId}`
-    }), {
-      headers: { 'Content-Type': 'application/json' }
-    });
+    }), { headers: { 'Content-Type': 'application/json' } });
   }
 
   return new Response('Method not allowed', { status: 405 });
