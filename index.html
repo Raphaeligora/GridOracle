@@ -3559,9 +3559,10 @@ async function loadSavedPrediction(){
     });
   }
 
-  // ── Étape 1 : localStorage instantané
-  const localKey = `go_pred_${GP_CURRENT.id}`;
-  const localRaw = localStorage.getItem(localKey);
+  // ── Étape 1 : localStorage instantané (avec fallback clé alternative)
+  const localKey  = `go_pred_${GP_CURRENT.id}`;
+  const altLocKey = `go_pred_gp-r${GP_CURRENT.r||10}-2026`;
+  const localRaw  = localStorage.getItem(localKey) || localStorage.getItem(altLocKey);
   if(localRaw){
     try{
       const saved = JSON.parse(localRaw);
@@ -5843,17 +5844,17 @@ document.addEventListener('click',e=>{
 });
 /* ══ PAGE PROCHAIN GP ══ */
 const F1_CALENDAR_2026 = [
-  {r:1,  flag:'🇦🇺', name:"Grand Prix d'Australie",      loc:'Albert Park · Melbourne',          dates:'6–8 Mars',      el:'13h', q:'14h', race:'15h', circuit:'4.309 km · 58 tours', status:'done', raceDay:'2026-03-08', qualiDay:'2026-03-07', p1:'Russell',   p2:'Antonelli', p3:'Leclerc'},
-  {r:2,  flag:'🇨🇳', name:'Grand Prix de Chine',          loc:'Shanghai Circuit',                 dates:'13–15 Mars',    el:'13h', q:'14h', race:'15h', circuit:'5.451 km · 56 tours', status:'done', raceDay:'2026-03-15', qualiDay:'2026-03-14', sprint:true, p1:'Antonelli', p2:'Russell',   p3:'Hamilton'},
-  {r:3,  flag:'🇯🇵', name:'Grand Prix du Japon',          loc:'Suzuka Circuit',                   dates:'27–29 Mars',    el:'13h', q:'14h', race:'15h', circuit:'5.807 km · 53 tours', status:'done', raceDay:'2026-03-29', qualiDay:'2026-03-28', p1:'Antonelli', p2:'Piastri',   p3:'Leclerc'},
-  {r:4,  flag:'🇧🇭', name:'Grand Prix de Bahreïn',        loc:'Bahrain International Circuit',    dates:'10–12 Avr.',    el:'13h', q:'14h', race:'18h', circuit:'5.412 km · 57 tours', status:'done', raceDay:'2026-04-12', qualiDay:'2026-04-11', p1:'Norris',    p2:'Hamilton',  p3:'Verstappen'},
-  {r:5,  flag:'🇸🇦', name:"Grand Prix d'Arabie Saoudite", loc:'Jeddah Corniche Circuit',          dates:'17–19 Avr.',    el:'13h', q:'17h', race:'18h', circuit:'6.174 km · 50 tours', status:'done', raceDay:'2026-04-19', qualiDay:'2026-04-18', p1:'Leclerc',   p2:'Norris',    p3:'Piastri'},
-  {r:6,  flag:'🇺🇸', name:'Grand Prix de Miami',          loc:'Miami International Autodrome',    dates:'1–3 Mai',       el:'13h', q:'14h', race:'15h', circuit:'5.412 km · 57 tours', status:'done', raceDay:'2026-05-03', qualiDay:'2026-05-02', sprint:true, p1:'Verstappen',p2:'Norris',    p3:'Antonelli'},
-  {r:7,  flag:'🇨🇦', name:'Grand Prix du Canada',         loc:'Circuit Gilles-Villeneuve',        dates:'22–24 Mai',     el:'13h', q:'14h', race:'14h', circuit:'4.361 km · 70 tours', status:'done', raceDay:'2026-05-24', qualiDay:'2026-05-23', sprint:true, p1:'Hamilton',  p2:'Antonelli', p3:'Russell'},
-  {r:8,  flag:'🇲🇨', name:'Grand Prix de Monaco',         loc:'Circuit de Monaco',                dates:'5–7 Juin',      el:'13h', q:'15h', race:'15h', circuit:'3.337 km · 78 tours', status:'done', raceDay:'2026-06-07', qualiDay:'2026-06-06', p1:'Leclerc',   p2:'Norris',    p3:'Piastri'},
-  {r:9,  flag:'🇪🇸', name:"Grand Prix d'Espagne",         loc:'Circuit de Barcelona-Catalunya',   dates:'12–14 Juin',    el:'13h', q:'15h', race:'15h', circuit:'4.655 km · 66 tours', status:'done', raceDay:'2026-06-14', qualiDay:'2026-06-13', p1:'Hamilton',  p2:'Verstappen',p3:'Antonelli'},
+  {r:1, id:'australia-2026',  flag:'🇦🇺', name:"Grand Prix d'Australie",      loc:'Albert Park · Melbourne',          dates:'6–8 Mars',      el:'13h', q:'14h', race:'15h', circuit:'4.309 km · 58 tours', status:'done', raceDay:'2026-03-08', qualiDay:'2026-03-07', p1:'Russell',   p2:'Antonelli', p3:'Leclerc'},
+  {r:2, id:'china-2026',  flag:'🇨🇳', name:'Grand Prix de Chine',          loc:'Shanghai Circuit',                 dates:'13–15 Mars',    el:'13h', q:'14h', race:'15h', circuit:'5.451 km · 56 tours', status:'done', raceDay:'2026-03-15', qualiDay:'2026-03-14', sprint:true, p1:'Antonelli', p2:'Russell',   p3:'Hamilton'},
+  {r:3, id:'japan-2026',  flag:'🇯🇵', name:'Grand Prix du Japon',          loc:'Suzuka Circuit',                   dates:'27–29 Mars',    el:'13h', q:'14h', race:'15h', circuit:'5.807 km · 53 tours', status:'done', raceDay:'2026-03-29', qualiDay:'2026-03-28', p1:'Antonelli', p2:'Piastri',   p3:'Leclerc'},
+  {r:4, id:'bahrain-2026',  flag:'🇧🇭', name:'Grand Prix de Bahreïn',        loc:'Bahrain International Circuit',    dates:'10–12 Avr.',    el:'13h', q:'14h', race:'18h', circuit:'5.412 km · 57 tours', status:'done', raceDay:'2026-04-12', qualiDay:'2026-04-11', p1:'Norris',    p2:'Hamilton',  p3:'Verstappen'},
+  {r:5, id:'saudi-arabia-2026',  flag:'🇸🇦', name:"Grand Prix d'Arabie Saoudite", loc:'Jeddah Corniche Circuit',          dates:'17–19 Avr.',    el:'13h', q:'17h', race:'18h', circuit:'6.174 km · 50 tours', status:'done', raceDay:'2026-04-19', qualiDay:'2026-04-18', p1:'Leclerc',   p2:'Norris',    p3:'Piastri'},
+  {r:6, id:'miami-2026',  flag:'🇺🇸', name:'Grand Prix de Miami',          loc:'Miami International Autodrome',    dates:'1–3 Mai',       el:'13h', q:'14h', race:'15h', circuit:'5.412 km · 57 tours', status:'done', raceDay:'2026-05-03', qualiDay:'2026-05-02', sprint:true, p1:'Verstappen',p2:'Norris',    p3:'Antonelli'},
+  {r:7, id:'canada-2026',  flag:'🇨🇦', name:'Grand Prix du Canada',         loc:'Circuit Gilles-Villeneuve',        dates:'22–24 Mai',     el:'13h', q:'14h', race:'14h', circuit:'4.361 km · 70 tours', status:'done', raceDay:'2026-05-24', qualiDay:'2026-05-23', sprint:true, p1:'Hamilton',  p2:'Antonelli', p3:'Russell'},
+  {r:8, id:'monaco-2026',  flag:'🇲🇨', name:'Grand Prix de Monaco',         loc:'Circuit de Monaco',                dates:'5–7 Juin',      el:'13h', q:'15h', race:'15h', circuit:'3.337 km · 78 tours', status:'done', raceDay:'2026-06-07', qualiDay:'2026-06-06', p1:'Leclerc',   p2:'Norris',    p3:'Piastri'},
+  {r:9, id:'spain-2026',  flag:'🇪🇸', name:"Grand Prix d'Espagne",         loc:'Circuit de Barcelona-Catalunya',   dates:'12–14 Juin',    el:'13h', q:'15h', race:'15h', circuit:'4.655 km · 66 tours', status:'done', raceDay:'2026-06-14', qualiDay:'2026-06-13', p1:'Hamilton',  p2:'Verstappen',p3:'Antonelli'},
   // ── GP en cours ──────────────────────────────────────────────────
-  {r:10, flag:'🇦🇹', name:"Grand Prix d'Autriche",        loc:'Red Bull Ring · Spielberg',        dates:'26–28 Juin',    el:'13h30', q:'16h00', race:'15h00', circuit:'4.318 km · 71 tours', status:'next', raceDay:'2026-06-28', qualiDay:'2026-06-27',
+  {r:10, id:'austria-2026', flag:'🇦🇹', name:"Grand Prix d'Autriche",        loc:'Red Bull Ring · Spielberg',        dates:'26–28 Juin',    el:'13h30', q:'16h00', race:'15h00', circuit:'4.318 km · 71 tours', status:'next', raceDay:'2026-06-28', qualiDay:'2026-06-27',
     aiPred:[
       {sn:'Verstappen',t:'redbull',  tc:'#3671C6',note:'🏠 Home RBR',pct:87,pts:25},
       {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'Ldr WDC',    pct:81,pts:18},
@@ -5867,7 +5868,7 @@ const F1_CALENDAR_2026 = [
       {sn:'Sainz',     t:'williams', tc:'#00A0DD',note:'',           pct:31,pts:1 },
     ]},
   // ── GPS à venir ───────────────────────────────────────────────────
-  {r:11, flag:'🇬🇧', name:'Grand Prix de Grande-Bretagne', loc:'Silverstone Circuit',             dates:'3–5 Juil.',     el:'13h', q:'15h', race:'15h', circuit:'5.891 km · 52 tours', status:'upcoming', raceDay:'2026-07-05', qualiDay:'2026-07-04', sprint:true,
+  {r:11, id:'britain-2026', flag:'🇬🇧', name:'Grand Prix de Grande-Bretagne', loc:'Silverstone Circuit',             dates:'3–5 Juil.',     el:'13h', q:'15h', race:'15h', circuit:'5.891 km · 52 tours', status:'upcoming', raceDay:'2026-07-05', qualiDay:'2026-07-04', sprint:true,
     aiPred:[
       {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'🏠 Silverstone',pct:85,pts:25},
       {sn:'Russell',   t:'mercedes', tc:'#00D2BE',note:'Fort ici',      pct:79,pts:18},
@@ -5880,7 +5881,7 @@ const F1_CALENDAR_2026 = [
       {sn:'Gasly',     t:'alpine',   tc:'#FF0060',note:'',             pct:35,pts:2 },
       {sn:'Sainz',     t:'williams', tc:'#00A0DD',note:'🏠 British',   pct:29,pts:1 },
     ]},
-  {r:12, flag:'🇧🇪', name:'Grand Prix de Belgique',        loc:'Circuit de Spa-Francorchamps',    dates:'17–19 Juil.',   el:'13h', q:'15h', race:'15h', circuit:'7.004 km · 44 tours', status:'upcoming', raceDay:'2026-07-19', qualiDay:'2026-07-18',
+  {r:12, id:'belgium-2026', flag:'🇧🇪', name:'Grand Prix de Belgique',        loc:'Circuit de Spa-Francorchamps',    dates:'17–19 Juil.',   el:'13h', q:'15h', race:'15h', circuit:'7.004 km · 44 tours', status:'upcoming', raceDay:'2026-07-19', qualiDay:'2026-07-18',
     aiPred:[
       {sn:'Verstappen',t:'redbull',  tc:'#3671C6',note:'Fort à Spa',   pct:83,pts:25},
       {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'',             pct:77,pts:18},
@@ -5893,7 +5894,7 @@ const F1_CALENDAR_2026 = [
       {sn:'Sainz',     t:'williams', tc:'#00A0DD',note:'',             pct:34,pts:2 },
       {sn:'Gasly',     t:'alpine',   tc:'#FF0060',note:'',             pct:28,pts:1 },
     ]},
-  {r:13, flag:'🇭🇺', name:'Grand Prix de Hongrie',         loc:'Hungaroring · Budapest',          dates:'24–26 Juil.',   el:'13h', q:'15h', race:'15h', circuit:'4.381 km · 70 tours', status:'upcoming', raceDay:'2026-07-26', qualiDay:'2026-07-25',
+  {r:13, id:'hungary-2026', flag:'🇭🇺', name:'Grand Prix de Hongrie',         loc:'Hungaroring · Budapest',          dates:'24–26 Juil.',   el:'13h', q:'15h', race:'15h', circuit:'4.381 km · 70 tours', status:'upcoming', raceDay:'2026-07-26', qualiDay:'2026-07-25',
     aiPred:[
       {sn:'Hamilton',  t:'ferrari',  tc:'#E8001D',note:'💛 Budapest',  pct:81,pts:25},
       {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'',             pct:75,pts:18},
@@ -5906,7 +5907,7 @@ const F1_CALENDAR_2026 = [
       {sn:'Gasly',     t:'alpine',   tc:'#FF0060',note:'',             pct:33,pts:2 },
       {sn:'Sainz',     t:'williams', tc:'#00A0DD',note:'',             pct:27,pts:1 },
     ]},
-  {r:14, flag:'🇳🇱', name:'Grand Prix des Pays-Bas',       loc:'Circuit Zandvoort',               dates:'21–23 Août',    el:'13h', q:'15h', race:'15h', circuit:'4.259 km · 72 tours', status:'upcoming', raceDay:'2026-08-23', qualiDay:'2026-08-22', sprint:true,
+  {r:14, id:'netherlands-2026', flag:'🇳🇱', name:'Grand Prix des Pays-Bas',       loc:'Circuit Zandvoort',               dates:'21–23 Août',    el:'13h', q:'15h', race:'15h', circuit:'4.259 km · 72 tours', status:'upcoming', raceDay:'2026-08-23', qualiDay:'2026-08-22', sprint:true,
     aiPred:[
       {sn:'Verstappen',t:'redbull',  tc:'#3671C6',note:'🏠 Home RBR',  pct:88,pts:25},
       {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'',             pct:76,pts:18},
@@ -5919,7 +5920,7 @@ const F1_CALENDAR_2026 = [
       {sn:'Sainz',     t:'williams', tc:'#00A0DD',note:'',             pct:34,pts:2 },
       {sn:'Gasly',     t:'alpine',   tc:'#FF0060',note:'',             pct:28,pts:1 },
     ]},
-  {r:15, flag:'🇮🇹', name:"Grand Prix d'Italie",           loc:'Autodromo Nazionale Monza',       dates:'4–6 Sep.',      el:'13h', q:'15h', race:'15h', circuit:'5.793 km · 53 tours', status:'upcoming', raceDay:'2026-09-06', qualiDay:'2026-09-05',
+  {r:15, id:'italy-2026', flag:'🇮🇹', name:"Grand Prix d'Italie",           loc:'Autodromo Nazionale Monza',       dates:'4–6 Sep.',      el:'13h', q:'15h', race:'15h', circuit:'5.793 km · 53 tours', status:'upcoming', raceDay:'2026-09-06', qualiDay:'2026-09-05',
     aiPred:[
       {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'🏠 Monza',     pct:84,pts:25},
       {sn:'Russell',   t:'mercedes', tc:'#00D2BE',note:'',             pct:78,pts:18},
@@ -5932,7 +5933,7 @@ const F1_CALENDAR_2026 = [
       {sn:'Sainz',     t:'williams', tc:'#00A0DD',note:'',             pct:36,pts:2 },
       {sn:'Gasly',     t:'alpine',   tc:'#FF0060',note:'',             pct:30,pts:1 },
     ]},
-  {r:16, flag:'🇪🇸', name:'Grand Prix de Madrid',          loc:'Circuito Madrid Motoring',        dates:'11–13 Sep.',    el:'13h', q:'15h', race:'15h', circuit:'5.474 km · 55 tours', status:'upcoming', raceDay:'2026-09-13', qualiDay:'2026-09-12',
+  {r:16, id:'madrid-2026', flag:'🇪🇸', name:'Grand Prix de Madrid',          loc:'Circuito Madrid Motoring',        dates:'11–13 Sep.',    el:'13h', q:'15h', race:'15h', circuit:'5.474 km · 55 tours', status:'upcoming', raceDay:'2026-09-13', qualiDay:'2026-09-12',
     aiPred:[
       {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'',             pct:80,pts:25},
       {sn:'Hamilton',  t:'ferrari',  tc:'#E8001D',note:'',             pct:74,pts:18},
@@ -5945,7 +5946,7 @@ const F1_CALENDAR_2026 = [
       {sn:'Sainz',     t:'williams', tc:'#00A0DD',note:'',             pct:32,pts:2 },
       {sn:'Gasly',     t:'alpine',   tc:'#FF0060',note:'',             pct:26,pts:1 },
     ]},
-  {r:17, flag:'🇦🇿', name:"Grand Prix d'Azerbaïdjan",      loc:'Baku City Circuit',               dates:'25–27 Sep.',    el:'13h', q:'15h', race:'13h', circuit:'6.003 km · 51 tours', status:'upcoming', raceDay:'2026-09-27', qualiDay:'2026-09-26',
+  {r:17, id:'azerbaijan-2026', flag:'🇦🇿', name:"Grand Prix d'Azerbaïdjan",      loc:'Baku City Circuit',               dates:'25–27 Sep.',    el:'13h', q:'15h', race:'13h', circuit:'6.003 km · 51 tours', status:'upcoming', raceDay:'2026-09-27', qualiDay:'2026-09-26',
     aiPred:[
       {sn:'Leclerc',   t:'ferrari',  tc:'#E8001D',note:'Fort à Baku',  pct:82,pts:25},
       {sn:'Hamilton',  t:'ferrari',  tc:'#E8001D',note:'',             pct:76,pts:18},
@@ -5958,7 +5959,7 @@ const F1_CALENDAR_2026 = [
       {sn:'Sainz',     t:'williams', tc:'#00A0DD',note:'',             pct:34,pts:2 },
       {sn:'Gasly',     t:'alpine',   tc:'#FF0060',note:'',             pct:28,pts:1 },
     ]},
-  {r:18, flag:'🇸🇬', name:'Grand Prix de Singapour',       loc:'Marina Bay Street Circuit',       dates:'9–11 Oct.',     el:'13h', q:'15h', race:'20h', circuit:'4.940 km · 62 tours', status:'upcoming', raceDay:'2026-10-11', qualiDay:'2026-10-10', sprint:true,
+  {r:18, id:'singapore-2026', flag:'🇸🇬', name:'Grand Prix de Singapour',       loc:'Marina Bay Street Circuit',       dates:'9–11 Oct.',     el:'13h', q:'15h', race:'20h', circuit:'4.940 km · 62 tours', status:'upcoming', raceDay:'2026-10-11', qualiDay:'2026-10-10', sprint:true,
     aiPred:[
       {sn:'Hamilton',  t:'ferrari',  tc:'#E8001D',note:'💛 Marina Bay', pct:83,pts:25},
       {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'',             pct:77,pts:18},
@@ -5971,7 +5972,7 @@ const F1_CALENDAR_2026 = [
       {sn:'Sainz',     t:'williams', tc:'#00A0DD',note:'',             pct:35,pts:2 },
       {sn:'Gasly',     t:'alpine',   tc:'#FF0060',note:'',             pct:29,pts:1 },
     ]},
-  {r:19, flag:'🇺🇸', name:"Grand Prix des États-Unis",     loc:'Circuit of the Americas · Austin', dates:'23–25 Oct.',   el:'13h', q:'15h', race:'20h', circuit:'5.513 km · 56 tours', status:'upcoming', raceDay:'2026-10-25', qualiDay:'2026-10-24',
+  {r:19, id:'usa-2026', flag:'🇺🇸', name:"Grand Prix des États-Unis",     loc:'Circuit of the Americas · Austin', dates:'23–25 Oct.',   el:'13h', q:'15h', race:'20h', circuit:'5.513 km · 56 tours', status:'upcoming', raceDay:'2026-10-25', qualiDay:'2026-10-24',
     aiPred:[
       {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'',             pct:79,pts:25},
       {sn:'Hamilton',  t:'ferrari',  tc:'#E8001D',note:'',             pct:73,pts:18},
@@ -5984,7 +5985,7 @@ const F1_CALENDAR_2026 = [
       {sn:'Sainz',     t:'williams', tc:'#00A0DD',note:'',             pct:31,pts:2 },
       {sn:'Gasly',     t:'alpine',   tc:'#FF0060',note:'',             pct:25,pts:1 },
     ]},
-  {r:20, flag:'🇲🇽', name:'Grand Prix du Mexique',         loc:'Autodromo Hermanos Rodriguez',    dates:'30 Oct.–1 Nov.',el:'13h', q:'15h', race:'20h', circuit:'4.304 km · 71 tours', status:'upcoming', raceDay:'2026-11-01', qualiDay:'2026-10-31',
+  {r:20, id:'mexico-2026', flag:'🇲🇽', name:'Grand Prix du Mexique',         loc:'Autodromo Hermanos Rodriguez',    dates:'30 Oct.–1 Nov.',el:'13h', q:'15h', race:'20h', circuit:'4.304 km · 71 tours', status:'upcoming', raceDay:'2026-11-01', qualiDay:'2026-10-31',
     aiPred:[
       {sn:'Verstappen',t:'redbull',  tc:'#3671C6',note:'Fort en altitude',pct:85,pts:25},
       {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'',               pct:75,pts:18},
@@ -5997,7 +5998,7 @@ const F1_CALENDAR_2026 = [
       {sn:'Sainz',     t:'williams', tc:'#00A0DD',note:'',               pct:33,pts:2 },
       {sn:'Gasly',     t:'alpine',   tc:'#FF0060',note:'',               pct:27,pts:1 },
     ]},
-  {r:21, flag:'🇧🇷', name:'Grand Prix du Brésil',          loc:'Autodromo Jose Carlos Pace',      dates:'6–8 Nov.',      el:'13h', q:'15h', race:'18h', circuit:'4.309 km · 71 tours', status:'upcoming', raceDay:'2026-11-08', qualiDay:'2026-11-07', sprint:true,
+  {r:21, id:'brazil-2026', flag:'🇧🇷', name:'Grand Prix du Brésil',          loc:'Autodromo Jose Carlos Pace',      dates:'6–8 Nov.',      el:'13h', q:'15h', race:'18h', circuit:'4.309 km · 71 tours', status:'upcoming', raceDay:'2026-11-08', qualiDay:'2026-11-07', sprint:true,
     aiPred:[
       {sn:'Hamilton',  t:'ferrari',  tc:'#E8001D',note:'💛 Interlagos', pct:82,pts:25},
       {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'',             pct:76,pts:18},
@@ -6010,7 +6011,7 @@ const F1_CALENDAR_2026 = [
       {sn:'Sainz',     t:'williams', tc:'#00A0DD',note:'',             pct:34,pts:2 },
       {sn:'Gasly',     t:'alpine',   tc:'#FF0060',note:'',             pct:28,pts:1 },
     ]},
-  {r:22, flag:'🇦🇪', name:"Grand Prix d'Abu Dhabi",        loc:'Yas Marina Circuit',              dates:'4–6 Déc.',      el:'13h', q:'15h', race:'17h', circuit:'5.281 km · 58 tours', status:'upcoming', raceDay:'2026-12-06', qualiDay:'2026-12-05',
+  {r:22, id:'abudhabi-2026', flag:'🇦🇪', name:"Grand Prix d'Abu Dhabi",        loc:'Yas Marina Circuit',              dates:'4–6 Déc.',      el:'13h', q:'15h', race:'17h', circuit:'5.281 km · 58 tours', status:'upcoming', raceDay:'2026-12-06', qualiDay:'2026-12-05',
     aiPred:[
       {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'Final saison',  pct:78,pts:25},
       {sn:'Russell',   t:'mercedes', tc:'#00D2BE',note:'',             pct:72,pts:18},
