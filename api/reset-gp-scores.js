@@ -1,7 +1,4 @@
 // api/reset-gp-scores.js
-// Remet les points de ce GP a zero pour tous les joueurs
-// A appeler UNE SEULE FOIS avant auto-calculate-scores
-// GET ?secret=go2026admin&gpId=austria-2026
 export const config = { runtime: "edge" };
 
 const SECRET = "go2026admin";
@@ -43,9 +40,19 @@ async function scan(pattern) {
   return keys;
 }
 
+// Parse proprement un profil — gere simple ET double serialisation
+function parseProfile(raw) {
+  try {
+    let p = JSON.parse(raw);
+    if (typeof p === "string") p = JSON.parse(p);
+    return p;
+  } catch {
+    return null;
+  }
+}
+
 export default async function handler(req) {
   const url = new URL(req.url);
-
   if (url.searchParams.get("secret") !== SECRET) {
     return new Response(JSON.stringify({ error: "Unauthorized" }), {
       status: 401, headers: { "Content-Type": "application/json" },
@@ -54,34 +61,45 @@ export default async function handler(req) {
 
   const gpId = url.searchParams.get("gpId") || "austria-2026";
 
-  // 1. Supprimer le flag "deja calcule" pour ce GP
+  // Supprimer le flag "deja calcule"
   await kvDel("config:scores_done:" + gpId);
 
-  // 2. Scanner tous les profils
+  // Scanner tous les profils
   const profileKeys = await scan("profile:*");
-  let reset = 0, skipped = 0;
+  let reset = 0, skipped = 0, errors = 0;
+  const log = [];
 
   await Promise.allSettled(profileKeys.map(async (key) => {
     try {
       const raw = await kvGet(key);
-      if (!raw) return;
+      if (!raw) { skipped++; return; }
 
-      let profile = JSON.parse(raw);
-      if (typeof profile === "string") profile = JSON.parse(profile);
+      const profile = parseProfile(raw);
+      if (!profile) { errors++; return; }
 
-      // Ce joueur a-t-il des points pour ce GP ?
-      const gpPts = profile.gpHistory?.[gpId]?.pts;
-      if (gpPts === undefined) { skipped++; return; }
+      // Points de ce GP dans l historique
+      const gpPts = profile.gpHistory?.[gpId]?.pts ?? null;
+      if (gpPts === null) { skipped++; return; }
 
-      // Soustraire les points de ce GP
-      profile.points = Math.max(0, (profile.points || 0) - gpPts);
-
-      // Supprimer l historique de ce GP
+      // Soustraction propre
+      const before = profile.points || 0;
+      profile.points = Math.max(0, before - gpPts);
       delete profile.gpHistory[gpId];
 
-      await kvSet(key, profile);
+      // Sauvegarder SANS double serialisation
+      await kvSet(key, JSON.stringify(profile));
+
+      log.push({
+        key,
+        handle: profile.handle || "",
+        before,
+        removed: gpPts,
+        after: profile.points,
+      });
       reset++;
-    } catch {}
+    } catch (e) {
+      errors++;
+    }
   }));
 
   return new Response(JSON.stringify({
@@ -89,6 +107,8 @@ export default async function handler(req) {
     gpId,
     reset,
     skipped,
-    message: reset + " joueurs remis a zero pour " + gpId + " - relancez auto-calculate-scores?force=1",
+    errors,
+    log,
+    message: reset + " joueurs remis a zero - lancez maintenant auto-calculate-scores?force=1",
   }), { headers: { "Content-Type": "application/json" } });
 }
