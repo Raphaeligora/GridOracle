@@ -229,10 +229,12 @@ function calcPts(prediction, results, plan) {
 }
 
 async function processScores(gpId, results) {
+  // FIX : scanner pred:* (large) puis filtrer en JS
+  // Le pattern pred:*:gpId ne matche pas les emails avec @ dans Upstash
   let cursor = '0', allKeys = [];
   do {
     const s = await fetch(
-      `${KV()}/scan/${cursor}/match/${encodeURIComponent('pred:*:' + gpId)}/count/200`,
+      `${KV()}/scan/${cursor}/match/${encodeURIComponent('pred:*')}/count/500`,
       { headers: { Authorization: `Bearer ${TOK()}` } }
     );
     const d = await s.json();
@@ -241,12 +243,31 @@ async function processScores(gpId, results) {
     allKeys.push(...(keys || []));
   } while (cursor !== '0');
 
-  if (!allKeys.length) return { updated: 0, avgPts: 0 };
+  // Filtrer uniquement les clés pour ce GP (gpId principal + clé alternative)
+  // save-prediction sauvegarde sous pred:email:austria-2026 ET pred:email:gp-r10-2026
+  const ALT_ID = { 'austria-2026':'gp-r10-2026','gp-r10-2026':'austria-2026' };
+  const altGpId = ALT_ID[gpId] || null;
+  const gpKeys = allKeys.filter(k =>
+    k.endsWith(`:${gpId}`) || (altGpId && k.endsWith(`:${altGpId}`))
+  );
+
+  if (!gpKeys.length) return { updated: 0, avgPts: 0 };
+  // Dédoublonner par email (garder la clé principale si les deux existent)
+  const emailsSeen = new Set();
+  const dedupedKeys = gpKeys.filter(k => {
+    const parts = k.split(':');
+    const email = parts.slice(1, -1).join(':');
+    if (emailsSeen.has(email)) return false;
+    emailsSeen.add(email);
+    return true;
+  });
+  const filteredKeys = dedupedKeys;
+  if (!filteredKeys.length) return { updated: 0, avgPts: 0 };
 
   let updated = 0, total = 0;
   const updatedProfiles = new Map();
 
-  await Promise.allSettled(allKeys.map(async key => {
+  await Promise.allSettled(filteredKeys.map(async key => {
     try {
       const email = key.split(':').slice(1, -1).join(':');
       if (!email) return;
