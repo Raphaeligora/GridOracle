@@ -1,5 +1,15 @@
 {
   "rewrites": [
     { "source": "/ligue/:pseudo", "destination": "/index.html" }
+  ],
+  "crons": [
+    {
+      "path": "/api/lock-predictions",
+      "schedule": "0 12 * * 6"
+    },
+    {
+      "path": "/api/transition-gp",
+      "schedule": "0 12 * * 1"
+    }
   ]
 }
