@@ -1,96 +1,129 @@
 // api/update-standings.js
-// Met à jour les classements WDC/WCC depuis OpenF1 après chaque course
-// GET ?secret=go2026admin
+// Reconstruit config:wdc_standings depuis tous les profils
+// Appelé automatiquement par auto-calculate-scores après chaque GP
+// Peut aussi être appelé manuellement : GET ?secret=go2026admin
 export const config = { runtime: 'edge' };
 
-const ADMIN_SECRET='go2026admin';
-const OPENF1='https://api.openf1.org/v1';
-const KV=()=>process.env.KV_REST_API_URL, TOK=()=>process.env.KV_REST_API_TOKEN;
-async function kvSet(k,v){const s=typeof v==='string'?v:JSON.stringify(v);await fetch(`${KV()}/set/${encodeURIComponent(k)}/${encodeURIComponent(s)}`,{headers:{Authorization:`Bearer ${TOK()}`}});}
-async function kvGet(k){const r=await fetch(`${KV()}/get/${encodeURIComponent(k)}`,{headers:{Authorization:`Bearer ${TOK()}`}});return(await r.json()).result??null;}
+const ADMIN_SECRET = 'go2026admin';
+const KV  = () => process.env.KV_REST_API_URL;
+const TOK = () => process.env.KV_REST_API_TOKEN;
 
-// Mapping équipes OpenF1 → notre format
-const TEAM_MAP={
-  'Mercedes':'mercedes','Red Bull Racing':'redbull','Ferrari':'ferrari',
-  'McLaren':'mclaren','Alpine':'alpine','Aston Martin':'aston',
-  'Williams':'williams','Kick Sauber':'sauber','VCARB':'redbull',
-  'Haas F1 Team':'haas'
-};
-const TC_MAP={
-  'mercedes':'#00D2BE','redbull':'#3671C6','ferrari':'#E8001D',
-  'mclaren':'#FF8000','alpine':'#FF0060','aston':'#358C75',
-  'williams':'#00A0DD','sauber':'#00E701','haas':'#B6BABD'
-};
+async function kvGet(k) {
+  const r = await fetch(`${KV()}/get/${encodeURIComponent(k)}`, {
+    headers: { Authorization: `Bearer ${TOK()}` },
+  });
+  return (await r.json()).result ?? null;
+}
+async function kvSet(k, v) {
+  const s = typeof v === 'string' ? v : JSON.stringify(v);
+  await fetch(`${KV()}/set/${encodeURIComponent(k)}/${encodeURIComponent(s)}`, {
+    headers: { Authorization: `Bearer ${TOK()}` },
+  });
+}
 
-export default async function handler(req){
-  const url=new URL(req.url);
-  const isCron=req.headers.get('x-vercel-cron')==='1';
-  if(!isCron && url.searchParams.get('secret')!==ADMIN_SECRET)
-    return new Response(JSON.stringify({error:'Unauthorized'}),{status:401,headers:{'Content-Type':'application/json'}});
+// Scan toutes les clés matchant un pattern
+async function kvScan(pattern) {
+  let cursor = '0', allKeys = [];
+  do {
+    const r = await fetch(
+      `${KV()}/scan/${cursor}/match/${encodeURIComponent(pattern)}/count/500`,
+      { headers: { Authorization: `Bearer ${TOK()}` } }
+    );
+    const d = await r.json();
+    const [nc, keys] = d.result || ['0', []];
+    cursor = nc;
+    allKeys.push(...(keys || []));
+  } while (cursor !== '0');
+  return allKeys;
+}
 
-  try{
-    // Récupérer la dernière session de course
-    const sessRes=await fetch(`${OPENF1}/sessions?session_type=Race&year=2026`,{headers:{'Accept':'application/json'}});
-    if(!sessRes.ok) throw new Error('Sessions API failed');
-    const sessions=await sessRes.json();
-    const now=new Date().toISOString();
-    const finished=sessions.filter(s=>s.date_end&&s.date_end<now).sort((a,b)=>new Date(b.date_end)-new Date(a.date_end));
-    if(!finished.length) throw new Error('Aucune course terminée');
-    const latestSession=finished[0];
+export default async function handler(req) {
+  const url = new URL(req.url);
+  const isCron = req.headers.get('x-vercel-cron') === '1';
+  const isInternal = req.headers.get('x-internal-call') === 'go2026';
+  if (!isCron && !isInternal && url.searchParams.get('secret') !== ADMIN_SECRET)
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401, headers: { 'Content-Type': 'application/json' },
+    });
 
-    // Récupérer tous les pilotes de la session
-    const drvRes=await fetch(`${OPENF1}/drivers?session_key=${latestSession.session_key}`,{headers:{'Accept':'application/json'}});
-    if(!drvRes.ok) throw new Error('Drivers API failed');
-    const drivers=await drvRes.json();
+  // 1. Scan toutes les clés profile:*
+  const profileKeys = await kvScan('profile:*');
+  if (!profileKeys.length)
+    return new Response(JSON.stringify({ success: false, message: 'Aucun profil trouvé' }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
 
-    // Construire WDC depuis les données pilotes (points cumulés de la saison)
-    // OpenF1 ne donne pas directement les points WDC → on utilise notre calcul
-    // Mais on met à jour les noms/équipes/photos au moins
+  // 2. Lire tous les profils en parallèle
+  const profiles = await Promise.all(
+    profileKeys.map(async key => {
+      try {
+        const raw = await kvGet(key);
+        if (!raw) return null;
+        const p = JSON.parse(raw);
+        // Ignorer les profils sans email ou sans handle
+        if (!p.email && !p.handle) return null;
+        return p;
+      } catch { return null; }
+    })
+  );
 
-    // Tenter de récupérer standings depuis Ergast (fallback si disponible)
-    let wdcFromAPI=[], wccFromAPI=[];
-    try{
-      const ergastRes=await fetch('https://ergast.com/api/f1/2026/driverStandings.json',{headers:{'Accept':'application/json'}});
-      if(ergastRes.ok){
-        const ergast=await ergastRes.json();
-        const standings=ergast.MRData?.StandingsTable?.StandingsLists?.[0]?.DriverStandings||[];
-        wdcFromAPI=standings.slice(0,20).map(s=>({
-          pos:parseInt(s.position),
-          sn:s.Driver.familyName,
-          fn:s.Driver.givenName,
-          pts:parseInt(s.points),
-          wins:parseInt(s.wins),
-          team:s.Constructors?.[0]?.name||'',
-          tc:TC_MAP[TEAM_MAP[s.Constructors?.[0]?.name||'']||'']||'#888'
-        }));
-        const cStandings=ergast.MRData?.StandingsTable?.StandingsLists?.[0]?.ConstructorStandings||[];
-        wccFromAPI=cStandings.slice(0,10).map(s=>({
-          pos:parseInt(s.position),
-          name:s.Constructor.name,
-          pts:parseInt(s.points),
-          wins:parseInt(s.wins),
-          tc:TC_MAP[TEAM_MAP[s.Constructor.name||'']||'']||'#888'
-        }));
+  const validProfiles = profiles.filter(Boolean);
+
+  // 3. Construire le WDC standings (classement joueurs GridOracle)
+  const wdc = validProfiles
+    .map(p => ({
+      handle  : p.handle || p.email?.split('@')[0] || 'Anonyme',
+      email   : p.email || '',
+      points  : p.points || 0,
+      plan    : p.plan || 'free',
+      avatar  : p.avatar || null,
+      gpHistory: p.gpHistory || {},
+      // Nombre de GPs joués
+      gpsPlayed: Object.keys(p.gpHistory || {}).length,
+    }))
+    .sort((a, b) => b.points - a.points)
+    .map((p, i) => ({ ...p, rank: i + 1 }));
+
+  // 4. Sauvegarder dans KV
+  await kvSet('config:wdc_standings', JSON.stringify(wdc));
+  await kvSet('config:standings_updated_at', Date.now().toString());
+
+  // 5. Refresh toutes les ligues
+  // Scan les clés league:*:members
+  const leagueKeys = await kvScan('league:*:members');
+  let leaguesUpdated = 0;
+
+  await Promise.allSettled(leagueKeys.map(async key => {
+    try {
+      const leagueId = key.split(':')[1];
+      const mRaw = await kvGet(key);
+      if (!mRaw) return;
+      const members = JSON.parse(mRaw);
+      let changed = false;
+      const updated = members.map(m => {
+        // Cherche le profil correspondant
+        const profile = validProfiles.find(
+          p => p.email?.toLowerCase() === m.email?.toLowerCase()
+            || p.handle === m.handle
+        );
+        if (profile && (profile.points || 0) !== (m.pts || 0)) {
+          changed = true;
+          return { ...m, pts: profile.points || 0 };
+        }
+        return m;
+      });
+      if (changed) {
+        await kvSet(key, JSON.stringify(updated));
+        leaguesUpdated++;
       }
-    }catch{}
+    } catch {}
+  }));
 
-    // Mettre à jour dans Redis si on a des données
-    if(wdcFromAPI.length){
-      await kvSet('config:wdc_standings',wdcFromAPI);
-      await kvSet('config:wcc_standings',wccFromAPI);
-      await kvSet('config:standings_updated',JSON.stringify({ts:Date.now(),gpsCompleted:finished.length}));
-    }
-
-    // Mettre à jour le nombre de GPs joués
-    await kvSet('config:gps_completed',String(finished.length));
-
-    return new Response(JSON.stringify({
-      success:true,
-      gpsCompleted:finished.length,
-      wdcUpdated:wdcFromAPI.length>0,
-      message:`✅ Standings mis à jour — ${finished.length} GPs joués`
-    }),{headers:{'Content-Type':'application/json'}});
-  }catch(e){
-    return new Response(JSON.stringify({success:false,error:e.message}),{headers:{'Content-Type':'application/json'}});
-  }
+  return new Response(JSON.stringify({
+    success      : true,
+    playersRanked: wdc.length,
+    leaguesUpdated,
+    topPlayer    : wdc[0] ? `${wdc[0].handle} (${wdc[0].points} pts)` : 'N/A',
+    message      : `✅ Classement mis à jour — ${wdc.length} joueurs, ${leaguesUpdated} ligues`,
+  }), { headers: { 'Content-Type': 'application/json' } });
 }
