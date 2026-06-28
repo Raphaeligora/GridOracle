@@ -358,7 +358,7 @@ export default async function handler(req) {
   // Résultats connus des courses passées — fallback si OpenF1 échoue ou retourne race-2026
   const KNOWN_RESULTS = {
     'austria-2026': {
-      gpName: 'Grand Prix d'Autriche 2026',
+      gpName: "Grand Prix d'Autriche 2026",
       results: ['Russell','Verstappen','Antonelli','Piastri','Hamilton','Leclerc','Norris','Sainz','Hadjar','Alonso'],
     },
   };
