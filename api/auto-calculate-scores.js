@@ -44,7 +44,7 @@ async function kvScanAll(pattern) {
 // Format : tableau de sn dans l ordre (P1 a P10)
 // sn = valeur stockee dans les predictions des joueurs
 const RACE_RESULTS = {
-  "austria-2026": ["Russell", "Verstappen", "Antonelli", "Piastri", "Hamilton", "Leclerc", "Norris", "Sainz", "Hadjar", "Alonso"],
+  "austria-2026": ["Russell", "Verstappen", "Antonelli", "Piastri", "Hamilton", "Hadjar", "Norris", "Leclerc", "Lawson", "Lindblad"],
 };
 
 // ── Calcul des points ────────────────────────────────────────────────────────
@@ -189,13 +189,16 @@ export default async function handler(req) {
   const doneRaw = await kvGet("config:scores_done:" + gpId);
   if (doneRaw && !force) {
     const done = JSON.parse(doneRaw);
-    if (done.updated > 0) {
+    // Verifier que le classement stocke correspond au classement actuel connu
+    const storedResults = (done.results || []).join(",");
+    const currentResults = results.join(",");
+    if (done.updated > 0 && storedResults === currentResults) {
       return new Response(
         JSON.stringify({ success: true, skipped: true, message: "Deja calcule : " + done.updated + " joueurs", results }),
         { headers: { "Content-Type": "application/json" } }
       );
     }
-    // updated=0 = calcul rate precedemment, on refait
+    // Classement different ou updated=0 = on recalcule
   }
 
   // ── Scan TOUTES les predictions (pred:*) puis filtre en JS ──
@@ -285,7 +288,9 @@ export default async function handler(req) {
         const gpPts = calcPts(pred, results, profile.plan || "free");
 
         // Mise a jour du profil
-        profile.points = (profile.points || 0) + gpPts;
+        // Si ce GP avait deja ete calcule avec un mauvais classement, on soustrait l ancien score
+        const previousGpPts = profile.gpHistory && profile.gpHistory[gpId] ? (profile.gpHistory[gpId].pts || 0) : 0;
+        profile.points = Math.max(0, (profile.points || 0) - previousGpPts + gpPts);
         if (!profile.gpHistory) profile.gpHistory = {};
         profile.gpHistory[gpId] = {
           pts     : gpPts,
