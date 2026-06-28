@@ -59,10 +59,11 @@ export default async function handler(req) {
     });
   }
 
-  const gpId = url.searchParams.get("gpId") || "austria-2026";
+  const gpId  = url.searchParams.get("gpId") || "austria-2026";
+  const all   = url.searchParams.get("all") === "1";
 
-  // Supprimer le flag "deja calcule"
-  await kvDel("config:scores_done:" + gpId);
+  // Supprimer le flag "deja calcule" pour ce GP
+  if (!all) await kvDel("config:scores_done:" + gpId);
 
   // Scanner tous les profils
   const profileKeys = await scan("profile:*");
@@ -77,38 +78,51 @@ export default async function handler(req) {
       const profile = parseProfile(raw);
       if (!profile) { errors++; return; }
 
-      // Points de ce GP dans l historique
-      const gpPts = profile.gpHistory?.[gpId]?.pts ?? null;
-      if (gpPts === null) { skipped++; return; }
-
-      // Soustraction propre
       const before = profile.points || 0;
-      profile.points = Math.max(0, before - gpPts);
-      delete profile.gpHistory[gpId];
 
-      // Sauvegarder SANS double serialisation
+      if (all) {
+        // Remise a zero totale — efface tous les points et tout l historique
+        profile.points = 0;
+        profile.gpHistory = {};
+      } else {
+        // Remise a zero pour un seul GP
+        const gpPts = profile.gpHistory?.[gpId]?.pts ?? null;
+        if (gpPts === null) { skipped++; return; }
+        profile.points = Math.max(0, before - gpPts);
+        delete profile.gpHistory[gpId];
+      }
+
       await kvSet(key, JSON.stringify(profile));
-
-      log.push({
-        key,
-        handle: profile.handle || "",
-        before,
-        removed: gpPts,
-        after: profile.points,
-      });
+      log.push({ handle: profile.handle || "", before, after: profile.points });
       reset++;
-    } catch (e) {
+    } catch {
       errors++;
     }
   }));
 
+  // Rebuild classement WDC
+  try {
+    const allProfileKeys = await scan("profile:*");
+    const profiles = await Promise.all(allProfileKeys.map(async k => {
+      const raw = await kvGet(k);
+      if (!raw) return null;
+      const p = parseProfile(raw);
+      return p && (p.email || p.handle) ? p : null;
+    }));
+    const wdc = profiles.filter(Boolean)
+      .map(p => ({ handle: p.handle || p.email?.split("@")[0] || "Anonyme", email: p.email || "", points: p.points || 0 }))
+      .sort((a, b) => b.points - a.points)
+      .map((p, i) => ({ ...p, rank: i + 1 }));
+    await kvSet("config:wdc_standings", JSON.stringify(wdc));
+  } catch {}
+
   return new Response(JSON.stringify({
     success: true,
-    gpId,
+    gpId: all ? "ALL" : gpId,
     reset,
     skipped,
     errors,
     log,
-    message: reset + " joueurs remis a zero - lancez maintenant auto-calculate-scores?force=1",
+    message: reset + " joueurs remis a zero" + (all ? " (total)" : " pour " + gpId),
   }), { headers: { "Content-Type": "application/json" } });
 }
