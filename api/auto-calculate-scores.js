@@ -41,6 +41,17 @@ async function scan(pattern) {
   return keys;
 }
 
+// Parse profil — gere simple ET double serialisation legacy
+function parseProfile(raw) {
+  try {
+    let p = JSON.parse(raw);
+    if (typeof p === "string") p = JSON.parse(p);
+    return p;
+  } catch {
+    return null;
+  }
+}
+
 // Calcul des points pour un joueur
 // pred = [{sn:"Russell", n:"63", tc:"..."}, ...] — format save-prediction.js
 // Le joueur predit la position : pred[0] = son choix pour P1, pred[1] pour P2, etc.
@@ -135,7 +146,8 @@ export default async function handler(req) {
       // Lire le profil
       const profileRaw = await get("profile:" + email.toLowerCase());
       if (!profileRaw) return;
-      const profile = JSON.parse(profileRaw);
+      const profile = parseProfile(profileRaw);
+      if (!profile) return;
 
       // Calculer les points
       const { total: gpPts, detail } = calcPoints(pred, profile.plan || "free");
@@ -154,7 +166,7 @@ export default async function handler(req) {
         ts: Date.now(),
       };
 
-      await set("profile:" + email.toLowerCase(), profile);
+      await set("profile:" + email.toLowerCase(), JSON.stringify(profile));
       updatedProfiles.set(email.toLowerCase(), profile);
       updated++;
       totalPts += gpPts;
@@ -190,7 +202,8 @@ export default async function handler(req) {
       try {
         const raw = await get(k);
         if (!raw) return null;
-        const p = JSON.parse(raw);
+        const p = parseProfile(raw);
+        if (!p) return null;
         const fresh = updatedProfiles.get(p.email?.toLowerCase());
         if (fresh) p.points = fresh.points;
         return p.email || p.handle ? p : null;
