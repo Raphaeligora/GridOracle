@@ -48,20 +48,51 @@ const RACE_RESULTS = {
 };
 
 // ── Calcul des points ────────────────────────────────────────────────────────
-// prediction = [{sn, n, tc}] ou [string] — les deux formats sont geres
+// Regle : prediction[i] = pilote predit en position (i+1)
+//         results[i]    = pilote ayant termine en position (i+1) selon les vrais resultats F1
+// Si prediction[i].sn === results[i] => le joueur a predit ce pilote A LA BONNE POSITION
+// => il recoit les points F1 reels de cette position (25/18/15/12/10/8/6/4/2/1)
+// Free  : 5 pilotes a predire (positions P1-P5)
+// Premium/Creator : 10 pilotes a predire (positions P1-P10)
 function calcPts(prediction, results, plan) {
   const maxPos = (plan === "premium" || plan === "creator") ? 10 : 5;
   let pts = 0;
   for (let i = 0; i < Math.min(maxPos, results.length, prediction.length); i++) {
-    // Extrait le sn peu importe le format stocke
+    // Extrait le sn du joueur pour cette position
     const raw = prediction[i];
     const sn = (typeof raw === "string" ? raw : (raw && raw.sn ? raw.sn : "")).trim();
     if (!sn) continue;
+    // Compare avec le vrai resultat a cette position
     if (sn.toLowerCase() === results[i].toLowerCase()) {
+      // Bonne position : points F1 reels de cette place
       pts += F1_PTS[i] || 0;
     }
+    // Mauvaise position = 0 pts pour ce slot
   }
   return pts;
+}
+
+// ── Debug : detail du calcul pour un joueur ──────────────────────────────────
+function calcPtsDetail(prediction, results, plan) {
+  const maxPos = (plan === "premium" || plan === "creator") ? 10 : 5;
+  const detail = [];
+  let total = 0;
+  for (let i = 0; i < Math.min(maxPos, results.length, prediction.length); i++) {
+    const raw = prediction[i];
+    const sn = (typeof raw === "string" ? raw : (raw && raw.sn ? raw.sn : "")).trim();
+    if (!sn) continue;
+    const correct = sn.toLowerCase() === results[i].toLowerCase();
+    const ptsEarned = correct ? (F1_PTS[i] || 0) : 0;
+    total += ptsEarned;
+    detail.push({
+      pos      : i + 1,
+      predicted: sn,
+      actual   : results[i],
+      correct,
+      pts      : ptsEarned,
+    });
+  }
+  return { total, detail };
 }
 
 // ── Sync ligues depuis user:handle:leagues ───────────────────────────────────
@@ -284,8 +315,8 @@ export default async function handler(req) {
         if (!pRaw) return;
         const profile = JSON.parse(pRaw);
 
-        // Calcul des points
-        const gpPts = calcPts(pred, results, profile.plan || "free");
+        // Calcul des points avec detail
+        const { total: gpPts, detail: predDetail } = calcPtsDetail(pred, results, profile.plan || "free");
 
         // Mise a jour du profil
         // Si ce GP avait deja ete calcule avec un mauvais classement, on soustrait l ancien score
@@ -303,7 +334,7 @@ export default async function handler(req) {
         updatedProfiles.set(email.toLowerCase(), profile);
         updated++;
         totalPts += gpPts;
-        details.push({ email, handle: profile.handle || "", gpPts, total: profile.points });
+        details.push({ email, handle: profile.handle || "", gpPts, total: profile.points, detail: predDetail });
       } catch {}
     })
   );
