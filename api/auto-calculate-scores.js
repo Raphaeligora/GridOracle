@@ -321,8 +321,25 @@ export default async function handler(req) {
   }
   await kvSet(`config:race_results:${gpId}`, JSON.stringify({ gpId, gpName, results, ts: Date.now() }));
 
+  // ✅ Reconstruction du classement WDC depuis tous les profils
+  // Appelle update-standings en interne pour reconstruire config:wdc_standings
+  let standingsMsg = '';
+  try {
+    const standingsUrl = new URL('/api/update-standings', url.origin);
+    const sRes = await fetch(standingsUrl.toString(), {
+      headers: { 'x-internal-call': 'go2026' },
+    });
+    if (sRes.ok) {
+      const sData = await sRes.json();
+      standingsMsg = sData.message || '';
+    }
+  } catch (e) {
+    standingsMsg = 'Standings update failed: ' + e.message;
+  }
+
   return new Response(JSON.stringify({
     success: true, gpId, gpName, results, updated, avgPts, leaguesSynced: true,
-    message: `✅ ${gpName} — ${updated} joueurs mis à jour, ligues synchronisées`,
+    standingsMsg,
+    message: `✅ ${gpName} — ${updated} joueurs mis à jour · ${standingsMsg}`,
   }), { headers: { 'Content-Type': 'application/json' } });
 }
