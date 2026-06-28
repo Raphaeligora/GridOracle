@@ -1,155 +1,328 @@
 // api/auto-calculate-scores.js — OpenF1 + calcul automatique + sync ligues
+// FIX v2 : gpId normalisé, NAME_MAP complet, reset du flag si 0 joueurs
 export const config = { runtime: 'edge' };
 
-const ADMIN_SECRET='go2026admin';
-const F1_PTS=[25,18,15,12,10,8,6,4,2,1];
-const OPENF1='https://api.openf1.org/v1';
-const KV=()=>process.env.KV_REST_API_URL, TOK=()=>process.env.KV_REST_API_TOKEN;
+const ADMIN_SECRET = 'go2026admin';
+const F1_PTS = [25, 18, 15, 12, 10, 8, 6, 4, 2, 1];
+const OPENF1 = 'https://api.openf1.org/v1';
+const KV  = () => process.env.KV_REST_API_URL;
+const TOK = () => process.env.KV_REST_API_TOKEN;
 
-async function kvGet(k){const r=await fetch(`${KV()}/get/${encodeURIComponent(k)}`,{headers:{Authorization:`Bearer ${TOK()}`}});return(await r.json()).result??null;}
-async function kvSet(k,v){const s=typeof v==='string'?v:JSON.stringify(v);await fetch(`${KV()}/set/${encodeURIComponent(k)}/${encodeURIComponent(s)}`,{headers:{Authorization:`Bearer ${TOK()}`}});}
-
-const NAME_MAP={'Verstappen':'Verstappen','Antonelli':'Antonelli','Hamilton':'Hamilton',
-  'Russell':'Russell','Norris':'Norris','Piastri':'Piastri','Leclerc':'Leclerc',
-  'Hadjar':'Hadjar','Gasly':'Gasly','Sainz':'Sainz','Alonso':'Alonso','Stroll':'Stroll',
-  'Hulkenberg':'Hulkenberg','Bearman':'Bearman','Doohan':'Doohan','Bortoleto':'Bortoleto',
-  'Lawson':'Lawson','Tsunoda':'Tsunoda','Colapinto':'Colapinto','Ocon':'Ocon'};
-
-function calcPts(prediction,results,plan){
-  const max=(plan==='premium'||plan==='creator')?10:5;
-  let pts=0;
-  for(let i=0;i<Math.min(max,results.length,prediction.length);i++){
-    const p=(typeof prediction[i]==='string'?prediction[i]:prediction[i]?.sn||'').toLowerCase();
-    if(p===results[i].toLowerCase()) pts+=F1_PTS[i]||0;
-  }
-  return pts;
+async function kvGet(k) {
+  const r = await fetch(`${KV()}/get/${encodeURIComponent(k)}`, {
+    headers: { Authorization: `Bearer ${TOK()}` },
+  });
+  return (await r.json()).result ?? null;
+}
+async function kvSet(k, v) {
+  const s = typeof v === 'string' ? v : JSON.stringify(v);
+  await fetch(`${KV()}/set/${encodeURIComponent(k)}/${encodeURIComponent(s)}`, {
+    headers: { Authorization: `Bearer ${TOK()}` },
+  });
 }
 
-// Inline refresh des ligues pour chaque joueur mis à jour
-async function syncLeaguesForProfiles(updatedProfiles){
-  for(const [email, profile] of updatedProfiles){
-    try{
-      const lidsRaw=await kvGet(`user:${profile.handle}:leagues`);
-      if(!lidsRaw) continue;
-      const lids=JSON.parse(lidsRaw);
-      await Promise.allSettled(lids.map(async lid=>{
-        const mRaw=await kvGet(`league:${lid}:members`);
-        if(!mRaw) return;
-        const members=JSON.parse(mRaw);
-        const idx=members.findIndex(m=>m.email===email||m.handle===profile.handle);
-        if(idx<0) return;
-        members[idx].pts=profile.points||0;
-        await kvSet(`league:${lid}:members`,members);
+/* ── NAME_MAP complet 2026 ──
+   Clé = last_name renvoyé par OpenF1 (sensible à la casse)
+   Valeur = sn stocké dans les prédictions GridOracle */
+const NAME_MAP = {
+  // Red Bull
+  'Verstappen' : 'Verstappen',
+  'Hadjar'     : 'Hadjar',
+  // McLaren
+  'Norris'     : 'Norris',
+  'Piastri'    : 'Piastri',
+  // Mercedes
+  'Russell'    : 'Russell',
+  'Antonelli'  : 'Antonelli',
+  // Ferrari
+  'Leclerc'    : 'Leclerc',
+  'Hamilton'   : 'Hamilton',
+  // Williams
+  'Sainz'      : 'Sainz',
+  'Albon'      : 'Albon',
+  // Racing Bulls
+  'Lawson'     : 'Lawson',
+  'Lindblad'   : 'Lindblad',
+  // Aston Martin
+  'Alonso'     : 'Alonso',
+  'Stroll'     : 'Stroll',
+  // Haas
+  'Ocon'       : 'Ocon',
+  'Bearman'    : 'Bearman',
+  // Audi
+  'Hulkenberg' : 'Hulkenberg',  // OpenF1 sans tréma
+  'Hülkenberg' : 'Hulkenberg',  // au cas où
+  'Bortoleto'  : 'Bortoleto',
+  // Alpine
+  'Gasly'      : 'Gasly',
+  'Colapinto'  : 'Colapinto',
+  // Cadillac
+  'Perez'      : 'Pérez',       // OpenF1 sans accent
+  'Pérez'      : 'Pérez',
+  'Bottas'     : 'Bottas',
+  // Anciens (sécurité)
+  'Doohan'     : 'Doohan',
+  'Tsunoda'    : 'Tsunoda',
+};
+
+/* ── FIX BUG 1 : normalisation du gpId ──
+   Transforme n'importe quel nom OpenF1 → gpId cohérent avec ton site.
+   Exemples :
+     "Austrian Grand Prix"       → "austria-2026"
+     "Grand Prix d'Autriche"     → "austria-2026"
+     "Formula 1 AWS Austrian..." → "austria-2026" */
+const GP_ID_ALIASES = {
+  'austri'   : 'austria-2026',
+  'autriche' : 'austria-2026',
+  'monaco'   : 'monaco-2026',
+  'monaco'   : 'monaco-2026',
+  'british'  : 'great-britain-2026',
+  'grande-bretagne' : 'great-britain-2026',
+  'italian'  : 'italy-2026',
+  'italia'   : 'italy-2026',
+  'belgian'  : 'belgium-2026',
+  'belgique' : 'belgium-2026',
+  'hungarian': 'hungary-2026',
+  'hongrie'  : 'hungary-2026',
+  'dutch'    : 'netherlands-2026',
+  'pays-bas' : 'netherlands-2026',
+  'singapore': 'singapore-2026',
+  'japanese' : 'japan-2026',
+  'japon'    : 'japan-2026',
+  'united-states': 'usa-2026',
+  'etats-unis'   : 'usa-2026',
+  'mexican'  : 'mexico-2026',
+  'mexique'  : 'mexico-2026',
+  'brazilian': 'brazil-2026',
+  'bresil'   : 'brazil-2026',
+  'las-vegas': 'las-vegas-2026',
+  'qatar'    : 'qatar-2026',
+  'abu-dhabi': 'abu-dhabi-2026',
+  'australian': 'australia-2026',
+  'australie' : 'australia-2026',
+  'chinese'   : 'china-2026',
+  'chine'     : 'china-2026',
+  'canadian'  : 'canada-2026',
+  'canada'    : 'canada-2026',
+  'spanish'   : 'spain-2026',
+  'espagne'   : 'spain-2026',
+  'barcelona' : 'spain-2026',
+  'miami'     : 'miami-2026',
+  'bahrain'   : 'bahrain-2026',
+  'bahrein'   : 'bahrain-2026',
+  'saudi'     : 'saudi-arabia-2026',
+  'arabie'    : 'saudi-arabia-2026',
+};
+
+function normalizeGpId(rawName) {
+  // Transforme le nom brut OpenF1 en slug bas de casse sans accents
+  const slug = rawName
+    .toLowerCase()
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // retire accents
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+  // Cherche un alias connu
+  for (const [pattern, canonical] of Object.entries(GP_ID_ALIASES)) {
+    if (slug.includes(pattern)) return canonical;
+  }
+  // Fallback : slug + -2026
+  return slug.replace(/-2026$/, '') + '-2026';
+}
+
+/* ── Sync ligues ── */
+async function syncLeaguesForProfiles(updatedProfiles) {
+  for (const [email, profile] of updatedProfiles) {
+    try {
+      const lidsRaw = await kvGet(`user:${profile.handle}:leagues`);
+      if (!lidsRaw) continue;
+      const lids = JSON.parse(lidsRaw);
+      await Promise.allSettled(lids.map(async lid => {
+        const mRaw = await kvGet(`league:${lid}:members`);
+        if (!mRaw) return;
+        const members = JSON.parse(mRaw);
+        const idx = members.findIndex(m => m.email === email || m.handle === profile.handle);
+        if (idx < 0) return;
+        members[idx].pts = profile.points || 0;
+        await kvSet(`league:${lid}:members`, members);
       }));
-    }catch{}
+    } catch {}
   }
 }
 
-async function getLatestRaceResults(){
-  try{
-    const sessRes=await fetch(`${OPENF1}/sessions?session_type=Race&year=2026`,{headers:{Accept:'application/json'}});
-    if(!sessRes.ok) throw new Error('Sessions API failed');
-    const sessions=await sessRes.json();
-    const now=new Date().toISOString();
-    const finished=sessions.filter(s=>s.date_end&&s.date_end<now).sort((a,b)=>new Date(b.date_end)-new Date(a.date_end));
-    if(!finished.length) return null;
-    const session=finished[0];
+/* ── OpenF1 : résultats de la dernière course ── */
+async function getLatestRaceResults() {
+  try {
+    const sessRes = await fetch(`${OPENF1}/sessions?session_type=Race&year=2026`, {
+      headers: { Accept: 'application/json' },
+    });
+    if (!sessRes.ok) throw new Error('Sessions API failed');
+    const sessions = await sessRes.json();
+    const now = new Date().toISOString();
+    const finished = sessions
+      .filter(s => s.date_end && s.date_end < now)
+      .sort((a, b) => new Date(b.date_end) - new Date(a.date_end));
+    if (!finished.length) return null;
+    const session = finished[0];
 
     // Positions finales
-    const posRes=await fetch(`${OPENF1}/position?session_key=${session.session_key}`,{headers:{Accept:'application/json'}});
-    if(!posRes.ok) throw new Error('Positions API failed');
-    const positions=await posRes.json();
-    if(!positions.length) return null;
+    const posRes = await fetch(`${OPENF1}/position?session_key=${session.session_key}`, {
+      headers: { Accept: 'application/json' },
+    });
+    if (!posRes.ok) throw new Error('Positions API failed');
+    const positions = await posRes.json();
+    if (!positions.length) return null;
 
     // Pilotes
-    const drvRes=await fetch(`${OPENF1}/drivers?session_key=${session.session_key}`,{headers:{Accept:'application/json'}});
-    const drivers=drvRes.ok?await drvRes.json():[];
-    const driverMap={};
-    drivers.forEach(d=>{driverMap[d.driver_number]=NAME_MAP[d.last_name||'']||d.last_name||('D'+d.driver_number);});
-
-    // Dernière position de chaque pilote
-    const lastPos={};
-    positions.forEach(p=>{
-      if(!lastPos[p.driver_number]||new Date(p.date)>new Date(lastPos[p.driver_number].date)) lastPos[p.driver_number]=p;
+    const drvRes = await fetch(`${OPENF1}/drivers?session_key=${session.session_key}`, {
+      headers: { Accept: 'application/json' },
     });
-    const finalOrder=Object.values(lastPos).sort((a,b)=>a.position-b.position).slice(0,10).map(p=>driverMap[p.driver_number]||'Unknown');
+    const drivers = drvRes.ok ? await drvRes.json() : [];
+    const driverMap = {};
+    drivers.forEach(d => {
+      const lastName = d.last_name || '';
+      driverMap[d.driver_number] = NAME_MAP[lastName] || lastName || ('D' + d.driver_number);
+    });
 
-    // Meeting info pour gpId
-    let gpId='race-2026', gpName='Grand Prix 2026';
-    try{
-      const mRes=await fetch(`${OPENF1}/meetings?meeting_key=${session.meeting_key}`,{headers:{Accept:'application/json'}});
-      if(mRes.ok){const m=await mRes.json();const meet=m[0]||{};gpId=(meet.meeting_name||'race').toLowerCase().replace(/[^a-z0-9]+/g,'-')+'-2026';gpName=meet.meeting_official_name||meet.meeting_name||'Race 2026';}
-    }catch{}
+    // Dernière position connue par pilote
+    const lastPos = {};
+    positions.forEach(p => {
+      if (!lastPos[p.driver_number] || new Date(p.date) > new Date(lastPos[p.driver_number].date))
+        lastPos[p.driver_number] = p;
+    });
+    const finalOrder = Object.values(lastPos)
+      .sort((a, b) => a.position - b.position)
+      .slice(0, 10)
+      .map(p => driverMap[p.driver_number] || 'Unknown');
 
-    return {gpId, gpName, results:finalOrder, sessionKey:session.session_key};
-  }catch(e){
-    console.error('OpenF1:',e.message);
+    // FIX BUG 1 : normalisation du gpId via le meeting name
+    let gpId = 'race-2026', gpName = 'Grand Prix 2026';
+    try {
+      const mRes = await fetch(`${OPENF1}/meetings?meeting_key=${session.meeting_key}`, {
+        headers: { Accept: 'application/json' },
+      });
+      if (mRes.ok) {
+        const m = await mRes.json();
+        const meet = m[0] || {};
+        const rawName = meet.meeting_official_name || meet.meeting_name || 'race';
+        gpName = rawName;
+        gpId = normalizeGpId(rawName); // ← FIX : utilise l'alias normalisé
+      }
+    } catch {}
+
+    return { gpId, gpName, results: finalOrder, sessionKey: session.session_key };
+  } catch (e) {
+    console.error('OpenF1:', e.message);
     return null;
   }
 }
 
-async function processScores(gpId, results){
-  let cursor='0', allKeys=[];
-  do{
-    const s=await fetch(`${KV()}/scan/${cursor}/match/${encodeURIComponent('pred:*:'+gpId)}/count/200`,{headers:{Authorization:`Bearer ${TOK()}`}});
-    const d=await s.json();
-    const[nc,keys]=d.result||['0',[]];
-    cursor=nc; allKeys.push(...(keys||[]));
-  }while(cursor!=='0');
-  if(!allKeys.length) return {updated:0,avgPts:0};
-
-  let updated=0,total=0;
-  const updatedProfiles=new Map();
-
-  await Promise.allSettled(allKeys.map(async key=>{
-    try{
-      const email=key.split(':').slice(1,-1).join(':');
-      if(!email) return;
-      const predRaw=await kvGet(key);
-      if(!predRaw) return;
-      const pred=JSON.parse(predRaw);
-      if(!Array.isArray(pred)) return;
-      const pRaw=await kvGet(`profile:${email.toLowerCase()}`);
-      if(!pRaw) return;
-      const profile=JSON.parse(pRaw);
-      const pts=calcPts(pred,results,profile.plan||'free');
-      profile.points=(profile.points||0)+pts;
-      if(!profile.gpHistory) profile.gpHistory={};
-      profile.gpHistory[gpId]={pts,pred:pred.map(p=>typeof p==='string'?p:p?.sn||'').slice(0,10),results:results.slice(0,10),ts:Date.now()};
-      await kvSet(`profile:${email.toLowerCase()}`,profile);
-      updatedProfiles.set(email.toLowerCase(),profile);
-      updated++; total+=pts;
-    }catch{}
-  }));
-
-  // ✅ Sync pts dans toutes les ligues
-  await syncLeaguesForProfiles(updatedProfiles);
-
-  return {updated, avgPts:updated?Math.round(total/updated):0};
+/* ── Calcul des points ── */
+function calcPts(prediction, results, plan) {
+  const max = (plan === 'premium' || plan === 'creator') ? 10 : 5;
+  let pts = 0;
+  for (let i = 0; i < Math.min(max, results.length, prediction.length); i++) {
+    const p = (typeof prediction[i] === 'string' ? prediction[i] : prediction[i]?.sn || '').trim();
+    const r = results[i].trim();
+    if (p.toLowerCase() === r.toLowerCase()) pts += F1_PTS[i] || 0;
+  }
+  return pts;
 }
 
-export default async function handler(req){
-  const url=new URL(req.url);
-  const isCron=req.headers.get('x-vercel-cron')==='1';
-  if(!isCron&&url.searchParams.get('secret')!==ADMIN_SECRET)
-    return new Response(JSON.stringify({error:'Unauthorized'}),{status:401,headers:{'Content-Type':'application/json'}});
+async function processScores(gpId, results) {
+  let cursor = '0', allKeys = [];
+  do {
+    const s = await fetch(
+      `${KV()}/scan/${cursor}/match/${encodeURIComponent('pred:*:' + gpId)}/count/200`,
+      { headers: { Authorization: `Bearer ${TOK()}` } }
+    );
+    const d = await s.json();
+    const [nc, keys] = d.result || ['0', []];
+    cursor = nc;
+    allKeys.push(...(keys || []));
+  } while (cursor !== '0');
 
-  const force=url.searchParams.get('force')==='1';
-  const raceData=await getLatestRaceResults();
-  if(!raceData||!raceData.results.length)
-    return new Response(JSON.stringify({success:false,message:'Pas de résultats OpenF1 disponibles'}),{headers:{'Content-Type':'application/json'}});
+  if (!allKeys.length) return { updated: 0, avgPts: 0 };
 
-  const{gpId,gpName,results}=raceData;
-  const alreadyDone=await kvGet(`config:scores_done:${gpId}`);
-  if(alreadyDone&&!force)
-    return new Response(JSON.stringify({success:true,message:`Déjà calculé pour ${gpId}`,results,skipped:true}),{headers:{'Content-Type':'application/json'}});
+  let updated = 0, total = 0;
+  const updatedProfiles = new Map();
 
-  const{updated,avgPts}=await processScores(gpId,results);
-  await kvSet(`config:scores_done:${gpId}`,JSON.stringify({ts:Date.now(),results,updated}));
-  await kvSet(`config:race_results:${gpId}`,JSON.stringify({gpId,gpName,results,ts:Date.now()}));
+  await Promise.allSettled(allKeys.map(async key => {
+    try {
+      const email = key.split(':').slice(1, -1).join(':');
+      if (!email) return;
+      const predRaw = await kvGet(key);
+      if (!predRaw) return;
+      const pred = JSON.parse(predRaw);
+      if (!Array.isArray(pred)) return;
+      const pRaw = await kvGet(`profile:${email.toLowerCase()}`);
+      if (!pRaw) return;
+      const profile = JSON.parse(pRaw);
+      const pts = calcPts(pred, results, profile.plan || 'free');
+      profile.points = (profile.points || 0) + pts;
+      if (!profile.gpHistory) profile.gpHistory = {};
+      profile.gpHistory[gpId] = {
+        pts,
+        pred: pred.map(p => typeof p === 'string' ? p : p?.sn || '').slice(0, 10),
+        results: results.slice(0, 10),
+        ts: Date.now(),
+      };
+      await kvSet(`profile:${email.toLowerCase()}`, profile);
+      updatedProfiles.set(email.toLowerCase(), profile);
+      updated++;
+      total += pts;
+    } catch {}
+  }));
+
+  await syncLeaguesForProfiles(updatedProfiles);
+  return { updated, avgPts: updated ? Math.round(total / updated) : 0 };
+}
+
+/* ── Handler principal ── */
+export default async function handler(req) {
+  const url = new URL(req.url);
+  const isCron = req.headers.get('x-vercel-cron') === '1';
+  if (!isCron && url.searchParams.get('secret') !== ADMIN_SECRET)
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+      status: 401, headers: { 'Content-Type': 'application/json' },
+    });
+
+  const force = url.searchParams.get('force') === '1';
+
+  const raceData = await getLatestRaceResults();
+  if (!raceData || !raceData.results.length)
+    return new Response(JSON.stringify({ success: false, message: 'Pas de résultats OpenF1 disponibles' }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+
+  const { gpId, gpName, results } = raceData;
+
+  const alreadyDone = await kvGet(`config:scores_done:${gpId}`);
+
+  // FIX BUG 3 : si déjà calculé mais updated=0, on recalcule quand même
+  if (alreadyDone && !force) {
+    const prev = JSON.parse(alreadyDone);
+    if (prev.updated > 0) {
+      // Vraiment déjà fait correctement
+      return new Response(JSON.stringify({
+        success: true,
+        message: `Déjà calculé pour ${gpId} (${prev.updated} joueurs)`,
+        results, skipped: true,
+      }), { headers: { 'Content-Type': 'application/json' } });
+    }
+    // updated était 0 → on refait (bug précédent)
+    console.log(`scores_done trouvé mais updated=0 pour ${gpId} → recalcul forcé`);
+  }
+
+  const { updated, avgPts } = await processScores(gpId, results);
+
+  // Ne marquer comme "done" que si au moins 1 joueur mis à jour
+  if (updated > 0) {
+    await kvSet(`config:scores_done:${gpId}`, JSON.stringify({ ts: Date.now(), results, updated }));
+  }
+  await kvSet(`config:race_results:${gpId}`, JSON.stringify({ gpId, gpName, results, ts: Date.now() }));
 
   return new Response(JSON.stringify({
-    success:true,gpId,gpName,results,updated,avgPts,leaguesSynced:true,
-    message:`✅ ${gpName} — ${updated} joueurs mis à jour, ligues synchronisées`
-  }),{headers:{'Content-Type':'application/json'}});
+    success: true, gpId, gpName, results, updated, avgPts, leaguesSynced: true,
+    message: `✅ ${gpName} — ${updated} joueurs mis à jour, ligues synchronisées`,
+  }), { headers: { 'Content-Type': 'application/json' } });
 }
