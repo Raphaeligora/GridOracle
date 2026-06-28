@@ -209,6 +209,36 @@ async function getLatestRaceResults() {
       }
     } catch {}
 
+    // FIX : si gpId générique (race-2026, grand-prix-2026...) → identifier via date
+    if (gpId.startsWith('race-') || gpId.startsWith('grand-prix-') || gpId === 'race-2026') {
+      const raceDate = new Date(session.date_start);
+      const month = raceDate.getUTCMonth() + 1; // 1-12
+      const day   = raceDate.getUTCDate();
+      // Calendrier 2026 approximatif par date
+      if (month === 6 && day >= 25 && day <= 30) gpId = 'austria-2026';
+      else if (month === 7 && day >= 1  && day <= 6)  gpId = 'britain-2026';
+      else if (month === 7 && day >= 23 && day <= 28) gpId = 'hungary-2026';
+      else if (month === 7 && day >= 28)              gpId = 'belgium-2026';
+      else if (month === 8)                           gpId = 'netherlands-2026';
+      else if (month === 9 && day <= 7)               gpId = 'italy-2026';
+      else if (month === 9 && day >= 18)              gpId = 'singapore-2026';
+      else if (month === 10 && day <= 5)              gpId = 'japan-2026';
+      else if (month === 10 && day >= 19)             gpId = 'usa-2026';
+      else if (month === 10 && day >= 25)             gpId = 'mexico-2026';
+      else if (month === 11 && day <= 9)              gpId = 'brazil-2026';
+      else if (month === 11 && day >= 19)             gpId = 'las-vegas-2026';
+      else if (month === 11 && day >= 28)             gpId = 'qatar-2026';
+      else if (month === 12)                          gpId = 'abu-dhabi-2026';
+      else if (month <= 3)                            gpId = 'bahrain-2026';
+      else if (month === 4 && day <= 6)               gpId = 'saudi-arabia-2026';
+      else if (month === 4 && day >= 17)              gpId = 'australia-2026';
+      else if (month === 5 && day <= 4)               gpId = 'china-2026';
+      else if (month === 5 && day >= 7 && day <= 12)  gpId = 'miami-2026';
+      else if (month === 5 && day >= 20)              gpId = 'monaco-2026';
+      else if (month === 6 && day <= 8)               gpId = 'spain-2026';
+      else if (month === 6 && day >= 12 && day <= 16) gpId = 'canada-2026';
+    }
+
     return { gpId, gpName, results: finalOrder, sessionKey: session.session_key };
   } catch (e) {
     console.error('OpenF1:', e.message);
@@ -245,7 +275,22 @@ async function processScores(gpId, results) {
 
   // Filtrer uniquement les clés pour ce GP (gpId principal + clé alternative)
   // save-prediction sauvegarde sous pred:email:austria-2026 ET pred:email:gp-r10-2026
-  const ALT_ID = { 'austria-2026':'gp-r10-2026','gp-r10-2026':'austria-2026' };
+  const ALT_ID = {
+    'austria-2026':'gp-r10-2026',   'gp-r10-2026':'austria-2026',
+    'britain-2026':'gp-r11-2026',   'gp-r11-2026':'britain-2026',
+    'belgium-2026':'gp-r12-2026',   'gp-r12-2026':'belgium-2026',
+    'hungary-2026':'gp-r13-2026',   'gp-r13-2026':'hungary-2026',
+    'netherlands-2026':'gp-r14-2026','gp-r14-2026':'netherlands-2026',
+    'italy-2026':'gp-r15-2026',     'gp-r15-2026':'italy-2026',
+    'singapore-2026':'gp-r16-2026', 'gp-r16-2026':'singapore-2026',
+    'japan-2026':'gp-r17-2026',     'gp-r17-2026':'japan-2026',
+    'usa-2026':'gp-r18-2026',       'gp-r18-2026':'usa-2026',
+    'mexico-2026':'gp-r19-2026',    'gp-r19-2026':'mexico-2026',
+    'brazil-2026':'gp-r20-2026',    'gp-r20-2026':'brazil-2026',
+    'las-vegas-2026':'gp-r21-2026', 'gp-r21-2026':'las-vegas-2026',
+    'qatar-2026':'gp-r22-2026',     'gp-r22-2026':'qatar-2026',
+    'abu-dhabi-2026':'gp-r23-2026', 'gp-r23-2026':'abu-dhabi-2026',
+  };
   const altGpId = ALT_ID[gpId] || null;
   const gpKeys = allKeys.filter(k =>
     k.endsWith(`:${gpId}`) || (altGpId && k.endsWith(`:${altGpId}`))
@@ -307,15 +352,42 @@ export default async function handler(req) {
       status: 401, headers: { 'Content-Type': 'application/json' },
     });
 
-  const force = url.searchParams.get('force') === '1';
+  const force  = url.searchParams.get('force') === '1';
+  const manualGpId = url.searchParams.get('gpId'); // ex: ?gpId=austria-2026
 
-  const raceData = await getLatestRaceResults();
-  if (!raceData || !raceData.results.length)
-    return new Response(JSON.stringify({ success: false, message: 'Pas de résultats OpenF1 disponibles' }), {
-      headers: { 'Content-Type': 'application/json' },
-    });
+  // Résultats connus des courses passées — fallback si OpenF1 échoue ou retourne race-2026
+  const KNOWN_RESULTS = {
+    'austria-2026': {
+      gpName: 'Grand Prix d'Autriche 2026',
+      results: ['Russell','Verstappen','Antonelli','Piastri','Hamilton','Leclerc','Norris','Sainz','Hadjar','Alonso'],
+    },
+  };
 
-  const { gpId, gpName, results } = raceData;
+  let gpId, gpName, results;
+
+  // Mode manuel : ?gpId=austria-2026 → utilise les résultats connus directement
+  if (manualGpId && KNOWN_RESULTS[manualGpId]) {
+    gpId    = manualGpId;
+    gpName  = KNOWN_RESULTS[manualGpId].gpName;
+    results = KNOWN_RESULTS[manualGpId].results;
+  } else {
+    // Mode auto : OpenF1
+    const raceData = await getLatestRaceResults();
+    // Si OpenF1 retourne un gpId générique, check les résultats connus
+    if (raceData && KNOWN_RESULTS[raceData.gpId]) {
+      gpId    = raceData.gpId;
+      gpName  = KNOWN_RESULTS[raceData.gpId].gpName;
+      results = KNOWN_RESULTS[raceData.gpId].results; // toujours utiliser les résultats vérifiés
+    } else if (raceData && raceData.results.length) {
+      gpId    = raceData.gpId;
+      gpName  = raceData.gpName;
+      results = raceData.results;
+    } else {
+      return new Response(JSON.stringify({ success: false, message: 'Pas de résultats disponibles — utilise ?gpId=austria-2026 pour forcer' }), {
+        headers: { 'Content-Type': 'application/json' },
+      });
+    }
+  }
 
   const alreadyDone = await kvGet(`config:scores_done:${gpId}`);
 
