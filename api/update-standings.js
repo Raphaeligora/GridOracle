@@ -89,19 +89,27 @@ export default async function handler(req) {
   await kvSet('config:standings_updated_at', Date.now().toString());
 
   // 5. Refresh toutes les ligues
-  // Scan les clés league:*:members
-  const leagueKeys = await kvScan('league:*:members');
+  // Méthode A : scan direct league:*:members
+  let leagueKeys = await kvScan('league:*:members');
+  // Méthode B : via invite:* (même logique que refresh-league-scores)
+  if (!leagueKeys.length) {
+    const inviteKeys = await kvScan('invite:*');
+    const leagueIdsSet = new Set();
+    await Promise.all(inviteKeys.map(async key => {
+      const raw = await kvGet(key);
+      if (raw && typeof raw === 'string') leagueIdsSet.add(raw);
+    }));
+    leagueKeys = [...leagueIdsSet].map(id => `league:${id}:members`);
+  }
   let leaguesUpdated = 0;
 
   await Promise.allSettled(leagueKeys.map(async key => {
     try {
-      const leagueId = key.split(':')[1];
       const mRaw = await kvGet(key);
       if (!mRaw) return;
       const members = JSON.parse(mRaw);
       let changed = false;
       const updated = members.map(m => {
-        // Cherche le profil correspondant
         const profile = validProfiles.find(
           p => p.email?.toLowerCase() === m.email?.toLowerCase()
             || p.handle === m.handle
