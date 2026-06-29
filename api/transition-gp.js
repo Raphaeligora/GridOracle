@@ -48,9 +48,9 @@ const CALENDAR_2026 = [
 
 function findCurrentGp() {
   const now = new Date();
-  // Trouver le GP dont la quali est dans le futur (le prochain a venir)
+  // Prochain GP = premier dont les qualifs sont STRICTEMENT dans le futur
   const upcoming = CALENDAR_2026
-    .filter(gp => new Date(gp.qualiUTC) > new Date(now - 7 * 24 * 3600000)) // pas plus vieux d'une semaine
+    .filter(gp => new Date(gp.qualiUTC) > now)
     .sort((a, b) => new Date(a.qualiUTC) - new Date(b.qualiUTC));
   return upcoming[0] || null;
 }
