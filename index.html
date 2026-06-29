@@ -2062,6 +2062,17 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
           🤖 Auto-calcul OpenF1 (après la course)
         </button>
         <div id="admin-auto-result" style="font-size:.75rem;color:var(--g);text-align:center;margin-top:.3rem"></div>
+        <div style="margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--b)">
+          <div style="font-family:var(--fh);font-size:.88rem;font-weight:700;margin-bottom:.5rem">🔒 Verrouillage manuel</div>
+          <div style="display:flex;flex-direction:column;gap:.4rem">
+            <button onclick="adminLockSprint()" style="background:rgba(255,140,0,.08);border:1px solid rgba(255,140,0,.3);color:#ff9500;border-radius:8px;padding:.6rem;font-size:.8rem;cursor:pointer;font-weight:700">🏃 Verrouiller prédictions Sprint</button>
+            <button onclick="adminLockRace()" style="background:rgba(232,0,29,.06);border:1px solid rgba(232,0,29,.25);color:var(--red);border-radius:8px;padding:.6rem;font-size:.8rem;cursor:pointer;font-weight:700">🏁 Verrouiller prédictions Course</button>
+            <button onclick="adminUnlockAll()" style="background:rgba(76,175,80,.06);border:1px solid rgba(76,175,80,.2);color:#4caf50;border-radius:8px;padding:.6rem;font-size:.8rem;cursor:pointer">🔓 Déverrouiller tout</button>
+            <div id="admin-lock-result" style="font-size:.72rem;color:var(--g);text-align:center;margin-top:.2rem"></div>
+          </div>
+        </div>
+        <button onclick="adminResetGpPoints()" style="background:rgba(232,0,29,.06);border:1px solid rgba(232,0,29,.3);color:var(--red);border-radius:8px;padding:.65rem;font-size:.82rem;cursor:pointer;margin-top:.8rem;font-weight:700;width:100%">🗑️ Remettre tous les joueurs à zéro</button>
+        <div id="admin-reset-result" style="font-size:.75rem;color:var(--g);text-align:center;margin-top:.3rem"></div>
       </div>
     </div>
 
@@ -2240,7 +2251,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
             <div class="ngp-chip">5.891 km</div>
             <div class="ngp-chip">52 tours</div>
             <div class="ngp-chip">10 virages</div>
-            <div class="ngp-chip">337 km/h max</div>
+            <div class="ngp-chip">325 km/h max</div>
             <div class="ngp-chip ngp-chip-red">1:26.600 record</div>
           </div>
           <button class="ngp-pred-btn" onclick="navTo('prediction')">🏁 Faire ma prédiction →</button>
@@ -2718,55 +2729,55 @@ const CDN='https://media.formula1.com/d_driver_fallback_image.png/content/dam/fo
 const QUAL=new Date('2026-06-27T15:00:00');
 
 const TEAMS=[
-  {id:'mclaren',name:'McLaren',abr:'MCL',color:'#FF8000',eng:'Mercedes',isNew:false,wccPos:3,wccPts:141,d:['Norris','Piastri']},
-  {id:'ferrari',name:'Scuderia Ferrari',abr:'SF',color:'#E8001D',eng:'Ferrari',isNew:false,wccPos:2,wccPts:190,d:['Leclerc','Hamilton']},
-  {id:'redbull',name:'Red Bull Racing',abr:'RBR',color:'#3671C6',eng:'Red Bull Ford',isNew:false,wccPos:4,wccPts:89,d:['Verstappen','Hadjar']},
-  {id:'mercedes',name:'Mercedes-AMG',abr:'AMG',color:'#00D2BE',eng:'Mercedes',isNew:false,wccPos:1,wccPts:272,d:['Russell','Antonelli']},
-  {id:'aston',name:'Aston Martin',abr:'AMF',color:'#358C75',eng:'Honda',isNew:false,wccPos:10,wccPts:5,d:['Alonso','Stroll']},
-  {id:'alpine',name:'Alpine F1',abr:'ALP',color:'#FF0060',eng:'Mercedes',isNew:false,wccPos:5,wccPts:60,d:['Gasly','Colapinto']},
-  {id:'williams',name:'Williams Racing',abr:'WIL',color:'#00A0DD',eng:'Mercedes',isNew:false,wccPos:8,wccPts:18,d:['Albon','Sainz']},
-  {id:'haas',name:'TGR Haas F1',abr:'HAA',color:'#CC1800',eng:'Toyota',isNew:false,wccPos:7,wccPts:22,d:['Bearman','Ocon']},
-  {id:'rb',name:'Racing Bulls',abr:'RB',color:'#4E7CB2',eng:'Red Bull Ford',isNew:false,wccPos:6,wccPts:38,d:['Lawson','Lindblad']},
-  {id:'audi',name:'Audi F1',abr:'AUD',color:'#BB0A1E',eng:'Audi',isNew:true,wccPos:9,wccPts:8,d:['Hülkenberg','Bortoleto']},
+  {id:'mclaren',name:'McLaren',abr:'MCL',color:'#FF8000',eng:'Mercedes',isNew:false,wccPos:3,wccPts:159,d:['Norris','Piastri']},
+  {id:'ferrari',name:'Scuderia Ferrari',abr:'SF',color:'#E8001D',eng:'Ferrari',isNew:false,wccPos:2,wccPts:204,d:['Leclerc','Hamilton']},
+  {id:'redbull',name:'Red Bull Racing',abr:'RBR',color:'#3671C6',eng:'Red Bull Ford',isNew:false,wccPos:4,wccPts:115,d:['Verstappen','Hadjar']},
+  {id:'mercedes',name:'Mercedes-AMG',abr:'AMG',color:'#00D2BE',eng:'Mercedes',isNew:false,wccPos:1,wccPts:302,d:['Russell','Antonelli']},
+  {id:'aston',name:'Aston Martin',abr:'AMF',color:'#358C75',eng:'Honda',isNew:false,wccPos:10,wccPts:1,d:['Alonso','Stroll']},
+  {id:'alpine',name:'Alpine F1',abr:'ALP',color:'#FF0060',eng:'Mercedes',isNew:false,wccPos:5,wccPts:57,d:['Gasly','Colapinto']},
+  {id:'williams',name:'Williams Racing',abr:'WIL',color:'#00A0DD',eng:'Mercedes',isNew:false,wccPos:8,wccPts:11,d:['Albon','Sainz']},
+  {id:'haas',name:'TGR Haas F1',abr:'HAA',color:'#CC1800',eng:'Toyota',isNew:false,wccPos:7,wccPts:21,d:['Bearman','Ocon']},
+  {id:'rb',name:'Racing Bulls',abr:'RB',color:'#4E7CB2',eng:'Red Bull Ford',isNew:false,wccPos:6,wccPts:44,d:['Lawson','Lindblad']},
+  {id:'audi',name:'Audi F1',abr:'AUD',color:'#BB0A1E',eng:'Audi',isNew:true,wccPos:9,wccPts:2,d:['Hülkenberg','Bortoleto']},
   {id:'cadillac',name:'Cadillac F1',abr:'CAD',color:'#1C3F94',eng:'Ferrari',isNew:true,wccPos:11,wccPts:0,d:['Bottas','Pérez']},
 ];
 
 const DRIVERS=[
-  {n:'3',sn:'Verstappen',fn:'Max',t:'redbull',tc:'#3671C6',img:CDN+'M/MAXVER01_Max_Verstappen/maxver01.png.transform/1col/image.png',wdcPos:7,wdcPts:55},
-  {n:'6',sn:'Hadjar',fn:'Isack',t:'redbull',tc:'#3671C6',img:CDN+'I/ISAHAD01_Isack_Hadjar/isahad01.png.transform/1col/image.png',wdcPos:8,wdcPts:38},
-  {n:'4',sn:'Norris',fn:'Lando',t:'mclaren',tc:'#FF8000',img:CDN+'L/LANNOR01_Lando_Norris/lannor01.png.transform/1col/image.png',wdc:true,wdcPos:6,wdcPts:76},
-  {n:'81',sn:'Piastri',fn:'Oscar',t:'mclaren',tc:'#FF8000',img:CDN+'O/OSCPIA01_Oscar_Piastri/oscpia01.png.transform/1col/image.png',wdcPos:5,wdcPts:78},
-  {n:'16',sn:'Leclerc',fn:'Charles',t:'ferrari',tc:'#E8001D',img:CDN+'C/CHALEC01_Charles_Leclerc/chalec01.png.transform/1col/image.png',wdcPos:4,wdcPts:84},
-  {n:'44',sn:'Hamilton',fn:'Lewis',t:'ferrari',tc:'#E8001D',img:CDN+'L/LEWHAM01_Lewis_Hamilton/lewham01.png.transform/1col/image.png',wdcPos:2,wdcPts:124},
-  {n:'63',sn:'Russell',fn:'George',t:'mercedes',tc:'#00D2BE',img:CDN+'G/GEORUS01_George_Russell/georus01.png.transform/1col/image.png',wdcPos:3,wdcPts:107},
-  {n:'12',sn:'Antonelli',fn:'Kimi',t:'mercedes',tc:'#00D2BE',img:CDN+'K/KIMANT01_Kimi_Antonelli/kimant01.png.transform/1col/image.png',wdcPos:1,wdcPts:165},
-  {n:'14',sn:'Alonso',fn:'Fernando',t:'aston',tc:'#358C75',img:CDN+'F/FERALO01_Fernando_Alonso/feralo01.png.transform/1col/image.png',wdcPos:12,wdcPts:5},
-  {n:'18',sn:'Stroll',fn:'Lance',t:'aston',tc:'#358C75',img:CDN+'L/LANSTR01_Lance_Stroll/lanstr01.png.transform/1col/image.png',wdcPos:14,wdcPts:0},
-  {n:'10',sn:'Gasly',fn:'Pierre',t:'alpine',tc:'#FF0060',img:CDN+'P/PIEGAS01_Pierre_Gasly/piegas01.png.transform/1col/image.png',wdcPos:9,wdcPts:28},
-  {n:'43',sn:'Colapinto',fn:'Franco',t:'alpine',tc:'#FF0060',img:CDN+'F/FRACOL01_Franco_Colapinto/fracol01.png.transform/1col/image.png',wdcPos:10,wdcPts:22},
-  {n:'23',sn:'Albon',fn:'Alex',t:'williams',tc:'#00A0DD',img:CDN+'A/ALEALB01_Alex_Albon/alealb01.png.transform/1col/image.png',wdcPos:15,wdcPts:8},
-  {n:'55',sn:'Sainz',fn:'Carlos',t:'williams',tc:'#00A0DD',img:CDN+'C/CARSAI01_Carlos_Sainz/carsai01.png.transform/1col/image.png',wdcPos:16,wdcPts:6},
-  {n:'87',sn:'Bearman',fn:'Oliver',t:'haas',tc:'#CC1800',img:CDN+'O/OLIBEA01_Oliver_Bearman/olibea01.png.transform/1col/image.png',wdcPos:13,wdcPts:4},
-  {n:'31',sn:'Ocon',fn:'Esteban',t:'haas',tc:'#CC1800',img:CDN+'E/ESTOCO01_Esteban_Ocon/estoco01.png.transform/1col/image.png',wdcPos:18,wdcPts:0},
-  {n:'30',sn:'Lawson',fn:'Liam',t:'rb',tc:'#4E7CB2',img:CDN+'L/LIALAW01_Liam_Lawson/lialaw01.png.transform/1col/image.png',wdcPos:11,wdcPts:10},
-  {n:'41',sn:'Lindblad',fn:'Arvid',t:'rb',tc:'#4E7CB2',img:CDN+'A/ARVLIN01_Arvid_Lindblad/arvlin01.png.transform/1col/image.png',rookie:true,wdcPos:17,wdcPts:2},
+  {n:'3',sn:'Verstappen',fn:'Max',t:'redbull',tc:'#3671C6',img:CDN+'M/MAXVER01_Max_Verstappen/maxver01.png.transform/1col/image.png',wdcPos:7,wdcPts:73},
+  {n:'6',sn:'Hadjar',fn:'Isack',t:'redbull',tc:'#3671C6',img:CDN+'I/ISAHAD01_Isack_Hadjar/isahad01.png.transform/1col/image.png',wdcPos:8,wdcPts:42},
+  {n:'4',sn:'Norris',fn:'Lando',t:'mclaren',tc:'#FF8000',img:CDN+'L/LANNOR01_Lando_Norris/lannor01.png.transform/1col/image.png',wdc:true,wdcPos:5,wdcPts:79},
+  {n:'81',sn:'Piastri',fn:'Oscar',t:'mclaren',tc:'#FF8000',img:CDN+'O/OSCPIA01_Oscar_Piastri/oscpia01.png.transform/1col/image.png',wdcPos:4,wdcPts:80},
+  {n:'16',sn:'Leclerc',fn:'Charles',t:'ferrari',tc:'#E8001D',img:CDN+'C/CHALEC01_Charles_Leclerc/chalec01.png.transform/1col/image.png',wdcPos:6,wdcPts:79},
+  {n:'44',sn:'Hamilton',fn:'Lewis',t:'ferrari',tc:'#E8001D',img:CDN+'L/LEWHAM01_Lewis_Hamilton/lewham01.png.transform/1col/image.png',wdcPos:3,wdcPts:125},
+  {n:'63',sn:'Russell',fn:'George',t:'mercedes',tc:'#00D2BE',img:CDN+'G/GEORUS01_George_Russell/georus01.png.transform/1col/image.png',wdcPos:2,wdcPts:131},
+  {n:'12',sn:'Antonelli',fn:'Kimi',t:'mercedes',tc:'#00D2BE',img:CDN+'K/KIMANT01_Kimi_Antonelli/kimant01.png.transform/1col/image.png',wdcPos:1,wdcPts:171},
+  {n:'14',sn:'Alonso',fn:'Fernando',t:'aston',tc:'#358C75',img:CDN+'F/FERALO01_Fernando_Alonso/feralo01.png.transform/1col/image.png',wdcPos:18,wdcPts:1},
+  {n:'18',sn:'Stroll',fn:'Lance',t:'aston',tc:'#358C75',img:CDN+'L/LANSTR01_Lance_Stroll/lanstr01.png.transform/1col/image.png',wdcPos:22,wdcPts:0},
+  {n:'10',sn:'Gasly',fn:'Pierre',t:'alpine',tc:'#FF0060',img:CDN+'P/PIEGAS01_Pierre_Gasly/piegas01.png.transform/1col/image.png',wdcPos:9,wdcPts:41},
+  {n:'43',sn:'Colapinto',fn:'Franco',t:'alpine',tc:'#FF0060',img:CDN+'F/FRACOL01_Franco_Colapinto/fracol01.png.transform/1col/image.png',wdcPos:12,wdcPts:16},
+  {n:'23',sn:'Albon',fn:'Alex',t:'williams',tc:'#00A0DD',img:CDN+'A/ALEALB01_Alex_Albon/alealb01.png.transform/1col/image.png',wdcPos:15,wdcPts:5},
+  {n:'55',sn:'Sainz',fn:'Carlos',t:'williams',tc:'#00A0DD',img:CDN+'C/CARSAI01_Carlos_Sainz/carsai01.png.transform/1col/image.png',wdcPos:14,wdcPts:6},
+  {n:'87',sn:'Bearman',fn:'Oliver',t:'haas',tc:'#CC1800',img:CDN+'O/OLIBEA01_Oliver_Bearman/olibea01.png.transform/1col/image.png',wdcPos:11,wdcPts:18},
+  {n:'31',sn:'Ocon',fn:'Esteban',t:'haas',tc:'#CC1800',img:CDN+'E/ESTOCO01_Esteban_Ocon/estoco01.png.transform/1col/image.png',wdcPos:16,wdcPts:3},
+  {n:'30',sn:'Lawson',fn:'Liam',t:'rb',tc:'#4E7CB2',img:CDN+'L/LIALAW01_Liam_Lawson/lialaw01.png.transform/1col/image.png',wdcPos:10,wdcPts:30},
+  {n:'41',sn:'Lindblad',fn:'Arvid',t:'rb',tc:'#4E7CB2',img:CDN+'A/ARVLIN01_Arvid_Lindblad/arvlin01.png.transform/1col/image.png',rookie:true,wdcPos:13,wdcPts:14},
   {n:'27',sn:'Hülkenberg',fn:'Nico',t:'audi',tc:'#BB0A1E',img:CDN+'N/NICHUL01_Nico_Hulkenberg/nichul01.png.transform/1col/image.png',wdcPos:19,wdcPts:0},
-  {n:'5',sn:'Bortoleto',fn:'Gabriel',t:'audi',tc:'#BB0A1E',img:CDN+'G/GABBOR01_Gabriel_Bortoleto/gabbor01.png.transform/1col/image.png',wdcPos:20,wdcPts:0},
-  {n:'77',sn:'Bottas',fn:'Valtteri',t:'cadillac',tc:'#1C3F94',img:CDN+'V/VALBOT01_Valtteri_Bottas/valbot01.png.transform/1col/image.png',wdcPos:21,wdcPts:0},
-  {n:'11',sn:'Pérez',fn:'Sergio',t:'cadillac',tc:'#1C3F94',img:CDN+'S/SERPER01_Sergio_Perez/serper01.png.transform/1col/image.png',wdcPos:22,wdcPts:0},
+  {n:'5',sn:'Bortoleto',fn:'Gabriel',t:'audi',tc:'#BB0A1E',img:CDN+'G/GABBOR01_Gabriel_Bortoleto/gabbor01.png.transform/1col/image.png',wdcPos:17,wdcPts:2},
+  {n:'77',sn:'Bottas',fn:'Valtteri',t:'cadillac',tc:'#1C3F94',img:CDN+'V/VALBOT01_Valtteri_Bottas/valbot01.png.transform/1col/image.png',wdcPos:20,wdcPts:0},
+  {n:'11',sn:'Pérez',fn:'Sergio',t:'cadillac',tc:'#1C3F94',img:CDN+'S/SERPER01_Sergio_Perez/serper01.png.transform/1col/image.png',wdcPos:21,wdcPts:0},
 ];
 
 const AI_DATA=[
-  {sn:'Verstappen',t:'redbull',tc:'#3671C6',note:'🏠 Home',pct:87,pts:25},
-  {sn:'Antonelli',t:'mercedes',tc:'#00D2BE',note:'Ldr WDC',pct:81,pts:18},
-  {sn:'Hamilton',t:'ferrari',tc:'#E8001D',note:'🔥 Barcelone',pct:73,pts:15},
-  {sn:'Russell',t:'mercedes',tc:'#00D2BE',note:'',pct:67,pts:12},
-  {sn:'Norris',t:'mclaren',tc:'#FF8000',note:'',pct:61,pts:10},
-  {sn:'Piastri',t:'mclaren',tc:'#FF8000',note:'',pct:57,pts:8},
-  {sn:'Hadjar',t:'redbull',tc:'#3671C6',note:'',pct:48,pts:6},
-  {sn:'Leclerc',t:'ferrari',tc:'#E8001D',note:'',pct:44,pts:4},
-  {sn:'Gasly',t:'alpine',tc:'#FF0060',note:'',pct:38,pts:2},
-  {sn:'Sainz',t:'williams',tc:'#00A0DD',note:'',pct:31,pts:1},
+  {sn:'Antonelli',t:'mercedes',tc:'#00D2BE',note:'🔥 5 victoires',pct:92,pts:25},
+  {sn:'Russell',t:'mercedes',tc:'#00D2BE',note:'Vainqueur Autriche',pct:84,pts:18},
+  {sn:'Hamilton',t:'ferrari',tc:'#E8001D',note:'🏠 9x Silverstone',pct:76,pts:15},
+  {sn:'Norris',t:'mclaren',tc:'#FF8000',note:'🏠 Vainqueur 2025',pct:68,pts:12},
+  {sn:'Piastri',t:'mclaren',tc:'#FF8000',note:'',pct:61,pts:10},
+  {sn:'Leclerc',t:'ferrari',tc:'#E8001D',note:'',pct:54,pts:8},
+  {sn:'Verstappen',t:'redbull',tc:'#3671C6',note:'',pct:47,pts:6},
+  {sn:'Hadjar',t:'redbull',tc:'#3671C6',note:'Rookie en forme',pct:38,pts:4},
+  {sn:'Lawson',t:'rb',tc:'#4E7CB2',note:'',pct:30,pts:2},
+  {sn:'Bearman',t:'haas',tc:'#CC1800',note:'🏠 Britannique',pct:24,pts:1},
 ];
 
 const AI5=AI_DATA.slice(0,5).map(d=>d.sn);
@@ -3475,9 +3486,9 @@ function hReset(){HP.pred=new Array(10).fill(null);HP.opk=-1;hRender()}
 function pReset(){PP.pred=new Array(10).fill(null);PP.opk=-1;pRender()}
 /* ══ PRÉDICTION — SAUVEGARDE REDIS + PARTAGE ══ */
 
-let GP_CURRENT = { id: 'britain-2026', name: "Grand Prix de Grande-Bretagne", flag: '🇬🇧', r: 10, loc: 'Silverstone · Northamptonshire' };
+let GP_CURRENT = { id: 'britain-2026', name: "Grand Prix de Grande-Bretagne", flag: '🇬🇧', r: 10, loc: 'Silverstone · Northamptonshire', isSprint: true, sprintId: 'sprint-britain-2026', sprintDeadlineUTC: '2026-07-04T10:30:00Z', qualiDeadlineUTC: '2026-07-05T14:00:00Z' };
 // Deadline qualifs : samedi 27 juin 2026 à 15h45 Paris
-let QUALI_DEADLINE_TS = new Date('2026-07-05T13:00:00Z').getTime();
+let QUALI_DEADLINE_TS = new Date('2026-07-05T15:00:00Z').getTime();
 
 function isPredLocked(){ return Date.now() >= QUALI_DEADLINE_TS; }
 
@@ -5178,6 +5189,35 @@ async function adminRefreshLeagues(){
   }
 }
 
+async function adminLockSprint(){
+  const el=document.getElementById('admin-lock-result');
+  if(!GP_CURRENT.isSprint){if(el)el.textContent='Pas un week-end sprint';return;}
+  if(!confirm('Verrouiller les prédictions Sprint maintenant ?'))return;
+  if(el)el.textContent='Verrouillage Sprint…';
+  try{const r=await fetch('/api/lock-predictions?secret=go2026admin&type=sprint&gpId='+GP_CURRENT.sprintId);const d=await r.json();const m=d.success?'✅ Sprint verrouillé':'❌ Erreur';if(el)el.textContent=m;showToast(m);}
+  catch{if(el)el.textContent='❌ Erreur réseau';}
+}
+async function adminLockRace(){
+  if(!confirm('Verrouiller les prédictions Course maintenant ?'))return;
+  const el=document.getElementById('admin-lock-result');if(el)el.textContent='Verrouillage Course…';
+  try{const r=await fetch('/api/lock-predictions?secret=go2026admin&type=race&gpId='+GP_CURRENT.id);const d=await r.json();const m=d.success?'✅ Course verrouillée':'❌ Erreur';if(el)el.textContent=m;showToast(m);}
+  catch{if(el)el.textContent='❌ Erreur réseau';}
+}
+async function adminUnlockAll(){
+  if(!confirm('Déverrouiller tout ?'))return;
+  const el=document.getElementById('admin-lock-result');
+  try{await fetch('/api/lock-predictions?secret=go2026admin&type=unlock&gpId='+GP_CURRENT.id);if(GP_CURRENT.sprintId)await fetch('/api/lock-predictions?secret=go2026admin&type=unlock&gpId='+GP_CURRENT.sprintId);if(el)el.textContent='✅ Tout déverrouillé';showToast('✅ Prédictions déverrouillées');}
+  catch{if(el)el.textContent='❌ Erreur réseau';}
+}
+async function adminResetGpPoints(){
+  const el=document.getElementById('admin-reset-result');
+  const gpId=prompt('gpId à remettre à zéro (ex: britain-2026) ou ALL:');
+  if(!gpId)return;
+  if(!confirm('⚠️ Remettre TOUS les joueurs à zéro pour '+gpId+' ?'))return;
+  if(el)el.textContent='Remise à zéro…';
+  try{const url=gpId.toUpperCase()==='ALL'?'/api/reset-gp-scores?secret=go2026admin&all=1':'/api/reset-gp-scores?secret=go2026admin&gpId='+encodeURIComponent(gpId);const r=await fetch(url);const d=await r.json();const m=d.success?'✅ '+d.reset+' joueurs remis à zéro':'❌ '+(d.error||'Erreur');if(el)el.textContent=m;showToast(m);}
+  catch{if(el)el.textContent='❌ Erreur réseau';}
+}
 function shareTo(){ openShareModal(HP.pred.filter(Boolean)); }
 
 /* ══ END PRÉDICTION SAUVEGARDE ══ */
@@ -5854,7 +5894,7 @@ const F1_CALENDAR_2026 = [
   {r:8, id:'monaco-2026',  flag:'🇲🇨', name:'Grand Prix de Monaco',         loc:'Circuit de Monaco',                dates:'5–7 Juin',      el:'13h', q:'15h', race:'15h', circuit:'3.337 km · 78 tours', status:'done', raceDay:'2026-06-07', qualiDay:'2026-06-06', p1:'Leclerc',   p2:'Norris',    p3:'Piastri'},
   {r:9, id:'spain-2026',  flag:'🇪🇸', name:"Grand Prix d'Espagne",         loc:'Circuit de Barcelona-Catalunya',   dates:'12–14 Juin',    el:'13h', q:'15h', race:'15h', circuit:'4.655 km · 66 tours', status:'done', raceDay:'2026-06-14', qualiDay:'2026-06-13', p1:'Hamilton',  p2:'Verstappen',p3:'Antonelli'},
   // ── GP en cours ──────────────────────────────────────────────────
-  {r:9,  id:'austria-2026', flag:'🇦🇹', name:"Grand Prix d'Autriche",         loc:'Red Bull Ring · Spielberg',        dates:'26–28 Juin',    el:'13h30', q:'16h00', race:'15h00', circuit:'4.318 km · 71 tours', status:'next', raceDay:'2026-06-28', qualiDay:'2026-06-27',
+  {r:10, id:'austria-2026', flag:'🇬🇧', name:"Grand Prix d'Autriche",        loc:'Red Bull Ring · Spielberg',        dates:'26–28 Juin',    el:'13h30', q:'16h00', race:'15h00', circuit:'4.318 km · 71 tours', status:'next', raceDay:'2026-06-28', qualiDay:'2026-06-27',
     aiPred:[
       {sn:'Verstappen',t:'redbull',  tc:'#3671C6',note:'🏠 Home RBR',pct:87,pts:25},
       {sn:'Antonelli', t:'mercedes', tc:'#00D2BE',note:'Ldr WDC',    pct:81,pts:18},
