@@ -2241,18 +2241,18 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
       <div class="ngp-hero-bg"></div>
       <div class="ngp-hero-inner">
         <div class="ngp-hero-left">
-          <div class="ngp-kicker" data-i18n="nextgp.round">Round 8 · 2026</div>
-          <div class="ngp-title">Grand Prix<br><span class="ngp-title-red">d'Autriche</span></div>
+          <div class="ngp-kicker" data-i18n="nextgp.round" id="ngp-round">Round 10 · 2026</div>
+          <div class="ngp-title" id="ngp-title">Grand Prix<br><span class="ngp-title-red" id="ngp-title-red">de Grande-Bretagne</span></div>
           <div class="ngp-meta">
-            <span class="ngp-flag">🇦🇹</span>
-            <span>Red Bull Ring · Spielberg · 26–28 Juin 2026</span>
+            <span class="ngp-flag" id="ngp-flag">🇬🇧</span>
+            <span id="ngp-loc">Silverstone · Northamptonshire · 3–5 Juil 2026</span>
           </div>
           <div class="ngp-chips">
-            <div class="ngp-chip">4.318 km</div>
-            <div class="ngp-chip">71 tours</div>
-            <div class="ngp-chip">10 virages</div>
-            <div class="ngp-chip">337 km/h max</div>
-            <div class="ngp-chip ngp-chip-red">1:05.619 record</div>
+            <div class="ngp-chip">5.891 km</div>
+            <div class="ngp-chip">52 tours</div>
+            <div class="ngp-chip">18 virages</div>
+            <div class="ngp-chip">325 km/h max</div>
+            <div class="ngp-chip ngp-chip-red">1:26.600 record</div>
           </div>
           <button class="ngp-pred-btn" onclick="navTo('prediction')">🏁 Faire ma prédiction →</button>
         </div>
@@ -6142,6 +6142,21 @@ function computeQualiDeadline(gp){
           else if (gp.r < GP_CURRENT.r) gp.status = 'done';
           else gp.status = 'upcoming';
         });
+        // Mettre a jour le HTML statique avec les donnees KV
+        const el_round = document.getElementById('ngp-round');
+        const el_title = document.getElementById('ngp-title-red');
+        const el_flag  = document.getElementById('ngp-flag');
+        const el_loc   = document.getElementById('ngp-loc');
+        if (el_round) el_round.textContent = 'Round ' + kv.r + ' · 2026';
+        if (el_title) {
+          const n = kv.name.replace('Grand Prix de ','').replace("Grand Prix d'",'').replace('Grand Prix du ','').replace('Grand Prix des ','').replace('Grand Prix ','');
+          el_title.textContent = n;
+        }
+        if (el_flag) el_flag.textContent = kv.flag;
+        if (el_loc)  el_loc.textContent  = kv.loc;
+        // Badge admin
+        const badgeEl = document.getElementById('admin-gp-badge');
+        if (badgeEl) badgeEl.textContent = kv.flag + ' ' + kv.name.replace('Grand Prix de ','').replace("Grand Prix d'",'').replace('Grand Prix du ','');
         loadStandingsFromRedis();
         return; // On a tout ce qu'il faut depuis KV
       }
