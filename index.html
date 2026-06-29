@@ -2062,6 +2062,25 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
           🤖 Auto-calcul OpenF1 (après la course)
         </button>
         <div id="admin-auto-result" style="font-size:.75rem;color:var(--g);text-align:center;margin-top:.3rem"></div>
+        <div style="margin-top:.8rem;padding-top:.8rem;border-top:1px solid var(--b)">
+          <div style="font-family:var(--fh);font-size:.88rem;font-weight:700;margin-bottom:.5rem">🔒 Verrouillage manuel</div>
+          <div style="display:flex;flex-direction:column;gap:.4rem">
+            <button onclick="adminLockSprint()" style="background:rgba(255,140,0,.08);border:1px solid rgba(255,140,0,.3);color:#ff9500;border-radius:8px;padding:.6rem;font-size:.8rem;cursor:pointer;font-weight:700">
+              🏃 Verrouiller prédictions Sprint
+            </button>
+            <button onclick="adminLockRace()" style="background:rgba(232,0,29,.06);border:1px solid rgba(232,0,29,.25);color:var(--red);border-radius:8px;padding:.6rem;font-size:.8rem;cursor:pointer;font-weight:700">
+              🏁 Verrouiller prédictions Course
+            </button>
+            <button onclick="adminUnlockAll()" style="background:rgba(76,175,80,.06);border:1px solid rgba(76,175,80,.2);color:#4caf50;border-radius:8px;padding:.6rem;font-size:.8rem;cursor:pointer">
+              🔓 Déverrouiller tout (urgence)
+            </button>
+            <div id="admin-lock-result" style="font-size:.72rem;color:var(--g);text-align:center;margin-top:.2rem"></div>
+          </div>
+        </div>
+        <button onclick="adminResetGpPoints()" style="background:rgba(232,0,29,.06);border:1px solid rgba(232,0,29,.3);color:var(--red);border-radius:8px;padding:.65rem;font-size:.82rem;cursor:pointer;margin-top:.8rem;font-weight:700;width:100%">
+          🗑️ Remettre tous les joueurs à zéro
+        </button>
+        <div id="admin-reset-result" style="font-size:.75rem;color:var(--g);text-align:center;margin-top:.3rem"></div>
       </div>
     </div>
 
@@ -2758,7 +2777,7 @@ const DRIVERS=[
 
 const AI_DATA=[
   {sn:'Verstappen',t:'redbull',tc:'#3671C6',note:'🏠 Home',pct:87,pts:25},
-  {sn:'Antonelli',t:'mercedes',tc:'#00D2BE',note:'Ldr WDC',pct:81,pts:171},
+  {sn:'Antonelli',t:'mercedes',tc:'#00D2BE',note:'Ldr WDC',pct:81,pts:18},
   {sn:'Hamilton',t:'ferrari',tc:'#E8001D',note:'🔥 Barcelone',pct:73,pts:15},
   {sn:'Russell',t:'mercedes',tc:'#00D2BE',note:'',pct:67,pts:12},
   {sn:'Norris',t:'mclaren',tc:'#FF8000',note:'',pct:61,pts:10},
@@ -3475,11 +3494,25 @@ function hReset(){HP.pred=new Array(10).fill(null);HP.opk=-1;hRender()}
 function pReset(){PP.pred=new Array(10).fill(null);PP.opk=-1;pRender()}
 /* ══ PRÉDICTION — SAUVEGARDE REDIS + PARTAGE ══ */
 
-let GP_CURRENT = { id: 'britain-2026', name: 'Grand Prix de Grande-Bretagne', flag: '🇬🇧', r: 9, loc: 'Silverstone · Northamptonshire' };
-// Deadline qualifs : samedi 5 juillet 2026 à 15h00 Paris
-let QUALI_DEADLINE_TS = new Date('2026-07-05T13:00:00Z').getTime();
+let GP_CURRENT = {
+  id: 'britain-2026',
+  name: 'Grand Prix de Grande-Bretagne',
+  flag: '🇬🇧',
+  r: 9,
+  loc: 'Silverstone · Northamptonshire',
+  isSprint: true,
+  sprintId: 'sprint-britain-2026',
+  sprintDeadlineUTC: '2026-07-04T10:30:00Z',  // Vendredi avant Sprint Shootout
+  qualiDeadlineUTC:  '2026-07-05T13:00:00Z',  // Samedi avant Qualifs
+};
+// Deadline course principale
+let QUALI_DEADLINE_TS = new Date(GP_CURRENT.qualiDeadlineUTC).getTime();
+// Deadline sprint
+let SPRINT_DEADLINE_TS = new Date(GP_CURRENT.sprintDeadlineUTC).getTime();
 
-function isPredLocked(){ return Date.now() >= QUALI_DEADLINE_TS; }
+function isPredLocked(){   return Date.now() >= QUALI_DEADLINE_TS; }
+function isSprintLocked(){ return !GP_CURRENT.isSprint || Date.now() >= SPRINT_DEADLINE_TS; }
+
 
 // Sauvegarde dans Redis via l'API
 async function savePredToCloud(predArray){
@@ -5176,6 +5209,60 @@ async function adminRefreshLeagues(){
   }catch{
     if(el) el.textContent='❌ Erreur réseau';
   }
+}
+
+async function adminLockSprint(){
+  const el=document.getElementById('admin-lock-result');
+  if(!GP_CURRENT.isSprint){el.textContent='❌ Pas un week-end sprint';return;}
+  if(!confirm('Verrouiller les prédictions Sprint maintenant ?')) return;
+  if(el) el.textContent='Verrouillage Sprint…';
+  try{
+    const r=await fetch('/api/lock-predictions?secret=go2026admin&type=sprint&gpId='+GP_CURRENT.sprintId);
+    const d=await r.json();
+    const msg=d.success?'✅ Sprint verrouillé':'❌ '+(d.error||'Erreur');
+    if(el) el.textContent=msg; showToast(msg);
+  }catch{ if(el) el.textContent='❌ Erreur réseau'; }
+}
+
+async function adminLockRace(){
+  if(!confirm('Verrouiller les prédictions Course principale maintenant ?')) return;
+  const el=document.getElementById('admin-lock-result');
+  if(el) el.textContent='Verrouillage Course…';
+  try{
+    const r=await fetch('/api/lock-predictions?secret=go2026admin&type=race&gpId='+GP_CURRENT.id);
+    const d=await r.json();
+    const msg=d.success?'✅ Course verrouillée':'❌ '+(d.error||'Erreur');
+    if(el) el.textContent=msg; showToast(msg);
+  }catch{ if(el) el.textContent='❌ Erreur réseau'; }
+}
+
+async function adminUnlockAll(){
+  if(!confirm('⚠️ Déverrouiller TOUT ? Seulement en cas d'urgence.')) return;
+  const el=document.getElementById('admin-lock-result');
+  try{
+    await Promise.all([
+      fetch('/api/lock-predictions?secret=go2026admin&type=unlock&gpId='+GP_CURRENT.id),
+      fetch('/api/lock-predictions?secret=go2026admin&type=unlock&gpId='+(GP_CURRENT.sprintId||'none')),
+    ]);
+    if(el) el.textContent='✅ Tout déverrouillé'; showToast('✅ Prédictions déverrouillées');
+  }catch{ if(el) el.textContent='❌ Erreur réseau'; }
+}
+
+async function adminResetGpPoints(){
+  const el=document.getElementById('admin-reset-result');
+  const gpId=prompt('gpId à remettre à zéro (ex: britain-2026) ou ALL:');
+  if(!gpId) return;
+  if(!confirm('⚠️ Remettre TOUS les joueurs à zéro pour '+gpId+' ?')) return;
+  if(el) el.textContent='Remise à zéro…';
+  try{
+    const url=gpId.toUpperCase()==='ALL'
+      ?'/api/reset-gp-scores?secret=go2026admin&all=1'
+      :'/api/reset-gp-scores?secret=go2026admin&gpId='+encodeURIComponent(gpId);
+    const r=await fetch(url);
+    const d=await r.json();
+    const msg=d.success?('✅ '+d.reset+' joueurs remis à zéro'):('❌ '+(d.error||'Erreur'));
+    if(el) el.textContent=msg; showToast(msg);
+  }catch{ if(el) el.textContent='❌ Erreur réseau'; }
 }
 
 function shareTo(){ openShareModal(HP.pred.filter(Boolean)); }
