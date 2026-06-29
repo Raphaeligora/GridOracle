@@ -15,6 +15,12 @@ export default async function handler(req) {
     const { email, plan, billing } = await req.json();
     if (!email || !plan) return new Response(JSON.stringify({ error: 'Email et plan requis' }), { status: 400, headers });
 
+    // SÉCURITÉ : le client ne peut PAS s'attribuer un plan payant via cette route.
+    // Seul le webhook Stripe (paiement vérifié) accorde premium/creator.
+    if (plan !== 'free') {
+      return new Response(JSON.stringify({ error: 'Les plans payants sont activés uniquement après un paiement Stripe vérifié.' }), { status: 403, headers });
+    }
+
     const emailKey = email.toLowerCase().trim();
     const profileKey = `profile:${emailKey}`;
 

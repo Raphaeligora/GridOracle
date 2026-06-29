@@ -32,7 +32,7 @@ export default async function handler(req) {
       tc: tc || '#e8001d',
       teamId: teamId || null,
       driverSn: driverSn || null,
-      plan: resolvePlan(existingData?.plan, plan),
+      plan: existingData?.plan || 'free', // le client ne peut pas s'auto-attribuer un plan payant — seul le webhook Stripe le fait
       billing: billing || existingData?.billing || 'monthly',
       createdAt: existingData?.createdAt || Date.now(),
       updatedAt: Date.now(),
@@ -47,11 +47,6 @@ export default async function handler(req) {
   } catch (err) {
     return new Response(JSON.stringify({ error: 'Erreur serveur' }), { status: 500, headers });
   }
-}
-
-function resolvePlan(existing, incoming) {
-  const rank = { free: 0, premium: 1, creator: 2 };
-  return (rank[incoming] ?? 0) >= (rank[existing] ?? 0) ? (incoming || 'free') : existing;
 }
 
 async function kvGet(key) {

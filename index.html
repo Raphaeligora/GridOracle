@@ -2522,11 +2522,20 @@ function goToStripe() {
   localStorage.setItem('go_pending_plan', currentPlan);
   localStorage.setItem('go_pending_billing', currentBilling);
   localStorage.setItem('go_pending_ts', Date.now().toString());
-  // Build return URL with plan info for Stripe's client_reference_id
-  const returnURL = window.location.href.split('?')[0] + '?plan=' + currentPlan + '&billing=' + currentBilling + '&paid=1';
-  // Stripe Payment Links support ?client_reference_id= and ?prefilled_email=
+  // On transmet l'EMAIL du joueur à Stripe pour que le webhook sache QUI a payé.
+  // client_reference_id doit être alphanumérique → on encode l'email en base64url.
+  const prof = JSON.parse(localStorage.getItem('go_profile') || '{}');
+  const email = (prof.email || '').toLowerCase().trim();
   const separator = link.includes('?') ? '&' : '?';
-  const fullLink = link + separator + 'client_reference_id=' + currentPlan + '_' + currentBilling;
+  const params = [];
+  if (email) {
+    try {
+      const ref = btoa(email).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+      params.push('client_reference_id=' + ref);
+    } catch (e) {}
+    params.push('prefilled_email=' + encodeURIComponent(email));
+  }
+  const fullLink = link + (params.length ? separator + params.join('&') : '');
   setTimeout(() => { window.location.href = fullLink; }, 500);
 }
 
@@ -2535,21 +2544,14 @@ function activatePlan(plan, billing) {
   USER_PLAN = plan;
   localStorage.setItem('go_plan', plan);
   localStorage.setItem('go_billing', billing || 'monthly');
-  // Mettre à jour le profil localStorage
+  // Mettre à jour le cache profil localStorage.
+  // (Le serveur fait déjà foi : le plan a été écrit par le webhook Stripe vérifié.)
   const savedProfile = localStorage.getItem('go_profile');
   if (savedProfile) {
     try {
       const p = JSON.parse(savedProfile);
       p.plan = plan; p.billing = billing || 'monthly';
       localStorage.setItem('go_profile', JSON.stringify(p));
-      // Sync cloud si email disponible
-      if (p.email) {
-        fetch('/api/update-plan', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: p.email, plan, billing: billing || 'monthly' })
-        }).catch(e => console.warn('Cloud plan sync failed:', e));
-      }
     } catch(e) {}
   }
   // Full unlock — tous les verrous
@@ -2588,6 +2590,57 @@ function closeSuccessPage(dest) {
   document.getElementById('checkout-page').classList.remove('open');
   document.body.style.overflow = '';
   navTo(dest || 'home');
+}
+
+/* ══ CONFIRMATION DE PAIEMENT PAR LE SERVEUR ══
+   Au retour de Stripe, on n'accorde RIEN sur la base du navigateur.
+   On interroge le serveur jusqu'à ce que le webhook Stripe ait écrit le plan payé. */
+function confirmPaymentFromCloud(expectPlan, expectBilling) {
+  const prof = JSON.parse(localStorage.getItem('go_profile') || '{}');
+  const email = (prof.email || '').toLowerCase().trim();
+  if (!email) return;
+  let tries = 0;
+  const MAX = 24; // ~60s, le temps que le webhook arrive
+  const poll = setInterval(async () => {
+    tries++;
+    try {
+      const r = await fetch('/api/get-profile?email=' + encodeURIComponent(email) + '&_=' + Date.now());
+      const d = await r.json();
+      const serverPlan = (d && d.found && d.profile && d.profile.plan) || 'free';
+      if (serverPlan === 'premium' || serverPlan === 'creator') {
+        clearInterval(poll);
+        activatePlan(serverPlan, (d.profile.billing) || expectBilling || 'monthly');
+        return;
+      }
+    } catch (e) {}
+    if (tries >= MAX) { clearInterval(poll); }
+  }, 2500);
+}
+
+/* ══ RÉCONCILIATION DU PLAN AU CHARGEMENT ══
+   Le serveur (alimenté par le webhook Stripe) fait foi. Le navigateur ne fait que lire. */
+const _PLAN_OVERRIDE_EMAILS = ['raphaeligora@gmail.com', 'ferreiraraphael89@gmail.com'];
+async function syncPlanFromCloud() {
+  try {
+    const prof = JSON.parse(localStorage.getItem('go_profile') || '{}');
+    const email = (prof.email || '').toLowerCase().trim();
+    if (!email || _PLAN_OVERRIDE_EMAILS.includes(email)) return; // comptes à accès offert : on ne touche pas
+    const r = await fetch('/api/get-profile?email=' + encodeURIComponent(email) + '&_=' + Date.now());
+    const d = await r.json();
+    if (!d || !d.found || !d.profile) return;
+    const serverPlan = d.profile.plan || 'free';
+    const localPlan  = localStorage.getItem('go_plan') || 'free';
+    if (serverPlan === localPlan) return;
+    localStorage.setItem('go_plan', serverPlan);
+    if (d.profile.billing) localStorage.setItem('go_billing', d.profile.billing);
+    prof.plan = serverPlan;
+    localStorage.setItem('go_profile', JSON.stringify(prof));
+    if (serverPlan === 'premium' || serverPlan === 'creator') {
+      unlockPlan(serverPlan);          // débloque sans recharger
+    } else {
+      location.reload();               // rétrogradé (annulation) → recharger pour re-verrouiller
+    }
+  } catch (e) {}
 }
 
 /* ══ RESTORE STATE ON LOAD ══ */
@@ -2690,35 +2743,35 @@ function markActivePlan(plan) {
   const pendingTs = parseInt(localStorage.getItem('go_pending_ts') || '0');
   const pendingFresh = (Date.now() - pendingTs) < 15 * 60 * 1000; // 15 min window
 
-  let activPlan = null, activBilling = null;
+  // On détecte une INTENTION de paiement (retour depuis le checkout).
+  // Le déblocage réel ne se fera QUE si le serveur confirme le paiement (webhook).
+  let expectPlan = null, expectBilling = null, intent = false;
   if (urlPlan && (urlPaid || urlBilling)) {
-    activPlan = urlPlan;
-    activBilling = urlBilling || 'monthly';
-  } else if (pendingPlan && pendingFresh && document.referrer.includes('stripe.com')) {
-    activPlan = pendingPlan;
-    activBilling = pendingBilling || 'monthly';
+    expectPlan = urlPlan; expectBilling = urlBilling || 'monthly'; intent = true;
+  } else if (pendingPlan && pendingFresh) {
+    expectPlan = pendingPlan; expectBilling = pendingBilling || 'monthly'; intent = true;
   }
 
-  if (activPlan) {
+  if (intent) {
     // Clean URL and pending storage
     window.history.replaceState({}, '', window.location.pathname);
     localStorage.removeItem('go_pending_plan');
     localStorage.removeItem('go_pending_billing');
     localStorage.removeItem('go_pending_ts');
-    // Wait for app to be mounted (user may need to complete onboarding first if new)
-    const tryActivate = setInterval(() => {
+    // Attendre que l'app (ou l'onboarding) soit prête, puis CONFIRMER via le serveur
+    const waitReady = setInterval(() => {
       const app = document.getElementById('app');
       const ob = document.getElementById('ob');
-      // If app visible → activate immediately
+      // App visible → on confirme le paiement auprès du serveur
       if (app && app.style.display !== 'none') {
-        clearInterval(tryActivate);
-        activatePlan(activPlan, activBilling);
+        clearInterval(waitReady);
+        confirmPaymentFromCloud(expectPlan, expectBilling);
       }
-      // If onboarding visible → store for after onboarding completes
+      // Onboarding visible → on confirmera une fois le profil créé
       else if (ob && ob.style.display !== 'none') {
-        clearInterval(tryActivate);
-        localStorage.setItem('go_after_onboarding_plan', activPlan);
-        localStorage.setItem('go_after_onboarding_billing', activBilling);
+        clearInterval(waitReady);
+        localStorage.setItem('go_after_onboarding_plan', expectPlan);
+        localStorage.setItem('go_after_onboarding_billing', expectBilling);
       }
     }, 80);
   }
@@ -2909,13 +2962,13 @@ function goApp(){
     if(ab) ab.style.display='block';
   }
 
-  // ── ACTIVATE PLAN IF USER PAID BEFORE COMPLETING ONBOARDING ──
+  // ── CONFIRMER LE PAIEMENT SI L'UTILISATEUR A PAYÉ AVANT DE FINIR L'ONBOARDING ──
   const afterPlan = localStorage.getItem('go_after_onboarding_plan');
   const afterBilling = localStorage.getItem('go_after_onboarding_billing');
   if (afterPlan) {
     localStorage.removeItem('go_after_onboarding_plan');
     localStorage.removeItem('go_after_onboarding_billing');
-    setTimeout(() => activatePlan(afterPlan, afterBilling || 'monthly'), 400);
+    setTimeout(() => confirmPaymentFromCloud(afterPlan, afterBilling || 'monthly'), 400);
   }
 }
 
@@ -5730,6 +5783,7 @@ function bootApp(profile) {
   buildLeague(); buildStandings(); buildHistory();
   hRender(); pRender();
   applyRestoredPlan();
+  syncPlanFromCloud(); // le serveur (webhook Stripe) fait foi sur le plan — débloque/rétrograde si besoin
   setTimeout(animBars, 150);
   initHubDashboard();
   // Détecter ?join=CODE ou /ligue/pseudo dans l'URL
