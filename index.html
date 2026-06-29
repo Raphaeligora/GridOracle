@@ -2703,16 +2703,16 @@ const DRIVERS=[
 ];
 
 const AI_DATA=[
-  {sn:'Antonelli',t:'mercedes',tc:'#00D2BE',note:'🔥 5 victoires',pct:92,pts:25},
-  {sn:'Russell',t:'mercedes',tc:'#00D2BE',note:'Vainqueur Autriche',pct:84,pts:18},
-  {sn:'Hamilton',t:'ferrari',tc:'#E8001D',note:'🏠 9x Silverstone',pct:76,pts:15},
-  {sn:'Norris',t:'mclaren',tc:'#FF8000',note:'🏠 Vainqueur 2025',pct:68,pts:12},
-  {sn:'Piastri',t:'mclaren',tc:'#FF8000',note:'',pct:61,pts:10},
-  {sn:'Leclerc',t:'ferrari',tc:'#E8001D',note:'',pct:54,pts:8},
-  {sn:'Verstappen',t:'redbull',tc:'#3671C6',note:'',pct:47,pts:6},
-  {sn:'Hadjar',t:'redbull',tc:'#3671C6',note:'Rookie en forme',pct:38,pts:4},
-  {sn:'Lawson',t:'rb',tc:'#4E7CB2',note:'',pct:30,pts:2},
-  {sn:'Bearman',t:'haas',tc:'#CC1800',note:'🏠 Britannique',pct:24,pts:1},
+  {sn:'Antonelli',t:'mercedes',tc:'#00D2BE',note:'🏠 Silverstone',pct:85,pts:25},
+  {sn:'Russell',t:'mercedes',tc:'#00D2BE',note:'Fort ici',pct:79,pts:18},
+  {sn:'Hamilton',t:'ferrari',tc:'#E8001D',note:'💛 Home race',pct:74,pts:15},
+  {sn:'Norris',t:'mclaren',tc:'#FF8000',note:'🏠 Home',pct:68,pts:12},
+  {sn:'Piastri',t:'mclaren',tc:'#FF8000',note:'',pct:62,pts:10},
+  {sn:'Verstappen',t:'redbull',tc:'#3671C6',note:'',pct:55,pts:8},
+  {sn:'Leclerc',t:'ferrari',tc:'#E8001D',note:'',pct:47,pts:6},
+  {sn:'Hadjar',t:'redbull',tc:'#3671C6',note:'',pct:41,pts:4},
+  {sn:'Gasly',t:'alpine',tc:'#FF0060',note:'',pct:35,pts:2},
+  {sn:'Sainz',t:'williams',tc:'#00A0DD',note:'🏠 British',pct:29,pts:1},
 ];
 
 const AI5=AI_DATA.slice(0,5).map(d=>d.sn);
@@ -3287,9 +3287,7 @@ function buildAIPred(){
   const full=document.getElementById('ai-pred-full');
   if(full){
     if(isPaid){
-      // Plan payant — afficher tout sans verrou
       full.innerHTML=AI_DATA.map((d,i)=>aiRow(d,i)).join('');
-      // Aussi déverrouiller les lignes 6-10 du home
       const homeLock=document.getElementById('ai-home-lock');
       if(homeLock){homeLock.style.filter='none';homeLock.style.pointerEvents='auto';homeLock.style.userSelect='auto';}
       const homeOverlay=document.querySelector('.lks .lkov');
@@ -3299,6 +3297,12 @@ function buildAIPred(){
       html+=`<div class="lks"><div class="lkbl">${AI_DATA.slice(5).map((d,i)=>aiRow(d,i+5)).join('')}</div><div class="lkov"><div class="lkm"><h4>🔒 Positions 6–10 Premium</h4><p>Accède à l'analyse complète de l'IA.</p><button class="btn-r" style="font-size:.76rem;padding:.38rem .9rem" onclick="openStripeModal('premium')">Passer Premium →</button></div></div></div>`;
       full.innerHTML=html;
     }
+  }
+  // Mettre à jour tous les ai-tag avec le vrai favori IA
+  if(AI_DATA.length){
+    const fav=AI_DATA[0];
+    const tagText=`${fav.sn} fav. ${fav.pct}%`;
+    document.querySelectorAll('.ai-tag').forEach(el=>el.textContent=tagText);
   }
   setTimeout(animBars,100);
 }
@@ -6065,6 +6069,9 @@ function computeQualiDeadline(gp){
     AI_DATA.splice(0, AI_DATA.length, ...current.aiPred);
     AI5.splice(0, AI5.length,  ...AI_DATA.slice(0,5).map(d=>d.sn));
     AI10.splice(0, AI10.length, ...AI_DATA.map(d=>d.sn));
+    // Mettre à jour les tags favori dans le DOM
+    const fav=AI_DATA[0];
+    if(fav) document.querySelectorAll('.ai-tag').forEach(el=>el.textContent=`${fav.sn} fav. ${fav.pct}%`);
   }
 
   // Mettre à jour le statut du calendrier (done/next/upcoming)
