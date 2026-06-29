@@ -6114,7 +6114,43 @@ function computeQualiDeadline(gp){
 }
 
 // Applique le GP actuel — appelé une fois après chargement du calendrier
-(function autoInitCurrentGP(){
+// Tente d'abord de lire le GP depuis KV (mis a jour par transition-gp)
+// Si KV disponible, surcharge GP_CURRENT et evite le hardcode
+(async function autoInitCurrentGP(){
+  // 1. Essayer KV en premier
+  try {
+    const res = await fetch('/api/get-current-gp');
+    if (res.ok) {
+      const data = await res.json();
+      if (data.found && data.gp && data.gp.id) {
+        const kv = data.gp;
+        GP_CURRENT.id              = kv.id;
+        GP_CURRENT.name            = kv.name;
+        GP_CURRENT.flag            = kv.flag;
+        GP_CURRENT.r               = kv.r;
+        GP_CURRENT.loc             = kv.loc || '';
+        GP_CURRENT.isSprint        = kv.isSprint || false;
+        GP_CURRENT.sprintId        = kv.sprintId || null;
+        GP_CURRENT.sprintDeadlineUTC = kv.sprintDeadlineUTC || null;
+        GP_CURRENT.qualiDeadlineUTC  = kv.qualiDeadlineUTC  || null;
+        QUALI_DEADLINE_TS  = kv.qualiDeadlineUTC  ? new Date(kv.qualiDeadlineUTC).getTime()  : QUALI_DEADLINE_TS;
+        SPRINT_DEADLINE_TS = kv.sprintDeadlineUTC ? new Date(kv.sprintDeadlineUTC).getTime() : (SPRINT_DEADLINE_TS || Infinity);
+        console.log('[GridOracle] GP depuis KV :', GP_CURRENT.name);
+        // Mettre a jour le calendrier et les standings
+        F1_CALENDAR_2026.forEach((gp, i) => {
+          if (gp.r === GP_CURRENT.r) gp.status = 'next';
+          else if (gp.r < GP_CURRENT.r) gp.status = 'done';
+          else gp.status = 'upcoming';
+        });
+        loadStandingsFromRedis();
+        return; // On a tout ce qu'il faut depuis KV
+      }
+    }
+  } catch(e) {
+    console.warn('[GridOracle] KV GP fetch failed, fallback local:', e.message);
+  }
+
+  // 2. Fallback : calcul local depuis le calendrier hardcodé
   const current = computeCurrentGP();
   if(!current) return;
 
