@@ -1207,7 +1207,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 <div class="bg-grid"></div><div class="bg-glow"></div><div id="slines"></div>
 
 <!-- ══ TRIAL 48H POPUP ══ -->
-<div id="trial-popup">
+<div id="trial-popup" style="display:none">
   <div class="trial-popup-box">
     <div class="trial-popup-kicker">⚡ Offre de lancement</div>
     <div class="trial-popup-t">Top 10 IA gratuit<br><span style="color:var(--red)">pendant 48h</span></div>
@@ -1225,7 +1225,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 </div>
 
 <!-- ══ TRIAL EXPIRE POPUP ══ -->
-<div id="trial-expire-popup">
+<div id="trial-expire-popup" style="display:none">
   <div class="trial-popup-box">
     <div style="font-size:2.2rem;margin-bottom:.6rem">⏰</div>
     <div class="trial-popup-t">Ton accès Premium<br>a expiré</div>
@@ -1388,7 +1388,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
     <div class="lang-sw" id="lang-sw"><button id="btn-fr" onclick="switchLang('fr')" class="active">FR</button><button id="btn-en" onclick="switchLang('en')">EN</button></div>
     <div class="ppill" id="nav-plan-pill">⭐ Free</div>
     <button class="btn-prem-nav" onclick="openStripeModal('premium')" data-i18n="nav.premium">Premium →</button>
-    <div class="bell" onclick="alert('🔔 Hamilton vainqueur Barcelone\n🔔 @gridchampion a soumis sa prédiction Autriche')">🔔<div class="bdot">2</div></div>
+    <div class="bell" onclick="alert('🔔 Hamilton vainqueur Barcelone\n🔔 @gridchampion a soumis sa prédiction Grande-Bretagne')">🔔<div class="bdot">2</div></div>
     <div class="uchip" onclick="navTo('profile')" title="Mon profil">
       <div class="uav" id="hub-av" style="border-color:rgba(232,0,29,.5)">GO</div>
       <div><div class="un" id="hub-name">GridOracle</div><div class="uh" id="hub-handle">@griduser</div></div>
@@ -1397,7 +1397,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 </nav>
 
 <!-- TRIAL 48H BANNER -->
-<div id="trial-banner" class="hidden">
+<div id="trial-banner" class="hidden" style="display:none!important">
   <div class="trial-banner-left">
     <div class="trial-banner-dot"></div>
     <div class="trial-banner-txt">🎁 Accès Premium gratuit activé <span>· Top 10 IA débloqué · Expire sam. 27 juin 16h00</span></div>
@@ -1617,7 +1617,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
           <div class="p-foot">
             <div class="sub-prog"><b id="hcnt">0</b>/<span id="hmax">5</span> positions complètes</div>
             <button class="bsub" id="hbs" disabled onclick="hSubmit()">🏁 Verrouiller ma prédiction · GP Grande-Bretagne</button>
-            <div class="sub-dl">Clôture le <b>Samedi 27 Juin à 15h00</b></div>
+            <div class="sub-dl">Clôture le <b>Samedi 5 Juillet à 15h00</b></div>
           </div>
         </div>
 
@@ -1705,7 +1705,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
           <div class="p-foot">
             <div class="sub-prog"><b id="pcnt">0</b>/<span id="pmax">5</span> positions complètes</div>
             <button class="bsub" id="pbs" disabled onclick="pSubmit()">🏁 Verrouiller ma prédiction</button>
-            <div class="sub-dl">Clôture le <b>Samedi 27 Juin à 15h00</b></div>
+            <div class="sub-dl">Clôture le <b>Samedi 5 Juillet à 15h00</b></div>
           </div>
         </div>
       </div>
@@ -2250,7 +2250,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
           <div class="ngp-chips">
             <div class="ngp-chip">5.891 km</div>
             <div class="ngp-chip">52 tours</div>
-            <div class="ngp-chip">10 virages</div>
+            <div class="ngp-chip">18 virages</div>
             <div class="ngp-chip">325 km/h max</div>
             <div class="ngp-chip ngp-chip-red">1:26.600 record</div>
           </div>
@@ -2291,18 +2291,18 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
         <div class="ngp-card-b">
           <div class="ngp-sched">
             <div class="ngp-sday">
-              <div class="ngp-sday-lbl">Vendredi 26 Juin</div>
+              <div class="ngp-sday-lbl">Vendredi 3 Juil</div>
               <div class="ngp-session"><span class="ngp-sl">Essais Libres 1</span><span class="ngp-sv">13h30</span></div>
-              <div class="ngp-session"><span class="ngp-sl">Essais Libres 2</span><span class="ngp-sv">17h00</span></div>
+              <div class="ngp-session ngp-session-red"><span class="ngp-sl">🔴 Sprint Qualifying</span><span class="ngp-sv ngp-sv-red">17h30</span></div>
             </div>
             <div class="ngp-sday">
-              <div class="ngp-sday-lbl">Samedi 27 Juin</div>
-              <div class="ngp-session"><span class="ngp-sl">Essais Libres 3</span><span class="ngp-sv">12h30</span></div>
-              <div class="ngp-session ngp-session-red"><span class="ngp-sl">🔴 Qualifications</span><span class="ngp-sv ngp-sv-red">16h00</span></div>
+              <div class="ngp-sday-lbl">Samedi 4 Juil</div>
+              <div class="ngp-session ngp-session-gold"><span class="ngp-sl">🏃 Sprint</span><span class="ngp-sv ngp-sv-gold">13h00</span></div>
+              <div class="ngp-session ngp-session-red"><span class="ngp-sl">🔴 Qualifications</span><span class="ngp-sv ngp-sv-red">17h00</span></div>
             </div>
             <div class="ngp-sday">
-              <div class="ngp-sday-lbl">Dimanche 28 Juin</div>
-              <div class="ngp-session ngp-session-gold"><span class="ngp-sl">🏁 Course</span><span class="ngp-sv ngp-sv-gold">15h00</span></div>
+              <div class="ngp-sday-lbl">Dimanche 5 Juil</div>
+              <div class="ngp-session ngp-session-gold"><span class="ngp-sl">🏁 Course</span><span class="ngp-sv ngp-sv-gold">16h00</span></div>
             </div>
           </div>
         </div>
@@ -2317,18 +2317,18 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
         <div class="ngp-card-b">
           <div class="ngp-stats-grid">
             <div class="ngp-stat"><div class="ngp-stat-v">5.891 km</div><div class="ngp-stat-l">Longueur</div></div>
-            <div class="ngp-stat"><div class="ngp-stat-v">71</div><div class="ngp-stat-l">Tours</div></div>
-            <div class="ngp-stat"><div class="ngp-stat-v">306.4 km</div><div class="ngp-stat-l">Distance course</div></div>
-            <div class="ngp-stat"><div class="ngp-stat-v">337 km/h</div><div class="ngp-stat-l">Vitesse max</div></div>
+            <div class="ngp-stat"><div class="ngp-stat-v">52</div><div class="ngp-stat-l">Tours</div></div>
+            <div class="ngp-stat"><div class="ngp-stat-v">306.3 km</div><div class="ngp-stat-l">Distance course</div></div>
+            <div class="ngp-stat"><div class="ngp-stat-v">325 km/h</div><div class="ngp-stat-l">Vitesse max</div></div>
             <div class="ngp-stat"><div class="ngp-stat-v">1:26.600</div><div class="ngp-stat-l">Record du tour</div></div>
-            <div class="ngp-stat"><div class="ngp-stat-v">10</div><div class="ngp-stat-l">Virages</div></div>
-            <div class="ngp-stat"><div class="ngp-stat-v">+65 m</div><div class="ngp-stat-l">Dénivelé</div></div>
-            <div class="ngp-stat"><div class="ngp-stat-v">3</div><div class="ngp-stat-l">Zones DRS</div></div>
+            <div class="ngp-stat"><div class="ngp-stat-v">18</div><div class="ngp-stat-l">Virages</div></div>
+            <div class="ngp-stat"><div class="ngp-stat-v">+40 m</div><div class="ngp-stat-l">Dénivelé</div></div>
+            <div class="ngp-stat"><div class="ngp-stat-v">2</div><div class="ngp-stat-l">Zones DRS</div></div>
           </div>
           <div class="ngp-sector-row">
-            <div class="ngp-sector ngp-s1"><span>S1</span> Montée vers T3</div>
-            <div class="ngp-sector ngp-s2"><span>S2</span> Boucle haute</div>
-            <div class="ngp-sector ngp-s3"><span>S3</span> Descente rapide</div>
+            <div class="ngp-sector ngp-s1"><span>S1</span> Copse - Maggotts</div>
+            <div class="ngp-sector ngp-s2"><span>S2</span> Becketts - Chapel</div>
+            <div class="ngp-sector ngp-s3"><span>S3</span> Stowe - Club - Vale</div>
           </div>
         </div>
       </div>
@@ -3109,8 +3109,8 @@ function hasFullAccess(){
   if (['premium','creator'].includes(plan)) return true;
   const trialStart = parseInt(localStorage.getItem('go_trial_start') || '0');
   if (!trialStart) return false;
-  const TRIAL_DEADLINE = new Date('2026-06-27T14:00:00Z').getTime(); // Samedi 27 juin 16h00 Paris
-  return Date.now() < TRIAL_DEADLINE && Date.now() >= trialStart;
+  const TRIAL_DEADLINE = new Date('2026-01-01T00:00:00Z').getTime(); // Trial desactive
+  return false; // Trial desactive
 }
 
 // ── INIT HUB DASHBOARD SIDEBAR ──
@@ -6211,7 +6211,7 @@ function initNextGP(){
 const TRIAL_KEY      = 'go_trial_start';
 const TRIAL_SHOWN    = 'go_trial_shown';
 const TRIAL_ACTIVE   = 'go_trial_active';
-const TRIAL_DEADLINE = new Date('2026-06-27T14:00:00Z').getTime(); // 16h Paris = 14h UTC
+const TRIAL_DEADLINE = new Date('2026-01-01T00:00:00Z').getTime(); // Trial desactive
 
 function isTrialActive(){
   const start = parseInt(localStorage.getItem(TRIAL_KEY) || '0');
