@@ -16,6 +16,20 @@
 }
 html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:100%}
 
+/* ═══════════ V2 — SKIN PREMIUM (étape 1 : palette + finitions, override sûr via variables) ═══════════ */
+:root{
+  --bg:#070709;--bg2:#0c0c11;--card:#0f0f15;--c2:#15151d;
+  --red:#e10600;--rd:#b00400;--gold:#ffc24d;
+  --w:#f4f3ef;--g:#8d8d9a;--b:rgba(255,255,255,.08);--b2:rgba(255,255,255,.16);
+}
+html{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body{background:radial-gradient(1100px 620px at 80% -6%,rgba(225,6,0,.07),transparent 60%),var(--bg);background-attachment:fixed}
+::selection{background:var(--red);color:#fff}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:#050507}
+::-webkit-scrollbar-thumb{background:#23232c;border-radius:6px;border:2px solid #050507}
+::-webkit-scrollbar-thumb:hover{background:#34343f}
+
 /* ── UTILS ── */
 .logo{font-family:var(--fh);font-size:1.42rem;font-weight:700;letter-spacing:.15em;color:var(--w);text-decoration:none;cursor:pointer;flex-shrink:0}
 .logo s{color:var(--red);text-decoration:none}
