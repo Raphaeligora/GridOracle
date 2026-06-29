@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GridOracle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06060a;--ink:#f3f1ea;--ink2:#8e8c86;--red:#e10600;--fb:'Inter',sans-serif;--fm:'JetBrains Mono',monospace}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%;overflow:hidden}
+body{background:var(--bg);color:var(--ink);font-family:var(--fb);-webkit-font-smoothing:antialiased}
+#scene{position:fixed;inset:0;z-index:0}
+.fx{position:fixed;inset:0;pointer-events:none}
+.vignette{z-index:1;background:radial-gradient(120% 100% at 50% 45%,transparent 50%,rgba(0,0,0,.7))}
+.glow{z-index:1;background:radial-gradient(46% 40% at 50% 56%,rgba(225,6,0,.16),transparent 60%)}
+.grain{z-index:2;opacity:.05;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.ui{position:fixed;inset:0;z-index:5;display:flex;flex-direction:column;justify-content:space-between;padding:34px 40px;pointer-events:none}
+.row{display:flex;justify-content:space-between;align-items:flex-start}
+.brand{font-size:1rem;font-weight:500;letter-spacing:.42em}
+.brand b{color:var(--red);font-weight:500}
+.meta{font-family:var(--fm);font-size:.66rem;letter-spacing:.2em;color:var(--ink2);text-transform:uppercase;text-align:right;line-height:1.8}
+.center{position:fixed;left:0;right:0;bottom:11%;z-index:5;text-align:center;pointer-events:none}
+.kick{font-family:var(--fm);font-size:.66rem;letter-spacing:.42em;color:var(--ink2);text-transform:uppercase;margin-bottom:20px}
+.title{font-weight:200;font-size:clamp(2.2rem,5.2vw,4rem);letter-spacing:.02em;line-height:1.05}
+.title b{font-weight:500}
+.enter{margin-top:34px;pointer-events:auto;display:inline-flex;flex-direction:column;align-items:center;gap:12px;cursor:pointer;background:none;border:none;color:var(--ink);font-family:var(--fm);font-size:.68rem;letter-spacing:.32em;text-transform:uppercase;transition:color .3s}
+.enter:hover{color:var(--red)}
+.enter .ln{width:1px;height:46px;background:linear-gradient(var(--red),transparent);animation:drop 2s infinite}
+@keyframes drop{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}100%{transform:scaleY(0);transform-origin:bottom}}
+#wipe{position:fixed;inset:0;z-index:30;background:#000;opacity:0;pointer-events:none;transition:opacity .85s cubic-bezier(.7,0,.3,1)}
+#wipe.on{opacity:1}
+.loading{position:fixed;left:50%;top:54%;transform:translate(-50%,-50%);z-index:4;font-family:var(--fm);font-size:.66rem;letter-spacing:.3em;color:var(--ink2);text-transform:uppercase}
+</style>
+</head>
+<body>
+<div id="scene"></div>
+<div class="fx vignette"></div>
+<div class="fx glow"></div>
+<div class="fx grain"></div>
+<div class="loading" id="loading">Initialisation…</div>
+
+<div class="ui">
+  <div class="row">
+    <div class="brand">GRID<b>ORACLE</b></div>
+    <div class="meta">F1 · Prédictions IA<br>Saison 2026 · GO·7</div>
+  </div>
+  <div></div>
+</div>
+
+<div class="center">
+  <div class="kick">L'oracle de la Formule 1</div>
+  <div class="title">Prédis la course.<br><b>Bats l'IA.</b></div>
+  <button class="enter" id="enter" aria-label="Entrer sur le site"><span>Entrer</span><span class="ln"></span></button>
+</div>
+
+<div id="wipe"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* ============================================================
+   INTRO 3D — placeholder élégant.
+   >> Pour mettre le VRAI casque : remplacer buildPlaceholder()
+      par loadHelmet('./casque.glb') (loader GLTF déjà prêt).
+   ============================================================ */
+let ROT_TARGET={x:0,y:0};
+function goHub(){ const w=document.getElementById('wipe'); w.classList.add('on'); setTimeout(()=>{ window.location.href='/'; },820); }
+document.getElementById('enter').addEventListener('click',goHub);
+addEventListener('wheel',e=>{ if(e.deltaY>14) goHub(); },{passive:true});
+let ts=0; addEventListener('touchstart',e=>ts=e.touches[0].clientY,{passive:true});
+addEventListener('touchmove',e=>{ if(ts-e.touches[0].clientY>40) goHub(); },{passive:true});
+
+(function(){
+  const host=document.getElementById('scene'), loading=document.getElementById('loading');
+  if(!window.THREE){ loading.textContent=''; return; }
+  try{
+    const scene=new THREE.Scene();
+    const camera=new THREE.PerspectiveCamera(42, innerWidth/innerHeight, .1, 100);
+    camera.position.set(0,0,7);
+    const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+    renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+    renderer.setSize(innerWidth,innerHeight);
+    host.appendChild(renderer.domElement);
+
+    scene.add(new THREE.AmbientLight(0x404050,1.1));
+    const key=new THREE.DirectionalLight(0xffffff,1.5); key.position.set(4,6,7); scene.add(key);
+    const rim=new THREE.PointLight(0xe10600,3.2,40); rim.position.set(-6,-2,4); scene.add(rim);
+    const rim2=new THREE.PointLight(0x3a6dff,1.4,40); rim2.position.set(6,4,-4); scene.add(rim2);
+
+    const obj=new THREE.Group(); scene.add(obj);
+    function buildPlaceholder(){
+      const geo=new THREE.IcosahedronGeometry(1.7,1);
+      const mesh=new THREE.Mesh(geo,new THREE.MeshStandardMaterial({color:0x14151c,metalness:.85,roughness:.32,flatShading:true}));
+      const wire=new THREE.LineSegments(new THREE.EdgesGeometry(geo),new THREE.LineBasicMaterial({color:0xe10600,transparent:true,opacity:.55}));
+      obj.add(mesh,wire);
+      loading.textContent='';
+    }
+    /* GLTF prêt pour le vrai casque :
+    function loadHelmet(url){ const l=new THREE.GLTFLoader(); l.load(url,g=>{ const m=g.scene; m.scale.set(2,2,2); obj.add(m); loading.textContent=''; }); } */
+    buildPlaceholder();
+
+    // particules
+    const N=240,pos=new Float32Array(N*3);
+    for(let i=0;i<N;i++){ const a=Math.random()*Math.PI*2,r=2.4+Math.random()*5; pos[i*3]=Math.cos(a)*r; pos[i*3+1]=(Math.random()-.5)*8; pos[i*3+2]=Math.sin(a)*r-2; }
+    const pg=new THREE.BufferGeometry(); pg.setAttribute('position',new THREE.BufferAttribute(pos,3));
+    const pts=new THREE.Points(pg,new THREE.PointsMaterial({color:0x9aa0b5,size:.022,transparent:true,opacity:.5}));
+    scene.add(pts);
+
+    addEventListener('mousemove',e=>{ ROT_TARGET.y=(e.clientX/innerWidth-.5)*.6; ROT_TARGET.x=(e.clientY/innerHeight-.5)*.4; });
+    function loop(){
+      requestAnimationFrame(loop);
+      obj.rotation.y+=0.0035 + (ROT_TARGET.y-obj.rotation.y)*0.04;
+      obj.rotation.x+=(ROT_TARGET.x-obj.rotation.x)*0.04;
+      pts.rotation.y+=0.0006;
+      renderer.render(scene,camera);
+    }
+    loop();
+    addEventListener('resize',()=>{ camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth,innerHeight); });
+  }catch(err){ console.error(err); document.getElementById('loading').textContent=''; }
+})();
+</script>
+</body>
+</html>
