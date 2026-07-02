@@ -794,6 +794,16 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 .r2-rules{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
 
 
+/* ── SPRINT TABS ── */
+.sprint-tabs{display:flex;gap:.4rem;padding:.5rem .8rem .3rem;border-bottom:1px solid var(--border)}
+.sprint-tab{flex:1;background:transparent;border:1px solid var(--border);border-radius:6px;padding:.32rem .6rem;font-size:.75rem;font-weight:600;color:var(--g);cursor:pointer;font-family:var(--fb);transition:all .18s;text-align:center}
+.sprint-tab.active{background:var(--red);color:#fff;border-color:var(--red)}
+.sprint-tab:not(.active):hover{border-color:var(--red);color:var(--w)}
+.sprint-tab-pts{font-weight:400;opacity:.7;font-size:.68rem}
+.sprint-tabs-page{padding:0;border:none;margin-bottom:.8rem}
+.sprint-tab-lg{padding:.5rem 1rem;font-size:.82rem}
+.sprint-ai-tag{background:rgba(255,200,0,.08);border-color:rgba(255,200,0,.3);color:var(--gold)}
+
 /* PRED PAGE */
 .pred-page-wrap{max-width:900px;margin:0 auto;padding:1.2rem 1.4rem 2rem}
 .pred-page-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
@@ -1472,14 +1482,36 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
             <div class="card-ht" data-i18n="hub.aicard">Prédiction IA — GP Grande-Bretagne</div>
             <div class="ai-tag">Antonelli fav. 85%</div>
           </div>
-          <div class="ai-rows" id="ai-home"></div>
-          <div class="lks">
-            <div class="lkbl ai-rows" id="ai-home-lock"></div>
-            <div class="lkov">
-              <div class="lkm">
-                <h4>🔒 Positions 6–10 Premium</h4>
-                <p>Accède à l'analyse complète de l'IA.</p>
-                <button class="btn-r" style="font-size:.76rem;padding:.38rem .9rem" onclick="openStripeModal('premium')">Passer Premium →</button>
+          <!-- Onglets Sprint / Course -->
+          <div class="sprint-tabs" id="hub-sprint-tabs">
+            <button class="sprint-tab active" id="hub-tab-sprint" onclick="hubSwitchTab('sprint')">🏃 Sprint</button>
+            <button class="sprint-tab" id="hub-tab-race" onclick="hubSwitchTab('race')">🏁 Course</button>
+          </div>
+          <!-- Panneau Sprint IA -->
+          <div id="hub-panel-sprint">
+            <div class="ai-rows" id="ai-home-sprint"></div>
+            <div class="lks" id="hub-sprint-lock">
+              <div class="lkbl ai-rows" id="ai-home-sprint-lock"></div>
+              <div class="lkov">
+                <div class="lkm">
+                  <h4>🔒 Positions 5–8 Sprint — Premium</h4>
+                  <p>Accède à l'analyse complète de l'IA pour la Sprint.</p>
+                  <button class="btn-r" style="font-size:.76rem;padding:.38rem .9rem" onclick="openStripeModal('premium')">Passer Premium →</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Panneau Course IA -->
+          <div id="hub-panel-race" style="display:none">
+            <div class="ai-rows" id="ai-home"></div>
+            <div class="lks">
+              <div class="lkbl ai-rows" id="ai-home-lock"></div>
+              <div class="lkov">
+                <div class="lkm">
+                  <h4>🔒 Positions 6–10 Premium</h4>
+                  <p>Accède à l'analyse complète de l'IA.</p>
+                  <button class="btn-r" style="font-size:.76rem;padding:.38rem .9rem" onclick="openStripeModal('premium')">Passer Premium →</button>
+                </div>
               </div>
             </div>
           </div>
@@ -1491,15 +1523,41 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
             <div style="display:flex;align-items:center;gap:.45rem">
               <div class="card-ht" style="color:var(--w)" data-i18n="pred.mine">Ma Prédiction</div>
               <div class="pred-status st-open" id="hpb">En cours</div>
+              <div class="pred-status st-open" id="hspb" style="background:rgba(255,200,0,.12);border-color:rgba(255,200,0,.3);color:var(--gold)">🏃 Sprint</div>
             </div>
-            <div class="p-acts"><button class="bcpai" onclick="hCopy()" data-i18n="pred.copyai">Copier IA</button><button class="brst" onclick="hReset()">✕</button></div>
+            <div class="p-acts" id="hub-pred-acts-sprint">
+              <button class="bcpai" onclick="hsCopy()">Copier IA</button>
+              <button class="brst" onclick="hsReset()">✕</button>
+            </div>
+            <div class="p-acts" id="hub-pred-acts-race" style="display:none">
+              <button class="bcpai" onclick="hCopy()" data-i18n="pred.copyai">Copier IA</button>
+              <button class="brst" onclick="hReset()">✕</button>
+            </div>
           </div>
-          <div class="p-slots" id="hslots"></div>
-          <div class="prem-lock" id="home-prem-lock"><span class="pl-txt">🔒 Positions 6–10 — Premium</span><button class="pl-btn" onclick="openStripeModal('premium')">Upgrader</button></div>
-          <div class="p-foot">
-            <div class="sub-prog"><b id="hcnt">0</b>/<span id="hmax">5</span> positions complètes</div>
-            <button class="bsub" id="hbs" disabled onclick="hSubmit()">🏁 Verrouiller ma prédiction · GP Grande-Bretagne</button>
-            <div class="sub-dl">Clôture le <b>Samedi 4 Juillet à 17h00</b></div>
+          <!-- Onglets Sprint / Course -->
+          <div class="sprint-tabs" id="hub-pred-tabs">
+            <button class="sprint-tab active" id="hub-ptab-sprint" onclick="hubPredSwitchTab('sprint')">🏃 Sprint <span class="sprint-tab-pts">max 21 pts</span></button>
+            <button class="sprint-tab" id="hub-ptab-race" onclick="hubPredSwitchTab('race')">🏁 Course <span class="sprint-tab-pts">max 63 pts</span></button>
+          </div>
+          <!-- Panneau Sprint Pred -->
+          <div id="hub-ppanel-sprint">
+            <div class="p-slots" id="hsslots"></div>
+            <div class="prem-lock" id="home-sprint-prem-lock"><span class="pl-txt">🔒 Positions 5–8 Sprint — Premium</span><button class="pl-btn" onclick="openStripeModal('premium')">Upgrader</button></div>
+            <div class="p-foot">
+              <div class="sub-prog"><b id="hscnt">0</b>/<span id="hsmax">4</span> positions complètes</div>
+              <button class="bsub" id="hsbs" disabled onclick="hsSubmit()">🏃 Verrouiller ma prédiction Sprint</button>
+              <div class="sub-dl">Clôture le <b>Samedi 5 Juillet à 13h00</b></div>
+            </div>
+          </div>
+          <!-- Panneau Course Pred -->
+          <div id="hub-ppanel-race" style="display:none">
+            <div class="p-slots" id="hslots"></div>
+            <div class="prem-lock" id="home-prem-lock"><span class="pl-txt">🔒 Positions 6–10 — Premium</span><button class="pl-btn" onclick="openStripeModal('premium')">Upgrader</button></div>
+            <div class="p-foot">
+              <div class="sub-prog"><b id="hcnt">0</b>/<span id="hmax">5</span> positions complètes</div>
+              <button class="bsub" id="hbs" disabled onclick="hSubmit()">🏁 Verrouiller ma prédiction · GP Grande-Bretagne</button>
+              <div class="sub-dl">Clôture le <b>Samedi 4 Juillet à 17h00</b></div>
+            </div>
           </div>
         </div>
 
@@ -1566,28 +1624,78 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 <div id="pg-prediction" class="pg">
   <div class="pred-page-wrap">
     <div style="margin-bottom:1.2rem"><span class="sec-lbl" data-i18n="pred.gp.lbl">Grand Prix de Grande-Bretagne 2026 · Round 11</span><div class="sec-t" data-i18n="pred.gp.t">Prédiction complète</div></div>
-    <div class="pred-page-grid">
-      <div>
-        <div class="card" style="margin-bottom:.85rem">
-          <div class="card-h"><div class="card-ht" data-i18n="pred.ai.top10">Prédiction IA — Top 10</div><div class="ai-tag">Antonelli fav. 85%</div></div>
-          <div class="ai-rows" id="ai-pred-full"></div>
+
+    <!-- Onglets Sprint / Course page Prédiction -->
+    <div class="sprint-tabs sprint-tabs-page" id="page-pred-tabs" style="margin-bottom:1rem">
+      <button class="sprint-tab sprint-tab-lg active" id="page-tab-sprint" onclick="pagePredSwitchTab('sprint')">🏃 Sprint Race <span class="sprint-tab-pts">· Sam 13h00 · max 21 pts</span></button>
+      <button class="sprint-tab sprint-tab-lg" id="page-tab-race" onclick="pagePredSwitchTab('race')">🏁 Course principale <span class="sprint-tab-pts">· Dim 16h00 · max 63 pts</span></button>
+    </div>
+
+    <!-- ══ PANNEAU SPRINT ══ -->
+    <div id="page-panel-sprint">
+      <div class="pred-page-grid">
+        <div>
+          <div class="card" style="margin-bottom:.85rem">
+            <div class="card-h"><div class="card-ht">Prédiction IA — Sprint Top 8</div><div class="ai-tag sprint-ai-tag">Antonelli fav. 84%</div></div>
+            <div class="ai-rows" id="ai-pred-sprint"></div>
+            <div class="lks" id="pred-sprint-lock">
+              <div class="lkbl ai-rows" id="ai-pred-sprint-lock"></div>
+              <div class="lkov">
+                <div class="lkm">
+                  <h4>🔒 Positions 5–8 Sprint — Premium</h4>
+                  <p>Accède à l'analyse complète de l'IA pour la Sprint.</p>
+                  <button class="btn-r" style="font-size:.76rem;padding:.38rem .9rem" onclick="openStripeModal('premium')">Passer Premium →</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="card-h">
+              <div style="display:flex;align-items:center;gap:.45rem">
+                <div class="card-ht" style="color:var(--w)">Ma Prédiction Sprint</div>
+                <div class="pred-status st-open" id="pspb">En cours</div>
+              </div>
+              <div class="p-acts"><button class="bcpai" onclick="psCopy()">Copier IA</button><button class="brst" onclick="psReset()">✕</button></div>
+            </div>
+            <div class="p-slots" id="psslots"></div>
+            <div class="prem-lock" id="pred-sprint-prem-lock"><span class="pl-txt">🔒 Positions 5–8 Sprint — Premium</span><button class="pl-btn" onclick="openStripeModal('premium')">Upgrader</button></div>
+            <div class="p-foot">
+              <div class="sub-prog"><b id="pscnt">0</b>/<span id="psmax">4</span> positions complètes</div>
+              <button class="bsub" id="psbs" disabled onclick="psSubmit()">🏃 Verrouiller ma prédiction Sprint</button>
+              <div class="sub-dl">Clôture le <b>Samedi 5 Juillet à 13h00</b></div>
+            </div>
+          </div>
         </div>
       </div>
-      <div>
-        <div class="card">
-          <div class="card-h">
-            <div style="display:flex;align-items:center;gap:.45rem">
-              <div class="card-ht" style="color:var(--w)" data-i18n="pred.mine">Ma Prédiction</div>
-              <div class="pred-status st-open" id="ppb">En cours</div>
-            </div>
-            <div class="p-acts"><button class="bcpai" onclick="pCopy()" data-i18n="pred.copyai">Copier IA</button><button class="brst" onclick="pReset()">✕</button></div>
+    </div>
+
+    <!-- ══ PANNEAU COURSE (inchangé) ══ -->
+    <div id="page-panel-race" style="display:none">
+      <div class="pred-page-grid">
+        <div>
+          <div class="card" style="margin-bottom:.85rem">
+            <div class="card-h"><div class="card-ht" data-i18n="pred.ai.top10">Prédiction IA — Top 10</div><div class="ai-tag">Antonelli fav. 85%</div></div>
+            <div class="ai-rows" id="ai-pred-full"></div>
           </div>
-          <div class="p-slots" id="pslots"></div>
-          <div class="prem-lock" id="pred-prem-lock"><span class="pl-txt">🔒 Positions 6–10 — Premium</span><button class="pl-btn" onclick="openStripeModal('premium')">Upgrader</button></div>
-          <div class="p-foot">
-            <div class="sub-prog"><b id="pcnt">0</b>/<span id="pmax">5</span> positions complètes</div>
-            <button class="bsub" id="pbs" disabled onclick="pSubmit()">🏁 Verrouiller ma prédiction</button>
-            <div class="sub-dl">Clôture le <b>Samedi 4 Juillet à 17h00</b></div>
+        </div>
+        <div>
+          <div class="card">
+            <div class="card-h">
+              <div style="display:flex;align-items:center;gap:.45rem">
+                <div class="card-ht" style="color:var(--w)" data-i18n="pred.mine">Ma Prédiction</div>
+                <div class="pred-status st-open" id="ppb">En cours</div>
+              </div>
+              <div class="p-acts"><button class="bcpai" onclick="pCopy()" data-i18n="pred.copyai">Copier IA</button><button class="brst" onclick="pReset()">✕</button></div>
+            </div>
+            <div class="p-slots" id="pslots"></div>
+            <div class="prem-lock" id="pred-prem-lock"><span class="pl-txt">🔒 Positions 6–10 — Premium</span><button class="pl-btn" onclick="openStripeModal('premium')">Upgrader</button></div>
+            <div class="p-foot">
+              <div class="sub-prog"><b id="pcnt">0</b>/<span id="pmax">5</span> positions complètes</div>
+              <button class="bsub" id="pbs" disabled onclick="pSubmit()">🏁 Verrouiller ma prédiction</button>
+              <div class="sub-dl">Clôture le <b>Samedi 4 Juillet à 17h00</b></div>
+            </div>
           </div>
         </div>
       </div>
@@ -2718,6 +2826,27 @@ const AI_DATA=[
 const AI5=AI_DATA.slice(0,5).map(d=>d.sn);
 const AI10=AI_DATA.map(d=>d.sn);
 
+// ── SPRINT DATA ─────────────────────────────────────────────────────────────
+const AI_SPRINT_DATA=[
+  {sn:'Antonelli', t:'mercedes',tc:'#00D2BE',note:'🔥 Dominant',  pct:84,pts:8},
+  {sn:'Norris',    t:'mclaren', tc:'#FF8000',note:'🏠 Home',       pct:76,pts:5},
+  {sn:'Russell',   t:'mercedes',tc:'#00D2BE',note:'Fort ici',      pct:70,pts:3},
+  {sn:'Hamilton',  t:'ferrari', tc:'#E8001D',note:'💛 Home race',  pct:64,pts:2},
+  {sn:'Piastri',   t:'mclaren', tc:'#FF8000',note:'',              pct:57,pts:1},
+  {sn:'Leclerc',   t:'ferrari', tc:'#E8001D',note:'',              pct:49,pts:1},
+  {sn:'Verstappen',t:'redbull', tc:'#3671C6',note:'',              pct:42,pts:1},
+  {sn:'Hadjar',    t:'redbull', tc:'#3671C6',note:'',              pct:35,pts:1},
+];
+const AI_SPRINT_4=AI_SPRINT_DATA.slice(0,4).map(d=>d.sn);
+const AI_SPRINT_8=AI_SPRINT_DATA.map(d=>d.sn);
+
+// Barème Sprint : P1=8, P2=5, P3=3, P4=2, P5=1, P6-8=1
+const SPRINT_SCORE=[8,5,3,2,1,1,1,1];
+
+// Deadline Sprint : samedi 5 juillet 2026 à 13h00 Paris = 11h00 UTC
+let SPRINT_DEADLINE_TS = new Date('2026-07-05T11:00:00Z').getTime();
+function isSprintLocked(){ return Date.now() >= SPRINT_DEADLINE_TS; }
+
 // LEAGUE_DATA chargé dynamiquement depuis Redis — voir buildLeague()
 let LEAGUE_DATA = { l: [], m: [] };
 let _leagueLoaded = false;
@@ -2830,6 +2959,8 @@ function goApp(){
   window.scrollTo(0,0);
   buildAIPred();buildTeamScroll();buildDriverScroll();buildPremSection();buildLeague();buildStandings();buildHistory();
   hRender();pRender();
+  hsRender();psRender();
+  loadSavedSprintPrediction();
   applyRestoredPlan();
   setTimeout(animBars,150);
   initHubDashboard();
@@ -3281,6 +3412,8 @@ function initHubDashboard(){
 }
 function buildAIPred(){
   const isPaid = hasFullAccess();
+
+  // ── Course IA (Hub + Page) ──
   const h=document.getElementById('ai-home'),fl=document.getElementById('ai-home-lock');
   if(h)h.innerHTML=AI_DATA.slice(0,5).map((d,i)=>aiRow(d,i)).join('');
   if(fl)fl.innerHTML=AI_DATA.slice(5).map((d,i)=>aiRow(d,i+5)).join('');
@@ -3298,12 +3431,51 @@ function buildAIPred(){
       full.innerHTML=html;
     }
   }
-  // Mettre à jour tous les ai-tag avec le vrai favori IA
+
+  // ── Sprint IA (Hub + Page) ──
+  const sprintRow=(d,i)=>{
+    // Même format que aiRow mais avec pts Sprint
+    const tn=TEAMS.find(t=>t.id===d.t);
+    const pc=i===0?'g':i===1?'s':i===2?'b':'d';
+    return `<div class="air"><div class="ap ${pc}">${i+1}</div><div class="adi"><div class="adn">${d.sn}</div><div class="adt"><span class="atd" style="background:${d.tc}"></span>${tn?.name||''} ${d.note?'· '+d.note:''}</div></div><div class="abars"><div class="abbg"><div class="abf" data-w="${d.pct}"></div></div><div class="apct">${d.pct}%</div></div><div class="apts">${d.pts}pt</div></div>`;
+  };
+
+  const sHub=document.getElementById('ai-home-sprint');
+  const sHubLock=document.getElementById('ai-home-sprint-lock');
+  const sPred=document.getElementById('ai-pred-sprint');
+  const sPredLock=document.getElementById('ai-pred-sprint-lock');
+
+  if(isPaid){
+    if(sHub)sHub.innerHTML=AI_SPRINT_DATA.map((d,i)=>sprintRow(d,i)).join('');
+    if(sHubLock)sHubLock.innerHTML='';
+    const hubSLock=document.getElementById('hub-sprint-lock');if(hubSLock)hubSLock.style.display='none';
+    if(sPred)sPred.innerHTML=AI_SPRINT_DATA.map((d,i)=>sprintRow(d,i)).join('');
+    if(sPredLock)sPredLock.innerHTML='';
+    const pSLock=document.getElementById('pred-sprint-lock');if(pSLock)pSLock.style.display='none';
+  } else {
+    if(sHub)sHub.innerHTML=AI_SPRINT_DATA.slice(0,4).map((d,i)=>sprintRow(d,i)).join('');
+    if(sHubLock)sHubLock.innerHTML=AI_SPRINT_DATA.slice(4).map((d,i)=>sprintRow(d,i+4)).join('');
+    if(sPred)sPred.innerHTML=AI_SPRINT_DATA.slice(0,4).map((d,i)=>sprintRow(d,i)).join('');
+    if(sPredLock)sPredLock.innerHTML=AI_SPRINT_DATA.slice(4).map((d,i)=>sprintRow(d,i+4)).join('');
+  }
+
+  // Locks Premium Sprint
+  ['home-sprint-prem-lock','pred-sprint-prem-lock'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.style.display=isPaid?'none':'';
+  });
+
+  // ai-tag course
   if(AI_DATA.length){
     const fav=AI_DATA[0];
-    const tagText=`${fav.sn} fav. ${fav.pct}%`;
-    document.querySelectorAll('.ai-tag').forEach(el=>el.textContent=tagText);
+    document.querySelectorAll('.ai-tag:not(.sprint-ai-tag)').forEach(el=>el.textContent=`${fav.sn} fav. ${fav.pct}%`);
   }
+  // ai-tag sprint
+  if(AI_SPRINT_DATA.length){
+    const sfav=AI_SPRINT_DATA[0];
+    document.querySelectorAll('.sprint-ai-tag').forEach(el=>el.textContent=`${sfav.sn} fav. ${sfav.pct}%`);
+  }
+
   setTimeout(animBars,100);
 }
 
@@ -3419,6 +3591,186 @@ function hCopy(){HP.pred=hasFullAccess()?AI10.slice():AI5.slice();HP.opk=-1;hRen
 function pCopy(){PP.pred=hasFullAccess()?AI10.slice():AI5.slice();PP.opk=-1;pRender()}
 function hReset(){HP.pred=new Array(10).fill(null);HP.opk=-1;hRender()}
 function pReset(){PP.pred=new Array(10).fill(null);PP.opk=-1;pRender()}
+
+/* ══════════════════════════════════════════
+   SPRINT PREDICTION SYSTEM
+   ══════════════════════════════════════════ */
+
+// État Sprint — 3 instances : Hub Sprint (HS), Page Sprint (PS), Page Sprint 2 (miroir page)
+function mkSprintPred(prefix){ return {pred:new Array(8).fill(null),sub:false,opk:-1,prefix,isSprint:true} }
+let HSP=mkSprintPred('hs'), PSP=mkSprintPred('ps');
+
+function renderSprintPred(inst){
+  const {pred,sub,opk,prefix}=inst;
+  const c=document.getElementById(prefix+'slots');if(!c)return;c.innerHTML='';
+  const isPaid=hasFullAccess();
+  const maxSlots=isPaid?8:4;
+  pred.forEach((sn,i)=>{
+    if(i>=maxSlots) return; // afficher seulement les slots autorisés
+    const dr=sn?DRIVERS.find(d=>d.sn===sn):null,tn=dr?TEAMS.find(t=>t.id===dr.t):null;
+    const w=document.createElement('div');w.className='pslot-w';
+    const sl=document.createElement('div');
+    if(dr){
+      sl.className='pslot filled'+(sub?' sdone':'')+(opk===i&&!sub?' open':'');
+      sl.style.borderLeftColor=dr.tc;sl.style.borderLeftStyle='solid';
+      const init=(dr.fn[0]||'')+(dr.sn[0]||'');
+      // Badge pts Sprint
+      const pts=SPRINT_SCORE[i]||0;
+      sl.innerHTML=`<div class="ps-badge" style="background:${dr.tc}22;border-color:${dr.tc};color:${dr.tc};font-family:'Rajdhani',sans-serif;font-size:.9rem;font-weight:700">${i+1}</div><div class="ps-photo" style="border-color:${dr.tc}"><img src="${dr.img}" alt="${dr.sn}" onerror="this.parentNode.innerHTML='<span style=color:${dr.tc};font-family:Rajdhani,sans-serif;font-weight:700>${init}</span>'"></div><div class="ps-info"><div class="ps-name">${dr.fn} ${dr.sn}</div><div class="ps-team"><span class="atd" style="background:${dr.tc}"></span>${tn?.name||''} · ${pts}pt${pts>1?'s':''}</div></div>${!sub?`<button class="ps-rm" onclick="${prefix}Clr(${i},event)">✕</button>`:''}`;
+      sl.onclick=()=>!sub&&setSprintPK(inst,opk===i?-1:i);
+    } else {
+      sl.className='pslot empty'+(opk===i&&!sub?' open':'');
+      sl.innerHTML=`<div class="ps-plus">+</div><div class="ps-ph">Choisir le pilote en P${i+1}... <span style="color:var(--gold);font-size:.68rem">${SPRINT_SCORE[i]||0} pt${(SPRINT_SCORE[i]||0)>1?'s':''}</span></div>`;
+      sl.onclick=()=>!sub&&setSprintPK(inst,opk===i?-1:i);
+    }
+    w.appendChild(sl);
+    if(opk===i&&!sub){
+      const pk=document.createElement('div');pk.className='dpicker on';
+      DRIVERS.forEach(d=>{
+        const used=pred.includes(d.sn)&&d.sn!==sn;
+        const dc=document.createElement('div');dc.className='dpc'+(used?' used':'');
+        const ini=(d.fn[0]||'')+(d.sn[0]||'');
+        dc.innerHTML=`<div class="dpph" style="border-color:${d.tc};background:${d.tc}18"><img src="${d.img}" alt="" onerror="this.parentNode.innerHTML='<span style=color:${d.tc}>${ini}</span>'"></div><div class="dpnum" style="color:${d.tc}">#${d.n}</div><div class="dpsn">${d.sn}</div>`;
+        dc.onclick=()=>{inst.pred[i]=d.sn;inst.opk=-1;renderSprintPred(inst);syncSprintInstances(inst)};
+        pk.appendChild(dc);
+      });
+      w.appendChild(pk);
+    }
+    c.appendChild(w);
+  });
+  const n=pred.slice(0,maxSlots).filter(Boolean).length;
+  const required=isPaid?8:4;
+  const cnt=document.getElementById(prefix+'cnt');if(cnt)cnt.textContent=n;
+  const mx=document.getElementById(prefix+'max');if(mx)mx.textContent=required;
+  const bs=document.getElementById(prefix+'bs');if(bs)bs.disabled=n<required||sub;
+}
+
+function setSprintPK(inst,i){inst.opk=i;renderSprintPred(inst)}
+
+// Synchronise Hub et Page Sprint (même prédiction, deux slots différents)
+function syncSprintInstances(changed){
+  if(changed===HSP){PSP.pred=[...HSP.pred];renderSprintPred(PSP);}
+  else{HSP.pred=[...PSP.pred];renderSprintPred(HSP);}
+}
+
+function hsRender(){renderSprintPred(HSP)}
+function psRender(){renderSprintPred(PSP)}
+function hsClr(i,e){e.stopPropagation();HSP.pred[i]=null;HSP.opk=-1;hsRender();syncSprintInstances(HSP)}
+function psClr(i,e){e.stopPropagation();PSP.pred[i]=null;PSP.opk=-1;psRender();syncSprintInstances(PSP)}
+function hsCopy(){HSP.pred=hasFullAccess()?AI_SPRINT_8.slice():AI_SPRINT_4.slice();HSP.opk=-1;hsRender();syncSprintInstances(HSP)}
+function psCopy(){PSP.pred=hasFullAccess()?AI_SPRINT_8.slice():AI_SPRINT_4.slice();PSP.opk=-1;psRender();syncSprintInstances(PSP)}
+function hsReset(){HSP.pred=new Array(8).fill(null);HSP.opk=-1;hsRender();syncSprintInstances(HSP)}
+function psReset(){PSP.pred=new Array(8).fill(null);PSP.opk=-1;psRender();syncSprintInstances(PSP)}
+
+// Sauvegarde Sprint dans Redis via clé dédiée
+async function saveSprintPredToCloud(predArray){
+  const profile=JSON.parse(localStorage.getItem('go_profile')||'{}');
+  const email=profile.email||localStorage.getItem('go_email')||'';
+  const handle=profile.handle||USER.handle||'';
+  if(!email) return {success:false,reason:'no_email'};
+
+  const prediction=predArray.filter(Boolean).map(d=>({
+    sn:typeof d==='string'?d:(d.sn||''),
+    n:typeof d==='string'?(DRIVERS.find(x=>x.sn===d)?.n||''):(d.n||''),
+    tc:typeof d==='string'?(DRIVERS.find(x=>x.sn===d)?.tc||'#e8001d'):(d.tc||'#e8001d'),
+  })).filter(d=>d.sn);
+
+  localStorage.setItem(`go_pred_${GP_CURRENT.sprintId}`,JSON.stringify(prediction.map(d=>d.sn)));
+
+  try{
+    const res=await fetch('/api/save-prediction',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({email,handle,gpId:GP_CURRENT.sprintId,gpName:'Sprint · '+GP_CURRENT.name,prediction,isSprint:true,scoring:SPRINT_SCORE})
+    });
+    const data=await res.json();
+    if(data.locked) return {success:false,reason:'locked'};
+    return {success:data.success||false};
+  }catch(e){return {success:false,reason:'network'};}
+}
+
+// Submit Sprint Hub
+async function hsSubmit(){
+  if(isSprintLocked()){showToast('⏰ La Sprint est verrouillée !');return;}
+  const inst=HSP;
+  const isPaid=hasFullAccess();
+  const required=isPaid?8:4;
+  if(inst.pred.slice(0,required).filter(Boolean).length<required){showToast('Complète ta prédiction Sprint !');return;}
+  const pspb=document.getElementById('hspb');if(pspb){pspb.className='pred-status st-saving';pspb.textContent='💾 Envoi…';}
+  const hsbs=document.getElementById('hsbs');if(hsbs){hsbs.disabled=true;hsbs.textContent='💾 Sauvegarde…';}
+  const result=await saveSprintPredToCloud(inst.pred.slice(0,required));
+  if(result.success){
+    inst.sub=true;PSP.sub=true;
+    renderSprintPred(inst);renderSprintPred(PSP);
+    if(pspb){pspb.className='pred-status st-done';pspb.textContent='✓ Sprint sauvegardée';}
+    const pspbPage=document.getElementById('pspb');if(pspbPage){pspbPage.className='pred-status st-done';pspbPage.textContent='✓ Sprint sauvegardée';}
+    if(hsbs){hsbs.disabled=false;hsbs.className='bsub done';hsbs.textContent='✓ Sprint verrouillée';}
+    const psbs=document.getElementById('psbs');if(psbs){psbs.disabled=false;psbs.className='bsub done';psbs.textContent='✓ Sprint verrouillée';}
+    showToast('🏃 Prédiction Sprint enregistrée !');
+  }else{
+    if(pspb){pspb.className='pred-status st-open';pspb.textContent='En cours';}
+    if(hsbs){hsbs.disabled=false;hsbs.textContent='🏃 Verrouiller ma prédiction Sprint';}
+    showToast(result.reason==='locked'?'⏰ Sprint verrouillée':'❌ Erreur de sauvegarde');
+  }
+}
+
+// Submit Sprint Page
+async function psSubmit(){
+  PSP.pred=[...HSP.pred]; // sync avant envoi
+  await hsSubmit();
+}
+
+// Charger Sprint sauvegardée
+async function loadSavedSprintPrediction(){
+  const profile=JSON.parse(localStorage.getItem('go_profile')||'{}');
+  const local=localStorage.getItem(`go_pred_${GP_CURRENT.sprintId}`);
+  if(local){
+    try{
+      const arr=JSON.parse(local);
+      const padded=[...arr,...new Array(Math.max(0,8-arr.length)).fill(null)];
+      HSP.pred=padded;PSP.pred=[...padded];
+      hsRender();psRender();
+    }catch(e){}
+  }
+  if(!profile.email) return;
+  try{
+    const res=await fetch(`/api/get-prediction?email=${encodeURIComponent(profile.email)}&gpId=${GP_CURRENT.sprintId}`);
+    const data=await res.json();
+    if(data.prediction&&data.prediction.length){
+      const arr=data.prediction.map(d=>typeof d==='string'?d:d.sn).filter(Boolean);
+      const padded=[...arr,...new Array(Math.max(0,8-arr.length)).fill(null)];
+      HSP.pred=padded;PSP.pred=[...padded];
+      HSP.sub=true;PSP.sub=true;
+      hsRender();psRender();
+      ['hspb','pspb'].forEach(id=>{const el=document.getElementById(id);if(el){el.className='pred-status st-done';el.textContent='✓ Sprint sauvegardée';}});
+      ['hsbs','psbs'].forEach(id=>{const el=document.getElementById(id);if(el){el.disabled=false;el.className='bsub done';el.textContent='✓ Sprint verrouillée';}});
+    }
+  }catch(e){}
+}
+
+/* ── FONCTIONS SWITCH ONGLETS ── */
+function hubSwitchTab(tab){
+  const panels={sprint:document.getElementById('hub-panel-sprint'),race:document.getElementById('hub-panel-race')};
+  const tabs={sprint:document.getElementById('hub-tab-sprint'),race:document.getElementById('hub-tab-race')};
+  Object.keys(panels).forEach(k=>{if(panels[k])panels[k].style.display=k===tab?'':'none';if(tabs[k])tabs[k].classList.toggle('active',k===tab);});
+}
+
+function hubPredSwitchTab(tab){
+  const panels={sprint:document.getElementById('hub-ppanel-sprint'),race:document.getElementById('hub-ppanel-race')};
+  const tabs={sprint:document.getElementById('hub-ptab-sprint'),race:document.getElementById('hub-ptab-race')};
+  const acts={sprint:document.getElementById('hub-pred-acts-sprint'),race:document.getElementById('hub-pred-acts-race')};
+  Object.keys(panels).forEach(k=>{
+    if(panels[k])panels[k].style.display=k===tab?'':'none';
+    if(tabs[k])tabs[k].classList.toggle('active',k===tab);
+    if(acts[k])acts[k].style.display=k===tab?'':'none';
+  });
+}
+
+function pagePredSwitchTab(tab){
+  const panels={sprint:document.getElementById('page-panel-sprint'),race:document.getElementById('page-panel-race')};
+  const tabs={sprint:document.getElementById('page-tab-sprint'),race:document.getElementById('page-tab-race')};
+  Object.keys(panels).forEach(k=>{if(panels[k])panels[k].style.display=k===tab?'':'none';if(tabs[k])tabs[k].classList.toggle('active',k===tab);});
+}
 /* ══ PRÉDICTION — SAUVEGARDE REDIS + PARTAGE ══ */
 
 let GP_CURRENT = { id: 'britain-2026', name: "Grand Prix de Grande-Bretagne", flag: '🇬🇧', r: 11, loc: 'Silverstone Circuit', isSprint: true, sprintId: 'sprint-britain-2026', sprintDeadlineUTC: '2026-07-04T11:00:00Z', qualiDeadlineUTC: '2026-07-04T15:00:00Z' };
