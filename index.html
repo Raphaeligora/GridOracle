@@ -1308,7 +1308,7 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
   </div>
   <div class="rb-sep"></div>
   <div class="rb-cd">
-    <div class="rb-lbl" data-i18n="hub.qualsin">Qualifs dans</div>
+    <div class="rb-lbl" data-i18n="hub.qualsin">Sprint Quali dans</div>
     <div class="rb-units">
       <div class="rbu"><div class="rbv" id="rd">00</div><div class="rbs">J</div></div>
       <div class="rbc">:</div>
@@ -1358,8 +1358,8 @@ html,body{background:var(--bg);color:var(--w);font-family:var(--fb);min-height:1
 
       <!-- TOP : chips + circuit + AI Core -->
       <div class="hw-chips-row">
-        <div class="hws-sc hw-chip"><div class="hws-sv" style="font-size:1.25rem">87%</div><div class="hws-sl">Verstappen fav.</div></div>
-        <div class="hws-sc hw-chip"><div class="hws-sv" style="font-size:1.25rem">J-4</div><div class="hws-sl">avant la course</div></div>
+        <div class="hws-sc hw-chip"><div class="hws-sv" style="font-size:1.25rem">85%</div><div class="hws-sl">Antonelli fav.</div></div>
+        <div class="hws-sc hw-chip"><div class="hws-sv" style="font-size:1.25rem" id="hw-days-chip">J-2</div><div class="hws-sl">avant la course</div></div>
         <div class="hws-sc hw-chip"><div class="hws-sv" style="font-size:1.25rem">52</div><div class="hws-sl">tours · 306 km</div></div>
         <div class="hws-sc hw-chip"><div class="hws-sv" style="font-size:1.25rem">5.891</div><div class="hws-sl">km · circuit</div></div>
       </div>
@@ -2674,6 +2674,13 @@ function unlockPlan(plan) {
     if (typeof hRender === 'function') hRender();
     if (typeof pRender === 'function') pRender();
   }
+  // Débloquer Sprint slots P5–P8
+  if (typeof HSP !== 'undefined') {
+    if (typeof hsRender === 'function') hsRender();
+    if (typeof psRender === 'function') psRender();
+  }
+  // Rebuild AI avec accès complet
+  if (typeof buildAIPred === 'function') buildAIPred();
 
   // 5. PAGE PROFIL — masquer les boutons "Passer Premium" / "Devenir Creator"
   const profBtns = document.querySelectorAll('#pg-profile .btn-r');
@@ -2769,7 +2776,7 @@ function markActivePlan(plan) {
 
 /* ══ DATA ══ */
 const CDN='https://media.formula1.com/d_driver_fallback_image.png/content/dam/fom-website/drivers/';
-const QUAL=new Date('2026-07-04T15:00:00Z');
+const QUAL=new Date('2026-07-04T15:30:00Z'); // Sprint Qualifying ven 4 juil 17h30 Paris
 
 const TEAMS=[
   {id:'mclaren',name:'McLaren',abr:'MCL',color:'#FF8000',eng:'Mercedes',isNew:false,wccPos:3,wccPts:159,d:['Norris','Piastri']},
@@ -2957,11 +2964,11 @@ function goApp(){
   document.getElementById('ob').style.display='none';
   document.getElementById('app').style.display='block';
   window.scrollTo(0,0);
+  applyRestoredPlan();
   buildAIPred();buildTeamScroll();buildDriverScroll();buildPremSection();buildLeague();buildStandings();buildHistory();
   hRender();pRender();
   hsRender();psRender();
   loadSavedSprintPrediction();
-  applyRestoredPlan();
   setTimeout(animBars,150);
   initHubDashboard();
   // Charger prédiction sauvegardée + vérifier deadline qualifs
@@ -3307,6 +3314,29 @@ function initHubDashboard(){
   const initials = ((fn[0]||'')+(ln[0]||'')).toUpperCase() || 'GO';
   const plan = localStorage.getItem('go_plan') || p.plan || 'free';
   const handle = p.handle || p.uid || 'griduser';
+
+  // ── Chip J-X dynamique (jours avant la course)
+  const daysChip = document.getElementById('hw-days-chip');
+  if(daysChip){
+    const raceTs = new Date('2026-07-05T14:00:00Z').getTime(); // Course dim 5 juil 16h Paris
+    const diffMs = raceTs - Date.now();
+    if(diffMs > 0){
+      const diffDays = Math.ceil(diffMs / 86400000);
+      daysChip.textContent = 'J-' + diffDays;
+    } else {
+      daysChip.textContent = 'En cours';
+    }
+  }
+
+  // ── Chip favori IA (depuis AI_DATA[0])
+  const favChip = document.querySelector('.hws-sc.hw-chip .hws-sl');
+  // ciblé via le premier chip — on met à jour via ID dédié plus fiable
+  const favVal = document.querySelector('.hws-sc.hw-chip .hws-sv');
+  if(favVal && typeof AI_DATA !== 'undefined' && AI_DATA[0]){
+    favVal.textContent = AI_DATA[0].pct + '%';
+    const favLbl = favVal.nextElementSibling;
+    if(favLbl) favLbl.textContent = AI_DATA[0].sn + ' fav.';
+  }
 
   // Résoudre équipe et pilote depuis teamId / driverSn (vraies clés du profil)
   const team   = (typeof TEAMS   !== 'undefined') ? (TEAMS.find(t => t.id === p.teamId)    || null) : null;
@@ -6013,10 +6043,12 @@ function bootApp(profile) {
   document.getElementById('recon-screen').classList.remove('open');
   document.getElementById('app').style.display = 'block';
   updateProfilePage();
+  applyRestoredPlan();
   buildAIPred(); buildTeamScroll(); buildDriverScroll(); buildPremSection();
   buildLeague(); buildStandings(); buildHistory();
   hRender(); pRender();
-  applyRestoredPlan();
+  hsRender(); psRender();
+  loadSavedSprintPrediction();
   syncPlanFromCloud(); // le serveur (webhook Stripe) fait foi sur le plan — débloque/rétrograde si besoin
   setTimeout(animBars, 150);
   initHubDashboard();
